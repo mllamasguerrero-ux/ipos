@@ -1,0 +1,36 @@
+CREATE TABLE SAT_TASACUOTA (
+    ID                    D_PK NOT NULL,
+    ACTIVO                D_BOOLCS,
+    CREADO                D_TIMESTAMP,
+    CREADOPOR_USERID      D_FK DEFAULT 0,
+    MODIFICADO            D_TIMESTAMP,
+    MODIFICADOPOR_USERID  D_FK DEFAULT 0,
+    SAT_RANGOFIJO         D_STDTEXT_SHORT,
+    SAT_VALORMINIMO       D_NUMERIC_SAT,
+    SAT_VALORMAXIMO       D_NUMERIC_SAT,
+    SAT_IMPUESTO          D_STDTEXT_SHORT,
+    SAT_FACTOR            D_STDTEXT_SHORT,
+    SAT_TRASLADO          D_STDTEXT_SHORT,
+    SAT_RETENCION         D_STDTEXT_SHORT,
+    SAT_FECHAINICIO       D_FECHA,
+    SAT_FECHAFIN          D_FECHA
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

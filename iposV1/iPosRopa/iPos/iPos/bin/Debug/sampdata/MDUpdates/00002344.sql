@@ -1,0 +1,1 @@
+insert into estatusrebaja(id, clave, nombre, clavesis) values (1, 'PENDIENTE', 'PENDIENTE', 'PENDIENTE');

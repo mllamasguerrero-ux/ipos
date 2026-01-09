@@ -1,0 +1,21 @@
+create or alter procedure DELETE_PEDIDO (
+    DOCTOID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+BEGIN
+
+DELETE FROM MOVTO
+   WHERE DOCTOID = :DOCTOID;
+
+   DELETE FROM DOCTO
+   WHERE ID = :DOCTOID;
+   
+   SUSPEND;
+   
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1006;
+      SUSPEND;
+   END
+ END

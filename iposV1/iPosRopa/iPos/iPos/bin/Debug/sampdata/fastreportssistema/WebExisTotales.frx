@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/24/2013 08:32:51" ReportInfo.Modified="10/17/2024 21:25:11" ReportInfo.CreatorVersion="2014.2.10.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+      
+    }
+
+    private void Shape1_BeforePrint(object sender, EventArgs e)
+    {                                     
+        
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2X5vrYkQRZlPBjv9iwhzAI0=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select producto.clave,&#13;&#10;producto.descripcion1,&#13;&#10;producto.existencia  &#13;&#10;from producto&#13;&#10;where producto.activo = 'S'">
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="420" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1512" Height="56.7">
+      <TextObject Name="Text45" Left="37.8" Top="9.45" Width="557.55" Height="37.8" Text="Reporte de existencia sucursales" Font="Arial, 20pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="60.7" Width="1512" Height="28.35">
+      <TextObject Name="Text2" Left="18.9" Width="94.5" Height="18.9" Text="CLAVE"/>
+      <TextObject Name="Text4" Left="122.85" Width="283.5" Height="18.9" Text="DESCRIPCION1"/>
+      <TextObject Name="Text6" Left="415.8" Width="94.5" Height="18.9" Text="EXISTENCIA"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="93.05" Width="1512" Height="18.9" BeforePrintEvent="Data1_BeforePrint" DataSource="Table">
+      <TextObject Name="Text1" Left="18.9" Width="94.5" Height="18.9" Text="[Table.CLAVE]"/>
+      <TextObject Name="Text3" Left="122.85" Width="283.5" Height="18.9" Text="[Table.DESCRIPCION1]"/>
+      <TextObject Name="Text5" Left="415.8" Width="94.5" Height="18.9" Text="[Table.EXISTENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="115.95" Width="1512" Height="18.9"/>
+  </ReportPage>
+</Report>

@@ -1,0 +1,2 @@
+UPDATE PARAMETRO
+SET ULT_CONSOLIDADOAUTOMATICO  = dateadd(-1 day to current_date)

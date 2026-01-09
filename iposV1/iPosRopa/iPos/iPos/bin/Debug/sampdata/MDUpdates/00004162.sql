@@ -1,0 +1,12 @@
+CREATE TABLE LOTESIMPORTADOS (
+    ID                    D_PK NOT NULL,
+    ACTIVO                D_BOOLCS,
+    CREADO                D_TIMESTAMP,
+    CREADOPOR_USERID      D_FK DEFAULT 0,
+    MODIFICADO            D_TIMESTAMP,
+    MODIFICADOPOR_USERID  D_FK DEFAULT 0,
+    PEDIMENTO             D_PEDIMENTO,
+    FECHAIMPORTACION      D_FECHA,
+    ADUANA                D_ADUANA,
+    TIPOCAMBIO            D_PRECIO
+);

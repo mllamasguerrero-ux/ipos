@@ -1,0 +1,7 @@
+|||||100+++++//Component.For<IDaoSelectorProvider<(nombreTabla), (nombreTabla)Param>>()
+                Component.For<IDaoSelectorProvider<(nombreTabla), (nombreTabla)Param>>()
+                    .ImplementedBy<(nombreTabla)SelectorDao>()
+                    .DependsOn(Dependency.OnValue<Func<string>>(getGeneralConnectionStringPtr)),
+
+                !!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

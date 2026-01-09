@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/23/2013 16:02:46" ReportInfo.Modified="12/23/2013 17:12:22" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2ShkZidHpj1knbTQspR/boc=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT        VENDEDOR.NOMBRE AS VENDEDORNOMBRE, VENDEDOR.USERNAME AS VENDEDORUSUARIO, DOCTO.FECHA, DOCTO.FOLIO, &#13;&#10;                         PRODUCTO.NOMBRE AS PRODUCTONOMBRE, PRODUCTO.DESCRIPCION AS PRODUCTODESCRIPCION, PRODUCTO.DESCRIPCION1 AS PRODUCTODESCRIPCION1,&#13;&#10;                          MOVTO.PRECIO, MOVTO.PRECIOLISTA, MOVTO.RAZONDESCUENTOCAJERO, MOVTO.CANTIDAD, MOVTO.PRECIOLISTA - MOVTO.PRECIO AS DIFERENCIAPRECIO, &#13;&#10;                         (MOVTO.PRECIOLISTA - MOVTO.PRECIO) * MOVTO.CANTIDAD AS DESCUENTOTOTAL&#13;&#10;FROM            MOVTO LEFT OUTER JOIN&#13;&#10;                         DOCTO ON DOCTO.ID = MOVTO.DOCTOID LEFT OUTER JOIN&#13;&#10;                         PRODUCTO ON PRODUCTO.ID = MOVTO.PRODUCTOID LEFT OUTER JOIN&#13;&#10;                         PERSONA VENDEDOR ON VENDEDOR.ID = DOCTO.VENDEDORID LEFT OUTER JOIN&#13;&#10;                         PERSONA CLIENTE ON CLIENTE.ID = DOCTO.PERSONAID&#13;&#10;WHERE        (DOCTO.ESTATUSDOCTOID = 1) AND (DOCTO.TIPODOCTOID = 21) AND (MOVTO.PRECIOLISTA &gt; MOVTO.PRECIO) AND (MOVTO.PRECIOMANUALMASBAJO = 'S') AND &#13;&#10;                         (DOCTO.FECHA &gt;= @FECHAINICIO) AND (DOCTO.FECHA &lt;= @FECHAFIN) AND (@VENDEDORID IN (DOCTO.VENDEDORID, 0))&#13;&#10;order by docto.vendedorid, docto.fecha, docto.id">
+        <Column Name="VENDEDORNOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORUSUARIO" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION1" DataType="System.String"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="PRECIOLISTA" DataType="System.Decimal"/>
+        <Column Name="RAZONDESCUENTOCAJERO" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="DIFERENCIAPRECIO" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOTOTAL" DataType="System.Decimal"/>
+        <CommandParameter Name="VENDEDORID" DataType="1" Expression="[VENDEDORID]" DefaultValue="0"/>
+        <CommandParameter Name="FECHAINICIO" DataType="5" Expression="[FECHAINICIO]" DefaultValue="01/01/2012"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[FECHAFIN]" DefaultValue="01/01/2013"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="VENDEDORID" DataType="System.Int64"/>
+    <Parameter Name="FECHAINICIO" DataType="System.DateTime"/>
+    <Parameter Name="FECHAFIN" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" RawPaperSize="119">
+    <ReportTitleBand Name="ReportTitle1" Width="740.5" Height="94.5">
+      <TextObject Name="Text19" Left="132.3" Top="9.45" Width="510.3" Height="28.35" Text="Reporte de descuentos hechos por los cajeros" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text20" Left="132.3" Top="47.25" Width="94.5" Height="18.9" Text="De la fecha:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text21" Left="396.9" Top="47.25" Width="94.5" Height="18.9" Text="A la fecha" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text22" Left="132.3" Top="66.15" Width="94.5" Height="18.9" Text="Cajero" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text23" Left="236.25" Top="66.15" Width="94.5" Height="18.9" Text="[VENDEDORID]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text24" Left="236.25" Top="47.25" Width="94.5" Height="18.9" Text="[FECHAINICIO]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text25" Left="500.85" Top="47.25" Width="94.5" Height="18.9" Text="[FECHAFIN]" Format="Date" Format.Format="d"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="98.5" Width="740.5" Height="28.35">
+      <TextObject Name="Text2" Width="85.05" Height="18.9" Text="VENDEDOR" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="85.05" Width="56.7" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="141.75" Width="66.15" Height="18.9" Text="FOLIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="217.35" Width="94.5" Height="18.9" Text="PRODUCTO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="406.35" Width="75.6" Height="18.9" Text="PRECIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="321.3" Width="75.6" Height="28.35" Text="PRECIO LISTA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="491.4" Width="75.6" Height="28.35" Text="DIF. PRECIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="576.45" Width="75.6" Height="28.35" Text="DESC. TOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="661.5" Width="75.6" Height="18.9" Text="RAZÓN" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="130.85" Width="740.5" Height="28.35" DataSource="Table">
+      <TextObject Name="Text1" Width="75.6" Height="28.35" Text="[Table.VENDEDORUSUARIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="85.05" Width="56.7" Height="28.35" Text="[Table.FECHA]" Format="Date" Format.Format="dd/MM/yy" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="141.75" Width="66.15" Height="28.35" Text="[Table.FOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="217.35" Width="94.5" Height="28.35" Text="[Table.PRODUCTONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="406.35" Width="75.6" Height="28.35" Text="[Table.PRECIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="321.3" Width="75.6" Height="28.35" Text="[Table.PRECIOLISTA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text3" Left="491.4" Width="75.6" Height="28.35" Text="[Table.DIFERENCIAPRECIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="576.45" Width="75.6" Height="28.35" Text="[Table.DESCUENTOTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="661.5" Width="94.5" Height="28.35" Text="[Table.RAZONDESCUENTOCAJERO]" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="163.2" Width="740.5" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

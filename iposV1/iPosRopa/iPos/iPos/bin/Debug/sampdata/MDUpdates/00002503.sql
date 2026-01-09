@@ -1,0 +1,14 @@
+create or alter procedure PRECIOSTEMP_ELIMINAR
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+BEGIN
+
+   ERRORCODE = 0;
+
+   DELETE FROM PRECIOSTEMP;
+
+    SUSPEND;
+
+
+END

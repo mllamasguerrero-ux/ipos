@@ -1,0 +1,12 @@
+create or alter procedure INVFIS_FIS_FINEDICION (
+    DOCTOID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+BEGIN
+
+   UPDATE DOCTO
+   SET ESTATUSDOCTOID = 3
+   WHERE ID = :DOCTOID;
+
+END

@@ -1,0 +1,251 @@
+﻿namespace iPos.Utilerias.Procesos
+{
+    partial class WFPagoAProveedoresPorFecha
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WFPagoAProveedoresPorFecha));
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.cbTodosProveedores = new iPos.Tools.CheckBoxFB();
+            this.label4 = new System.Windows.Forms.Label();
+            this.PERSONAIDTextBox = new iPos.Tools.TextBoxFB();
+            this.PERSONAButton = new System.Windows.Forms.Button();
+            this.PERSONALabel = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.BTEnviar = new System.Windows.Forms.Button();
+            this.DTPFrom = new System.Windows.Forms.DateTimePicker();
+            this.DTPTo = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.storProcBackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.panel1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.progressBar1);
+            this.panel1.Controls.Add(this.cbTodosProveedores);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.PERSONAIDTextBox);
+            this.panel1.Controls.Add(this.PERSONALabel);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.PERSONAButton);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.BTEnviar);
+            this.panel1.Controls.Add(this.DTPFrom);
+            this.panel1.Controls.Add(this.DTPTo);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(664, 235);
+            this.panel1.TabIndex = 11;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(205, 176);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(392, 23);
+            this.progressBar1.TabIndex = 169;
+            // 
+            // cbTodosProveedores
+            // 
+            this.cbTodosProveedores.AutoSize = true;
+            this.cbTodosProveedores.ForeColor = System.Drawing.Color.White;
+            this.cbTodosProveedores.Location = new System.Drawing.Point(28, 48);
+            this.cbTodosProveedores.Name = "cbTodosProveedores";
+            this.cbTodosProveedores.Size = new System.Drawing.Size(56, 17);
+            this.cbTodosProveedores.TabIndex = 168;
+            this.cbTodosProveedores.Text = "Todos";
+            this.cbTodosProveedores.TextValue = "0";
+            this.cbTodosProveedores.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(97, 48);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 13);
+            this.label4.TabIndex = 167;
+            this.label4.Text = "Proveedor:";
+            // 
+            // PERSONAIDTextBox
+            // 
+            this.PERSONAIDTextBox.BotonLookUp = this.PERSONAButton;
+            this.PERSONAIDTextBox.Condicion = null;
+            this.PERSONAIDTextBox.DataBaseType = FirebirdSql.Data.FirebirdClient.FbDbType.Array;
+            this.PERSONAIDTextBox.DbTypeDBValue = FirebirdSql.Data.FirebirdClient.FbDbType.Array;
+            this.PERSONAIDTextBox.DbValue = null;
+            this.PERSONAIDTextBox.Format_Expression = null;
+            this.PERSONAIDTextBox.IndiceCampoDescripcion = 2;
+            this.PERSONAIDTextBox.IndiceCampoSelector = 1;
+            this.PERSONAIDTextBox.IndiceCampoValue = 0;
+            this.PERSONAIDTextBox.LabelDescription = this.PERSONALabel;
+            this.PERSONAIDTextBox.Location = new System.Drawing.Point(187, 45);
+            this.PERSONAIDTextBox.MostrarErrores = true;
+            this.PERSONAIDTextBox.Name = "PERSONAIDTextBox";
+            this.PERSONAIDTextBox.NombreCampoSelector = "clave";
+            this.PERSONAIDTextBox.NombreCampoValue = "id";
+            this.PERSONAIDTextBox.Query = "select id,clave,nombre from persona where tipopersonaid in (40)";
+            this.PERSONAIDTextBox.QueryDeSeleccion = "select id,clave,nombre from persona where tipopersonaid in (40) and  clave= @clav" +
+    "e";
+            this.PERSONAIDTextBox.QueryPorDBValue = "select id,clave,nombre from persona where tipopersonaid in (40) and  id = @id";
+            this.PERSONAIDTextBox.Size = new System.Drawing.Size(82, 20);
+            this.PERSONAIDTextBox.TabIndex = 163;
+            this.PERSONAIDTextBox.Tag = 34;
+            this.PERSONAIDTextBox.TextDescription = null;
+            this.PERSONAIDTextBox.Titulo = "Proveedores";
+            this.PERSONAIDTextBox.ValidarEntrada = true;
+            this.PERSONAIDTextBox.ValidationExpression = null;
+            // 
+            // PERSONAButton
+            // 
+            this.PERSONAButton.BackgroundImage = global::iPos.Properties.Resources.search_J;
+            this.PERSONAButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.PERSONAButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PERSONAButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(116)))), ((int)(((byte)(156)))));
+            this.PERSONAButton.Location = new System.Drawing.Point(275, 42);
+            this.PERSONAButton.Name = "PERSONAButton";
+            this.PERSONAButton.Size = new System.Drawing.Size(25, 25);
+            this.PERSONAButton.TabIndex = 164;
+            this.PERSONAButton.UseVisualStyleBackColor = true;
+            // 
+            // PERSONALabel
+            // 
+            this.PERSONALabel.AutoSize = true;
+            this.PERSONALabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.PERSONALabel.Location = new System.Drawing.Point(302, 49);
+            this.PERSONALabel.Name = "PERSONALabel";
+            this.PERSONALabel.Size = new System.Drawing.Size(16, 13);
+            this.PERSONALabel.TabIndex = 166;
+            this.PERSONALabel.Text = "...";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(25, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(293, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "PAGO A PROVEEDORES POR RANGO DE FECHA";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(25, 105);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(47, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Desde:";
+            // 
+            // BTEnviar
+            // 
+            this.BTEnviar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(116)))), ((int)(((byte)(156)))));
+            this.BTEnviar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
+            this.BTEnviar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BTEnviar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BTEnviar.ForeColor = System.Drawing.Color.White;
+            this.BTEnviar.Location = new System.Drawing.Point(28, 176);
+            this.BTEnviar.Name = "BTEnviar";
+            this.BTEnviar.Size = new System.Drawing.Size(75, 23);
+            this.BTEnviar.TabIndex = 5;
+            this.BTEnviar.Text = "Enviar";
+            this.BTEnviar.UseVisualStyleBackColor = false;
+            this.BTEnviar.Click += new System.EventHandler(this.BTEnviar_Click);
+            // 
+            // DTPFrom
+            // 
+            this.DTPFrom.Location = new System.Drawing.Point(100, 99);
+            this.DTPFrom.Name = "DTPFrom";
+            this.DTPFrom.Size = new System.Drawing.Size(200, 20);
+            this.DTPFrom.TabIndex = 3;
+            // 
+            // DTPTo
+            // 
+            this.DTPTo.Location = new System.Drawing.Point(397, 99);
+            this.DTPTo.Name = "DTPTo";
+            this.DTPTo.Size = new System.Drawing.Size(200, 20);
+            this.DTPTo.TabIndex = 4;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(373, 105);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(19, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "A:";
+            // 
+            // storProcBackgroundWorker
+            // 
+            this.storProcBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.storProcBackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // WFPagoAProveedoresPorFecha
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::iPos.Properties.Resources.ipos_material_flat_walppaer_5_sin_logo;
+            this.ClientSize = new System.Drawing.Size(664, 236);
+            this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "WFPagoAProveedoresPorFecha";
+            this.Text = "Pago a Proveedores por Rango de Fecha";
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Panel panel1;
+        private Tools.CheckBoxFB cbTodosProveedores;
+        private System.Windows.Forms.Label label4;
+        private Tools.TextBoxFB PERSONAIDTextBox;
+        private System.Windows.Forms.Button PERSONAButton;
+        private System.Windows.Forms.Label PERSONALabel;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button BTEnviar;
+        private System.Windows.Forms.DateTimePicker DTPFrom;
+        private System.Windows.Forms.DateTimePicker DTPTo;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.ComponentModel.BackgroundWorker storProcBackgroundWorker;
+    }
+}

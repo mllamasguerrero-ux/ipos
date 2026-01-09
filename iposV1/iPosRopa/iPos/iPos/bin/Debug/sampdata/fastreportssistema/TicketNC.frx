@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;FastReport.Firebird.dll&#13;&#10;FastReport.Bars.dll&#13;&#10;FastReport.dll&#13;&#10;FastReport.Editor.dll" DoublePass="true" ReportInfo.Created="12/17/2013 17:36:14" ReportInfo.Modified="09/12/2018 14:55:17" ReportInfo.CreatorVersion="2018.3.5.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+                   
+using System.Text;
+using System.Globalization;
+
+namespace FastReport
+{
+  
+  
+  /// &lt;summary&gt;
+  /// Convierte números en su expresión numérica a su numeral cardinal
+  /// &lt;/summary&gt;
+
+  public class ReportScript
+  {                        
+    
+    
+    private float reportHeight = 0;
+    /*                                
+    private void Picture1_BeforePrint(object sender, EventArgs e)
+    {           
+      Picture1.ImageLocation =  ((String)Report.GetColumnValue(&quot;REC_MASTER.LOGOIMAGE&quot;)).Replace(&quot;{BaseDirectory}&quot;, System.IO.Path.GetDirectoryName(Report.FileName ) + &quot;\\..\\..&quot; ) ;     
+    }
+      */
+
+    
+   
+
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+      try{
+        
+      
+        Data1.Visible = ( ((String)Report.GetParameterValue(&quot;desglosekits&quot;)).Equals(&quot;S&quot;) &amp;&amp; 
+          ((Int64)Report.GetColumnValue(&quot;REC_DETAIL.KITMOVTOID&quot;)) &gt; 0) ||
+                          
+          ((Int64)Report.GetColumnValue(&quot;REC_DETAIL.GASTOADICID&quot;)) &gt; 0;
+      }
+      catch(Exception ex)
+      {
+        Data1.Visible = false;
+      }   
+    }
+
+    private void Text75_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((String)Report.GetParameterValue(&quot;desglosekits&quot;)) == &quot;S&quot; &amp;&amp;  ((String)Report.GetColumnValue(&quot;REC_DETAIL.ESKIT&quot;)) == &quot;S&quot;)
+      {
+        Text75.Visible = false;
+      }
+      else{
+        Text75.Visible = true; 
+      } 
+    }
+          
+                      
+
+    private void Page1_StartPage(object sender, EventArgs e)
+    {
+         
+      if (Engine.FinalPass)
+      {
+        /*Page1.PaperHeight = (reportHeight +  PageHeader1.Height + Child2.Height + Child3.Height + GroupHeader1.Height + GroupFooter1.Height +  Data1.Height + PageFooter1.Height + Child8.Height + ChildTransf.Height + ChildCheque.Height + ChildCredito.Height  + ChildEfectivo.Height  + ChildTarjeta.Height + 1) / Units.Millimeters +
+          Page1.TopMargin + Page1.BottomMargin;*/
+                                                   
+        Page1.PaperHeight = (reportHeight) / Units.Millimeters 
+          + Page1.TopMargin + Page1.BottomMargin;
+      }
+      
+    }
+
+  
+
+    private void ChildTransf_BeforePrint(object sender, EventArgs e)
+    {
+      Decimal pago =  ((Decimal)Report.GetColumnValue(&quot;REC_MASTER.PAGOTRANSFERENCIA&quot;));
+      ChildTransf.Visible = (pago &gt; 0);
+    }
+
+    private void ChildCheque_BeforePrint(object sender, EventArgs e)
+    {
+      
+      Decimal pago =  ((Decimal)Report.GetColumnValue(&quot;REC_MASTER.PAGOCHEQUE&quot;));
+      ChildCheque.Visible = (pago &gt; 0);
+    }
+
+    private void ChildCredito_BeforePrint(object sender, EventArgs e)
+    {
+      
+      Decimal pago =  ((Decimal)Report.GetColumnValue(&quot;REC_MASTER.PAGOCREDITO&quot;));
+      ChildCredito.Visible = (pago &gt; 0);
+    }
+
+    private void ChildTarjeta_BeforePrint(object sender, EventArgs e)
+    {
+      
+      Decimal pago =  ((Decimal)Report.GetColumnValue(&quot;REC_MASTER.PAGOTARJETA&quot;));
+      ChildTarjeta.Visible = (pago &gt; 0);
+    }
+
+    private void ChildEfectivo_BeforePrint(object sender, EventArgs e)
+    {
+      
+      Decimal pago =  ((Decimal)Report.GetColumnValue(&quot;REC_MASTER.PAGOEFECTIVO&quot;));
+      ChildEfectivo.Visible = (pago &gt; 0);
+    }
+
+    private void LayerX_AfterLayout(object sender, EventArgs e)
+    {
+              
+      if((sender as BandBase).Visible)
+      {
+        reportHeight += (sender as BandBase).Height;    
+      }
+    }
+        
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqGXDUjVHoOo39U7VHz/cohboC87uIIffsgzROmdYrsoyLqNefFxFcJwrJj2UdQGssDygdH1v33WybpxKsRehsLaYYJhHd3d37jR6E5s5aXcYjs4SwwOJp6nOTF8aIB0KG+4A05MYFB81Cn7fqteQTfEYl0kNg+w81vXtbNTTCHRlQN4Ks8VWaJNMd0uQO+MQ/wxGMTnwxQ0l6Flwm0wlZNA==">
+      <TableDataSource Name="Table" Alias="REC_MASTER" DataType="System.Int32" Enabled="true" SelectCommand="SELECT R.*, p.fiscalnombre,&#13;&#10;  &#13;&#10;p.FACT_ELECT_FOLDER&#13;&#10;||  '\facturaelectronica\IMG\logofarmafree.png'  as logoimage,&#13;&#10;&#13;&#10;docto.tipodoctoid, docto.observacion,&#13;&#10;coalesce(rutaembarque.clave,'') rutaembarqueclave,&#13;&#10;coalesce(rutaembarque.nombre, '') rutaembarquenombre,&#13;&#10;docto.ordencompra,&#13;&#10;docto.importeendolar,&#13;&#10;docto.fechahora,&#13;&#10;&#13;&#10;coalesce(docto.total,0) - coalesce(docto.iva,0) totalsiniva&#13;&#10;&#13;&#10; FROM &quot;RECIBO_MASTER&quot; R&#13;&#10;&#13;&#10;inner join parametro p on 1 = 1&#13;&#10;inner join docto on docto.id = r.doctoid&#13;&#10;left join rutaembarque on rutaembarque.id = docto.rutaembarqueid&#13;&#10; where r.doctoid = @doctoid">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="HEADERCANCELACION" DataType="System.String"/>
+        <Column Name="NOMBRESUCURSAL" DataType="System.String"/>
+        <Column Name="DESCRIPCIONSUCURSAL" DataType="System.String"/>
+        <Column Name="EMPRESA_RFC" DataType="System.String"/>
+        <Column Name="EMPRESA_COLONIA" DataType="System.String"/>
+        <Column Name="EMPRESA_DOMICICIO" DataType="System.String"/>
+        <Column Name="EMPRESA_NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="EMPRESA_NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="EMPRESA_CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="EMPRESA_RAZON_SOCIAL" DataType="System.String"/>
+        <Column Name="EMPRESA_TELEFONO" DataType="System.String"/>
+        <Column Name="EMPRESA_CIUDAD" DataType="System.String"/>
+        <Column Name="EMPRESA_ESTADO" DataType="System.String"/>
+        <Column Name="EMPRESA_MUNICIPIO" DataType="System.String"/>
+        <Column Name="LUGARDEEXPEDICION" DataType="System.String"/>
+        <Column Name="FECHADEEXPEDICION" DataType="System.DateTime"/>
+        <Column Name="CAJERO" DataType="System.String"/>
+        <Column Name="TICKET" DataType="System.Int32"/>
+        <Column Name="TITULO" DataType="System.String"/>
+        <Column Name="TITULO_PERSONA" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER1" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER2" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER3" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER4" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="PERSONADOMICILIO" DataType="System.String"/>
+        <Column Name="PERSONANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="PERSONANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="PERSONACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PERSONACOLONIA" DataType="System.String"/>
+        <Column Name="PERSONATELEFONO" DataType="System.String"/>
+        <Column Name="PERSONARAZONSOCIAL" DataType="System.String"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOVALE" DataType="System.Decimal"/>
+        <Column Name="TOTAL_CON_LETRA" DataType="System.String"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="CAMBIO" DataType="System.Decimal"/>
+        <Column Name="CAJA" DataType="System.String"/>
+        <Column Name="TURNO" DataType="System.String"/>
+        <Column Name="PAGOEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="PAGOTARJETA" DataType="System.Decimal"/>
+        <Column Name="PAGOCREDITO" DataType="System.Decimal"/>
+        <Column Name="PAGOCHEQUE" DataType="System.Decimal"/>
+        <Column Name="PAGOVALE" DataType="System.Decimal"/>
+        <Column Name="ABONO" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="PAGOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="ABONOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="SALDOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="VIGENCIAMONEDERO" DataType="System.DateTime"/>
+        <Column Name="MONEDEROID" DataType="System.Int64"/>
+        <Column Name="CUSTOMFOOTER" DataType="System.String"/>
+        <Column Name="APLICADO" DataType="System.Decimal"/>
+        <Column Name="PERSONARFC" DataType="System.String"/>
+        <Column Name="PERSONACIUDAD" DataType="System.String"/>
+        <Column Name="PERSONAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGACALLE" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGACOLONIA" DataType="System.String"/>
+        <Column Name="ENTREGAMUNICIPIO" DataType="System.String"/>
+        <Column Name="ENTREGAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PAGOTRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="PAGONOIDENTIFICADO" DataType="System.Decimal"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="REFERENCIAS" DataType="System.String"/>
+        <Column Name="FECHAFACTURA" DataType="System.DateTime"/>
+        <Column Name="NOTAPAGO" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER5" DataType="System.String"/>
+        <Column Name="LOGOIMAGE" DataType="System.String"/>
+        <Column Name="FISCALNOMBRE" DataType="System.String"/>
+        <Column Name="PLAZO" DataType="System.Int16"/>
+        <Column Name="VENCE" DataType="System.DateTime"/>
+        <Column Name="MONTOREBAJA" DataType="System.Decimal"/>
+        <Column Name="TOTALCONREBAJA" DataType="System.Decimal"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="PERSONAAUXNOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAUXAPELLIDOS" DataType="System.String"/>
+        <Column Name="PERSONAAUXDOMICILIO" DataType="System.String"/>
+        <Column Name="PERSONAAUXCOLONIA" DataType="System.String"/>
+        <Column Name="PERSONAAUXCIUDAD" DataType="System.String"/>
+        <Column Name="PERSONAAUXMUNICIPIO" DataType="System.String"/>
+        <Column Name="PERSONAAUXESTADO" DataType="System.String"/>
+        <Column Name="PERSONAAUXPAIS" DataType="System.String"/>
+        <Column Name="PERSONAAUXCODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PERSONAAUXTELEFONO1" DataType="System.String"/>
+        <Column Name="PERSONAAUXCELULAR" DataType="System.String"/>
+        <Column Name="PERSONAAUXEMAIL1" DataType="System.String"/>
+        <Column Name="PERSONAAPARTADOID" DataType="System.Int64"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONATELEFONO2" DataType="System.String"/>
+        <Column Name="FAX" DataType="System.String"/>
+        <Column Name="OBSERVACION" DataType="System.String"/>
+        <Column Name="RUTAEMBARQUECLAVE" DataType="System.String"/>
+        <Column Name="RUTAEMBARQUENOMBRE" DataType="System.String"/>
+        <Column Name="ORDENCOMPRA" DataType="System.String"/>
+        <Column Name="IMPORTEENDOLAR" DataType="System.Decimal"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="TOTALSINIVA" DataType="System.Decimal"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[pdoctoid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="REC_DETAIL" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;  doctoid,&#13;&#10; DATA.cantidad,&#13;&#10;  DESCRIPCION1,&#13;&#10;  DESCRIPCION2,&#13;&#10;  PRECIO,&#13;&#10;  descuento,&#13;&#10;  subtotal,&#13;&#10;  TASAIVA,&#13;&#10;  total,&#13;&#10;  lote,&#13;&#10;  fechavence ,&#13;&#10;  cantidadfaltante ,&#13;&#10;  cantidadsurtida  ,&#13;&#10;  cantidad_ ,&#13;&#10;  SUBTOTALCALCULADO,&#13;&#10;  IMPORTEIVA,&#13;&#10;  DATA.descuentovale,&#13;&#10;  tiporecarga ,&#13;&#10;  PRECIOCONIVA  ,&#13;&#10;  texto1,&#13;&#10;  texto2,&#13;&#10;  texto3,&#13;&#10;  texto4,&#13;&#10;  texto5,&#13;&#10;  texto6,&#13;&#10;  numero1,&#13;&#10;  numero2,&#13;&#10;  numero3,&#13;&#10;  numero4,&#13;&#10;  fecha1,&#13;&#10;  fecha2,&#13;&#10;  DESCRIPCION3 ,&#13;&#10;  descripcion_comodin ,&#13;&#10;  manejalote  ,&#13;&#10;   TASAIEPS ,&#13;&#10;   IMPORTEIEPS,&#13;&#10;   PRECIOCONIEPS  ,&#13;&#10;   TASAIMPUESTO ,&#13;&#10;   IMPORTEIMPUESTO ,&#13;&#10;   PRECIOCONIMPUESTO,&#13;&#10;   productoclave    ,&#13;&#10;   tasaieps_,&#13;&#10;   descuentoporcentaje,&#13;&#10;   pzacaja,&#13;&#10;   descpzacaja,&#13;&#10;   PRECIOCONIMPUESTOSINDESCUENTO,&#13;&#10;    DESCUENTOUNITARIO,&#13;&#10;   preciomaximopublico ,&#13;&#10;   KITMOVTOID,&#13;&#10;    KITPRODCLAVE,&#13;&#10;    KITPRODNOMBRE,&#13;&#10;    KITDESCRIPCION1,&#13;&#10;    KITPRECIOLISTA,&#13;&#10;    KITPRECIO,&#13;&#10;    KITTASAIVA,&#13;&#10;    KITTASAIEPS,&#13;&#10;    KITIMPUESTO,&#13;&#10;    KITIVA,&#13;&#10;    KITIEPS,&#13;&#10;    KITSUBTOTAL,&#13;&#10;    KITTOTAL,&#13;&#10;    KITCANTIDAD,&#13;&#10;    KITDESCPZACAJA  ,&#13;&#10;    MOVTOID,&#13;&#10;    ESKIT,&#13;&#10;    PRECIOSUGERIDOCONIMPUESTO,&#13;&#10;    preciosugerido  ,&#13;&#10;    STRPEDIMENTO,&#13;&#10;    GASTOADICID ,&#13;&#10;    PRODDESCRIPCION ,&#13;&#10;    PRODDESCRIPCION1,&#13;&#10;    PRODDESCRIPCION2,&#13;&#10;    MOVTOORDEN ,&#13;&#10;    MOVTOPARTIDA,&#13;&#10;  COALESCE(TIPODOCTOID,0) TIPODOCTOID,&#13;&#10;&#13;&#10; data.costoendolar,&#13;&#10; data.importeendolar  ,&#13;&#10; data.kilogramos,&#13;&#10; data.cajas,&#13;&#10; data.piezas,&#13;&#10; data.ean&#13;&#10;&#13;&#10;   FROM&#13;&#10;      (&#13;&#10;    SELECT&#13;&#10;        MOVTO.doctoid,&#13;&#10;&#13;&#10;        core.cantidad,&#13;&#10;&#13;&#10;       &#13;&#10;        CASE WHEN PRODUCTO.descripcion_comodin = 'S' AND MOVTO.descripcion1 IS NOT NULL AND MOVTO.descripcion1 &lt;&gt; '' THEN MOVTO.DESCRIPCION1 ELSE  PRODUCTO.DESCRIPCION1 END AS DESCRIPCION1,&#13;&#10;&#13;&#10;        CASE WHEN PRODUCTO.descripcion_comodin = 'S' AND MOVTO.descripcion1 IS NOT NULL AND MOVTO.descripcion1 &lt;&gt; '' THEN MOVTO.DESCRIPCION2 ELSE  PRODUCTO.DESCRIPCION2 END AS DESCRIPCION2,&#13;&#10;&#13;&#10;        (CASE&#13;&#10;         WHEN (docto.tipodoctoid in  (11,41)) THEN MOVTO.costo&#13;&#10;         ELSE MOVTO.precio&#13;&#10;        END ) PRECIO,&#13;&#10;&#13;&#10;        MOVTO.descuento,&#13;&#10;&#13;&#10;        (CASE&#13;&#10;         WHEN (docto.tipodoctoid in  (41)) THEN round(core.subtotal * coalesce(core.cantidadsurtida,0)/coalesce(core.cantidad,0),2)&#13;&#10;         ELSE core.subtotal&#13;&#10;         END ) subtotal,&#13;&#10;&#13;&#10;        PRODUCTO.tasaiva TASAIVA,&#13;&#10;&#13;&#10;        CASE WHEN docto.tipodoctoid = 21 then core.total + coalesce(core.DESCUENTOVALE,0)&#13;&#10;                 when docto.tipodoctoid = 41 then  round(core.total * coalesce(core.cantidadsurtida,0)/coalesce(core.cantidad,0),2)&#13;&#10;                 else core.total end total,&#13;&#10;&#13;&#10;&#13;&#10;        MOVTO.lote,&#13;&#10;        MOVTO.fechavence ,&#13;&#10;        core.cantidadfaltante ,&#13;&#10;        core.cantidadsurtida  ,&#13;&#10;        core.cantidad CANTIDAD_ ,&#13;&#10;        round(core.IMPORTEDESCUENTO * coalesce(core.cantidadsurtida,0)/coalesce(core.cantidad,0),2) SUBTOTALCALCULADO,&#13;&#10;       round(core.IVA * coalesce(core.cantidadsurtida,0)/coalesce(core.cantidad,0),2) IMPORTEIVA ,&#13;&#10;        coalesce(core.DESCUENTOVALE,0) descuentovale,&#13;&#10;        linea.tiporecarga ,&#13;&#10;&#13;&#10;&#13;&#10;        (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                   cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                ELSE&#13;&#10;                    cast(cast(COALESCE(MOVTO.precio,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                END ) PRECIOCONIVA  ,&#13;&#10;&#13;&#10;                c.texto1,&#13;&#10;                c.texto2,&#13;&#10;                c.texto3,&#13;&#10;                c.texto4,&#13;&#10;                c.texto5,&#13;&#10;                c.texto6,&#13;&#10;                c.numero1,&#13;&#10;                c.numero2,&#13;&#10;                c.numero3,&#13;&#10;                c.numero4,&#13;&#10;                c.fecha1, &#13;&#10;                c.fecha2,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;           &#13;&#10;        CASE WHEN PRODUCTO.descripcion_comodin = 'S' AND MOVTO.descripcion1 IS NOT NULL AND MOVTO.descripcion1 &lt;&gt; '' THEN MOVTO.DESCRIPCION3 ELSE  PRODUCTO.DESCRIPCION3 END AS DESCRIPCION3 ,&#13;&#10;        PRODUCTO.descripcion_comodin ,&#13;&#10;        PRODUCTO.manejalote  ,&#13;&#10;                             &#13;&#10;        MOVTO.TASAIEPS TASAIEPS ,&#13;&#10;        round(MOVTO.IEPS * coalesce(core.cantidadsurtida,0)/coalesce(core.cantidad,0),2) IMPORTEIEPS ,&#13;&#10;        (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;&#13;&#10;                        COALESCE(MOVTO.costo,0) * ((100 + coalesce(MOVTO.tasaieps,0)) / 100 )&#13;&#10;                ELSE&#13;&#10;                    COALESCE(MOVTO.precio,0) * ((100 + coalesce(MOVTO.tasaieps,0)) / 100 )&#13;&#10;                END ) PRECIOCONIEPS  ,&#13;&#10;                               &#13;&#10;        MOVTO.TASAIMPUESTO TASAIMPUESTO ,&#13;&#10;        round(MOVTO.IMPUESTO * coalesce(core.cantidadsurtida,0)/coalesce(core.cantidad,0),2) IMPORTEIMPUESTO ,&#13;&#10;&#13;&#10;        (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                   cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                ELSE&#13;&#10;                    cast(cast(COALESCE(MOVTO.precio,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                END ) PRECIOCONIMPUESTO,&#13;&#10;&#13;&#10;&#13;&#10;        case when docto.subtipodoctoid = 13 then '[DPP]' || producto.clave else producto.clave end productoclave    ,&#13;&#10;&#13;&#10;        movto.tasaieps TASAIEPS_,&#13;&#10;&#13;&#10;        movto.descuentoporcentaje,&#13;&#10;&#13;&#10;        producto.pzacaja,&#13;&#10;&#13;&#10;        case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 cast(     (CASE WHEN (docto.tipodoctoid in  (41)) THEN cast(core.cantidadsurtida as numeric(18,3)) ELSE cast(core.cantidad as numeric(18,3)) END ) as varchar(20) ) || (case when (CASE WHEN (docto.tipodoctoid in  (41)) THEN cast(core.cantidadsurtida as numeric(18,3)) ELSE cast(core.cantidad as numeric(18,3)) END )  &gt;= 1 then ' KG' else ' GM' end)&#13;&#10;           &#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 cast(     (CASE WHEN (docto.tipodoctoid in  (41)) THEN core.cantidadsurtida ELSE core.cantidad END )  as varchar(20))&#13;&#10;            else&#13;&#10;                cast(trunc(coalesce(     (CASE WHEN (docto.tipodoctoid in  (41)) THEN core.cantidadsurtida ELSE core.cantidad END   )   ,0)/coalesce(producto.pzacaja,1)) as varchar(20)) || ' cajas ' ||  cast(mod(coalesce(    (CASE WHEN (docto.tipodoctoid in  (41)) THEN core.cantidadsurtida ELSE core.cantidad END )   ,0),coalesce(producto.pzacaja,1)) as varchar(10)) || ' piezas '&#13;&#10;        end &#13;&#10;&#13;&#10;        descpzacaja,&#13;&#10;&#13;&#10;        case when COALESCE(movto.descuentoporcentaje,0) &lt; 100 then&#13;&#10;        round(&#13;&#10;              (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                           cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                        ELSE&#13;&#10;                            cast(cast(COALESCE(MOVTO.preciolista,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                        END ) &#13;&#10;        , 2)&#13;&#10;          else&#13;&#10;             0.00&#13;&#10;          end&#13;&#10;&#13;&#10;        PRECIOCONIMPUESTOSINDESCUENTO,&#13;&#10;&#13;&#10;&#13;&#10;        (&#13;&#10;&#13;&#10;        case when COALESCE(movto.descuentoporcentaje,0) &lt; 100 then&#13;&#10;        round(&#13;&#10;              (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                           cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                        ELSE&#13;&#10;                            cast(cast(COALESCE(MOVTO.preciolista,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                        END ) &#13;&#10;        , 2)&#13;&#10;          else&#13;&#10;             0.00&#13;&#10;          end&#13;&#10;&#13;&#10;          -&#13;&#10;&#13;&#10;         (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                           cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                        ELSE&#13;&#10;                            cast(cast(COALESCE(MOVTO.precio,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                        END )&#13;&#10;&#13;&#10;&#13;&#10;        ) &#13;&#10;         DESCUENTOUNITARIO,&#13;&#10;&#13;&#10;        movto.preciomaximopublico ,&#13;&#10;&#13;&#10;&#13;&#10;        coalesce(core.KITMOVTOID,0) KITMOVTOID,&#13;&#10;        PKITREF.CLAVE  KITPRODCLAVE,&#13;&#10;        PKITREF.nombre KITPRODNOMBRE,&#13;&#10;        PKITREF.descripcion1 KITDESCRIPCION1,&#13;&#10;        core.KITPRECIOLISTA,&#13;&#10;        core.KITPRECIO,&#13;&#10;        core.KITTASAIVA,&#13;&#10;        core.KITTASAIEPS,&#13;&#10;        core.KITIMPUESTO,&#13;&#10;        core.KITIVA,&#13;&#10;        core.KITIEPS,&#13;&#10;        core.KITSUBTOTAL,&#13;&#10;        core.KITTOTAL,&#13;&#10;        core.KITCANTIDAD,&#13;&#10;&#13;&#10;        case when coalesce(PKITREF.pzacaja,0) = 0 then&#13;&#10;        cast(CORE.KITCANTIDAD as varchar(10)) || ' pzas' else&#13;&#10;        cast(trunc(coalesce(CORE.KITCANTIDAD,0)/coalesce(PKITREF.pzacaja,1)) as varchar(10)) || ' cajas ' ||  cast(mod(coalesce(CORE.KITCANTIDAD,0),coalesce(PKITREF.pzacaja,1)) as varchar(10)) || ' piezas '&#13;&#10;        end  KITDESCPZACAJA  ,&#13;&#10;&#13;&#10;        MOVTO.ID MOVTOID,&#13;&#10;        coalesce(PRODUCTO.ESKIT,'N') ESKIT,&#13;&#10;&#13;&#10;&#13;&#10;         (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                   cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                ELSE&#13;&#10;                    cast(cast(COALESCE(PRODUCTO.PRECIOSUGERIDO,COALESCE(MOVTO.PRECIO,0))  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                END ) PRECIOSUGERIDOCONIMPUESTO,&#13;&#10;        producto.preciosugerido  ,&#13;&#10;        CORE.STRPEDIMENTO ,&#13;&#10;&#13;&#10;    0 GASTOADICID   ,&#13;&#10;    PRODUCTO.DESCRIPCION PRODDESCRIPCION  ,&#13;&#10;    PRODUCTO.DESCRIPCION1 PRODDESCRIPCION1,&#13;&#10;    PRODUCTO.DESCRIPCION2 PRODDESCRIPCION2 ,&#13;&#10;    MOVTO.ORDEN MOVTOORDEN ,&#13;&#10;    MOVTO.PARTIDA MOVTOPARTIDA ,&#13;&#10;    DOCTO.TIPODOCTOID,&#13;&#10;core.costoendolar,&#13;&#10;core.importeendolar  ,&#13;&#10;&#13;&#10;        case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 (CASE WHEN (docto.tipodoctoid in  (41)) THEN cast(core.cantidadsurtida as numeric(18,3)) ELSE cast(core.cantidad as numeric(18,3)) END )&#13;&#10;           &#13;&#10;            else&#13;&#10;                0.00&#13;&#10;&#13;&#10;        end  KILOGRAMOS,&#13;&#10;&#13;&#10;        case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 0.00&#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 0.00&#13;&#10;            else&#13;&#10;                trunc(coalesce(     (CASE WHEN (docto.tipodoctoid in  (41)) THEN core.cantidadsurtida ELSE core.cantidad END   )   ,0)/coalesce(producto.pzacaja,1))&#13;&#10;        end   CAJAS ,&#13;&#10;&#13;&#10;        case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 0.00&#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 (CASE WHEN (docto.tipodoctoid in  (41)) THEN core.cantidadsurtida ELSE core.cantidad END )&#13;&#10;            else&#13;&#10;                mod(coalesce(    (CASE WHEN (docto.tipodoctoid in  (41)) THEN core.cantidadsurtida ELSE core.cantidad END )   ,0),coalesce(producto.pzacaja,1))&#13;&#10;        end  PIEZAS ,&#13;&#10;&#13;&#10;        PRODUCTO.ean EAN&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;        FROM&#13;&#10;        (select * from recibos_core where recibos_core.doctoid = @doctoid) core&#13;&#10;        left join MOVTO on movto.id = core.movtoid&#13;&#10;        left join docto on docto.id = movto.doctoid&#13;&#10;        left JOIN PRODUCTO ON MOVTO.productoid = PRODUCTO.ID&#13;&#10;        left join linea on linea.id = producto.lineaid&#13;&#10;        left join PRODUCTOCARACTERISTICAS  c on c.productoid = producto.id&#13;&#10;        left join parametro on 1 = 1&#13;&#10;       left JOIN PRODUCTO PKITREF ON core.kitproductoid = PKITREF.ID&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;where core.doctoid = @doctoid AND movto.doctoid = @doctoid AND core.cantidad &gt; 0&#13;&#10;       &#13;&#10;      &#13;&#10;&#13;&#10;&#13;&#10;union&#13;&#10;&#13;&#10; select&#13;&#10;  MG.doctoid,&#13;&#10;&#13;&#10;   1.0000 cantidad,&#13;&#10;&#13;&#10;   'GASTOS ADICIONALES INCLUIDOS' DESCRIPCION1,&#13;&#10;&#13;&#10;   '' DESCRIPCION2,&#13;&#10;&#13;&#10;   0.00 PRECIO,&#13;&#10;&#13;&#10;   0.00 descuento,&#13;&#10;&#13;&#10;   0.00 subtotal,&#13;&#10;&#13;&#10;   0.00 TASAIVA,&#13;&#10;&#13;&#10;   0.00 total,&#13;&#10;&#13;&#10;&#13;&#10;   '' lote,&#13;&#10;   NULL fechavence ,&#13;&#10;   0.0000 cantidadfaltante ,&#13;&#10;   0.0000 cantidadsurtida  ,&#13;&#10;   0.0000 cantidad_ ,&#13;&#10;   0.00 SUBTOTALCALCULADO,&#13;&#10;   0.00   IMPORTEIVA,&#13;&#10;   0.00 descuentovale,&#13;&#10;   '' tiporecarga ,&#13;&#10;&#13;&#10;  0.00 PRECIOCONIVA  ,&#13;&#10;   '' texto1,&#13;&#10;   '' texto2,&#13;&#10;   '' texto3,&#13;&#10;   '' texto4,&#13;&#10;   '' texto5,&#13;&#10;   '' texto6,&#13;&#10;   '' numero1,&#13;&#10;   '' numero2,&#13;&#10;   '' numero3,&#13;&#10;   '' numero4,&#13;&#10;   '' fecha1,&#13;&#10;   '' fecha2,&#13;&#10;&#13;&#10;   '' DESCRIPCION3 ,&#13;&#10;   '' descripcion_comodin ,&#13;&#10;   '' manejalote  ,&#13;&#10;                             &#13;&#10;   0.00 TASAIEPS ,&#13;&#10;   0.00 IMPORTEIEPS,&#13;&#10;   0.00 PRECIOCONIEPS  ,&#13;&#10;                               &#13;&#10;   0.00 TASAIMPUESTO ,&#13;&#10;   0.00 IMPORTEIMPUESTO ,&#13;&#10;   0.00 PRECIOCONIMPUESTO,&#13;&#10;&#13;&#10;   '' productoclave    ,&#13;&#10;&#13;&#10;  0.00 tasaieps_,&#13;&#10;&#13;&#10;  0.00 descuentoporcentaje,&#13;&#10;&#13;&#10;  1.00 pzacaja,&#13;&#10;&#13;&#10;  '' descpzacaja,&#13;&#10;&#13;&#10;  0.00 PRECIOCONIMPUESTOSINDESCUENTO,&#13;&#10;&#13;&#10;  0.00 DESCUENTOUNITARIO,&#13;&#10;&#13;&#10; 0.00 preciomaximopublico ,&#13;&#10;&#13;&#10;&#13;&#10;  0 KITMOVTOID,&#13;&#10;  GA.CLAVE KITPRODCLAVE,&#13;&#10;  GA.NOMBRE  KITPRODNOMBRE,&#13;&#10; GA.nombre || '  (Monto: ' || CAST(MG.monto AS VARCHAR(31))  || ' )'  KITDESCRIPCION1,&#13;&#10; 0.00 KITPRECIOLISTA,&#13;&#10; 0.00 KITPRECIO,&#13;&#10; 0.00 KITTASAIVA,&#13;&#10; 0.00 KITTASAIEPS,&#13;&#10; 0.00 KITIMPUESTO,&#13;&#10; 0.00 KITIVA,&#13;&#10; 0.00 KITIEPS,&#13;&#10; 0.00 KITSUBTOTAL,&#13;&#10; 0.00 KITTOTAL,&#13;&#10; 0.0000 KITCANTIDAD,&#13;&#10;&#13;&#10; '' KITDESCPZACAJA  ,&#13;&#10;&#13;&#10;9223372036854775806 MOVTOID,&#13;&#10;&#13;&#10; 'N' ESKIT,&#13;&#10;&#13;&#10;&#13;&#10; 0.00 PRECIOSUGERIDOCONIMPUESTO,&#13;&#10; 0.00 preciosugerido  ,&#13;&#10;&#13;&#10;&#13;&#10; '' STRPEDIMENTO,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;GA.ID GASTOADICID  ,&#13;&#10; '' PRODDESCRIPCION   ,&#13;&#10; '' PRODDESCRIPCION1,&#13;&#10; '' PRODDESCRIPCION2 ,&#13;&#10; GA.ID GASTOADICID ,&#13;&#10; 0 MOVTOPARTIDA ,&#13;&#10; DOCTO.TIPODOCTOID TIPODOCTOID,&#13;&#10;&#13;&#10; 0.0 costoendolar,&#13;&#10; 0.0 importeendolar,&#13;&#10;&#13;&#10; 0.0 KILOGRAMOS,&#13;&#10; 0.0 CAJAS,&#13;&#10; 0.0 PIEZAS,&#13;&#10;&#13;&#10; '' EAN&#13;&#10;&#13;&#10;&#13;&#10; FROM movtogastosadic MG&#13;&#10; LEFT JOIN GASTOADICIONAL GA ON MG.movtogastosadicid = GA.ID&#13;&#10; LEFT JOIN DOCTO ON DOCTO.ID = MG.DOCTOID&#13;&#10; WHERE MG.DOCTOID = @DOCTOID&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;  union&#13;&#10;&#13;&#10; &#13;&#10; select&#13;&#10;  -1 doctoid,&#13;&#10;&#13;&#10;   0.0000 cantidad,&#13;&#10;&#13;&#10;   ' PEDIMENTO DE IMPORTACION EN ESTA TRANSACCION : ' || COALESCE(LI.PEDIMENTO,'') || ' fec.: ' || CAST( coalesce(LI.FECHAIMPORTACION, current_date) AS VARCHAR(20)) || ' Adu. ' ||  coalesce( LI.aduana, '')   DESCRIPCION1 ,&#13;&#10;&#13;&#10;   '' DESCRIPCION2,&#13;&#10;&#13;&#10;   0.00 PRECIO,&#13;&#10;&#13;&#10;   0.00 descuento,&#13;&#10;&#13;&#10;   0.00 subtotal,&#13;&#10;&#13;&#10;   0.00 TASAIVA,&#13;&#10;&#13;&#10;   0.00 total,&#13;&#10;&#13;&#10;&#13;&#10;   '' lote,&#13;&#10;   NULL fechavence ,&#13;&#10;   0.0000 cantidadfaltante ,&#13;&#10;   0.0000 cantidadsurtida  ,&#13;&#10;   0.0000 cantidad_ ,&#13;&#10;   0.00 SUBTOTALCALCULADO,&#13;&#10;   0.00   IMPORTEIVA,&#13;&#10;   0.00 descuentovale,&#13;&#10;   '' tiporecarga ,&#13;&#10;&#13;&#10;  0.00 PRECIOCONIVA  ,&#13;&#10;   '' texto1,&#13;&#10;   '' texto2,&#13;&#10;   '' texto3,&#13;&#10;   '' texto4,&#13;&#10;   '' texto5,&#13;&#10;   '' texto6,&#13;&#10;   '' numero1,&#13;&#10;   '' numero2,&#13;&#10;   '' numero3,&#13;&#10;   '' numero4,&#13;&#10;   '' fecha1,&#13;&#10;   '' fecha2,&#13;&#10;&#13;&#10;   '' DESCRIPCION3 ,&#13;&#10;   '' descripcion_comodin ,&#13;&#10;   '' manejalote  ,&#13;&#10;                             &#13;&#10;   0.00 TASAIEPS ,&#13;&#10;   0.00 IMPORTEIEPS,&#13;&#10;   0.00 PRECIOCONIEPS  ,&#13;&#10;                               &#13;&#10;   0.00 TASAIMPUESTO ,&#13;&#10;   0.00 IMPORTEIMPUESTO ,&#13;&#10;   0.00 PRECIOCONIMPUESTO,&#13;&#10;&#13;&#10;   '' productoclave    ,&#13;&#10;&#13;&#10;  0.00 tasaieps_,&#13;&#10;&#13;&#10;  0.00 descuentoporcentaje,&#13;&#10;&#13;&#10;  1.00 pzacaja,&#13;&#10;&#13;&#10;  '' descpzacaja,&#13;&#10;&#13;&#10;  0.00 PRECIOCONIMPUESTOSINDESCUENTO,&#13;&#10;&#13;&#10;  0.00 DESCUENTOUNITARIO,&#13;&#10;&#13;&#10; 0.00 preciomaximopublico ,&#13;&#10;&#13;&#10; 0 KITMOVTOID,&#13;&#10; '' KITPRODCLAVE,&#13;&#10; '' KITPRODNOMBRE,&#13;&#10; '' KITDESCRIPCION1,&#13;&#10; 0.00 KITPRECIOLISTA,&#13;&#10; 0.00 KITPRECIO,&#13;&#10; 0.00 KITTASAIVA,&#13;&#10; 0.00 KITTASAIEPS,&#13;&#10; 0.00 KITIMPUESTO,&#13;&#10; 0.00 KITIVA,&#13;&#10; 0.00 KITIEPS,&#13;&#10; 0.00 KITSUBTOTAL,&#13;&#10; 0.00 KITTOTAL,&#13;&#10; 0.0000 KITCANTIDAD,&#13;&#10;&#13;&#10; '' KITDESCPZACAJA  ,&#13;&#10;&#13;&#10;9223372036854775806 MOVTOID,&#13;&#10;&#13;&#10; 'N' ESKIT,&#13;&#10;&#13;&#10;&#13;&#10; 0.00 PRECIOSUGERIDOCONIMPUESTO,&#13;&#10; 0.00 preciosugerido  ,&#13;&#10; '' STRPEDIMENTO,&#13;&#10;0  GASTOADICID  ,&#13;&#10; '' PRODDESCRIPCION   ,&#13;&#10; '' PRODDESCRIPCION1,&#13;&#10; '' PRODDESCRIPCION2 ,&#13;&#10; 0 GASTOADICID ,&#13;&#10; 0 MOVTOPARTIDA ,&#13;&#10;  DOCTO.TIPODOCTOID,&#13;&#10;&#13;&#10; 0.0 costoendolar,&#13;&#10; 0.0 importeendolar ,&#13;&#10;&#13;&#10; 0.0 KILOGRAMOS,&#13;&#10; 0.0 CAJAS,&#13;&#10; 0.0 PIEZAS ,&#13;&#10;&#13;&#10; '' EAN&#13;&#10;&#13;&#10;&#13;&#10; FROM DOCTO&#13;&#10; INNER JOIN LOTESIMPORTADOS LI ON LI.ID = DOCTO.loteimportado&#13;&#10; WHERE DOCTO.ID = @DOCTOID AND DOCTO.TIPODOCTOID = 11&#13;&#10;&#13;&#10;&#13;&#10;)&#13;&#10;DATA left join parametro on 1 = 1&#13;&#10;&#13;&#10; order by&#13;&#10;GASTOADICID,&#13;&#10;case when coalesce(parametro.ordenimpresion,'') = 'DESCRIPCION' then&#13;&#10;data.proddescripcion&#13;&#10;    when coalesce(parametro.ordenimpresion,'') = 'DESCRIPCION1' then&#13;&#10;data.descripcion1&#13;&#10;    when coalesce(parametro.ordenimpresion,'') = 'DESCRIPCION2' then&#13;&#10;data.descripcion2&#13;&#10; else movtoorden&#13;&#10;end,&#13;&#10;MOVTOORDEN, MOVTOPARTIDA&#13;&#10;">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="LOTE" DataType="System.String"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="CANTIDADSURTIDA" DataType="System.Decimal"/>
+        <Column Name="IMPORTEIVA" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOVALE" DataType="System.Decimal"/>
+        <Column Name="TIPORECARGA" DataType="System.String"/>
+        <Column Name="PRECIOCONIVA" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION3" DataType="System.String"/>
+        <Column Name="TASAIVA" DataType="System.Decimal"/>
+        <Column Name="CANTIDADFALTANTE" DataType="System.Decimal"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+        <Column Name="DESCRIPCION_COMODIN" DataType="System.String"/>
+        <Column Name="MANEJALOTE" DataType="System.String"/>
+        <Column Name="TASAIEPS" DataType="System.Decimal"/>
+        <Column Name="IMPORTEIEPS" DataType="System.Decimal"/>
+        <Column Name="PRECIOCONIEPS" DataType="System.Decimal"/>
+        <Column Name="TASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="IMPORTEIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="PRECIOCONIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="DESCUENTOPORCENTAJE" DataType="System.Decimal"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="DESCPZACAJA" DataType="System.String"/>
+        <Column Name="PRECIOCONIMPUESTOSINDESCUENTO" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOUNITARIO" DataType="System.Decimal"/>
+        <Column Name="PRECIOMAXIMOPUBLICO" DataType="System.Decimal"/>
+        <Column Name="KITMOVTOID" DataType="System.Int64"/>
+        <Column Name="KITPRODCLAVE" DataType="System.String"/>
+        <Column Name="KITPRODNOMBRE" DataType="System.String"/>
+        <Column Name="KITDESCRIPCION1" DataType="System.String"/>
+        <Column Name="KITPRECIOLISTA" DataType="System.Decimal"/>
+        <Column Name="KITPRECIO" DataType="System.Decimal"/>
+        <Column Name="KITTASAIVA" DataType="System.Decimal"/>
+        <Column Name="KITIEPS" DataType="System.Decimal"/>
+        <Column Name="KITIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="KITIVA" DataType="System.Decimal"/>
+        <Column Name="KITSUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="KITTOTAL" DataType="System.Decimal"/>
+        <Column Name="KITCANTIDAD" DataType="System.Decimal"/>
+        <Column Name="KITTASAIEPS" DataType="System.Decimal"/>
+        <Column Name="MOVTOID" DataType="System.Int64"/>
+        <Column Name="KITDESCPZACAJA" DataType="System.String"/>
+        <Column Name="ESKIT" DataType="System.String"/>
+        <Column Name="PRECIOSUGERIDOCONIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="PRECIOSUGERIDO" DataType="System.Decimal"/>
+        <Column Name="CANTIDAD_" DataType="System.Decimal"/>
+        <Column Name="SUBTOTALCALCULADO" DataType="System.Decimal"/>
+        <Column Name="TASAIEPS_" DataType="System.Decimal"/>
+        <Column Name="GASTOADICID" DataType="System.Int64"/>
+        <Column Name="PRODDESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODDESCRIPCION1" DataType="System.String"/>
+        <Column Name="PRODDESCRIPCION2" DataType="System.String"/>
+        <Column Name="MOVTOORDEN" DataType="System.Int64"/>
+        <Column Name="MOVTOPARTIDA" DataType="System.Int32"/>
+        <Column Name="STRPEDIMENTO" DataType="System.String"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="COSTOENDOLAR" DataType="System.Decimal"/>
+        <Column Name="IMPORTEENDOLAR" DataType="System.Decimal"/>
+        <Column Name="KILOGRAMOS" DataType="System.Decimal"/>
+        <Column Name="CAJAS" DataType="System.Decimal"/>
+        <Column Name="PIEZAS" DataType="System.Decimal"/>
+        <Column Name="EAN" DataType="System.String"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[pdoctoid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="REC_SUMATORIAS" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 (CASE WHEN (docto.tipodoctoid in  (41)) THEN cast(movto.cantidadsurtida as numeric(18,3)) ELSE cast(movto.cantidad as numeric(18,3)) END )&#13;&#10;           &#13;&#10;            else&#13;&#10;                0.00&#13;&#10;&#13;&#10;        end)  KILOGRAMOS,&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 0.00&#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 0.00&#13;&#10;            else&#13;&#10;                trunc(coalesce(     (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END   )   ,0)/coalesce(producto.pzacaja,1))&#13;&#10;        end )  CAJAS ,&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 0.00&#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END )&#13;&#10;            else&#13;&#10;                mod(coalesce(    (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END )   ,0),coalesce(producto.pzacaja,1))&#13;&#10;        end ) PIEZAS&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;        FROM&#13;&#10;        docto&#13;&#10;        left join MOVTO on docto.id = movto.doctoid&#13;&#10;        left JOIN PRODUCTO ON MOVTO.productoid = PRODUCTO.ID&#13;&#10;        left join parametro on 1 = 1&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;where docto.id = @doctoid&#13;&#10;       ">
+        <Column Name="KILOGRAMOS" DataType="System.Decimal"/>
+        <Column Name="CAJAS" DataType="System.Decimal"/>
+        <Column Name="PIEZAS" DataType="System.Decimal"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[pdoctoid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="pdoctoid" DataType="System.Decimal"/>
+    <Parameter Name="usaDatosDeEntregaCuandoExista" DataType="System.String"/>
+    <Parameter Name="desglosekits" DataType="System.String"/>
+    <Parameter Name="marcaAgua" DataType="System.String" Expression="&quot;N&quot;"/>
+    <Parameter Name="enDolar" DataType="System.String"/>
+    <Total Name="Total" Expression="[REC_DETAIL.TOTAL]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="80" PaperHeight="279.4" LeftMargin="2" TopMargin="2" RightMargin="2" BottomMargin="2" FirstPageSource="15" OtherPagesSource="15" Watermark.Text="[COPYNAME#]" StartPageEvent="Page1_StartPage">
+    <ReportTitleBand Name="ReportTitle1" Width="287.28" Height="103.95" AfterLayoutEvent="LayerX_AfterLayout">
+      <TextObject Name="Text78" Left="9.45" Top="66.15" Width="75.6" Height="18.9" Text="FECHA:" Font="Arial, 7pt"/>
+      <TextObject Name="Text79" Left="151.2" Top="66.15" Width="37.8" Height="18.9" Text="HORA:" Font="Arial, 7pt"/>
+      <TextObject Name="Text4" Left="85.05" Top="66.15" Width="66.15" Height="18.9" Text="[REC_MASTER.FECHAHORA]" Format="Date" Format.Format="d" Font="Arial, 7pt"/>
+      <TextObject Name="Text80" Left="189" Top="66.15" Width="66.15" Height="18.9" Text="[REC_MASTER.FECHAHORA]" Format="Time" Format.Format="HH:mm" Font="Arial, 7pt"/>
+      <TextObject Name="Text91" Left="9.45" Top="85.05" Width="103.95" Height="18.9" Text="ATENDIDO POR:" Font="Arial, 7pt"/>
+      <TextObject Name="Text12" Left="122.85" Top="85.05" Width="132.3" Height="18.9" Text="[REC_MASTER.CAJERO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text6" Left="9.45" Top="18.9" Width="245.7" Height="18.9" Text="[REC_MASTER.DESCRIPCIONSUCURSAL]"/>
+      <TextObject Name="Text1" Left="9.45" Top="37.8" Width="245.7" Height="9.45" Text="RFC: [REC_MASTER.EMPRESA_RFC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text2" Left="9.45" Top="47.25" Width="245.7" Height="9.45" Text="Domicilio: [REC_MASTER.EMPRESA_DOMICICIO] [REC_MASTER.EMPRESA_NUMEROEXTERIOR]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="9.45" Top="56.7" Width="245.7" Height="9.45" Text="Colonia: [REC_MASTER.EMPRESA_COLONIA]" Font="Arial, 7pt"/>
+      <TextObject Name="Text97" Left="9.45" Width="245.7" Height="18.9" Text="NOTA DE CREDITO : [REC_MASTER.TICKET]" HorzAlign="Center" Font="Arial, 12pt, style=Bold"/>
+    </ReportTitleBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="106.62" Width="287.28" Height="18.9" CanGrow="true" Guides="18.9" AfterLayoutEvent="LayerX_AfterLayout" Condition="[REC_DETAIL.MOVTOID]">
+      <TextObject Name="Text75" Left="9.45" Top="9.45" Width="75.6" Height="9.45" BeforePrintEvent="Text75_BeforePrint" Text="[REC_DETAIL.CANTIDAD]" Format="Number" Format.UseLocale="true" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="9.45" Width="274.05" Height="9.45" CanGrow="true" CanShrink="true" CanBreak="false" Text="[REC_DETAIL.DESCRIPCION1] [IIf(Length(Trim([REC_DETAIL.LOTE]))==0,&quot;&quot;,&quot;Lote:&quot;)] [IIf(Length(Trim([REC_DETAIL.LOTE]))==0,&quot;&quot;,[REC_DETAIL.LOTE])]  [IIf(Length(Trim([REC_DETAIL.LOTE]))==0,&quot;&quot;,&quot;Caducidad al:&quot;)] [IIf(Length(Trim([REC_DETAIL.LOTE]))==0,&quot;&quot;,FormatDateTime([REC_DETAIL.FECHAVENCE]))]  [IIf([REC_DETAIL.TIPODOCTOID]==11,&quot;&quot;,[REC_DETAIL.STRPEDIMENTO])]" Font="Arial, 7pt"/>
+      <TextObject Name="Text93" Left="85.05" Top="9.45" Width="94.5" Height="9.45" CanGrow="true" CanShrink="true" CanBreak="false" Text="[REC_DETAIL.PRECIOCONIMPUESTO]" Format="Currency" Format.UseLocale="true" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text94" Left="179.55" Top="9.45" Width="85.05" Height="9.45" Text="[REC_DETAIL.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <DataBand Name="Data1" Top="128.18" Width="287.28" Height="9.45" CanGrow="true" CanShrink="true" BeforePrintEvent="Data1_BeforePrint" AfterLayoutEvent="LayerX_AfterLayout" DataSource="Table1" KeepDetail="true">
+        <TextObject Name="Text95" Left="9.45" Width="85.05" Height="9.45" Text="[REC_DETAIL.KITCANTIDAD]" Format="Number" Format.UseLocale="true" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text96" Left="94.5" Width="160.65" Height="9.45" Text="[REC_DETAIL.KITDESCRIPCION1]" Font="Arial, 7pt"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="140.3" Width="287.28" AfterLayoutEvent="LayerX_AfterLayout"/>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="142.97" Width="287.28" Height="18.9" CanShrink="true" AfterLayoutEvent="LayerX_AfterLayout">
+      <TextObject Name="Text10" Left="160.65" Width="94.5" Height="18.9" Text="[REC_MASTER.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text83" Left="28.35" Width="122.85" Height="18.9" Text="TOTAL" HorzAlign="Right" Font="Arial, 8pt"/>
+      <ChildBand Name="ChildTransf" Top="164.53" Width="287.28" Height="18.9" BeforePrintEvent="ChildTransf_BeforePrint" AfterLayoutEvent="LayerX_AfterLayout">
+        <TextObject Name="Text90" Left="160.65" Width="94.5" Height="18.9" Text="[REC_MASTER.PAGOTRANSFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text76" Left="37.8" Width="113.4" Height="18.9" Text="TRANSFERENCIA" HorzAlign="Right" Font="Arial, 8pt"/>
+        <ChildBand Name="ChildCheque" Top="186.1" Width="287.28" Height="18.9" BeforePrintEvent="ChildCheque_BeforePrint" AfterLayoutEvent="LayerX_AfterLayout">
+          <TextObject Name="Text59" Left="28.35" Width="122.85" Height="18.9" Text="CHEQUE" HorzAlign="Right" Font="Arial, 8pt"/>
+          <TextObject Name="Text46" Left="160.65" Width="94.5" Height="18.9" Text="[REC_MASTER.PAGOCHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+          <ChildBand Name="ChildCredito" Top="207.67" Width="287.28" Height="18.9" BeforePrintEvent="ChildCredito_BeforePrint" AfterLayoutEvent="LayerX_AfterLayout">
+            <TextObject Name="Text58" Left="28.35" Width="122.85" Height="18.9" Text="CREDITO" HorzAlign="Right" Font="Arial, 8pt"/>
+            <TextObject Name="Text45" Left="160.65" Width="94.5" Height="18.9" Text="[REC_MASTER.PAGOCREDITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+            <ChildBand Name="ChildTarjeta" Top="229.23" Width="287.28" Height="18.9" BeforePrintEvent="ChildTarjeta_BeforePrint" AfterLayoutEvent="LayerX_AfterLayout">
+              <TextObject Name="Text57" Left="28.35" Width="122.85" Height="18.9" Text="TARJETA" HorzAlign="Right" Font="Arial, 8pt"/>
+              <TextObject Name="Text44" Left="160.65" Width="94.5" Height="18.9" Text="[REC_MASTER.PAGOTARJETA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+              <ChildBand Name="ChildEfectivo" Top="250.8" Width="287.28" Height="37.8" BeforePrintEvent="ChildEfectivo_BeforePrint" AfterLayoutEvent="LayerX_AfterLayout">
+                <TextObject Name="Text63" Left="28.35" Top="18.9" Width="122.85" Height="18.9" Text="CAMBIO:" HorzAlign="Right" Font="Arial, 8pt"/>
+                <TextObject Name="Text49" Left="160.65" Top="18.9" Width="94.5" Height="18.9" Text="[REC_MASTER.CAMBIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+                <TextObject Name="Text85" Left="28.35" Width="122.85" Height="18.9" Text="DINERO RECIBIDO" HorzAlign="Right" Font="Arial, 8pt"/>
+                <TextObject Name="Text48" Left="160.65" Width="94.5" Height="18.9" Text="[REC_MASTER.PAGOEFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+                <ChildBand Name="Child8" Top="291.27" Width="287.28" Height="18.9" AfterLayoutEvent="LayerX_AfterLayout">
+                  <TextObject Name="Text88" Left="9.45" Top="9.45" Width="226.8" Height="9.45" Text="GRACIAS POR SU COMPRA" HorzAlign="Center" Font="Arial, 7pt"/>
+                  <TextObject Name="Text86" Left="9.45" Width="226.8" Height="9.45" Text="TICKET DE VENTA : [REC_MASTER.TICKET]" HorzAlign="Center" Font="Arial, 7pt"/>
+                </ChildBand>
+              </ChildBand>
+            </ChildBand>
+          </ChildBand>
+        </ChildBand>
+      </ChildBand>
+    </ReportSummaryBand>
+  </ReportPage>
+</Report>

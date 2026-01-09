@@ -1,0 +1,20 @@
+CREATE OR ALTER trigger producto_aukitsync for producto
+active after update position 0
+AS      
+    declare variable MANEJAKIT D_BOOLCN; 
+    declare variable ERRORCODE D_ERRORCODE;
+begin
+  /* Trigger text */
+
+     IF(coalesce(new.eskit,'N') <> 'S' AND (COALESCE(OLD.tasaiva,0) <> COALESCE(NEW.tasaiva,0) OR COALESCE(OLD.tasaieps,0) <> COALESCE(NEW.tasaieps, 0))) THEN
+     BEGIN
+        SELECT FIRST 1 MANEJAKITS FROM PARAMETRO WHERE 1 = 1 INTO :MANEJAKIT;
+
+        IF(COALESCE(:MANEJAKIT,'N') = 'S') THEN
+        BEGIN
+            SELECT ERRORCODE FROM KIT_ACTUALIZARIMPCONTIENEPROD(NEW.ID) INTO :ERRORCODE;
+
+        END
+     END
+
+end

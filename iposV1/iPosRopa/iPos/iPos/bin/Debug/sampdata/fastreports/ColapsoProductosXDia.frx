@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/07/2014 11:02:28" ReportInfo.Modified="04/10/2014 10:50:04" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Label1_Click(object sender, EventArgs e)
+    {
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlswnOjJ7QXfJ631YFsF1WQzO28g7x4lj2syMDpWibHI/iz5nd0GyzGgM5bgAQXWEhkhWAnRk4bcG0K1cOEXxWJ8z/LnQASvWfeQXlTw7h7VGakXIeTRVOFMYhr5E/HnGQHjr8loIQblBBAxYdL75J1Lc=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;producto.clave,&#13;&#10;producto.nombre,&#13;&#10;producto.descripcion1,&#13;&#10;docto.fecha,&#13;&#10;coalesce(pc.texto1,'') || ' - ' || coalesce( pc.texto2,'') || ' - ' ||  coalesce(pc.texto3,'') || ' - ' || coalesce(pc.texto4,'') || ' - ' || coalesce(cast(pc.numero1 as varchar(10)),'') as caracteristicas,&#13;&#10;sum(case when docto.tipodoctoid in (21,31) then coalesce(movto.cantidad,0) else 0 end) vendidos ,&#13;&#10;sum(case when docto.tipodoctoid in (25) then coalesce(movto.cantidad,0) else 0 end) apartados   ,&#13;&#10;sum(case when docto.tipodoctoid in (22) then coalesce(movto.cantidad,0) else 0 end) devueltos,&#13;&#10;sum(case when docto.tipodoctoid in (23) then coalesce(movto.cantidad,0) else 0 end) cancelados,&#13;&#10;sum(case when docto.tipodoctoid in (24) then coalesce(movto.cantidad,0) else 0 end) revendidos,&#13;&#10;&#13;&#10;sum(case when docto.tipodoctoid in (21,31) then coalesce(movto.costopromedio,0) * coalesce(movto.cantidad,0) else 0 end) costototalvendidos ,&#13;&#10;sum(case when docto.tipodoctoid in (25) then coalesce(movto.costopromedio,0) * coalesce(movto.cantidad,0) else 0 end) costototalapartados   ,&#13;&#10;sum(case when docto.tipodoctoid in (22) then coalesce(movto.costopromedio,0) * coalesce(movto.cantidad,0) else 0 end) costototaldevueltos,&#13;&#10;sum(case when docto.tipodoctoid in (23) then coalesce(movto.costopromedio,0) * coalesce(movto.cantidad,0) else 0 end) costototalcancelados,&#13;&#10;sum(case when docto.tipodoctoid in (24) then coalesce(movto.costopromedio,0) * coalesce(movto.cantidad,0) else 0 end) costototalrevendidos ,&#13;&#10;&#13;&#10;sum(case when docto.tipodoctoid in (21,31) then coalesce(movto.total,0) else 0 end) preciototalvendidos ,&#13;&#10;sum(case when docto.tipodoctoid in (25) then coalesce(movto.total,0) else 0 end) preciototalapartados   ,&#13;&#10;sum(case when docto.tipodoctoid in (22) then coalesce(movto.total,0) else 0 end) preciototaldevueltos,&#13;&#10;sum(case when docto.tipodoctoid in (23) then coalesce(movto.total,0) else 0 end) preciototalcancelados,&#13;&#10;sum(case when docto.tipodoctoid in (24) then coalesce(movto.total,0) else 0 end) preciototalrevendidos ,&#13;&#10;&#13;&#10;&#13;&#10;sum(case when docto.tipodoctoid in (21,31) then coalesce(movto.descuento,0) else 0 end) descuentototalvendidos&#13;&#10;,&#13;&#10;case when docto.esfacturaelectronica = 'S' then 'F' else case when docto.tipodoctoid = 31 then 'T' else 'R' end end tipo_docto&#13;&#10;&#13;&#10;&#13;&#10;from docto&#13;&#10;inner join movto on movto.doctoid = docto.id&#13;&#10;left join tipodocto on docto.tipodoctoid = tipodocto.id&#13;&#10;left join producto on producto.id = movto.productoid&#13;&#10;left join productocaracteristicas pc on pc.productoid = producto.id&#13;&#10;&#13;&#10;where docto.tipodoctoid in  (21,22,23,24,25,31)&#13;&#10;and docto.fecha &gt;= @fechaini and docto.fecha &lt;= @fechafin&#13;&#10;&#13;&#10;group by  producto.clave,&#13;&#10;producto.nombre,&#13;&#10;producto.descripcion1,&#13;&#10;docto.fecha,&#13;&#10;pc.texto1 , pc.texto2 , pc.texto3 , pc.texto4  , pc.numero1,&#13;&#10;case when docto.esfacturaelectronica = 'S'  then 'F' else case when docto.tipodoctoid = 31 then 'T' else 'R' end end&#13;&#10;ORDER BY docto.fecha">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="VENDIDOS" DataType="System.Decimal"/>
+        <Column Name="APARTADOS" DataType="System.Decimal"/>
+        <Column Name="DEVUELTOS" DataType="System.Decimal"/>
+        <Column Name="CANCELADOS" DataType="System.Decimal"/>
+        <Column Name="REVENDIDOS" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALVENDIDOS" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALAPARTADOS" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALDEVUELTOS" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALCANCELADOS" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALREVENDIDOS" DataType="System.Decimal"/>
+        <Column Name="PRECIOTOTALVENDIDOS" DataType="System.Decimal"/>
+        <Column Name="PRECIOTOTALAPARTADOS" DataType="System.Decimal"/>
+        <Column Name="PRECIOTOTALDEVUELTOS" DataType="System.Decimal"/>
+        <Column Name="PRECIOTOTALCANCELADOS" DataType="System.Decimal"/>
+        <Column Name="PRECIOTOTALREVENDIDOS" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOTOTALVENDIDOS" DataType="System.Decimal"/>
+        <Column Name="CARACTERISTICAS" DataType="System.String"/>
+        <Column Name="TIPO_DOCTO" DataType="System.String"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Total Name="TotalVendidos" Expression="[Table.PRECIOTOTALVENDIDOS]" Evaluator="Data1" ResetAfterPrint="false"/>
+    <Total Name="TotalApartados" Expression="[Table.PRECIOTOTALAPARTADOS]" Evaluator="Data1" ResetAfterPrint="false"/>
+    <Total Name="TotalDevueltos" Expression="[Table.DEVUELTOS]" Evaluator="Data1" ResetAfterPrint="false"/>
+    <Total Name="TotalCancelados" Expression="[Table.PRECIOTOTALCANCELADOS]" Evaluator="Data1" ResetAfterPrint="false"/>
+    <Total Name="TotalRevendidos" Expression="[Table.PRECIOTOTALREVENDIDOS]" Evaluator="Data1" ResetAfterPrint="false"/>
+    <Total Name="TotalDescuento" Expression="[Table.DESCUENTOTOTALVENDIDOS]" Evaluator="Data1" ResetAfterPrint="false"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="950" PaperHeight="210.1">
+    <ReportTitleBand Name="ReportTitle1" Width="3515.4" Height="85.05">
+      <TextObject Name="Text59" Left="368.55" Top="9.45" Width="548.1" Height="18.9" Text="REPORTE DE VENTA DE PRODUCTOS POR DIA" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text60" Left="425.25" Top="47.25" Width="94.5" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text61" Left="689.85" Top="47.25" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text62" Left="368.55" Top="47.25" Width="37.8" Height="18.9" Text="De:"/>
+      <TextObject Name="Text63" Left="642.6" Top="47.25" Width="37.8" Height="18.9" Text="a:"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="89.05" Width="3515.4" Height="28.35">
+      <TextObject Name="Text2" Left="94.5" Width="132.3" Height="18.9" Text="NOMBRE" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="226.8" Width="292.95" Height="18.9" Text="DESCRIPCION1" Font="Arial, 8pt"/>
+      <TextObject Name="Text6" Left="841.05" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt"/>
+      <TextObject Name="Text8" Left="935.55" Width="94.5" Height="18.9" Text="VENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text10" Left="1030.05" Width="94.5" Height="18.9" Text="APARTADOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text12" Left="1124.55" Width="94.5" Height="18.9" Text="DEVUELTOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text14" Left="1219.05" Width="94.5" Height="18.9" Text="CANCELADOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text16" Left="1313.55" Width="94.5" Height="18.9" Text="REVENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="1899.45" Width="94.5" Height="28.35" Text="COSTO TOTAL VENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text20" Left="1993.95" Width="94.5" Height="28.35" Text="COSTO TOTAL APARTADOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text22" Left="2088.45" Width="94.5" Height="28.35" Text="COSTO TOTAL DEVUELTOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text24" Left="2182.95" Width="94.5" Height="28.35" Text="COSTO TOTAL CANCELADOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text26" Left="2277.45" Width="94.5" Height="28.35" Text="COSTO TOTAL REVENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text28" Left="2844.45" Width="94.5" Height="28.35" Text="PRECIO TOTAL VENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="2938.95" Width="94.5" Height="28.35" Text="PRECIO TOTAL APARTADOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="3033.45" Width="94.5" Height="28.35" Text="PRECIO TOTAL DEVUELTOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text34" Left="3127.95" Width="94.5" Height="28.35" Text="PRECIO TOTAL CANCELADOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text36" Left="3222.45" Width="94.5" Height="28.35" Text="PRECIO TOTAL REVENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text38" Left="3316.95" Width="103.95" Height="28.35" Text="DESCUENTO TOTAL VENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text44" Left="1408.05" Width="94.5" Height="28.35" Text="COSTO VENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text45" Left="1502.55" Width="94.5" Height="28.35" Text="COSTO APARTADOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text46" Left="1597.05" Width="94.5" Height="28.35" Text="COSTO DEVUELTOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="1691.55" Width="94.5" Height="28.35" Text="COSTO CANCELADOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="1786.05" Width="94.5" Height="28.35" Text="COSTO REVENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text54" Left="2371.95" Width="94.5" Height="28.35" Text="PRECIO VENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text55" Left="2466.45" Width="94.5" Height="28.35" Text="PRECIO APARTADOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text56" Left="2560.95" Width="94.5" Height="28.35" Text="PRECIO DEVUELTOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text57" Left="2655.45" Width="94.5" Height="28.35" Text="PRECIO CANCELADOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text58" Left="2749.95" Width="94.5" Height="28.35" Text="PRECIO REVENDIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text65" Left="519.75" Width="321.3" Height="18.9" Text="CARACTERISTICAS" Font="Arial, 8pt"/>
+      <TextObject Name="Text67" Width="94.5" Height="18.9" Text="TIPO" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="121.4" Width="3515.4" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Left="94.5" Width="132.3" Height="18.9" CanGrow="true" Text="[Table.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="226.8" Width="292.95" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="841.05" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="935.55" Width="94.5" Height="18.9" Text="[Table.VENDIDOS]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="1030.05" Width="94.5" Height="18.9" Text="[Table.APARTADOS]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="1124.55" Width="94.5" Height="18.9" Text="[Table.DEVUELTOS]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="1219.05" Width="94.5" Height="18.9" Text="[Table.CANCELADOS]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="1313.55" Width="94.5" Height="18.9" Text="[Table.REVENDIDOS]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="1899.45" Width="94.5" Height="18.9" Text="[Table.COSTOTOTALVENDIDOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="1993.95" Width="94.5" Height="18.9" Text="[Table.COSTOTOTALAPARTADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="2088.45" Width="94.5" Height="18.9" Text="[Table.COSTOTOTALDEVUELTOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="2182.95" Width="94.5" Height="18.9" Text="[Table.COSTOTOTALCANCELADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="2277.45" Width="94.5" Height="18.9" Text="[Table.COSTOTOTALREVENDIDOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="2844.45" Width="94.5" Height="18.9" Text="[Table.PRECIOTOTALVENDIDOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text29" Left="2938.95" Width="94.5" Height="18.9" Text="[Table.PRECIOTOTALAPARTADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text31" Left="3033.45" Width="94.5" Height="18.9" Text="[Table.PRECIOTOTALDEVUELTOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text33" Left="3127.95" Width="94.5" Height="18.9" Text="[Table.PRECIOTOTALCANCELADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text35" Left="3222.45" Width="94.5" Height="18.9" Text="[Table.PRECIOTOTALREVENDIDOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text37" Left="3316.95" Width="94.5" Height="18.9" Text="[Table.DESCUENTOTOTALVENDIDOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text39" Left="1502.55" Width="94.5" Height="18.9" Text="[IIf([Table.APARTADOS] &gt; 0,[Table.COSTOTOTALAPARTADOS] / ToDecimal(IIf([Table.APARTADOS] &gt; 0,[Table.APARTADOS],1)),0)]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="1408.05" Width="94.5" Height="18.9" Text="[IIf([Table.VENDIDOS] &gt; 0,[Table.COSTOTOTALVENDIDOS] / ToDecimal(IIf([Table.VENDIDOS] &gt; 0,[Table.VENDIDOS],1)),0)]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="1597.05" Width="94.5" Height="18.9" Text="[IIf([Table.DEVUELTOS] &gt; 0,[Table.COSTOTOTALDEVUELTOS] / ToDecimal(IIf([Table.DEVUELTOS] &gt; 0,[Table.DEVUELTOS],1)),0)]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text42" Left="1691.55" Width="94.5" Height="18.9" Text="[IIf([Table.CANCELADOS] &gt; 0,[Table.COSTOTOTALCANCELADOS] / ToDecimal(IIf([Table.CANCELADOS] &gt; 0,[Table.CANCELADOS],1)),0)]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text43" Left="1786.05" Width="94.5" Height="18.9" Text="[IIf([Table.REVENDIDOS] &gt; 0,[Table.COSTOTOTALREVENDIDOS] / ToDecimal(IIf([Table.REVENDIDOS] &gt; 0,[Table.REVENDIDOS],1)),0)]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text49" Left="2466.45" Width="94.5" Height="18.9" Text="[IIf([Table.APARTADOS] &gt; 0,[Table.PRECIOTOTALAPARTADOS] / ToDecimal(IIf([Table.APARTADOS] &gt; 0,[Table.APARTADOS],1)),0)]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text50" Left="2371.95" Width="94.5" Height="18.9" Text="[IIf([Table.VENDIDOS] &gt; 0,[Table.PRECIOTOTALVENDIDOS] / ToDecimal(IIf([Table.VENDIDOS] &gt; 0,[Table.VENDIDOS],1)),0)]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text51" Left="2560.95" Width="94.5" Height="18.9" Text="[IIf([Table.DEVUELTOS] &gt; 0,[Table.PRECIOTOTALDEVUELTOS] / ToDecimal(IIf([Table.DEVUELTOS] &gt; 0,[Table.DEVUELTOS],1)),0)]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text52" Left="2655.45" Width="94.5" Height="18.9" Text="[IIf([Table.CANCELADOS] &gt; 0,[Table.PRECIOTOTALCANCELADOS] / ToDecimal(IIf([Table.CANCELADOS] &gt; 0,[Table.CANCELADOS],1)),0)]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text53" Left="2749.95" Width="94.5" Height="18.9" Text="[IIf([Table.REVENDIDOS] &gt; 0,[Table.PRECIOTOTALREVENDIDOS] / ToDecimal(IIf([Table.REVENDIDOS] &gt; 0,[Table.REVENDIDOS],1)),0)]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text64" Left="519.75" Width="321.3" Height="18.9" Text="[Table.CARACTERISTICAS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text66" Width="94.5" Height="18.9" Text="[Table.TIPO_DOCTO]" Font="Arial, 8pt"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="144.3" Width="3515.4" Height="37.8">
+      <TextObject Name="Text68" Left="2844.45" Width="94.5" Height="18.9" Text="[TotalVendidos]"/>
+      <TextObject Name="Text69" Left="2938.95" Width="94.5" Height="18.9" Text="[TotalApartados]"/>
+      <TextObject Name="Text70" Left="3033.45" Width="94.5" Height="18.9" Text="[TotalDevueltos]"/>
+      <TextObject Name="Text71" Left="3127.95" Width="94.5" Height="18.9" Text="[TotalCancelados]"/>
+      <TextObject Name="Text72" Left="3222.45" Width="94.5" Height="18.9" Text="[TotalRevendidos]"/>
+      <TextObject Name="Text73" Left="3316.95" Width="94.5" Height="18.9" Text="[TotalDescuento]"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="186.1" Width="3515.4" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="32" Top="32" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fechaini" FilterOperation="GreaterThanOrEqual" Value="04/07/2014 11:18:42"/>
+    <LabelControl Name="Label1" Left="32" Top="16" Width="64" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Fecha inicial" ClickEvent="Label1_Click"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="36" Top="84" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="04/07/2014 11:18:45"/>
+    <LabelControl Name="Label2" Left="36" Top="68" Width="59" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha final"/>
+  </DialogPage>
+</Report>

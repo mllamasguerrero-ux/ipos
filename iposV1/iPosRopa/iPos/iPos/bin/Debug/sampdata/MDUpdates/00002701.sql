@@ -1,0 +1,36 @@
+create or alter procedure CONSOLIDADO_ESVENTACONS (
+    DOCTOID D_FK)
+returns (
+    ESVENTACONS D_BOOLCN,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable DOCTOFACTCONSID D_FK;
+BEGIN
+
+
+
+   SELECT DOCTO.factconsid FROM DOCTO
+   WHERE ID = :DOCTOID
+   INTO :DOCTOFACTCONSID;
+
+       
+   IF(COALESCE(:DOCTOFACTCONSID,0) <> 0) THEN
+   BEGIN
+    ESVENTACONS = 'S';
+   END
+   ELSE
+   BEGIN
+     ESVENTACONS = 'N';
+   END
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+
+   WHEN ANY DO
+    BEGIN
+        ERRORCODE = 1009;
+        SUSPEND;
+    END
+END

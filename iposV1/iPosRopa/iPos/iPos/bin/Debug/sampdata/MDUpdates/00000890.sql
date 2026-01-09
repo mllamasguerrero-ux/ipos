@@ -1,0 +1,2 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN)
+  VALUES (120, 106, 'Catalogo de productos', 'Catalogo de productos', 120, 3, 1);

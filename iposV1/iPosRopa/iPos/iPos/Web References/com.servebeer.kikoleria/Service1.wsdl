@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="LeerExistenciasBD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="grupoClave" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="productoClave" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LeerExistenciasBDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LeerExistenciasBDResult" type="tns:ArrayOfCEXIST_SUCURSALBE" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCEXIST_SUCURSALBE">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CEXIST_SUCURSALBE" nillable="true" type="tns:CEXIST_SUCURSALBE" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CEXIST_SUCURSALBE">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ISUCURSALCLAVE" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IGRUPOCLAVE" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IALMACENCLAVE" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IPRODUCTOCLAVE" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ICANTIDAD" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="ICOSTO" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="IFECHA" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CambiarExistenciasBD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="iSUCURSALCLAVE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="iGRUPOCLAVE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="iALMACENCLAVE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="iPRODUCTOCLAVE" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iCANTIDAD" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="iCOSTO" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="iFECHA" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CambiarExistenciasBDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CambiarExistenciasBDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AgregarTrasladoBD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ITRASLADO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_IRECEPCION" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_IRECIBIO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_IID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_IFOLIOE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_IFOLIOD" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="p_ID_FECHA" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ID_HORA" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AgregarTrasladoBDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AgregarTrasladoBDResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ExisteTrasladoBD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ITRASLADO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ExisteTrasladoBDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ExisteTrasladoBDResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CambiarTrasladoBD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ITRASLADO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_IRECEPCION" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_IRECIBIO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_IFOLIOD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CambiarTrasladoBDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CambiarTrasladoBDResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EliminarVentaMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="venta" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nota1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nota2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="estatus" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="plazos" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EliminarVentaMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EliminarVentaMovilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PreEditarVentaMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="venta" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nota1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nota2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="estatus" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="plazos" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PreEditarVentaMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PreEditarVentaMovilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AgregarVentaMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="jsonStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nota1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nota2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="estatus" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="plazos" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AgregarVentaMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AgregarVentaMovilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UltimaModificacionProductoMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UltimaModificacionProductoMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UltimaModificacionProductoMovilResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getUpdatedProductosMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="fecha" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getUpdatedProductosMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getUpdatedProductosMovilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CambiarClienteMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="jsonStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CambiarClienteMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CambiarClienteMovilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerificarVentaMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="venta" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerificarVentaMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VerificarVentaMovilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidarVentaMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="jsonStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidarVentaMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidarVentaMovilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AgregarCobranzaMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="jsonStrHdrs" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="jsonStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pagoId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AgregarCobranzaMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AgregarCobranzaMovilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CerrarCorteCobranzaMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="folio" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CerrarCorteCobranzaMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CerrarCorteCobranzaMovilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CerrarCorteVentaMovil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="folio" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="p_ISUCURSALD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpFolder" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ftpPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CerrarCorteVentaMovilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CerrarCorteVentaMovilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LeerExistenciasBDSoapIn">
+    <wsdl:part name="parameters" element="tns:LeerExistenciasBD" />
+  </wsdl:message>
+  <wsdl:message name="LeerExistenciasBDSoapOut">
+    <wsdl:part name="parameters" element="tns:LeerExistenciasBDResponse" />
+  </wsdl:message>
+  <wsdl:message name="CambiarExistenciasBDSoapIn">
+    <wsdl:part name="parameters" element="tns:CambiarExistenciasBD" />
+  </wsdl:message>
+  <wsdl:message name="CambiarExistenciasBDSoapOut">
+    <wsdl:part name="parameters" element="tns:CambiarExistenciasBDResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgregarTrasladoBDSoapIn">
+    <wsdl:part name="parameters" element="tns:AgregarTrasladoBD" />
+  </wsdl:message>
+  <wsdl:message name="AgregarTrasladoBDSoapOut">
+    <wsdl:part name="parameters" element="tns:AgregarTrasladoBDResponse" />
+  </wsdl:message>
+  <wsdl:message name="ExisteTrasladoBDSoapIn">
+    <wsdl:part name="parameters" element="tns:ExisteTrasladoBD" />
+  </wsdl:message>
+  <wsdl:message name="ExisteTrasladoBDSoapOut">
+    <wsdl:part name="parameters" element="tns:ExisteTrasladoBDResponse" />
+  </wsdl:message>
+  <wsdl:message name="CambiarTrasladoBDSoapIn">
+    <wsdl:part name="parameters" element="tns:CambiarTrasladoBD" />
+  </wsdl:message>
+  <wsdl:message name="CambiarTrasladoBDSoapOut">
+    <wsdl:part name="parameters" element="tns:CambiarTrasladoBDResponse" />
+  </wsdl:message>
+  <wsdl:message name="EliminarVentaMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:EliminarVentaMovil" />
+  </wsdl:message>
+  <wsdl:message name="EliminarVentaMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:EliminarVentaMovilResponse" />
+  </wsdl:message>
+  <wsdl:message name="PreEditarVentaMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:PreEditarVentaMovil" />
+  </wsdl:message>
+  <wsdl:message name="PreEditarVentaMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:PreEditarVentaMovilResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgregarVentaMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:AgregarVentaMovil" />
+  </wsdl:message>
+  <wsdl:message name="AgregarVentaMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:AgregarVentaMovilResponse" />
+  </wsdl:message>
+  <wsdl:message name="UltimaModificacionProductoMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:UltimaModificacionProductoMovil" />
+  </wsdl:message>
+  <wsdl:message name="UltimaModificacionProductoMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:UltimaModificacionProductoMovilResponse" />
+  </wsdl:message>
+  <wsdl:message name="getUpdatedProductosMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:getUpdatedProductosMovil" />
+  </wsdl:message>
+  <wsdl:message name="getUpdatedProductosMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:getUpdatedProductosMovilResponse" />
+  </wsdl:message>
+  <wsdl:message name="CambiarClienteMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:CambiarClienteMovil" />
+  </wsdl:message>
+  <wsdl:message name="CambiarClienteMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:CambiarClienteMovilResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerificarVentaMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:VerificarVentaMovil" />
+  </wsdl:message>
+  <wsdl:message name="VerificarVentaMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:VerificarVentaMovilResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidarVentaMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidarVentaMovil" />
+  </wsdl:message>
+  <wsdl:message name="ValidarVentaMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidarVentaMovilResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgregarCobranzaMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:AgregarCobranzaMovil" />
+  </wsdl:message>
+  <wsdl:message name="AgregarCobranzaMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:AgregarCobranzaMovilResponse" />
+  </wsdl:message>
+  <wsdl:message name="CerrarCorteCobranzaMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:CerrarCorteCobranzaMovil" />
+  </wsdl:message>
+  <wsdl:message name="CerrarCorteCobranzaMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:CerrarCorteCobranzaMovilResponse" />
+  </wsdl:message>
+  <wsdl:message name="CerrarCorteVentaMovilSoapIn">
+    <wsdl:part name="parameters" element="tns:CerrarCorteVentaMovil" />
+  </wsdl:message>
+  <wsdl:message name="CerrarCorteVentaMovilSoapOut">
+    <wsdl:part name="parameters" element="tns:CerrarCorteVentaMovilResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Service1Soap">
+    <wsdl:operation name="LeerExistenciasBD">
+      <wsdl:input message="tns:LeerExistenciasBDSoapIn" />
+      <wsdl:output message="tns:LeerExistenciasBDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CambiarExistenciasBD">
+      <wsdl:input message="tns:CambiarExistenciasBDSoapIn" />
+      <wsdl:output message="tns:CambiarExistenciasBDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AgregarTrasladoBD">
+      <wsdl:input message="tns:AgregarTrasladoBDSoapIn" />
+      <wsdl:output message="tns:AgregarTrasladoBDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ExisteTrasladoBD">
+      <wsdl:input message="tns:ExisteTrasladoBDSoapIn" />
+      <wsdl:output message="tns:ExisteTrasladoBDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CambiarTrasladoBD">
+      <wsdl:input message="tns:CambiarTrasladoBDSoapIn" />
+      <wsdl:output message="tns:CambiarTrasladoBDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EliminarVentaMovil">
+      <wsdl:input message="tns:EliminarVentaMovilSoapIn" />
+      <wsdl:output message="tns:EliminarVentaMovilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PreEditarVentaMovil">
+      <wsdl:input message="tns:PreEditarVentaMovilSoapIn" />
+      <wsdl:output message="tns:PreEditarVentaMovilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AgregarVentaMovil">
+      <wsdl:input message="tns:AgregarVentaMovilSoapIn" />
+      <wsdl:output message="tns:AgregarVentaMovilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UltimaModificacionProductoMovil">
+      <wsdl:input message="tns:UltimaModificacionProductoMovilSoapIn" />
+      <wsdl:output message="tns:UltimaModificacionProductoMovilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getUpdatedProductosMovil">
+      <wsdl:input message="tns:getUpdatedProductosMovilSoapIn" />
+      <wsdl:output message="tns:getUpdatedProductosMovilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CambiarClienteMovil">
+      <wsdl:input message="tns:CambiarClienteMovilSoapIn" />
+      <wsdl:output message="tns:CambiarClienteMovilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerificarVentaMovil">
+      <wsdl:input message="tns:VerificarVentaMovilSoapIn" />
+      <wsdl:output message="tns:VerificarVentaMovilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidarVentaMovil">
+      <wsdl:input message="tns:ValidarVentaMovilSoapIn" />
+      <wsdl:output message="tns:ValidarVentaMovilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AgregarCobranzaMovil">
+      <wsdl:input message="tns:AgregarCobranzaMovilSoapIn" />
+      <wsdl:output message="tns:AgregarCobranzaMovilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CerrarCorteCobranzaMovil">
+      <wsdl:input message="tns:CerrarCorteCobranzaMovilSoapIn" />
+      <wsdl:output message="tns:CerrarCorteCobranzaMovilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CerrarCorteVentaMovil">
+      <wsdl:input message="tns:CerrarCorteVentaMovilSoapIn" />
+      <wsdl:output message="tns:CerrarCorteVentaMovilSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LeerExistenciasBD">
+      <soap:operation soapAction="http://tempuri.org/LeerExistenciasBD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiarExistenciasBD">
+      <soap:operation soapAction="http://tempuri.org/CambiarExistenciasBD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AgregarTrasladoBD">
+      <soap:operation soapAction="http://tempuri.org/AgregarTrasladoBD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExisteTrasladoBD">
+      <soap:operation soapAction="http://tempuri.org/ExisteTrasladoBD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiarTrasladoBD">
+      <soap:operation soapAction="http://tempuri.org/CambiarTrasladoBD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EliminarVentaMovil">
+      <soap:operation soapAction="http://tempuri.org/EliminarVentaMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PreEditarVentaMovil">
+      <soap:operation soapAction="http://tempuri.org/PreEditarVentaMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AgregarVentaMovil">
+      <soap:operation soapAction="http://tempuri.org/AgregarVentaMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UltimaModificacionProductoMovil">
+      <soap:operation soapAction="http://tempuri.org/UltimaModificacionProductoMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUpdatedProductosMovil">
+      <soap:operation soapAction="http://tempuri.org/getUpdatedProductosMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiarClienteMovil">
+      <soap:operation soapAction="http://tempuri.org/CambiarClienteMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificarVentaMovil">
+      <soap:operation soapAction="http://tempuri.org/VerificarVentaMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidarVentaMovil">
+      <soap:operation soapAction="http://tempuri.org/ValidarVentaMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AgregarCobranzaMovil">
+      <soap:operation soapAction="http://tempuri.org/AgregarCobranzaMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CerrarCorteCobranzaMovil">
+      <soap:operation soapAction="http://tempuri.org/CerrarCorteCobranzaMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CerrarCorteVentaMovil">
+      <soap:operation soapAction="http://tempuri.org/CerrarCorteVentaMovil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1Soap12" type="tns:Service1Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LeerExistenciasBD">
+      <soap12:operation soapAction="http://tempuri.org/LeerExistenciasBD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiarExistenciasBD">
+      <soap12:operation soapAction="http://tempuri.org/CambiarExistenciasBD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AgregarTrasladoBD">
+      <soap12:operation soapAction="http://tempuri.org/AgregarTrasladoBD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExisteTrasladoBD">
+      <soap12:operation soapAction="http://tempuri.org/ExisteTrasladoBD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiarTrasladoBD">
+      <soap12:operation soapAction="http://tempuri.org/CambiarTrasladoBD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EliminarVentaMovil">
+      <soap12:operation soapAction="http://tempuri.org/EliminarVentaMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PreEditarVentaMovil">
+      <soap12:operation soapAction="http://tempuri.org/PreEditarVentaMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AgregarVentaMovil">
+      <soap12:operation soapAction="http://tempuri.org/AgregarVentaMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UltimaModificacionProductoMovil">
+      <soap12:operation soapAction="http://tempuri.org/UltimaModificacionProductoMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUpdatedProductosMovil">
+      <soap12:operation soapAction="http://tempuri.org/getUpdatedProductosMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiarClienteMovil">
+      <soap12:operation soapAction="http://tempuri.org/CambiarClienteMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificarVentaMovil">
+      <soap12:operation soapAction="http://tempuri.org/VerificarVentaMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidarVentaMovil">
+      <soap12:operation soapAction="http://tempuri.org/ValidarVentaMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AgregarCobranzaMovil">
+      <soap12:operation soapAction="http://tempuri.org/AgregarCobranzaMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CerrarCorteCobranzaMovil">
+      <soap12:operation soapAction="http://tempuri.org/CerrarCorteCobranzaMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CerrarCorteVentaMovil">
+      <soap12:operation soapAction="http://tempuri.org/CerrarCorteVentaMovil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service1">
+    <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
+      <soap:address location="http://kikoleria.servebeer.com:8082/iposwebservice/Service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1Soap12" binding="tns:Service1Soap12">
+      <soap12:address location="http://kikoleria.servebeer.com:8082/iposwebservice/Service1.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

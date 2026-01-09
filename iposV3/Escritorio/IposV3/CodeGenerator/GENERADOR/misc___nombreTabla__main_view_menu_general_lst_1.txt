@@ -1,0 +1,9 @@
+|||||100+++++            //MyHeader = "(nombreTabla)List",
+                    new MyMenuDataBindingModel()
+                    {
+                        MyHeader = "(nombreTabla)List",
+                        MenuId = -5
+                    },
+
+!!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

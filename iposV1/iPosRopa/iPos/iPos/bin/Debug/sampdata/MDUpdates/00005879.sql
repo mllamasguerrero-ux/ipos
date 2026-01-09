@@ -1,0 +1,71 @@
+create or alter procedure PAGO_DEVOLVER (
+    IDANT D_FK,
+    USERID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PAGODEVID D_FK;
+declare variable APLICADO D_BOOLCN;
+declare variable DEVUELTO D_BOOLCN;
+declare variable REVERTIDO D_BOOLCN;
+declare variable DOCTOID D_FK;
+BEGIN
+    ERRORCODE = 0;
+
+
+    SELECT APLICADO, DEVUELTO, REVERTIDO
+    FROM PAGO
+    WHERE ID = :IDANT
+    INTO :APLICADO, :DEVUELTO, :REVERTIDO;
+
+    IF(COALESCE(:APLICADO,'N') = 'N' OR
+        COALESCE(:DEVUELTO,'N') = 'S' OR
+        COALESCE(:REVERTIDO,'N') = 'S' ) THEN
+    BEGIN
+
+       ERRORCODE = 1001;
+       SUSPEND;
+       EXIT;
+    END
+
+
+    SELECT DOCTOID, ERRORCODE
+    FROM CHEQUEDEVUELTO_GENERARVENTA (:IDANT,:USERID)
+    INTO :DOCTOID, :ERRORCODE;
+
+    IF(COALESCE(:ERRORCODE,0) > 0 ) THEN
+    BEGIN
+     SUSPEND;
+     EXIT;
+    END
+
+
+    update  PAGO
+    set
+
+        DEVUELTO = 'S',
+        APLICADO = 'S',
+        FECHAPROCESADO = CURRENT_DATE,
+        DOCTODEVID = :DOCTOID
+    where ID=:IDAnt ;
+
+
+    UPDATE DOCTOPAGO SET DEVUELTO = 'S' , APLICADO = 'S', FECHAPROCESADO = CURRENT_DATE,
+        DOCTODEVID = :DOCTOID
+    WHERE PAGOID = :IDAnt;
+
+    UPDATE DOCTO SET PAGODEVID = :IDANT
+    WHERE ID = :DOCTOID;
+
+
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+   
+  /* WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1012;
+      SUSPEND;
+   END */
+END

@@ -1,0 +1,59 @@
+create or alter procedure PRECIOSTEMP_IMPORTAR (
+    PRODUCTOID D_FK,
+    PRECIO1 D_PRECIO,
+    PRECIO2 D_PRECIO,
+    PRECIO3 D_PRECIO,
+    PRECIO4 D_PRECIO,
+    PRECIO5 D_PRECIO,
+    SUGERIDO D_PRECIO)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRECTEMPID D_FK;
+BEGIN
+
+   select min(id)  from preciostemp
+   where  productoid = :PRODUCTOID
+   into :PRECTEMPID;
+
+
+
+
+
+   if(:PRECTEMPID IS NOT NULL) Then
+   BEGIN
+
+    update  PRECIOSTEMP
+
+    set
+    PRECIO1=:PRECIO1,
+    PRECIO2=:PRECIO2,
+    PRECIO3=:PRECIO3,
+    PRECIO4=:PRECIO4,
+    PRECIO5=:PRECIO5,
+    SUGERIDO = :SUGERIDO
+    where ID=:PRECTEMPID;
+   END
+   ELSE
+   BEGIN
+
+      INSERT INTO PRECIOSTEMP
+       ( PRODUCTOID, PRECIO1, PRECIO2, PRECIO3, PRECIO4, PRECIO5, SUGERIDO)
+       VALUES
+       ( :PRODUCTOID, :PRECIO1, :PRECIO2, :PRECIO3, :PRECIO4, :PRECIO5, :SUGERIDO);
+   END
+
+
+
+
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   /*WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1022;
+      SUSPEND;
+   END */
+END

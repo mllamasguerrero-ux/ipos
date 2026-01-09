@@ -1,0 +1,18 @@
+execute block
+as
+begin
+
+  
+  insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (262, 'Reporte de gastos');
+  insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10088, 'Agregar gasto de otro cajero');
+
+	INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+	VALUES (262, 111, 'Gastos', 'Reporte de gastos', 262, 2, 4);
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 262);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 262);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10088);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10088);
+
+
+end

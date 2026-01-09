@@ -1,0 +1,197 @@
+create or alter procedure GENERAR_PEDIDO (
+    SUCURSALID D_FK,
+    FECHA D_FECHA,
+    CAJEROID D_FK,
+    FORZADO D_BOOLCN,
+    FECHATO D_FECHA)
+returns (
+    DOCTOID D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRODUCTOID D_FK;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable TIPODOCTOID D_FK;
+declare variable DOCTO2ID D_FK;
+declare variable MOVTOID D_FK;
+declare variable PRODUCTOCUENTA integer;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable REFERENCIAS varchar(255);
+declare variable COSTO D_COSTO;
+declare variable SUCURSALTID D_FK;
+declare variable ALMACENTID D_FK;
+declare variable DOCTOACTUALID D_FK;
+BEGIN
+   IF ((:SUCURSALID IS NULL) OR (:SUCURSALID = 0)) THEN
+   BEGIN
+      ERRORCODE = 1055;
+      SUSPEND;
+      EXIT;
+   END
+  
+   IF ((:FECHA IS NULL) OR (:FECHA > (CURRENT_DATE+365)) OR (:FECHA < (CURRENT_DATE-365))) THEN
+   BEGIN
+      ERRORCODE = 1056;
+      SUSPEND;
+      EXIT;
+   END
+
+
+   -- Contar si hay registros para reportar.
+   SELECT COUNT(M.ID)
+   FROM  DOCTO D inner join MOVTO M
+         ON D.ID = M.DOCTOID
+   WHERE (D.FECHACORTE >= :FECHA  AND D.FECHACORTE <= :FECHATO)
+      --AND ((C.TURNOID = :TURNOID) OR (:TURNOID = 4))
+      AND (D.TIPODOCTOID IN (21,31))
+      AND (D.ESTATUSDOCTOID = 1)
+      AND ((D.ESTATUSDOCTOPEDIDOID IS NULL) OR (D.ESTATUSDOCTOPEDIDOID = 0) OR (:FORZADO = 'S'))
+   INTO :PRODUCTOCUENTA;
+
+   IF ((:PRODUCTOCUENTA IS NULL) OR (:PRODUCTOCUENTA <= 0)) THEN
+   BEGIN
+      ERRORCODE = 1058;
+      SUSPEND;
+      EXIT;
+   END
+  
+   -- Si hay prdductos para resurtir.
+  
+   TIPODOCTOID = 14; -- Pedido Compra
+
+   REFERENCIA =
+     'PEDIDO SUC ' || :SUCURSALID || ' ' || :FECHATO ;
+    
+   REFERENCIAS = NULL;
+
+   SUCURSALTID = 0;
+   ALMACENTID = 0;
+    
+   SELECT COALESCE(MAX(D.ID), 0)
+   FROM DOCTO D
+   WHERE D.FECHA = :FECHA
+      --AND D.TURNOID = :TURNOID
+      AND D.TIPODOCTOID = 14
+   INTO :DOCTOACTUALID;
+  
+   -- Para mandar el mismo docto
+   IF ((:DOCTOACTUALID = 0) OR (:DOCTOACTUALID IS NULL)) THEN
+   BEGIN
+      -- Pedido DOCTO. (GG: Fecha)
+      SELECT DOCTOID, ERRORCODE
+      FROM DOCTO_INSERT(0, 1, :SUCURSALID, :TIPODOCTOID, 1, 0, 1, :CAJEROID, 1,
+        :REFERENCIA, :REFERENCIAS, :SUCURSALTID, :ALMACENTID, :FECHA, :FECHA)
+      INTO :DOCTOID, :ERRORCODE;
+
+      --update DOCTO set turnoid = :turnoid WHERE DOCTO.ID = :DOCTOID  ;
+   END
+   ELSE
+   BEGIN
+      DOCTOID = :DOCTOACTUALID;
+
+      DELETE FROM MOVTO
+      WHERE DOCTOID = :DOCTOID;
+   END
+
+   IF (:ERRORCODE > 0) THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+
+   insert into movto (productoid, cantidad,doctoid)
+   SELECT
+      M.PRODUCTOID,
+      SUM(M.CANTIDAD),
+      :DOCTOID
+   FROM  DOCTO D inner join MOVTO M
+         ON D.ID = M.DOCTOID
+   WHERE (D.FECHACORTE >= :FECHA  AND D.FECHACORTE <= :FECHATO)
+      AND (D.TIPODOCTOID IN (21,31))
+      AND (D.ESTATUSDOCTOID = 1)
+      AND ((D.ESTATUSDOCTOPEDIDOID IS NULL) OR (D.ESTATUSDOCTOPEDIDOID = 0) OR (:FORZADO = 'S'))
+   GROUP BY M.PRODUCTOID;
+
+
+   delete from movto where doctoid = :DOCTOID AND productoid not in ( select id from producto);
+    
+      UPDATE DOCTO
+      SET ESTATUSDOCTOPEDIDOID = 1
+      WHERE  (DOCTO.FECHACORTE >= :FECHA  AND DOCTO.FECHACORTE <= :FECHATO)
+      AND (DOCTO.TIPODOCTOID IN (21,31))
+      AND (DOCTO.ESTATUSDOCTOID = 1)
+      AND ((DOCTO.ESTATUSDOCTOPEDIDOID IS NULL) OR (DOCTO.ESTATUSDOCTOPEDIDOID = 0) OR (:FORZADO = 'S')) ;
+
+
+
+       /*
+   FOR SELECT
+      M.PRODUCTOID,
+      SUM(M.CANTIDAD)
+   FROM MOVTO M
+      LEFT JOIN DOCTO D
+         ON D.ID = M.DOCTOID
+      LEFT JOIN CORTE C
+         ON C.ID = D.CORTEID
+   WHERE D.FECHACORTE = :FECHA
+      --AND ((C.TURNOID = :TURNOID) OR (:TURNOID = 4))
+      AND (D.TIPODOCTOID IN (21,31))
+      AND (D.ESTATUSDOCTOID = 1)
+      AND ((D.ESTATUSDOCTOPEDIDOID IS NULL) OR (D.ESTATUSDOCTOPEDIDOID = 0) OR (:FORZADO = 'S'))
+   GROUP BY M.PRODUCTOID
+   INTO
+      :PRODUCTOID, :CANTIDAD
+   DO
+   BEGIN
+      COSTO = 0;
+
+      -- Pedido MOVTO. (GG: Fecha)
+      SELECT DOCTOID, MOVTOID, ERRORCODE
+      FROM MOVTO_INSERT(:DOCTOID, 0, 1, 1, :TIPODOCTOID, 1, 0, 1, 0, 0, 0,
+         :PRODUCTOID, NULL, NULL, :CANTIDAD, 0, :CANTIDAD, 0, 0, 0, 0, :REFERENCIA, :REFERENCIAS, :COSTO,
+       :SUCURSALTID, :ALMACENTID, 'N', 0, :FECHA, :FECHA, 0.00)
+      INTO :DOCTO2ID, :MOVTOID, :ERRORCODE;
+
+      IF (:ERRORCODE > 0) THEN
+      BEGIN
+         SUSPEND;
+         EXIT;
+      END
+   END   */
+
+   -- Marcar los pedidos como YA pedidos con ESTATUSDOCTOPEDIDOID = 1
+   /*FOR SELECT
+      DISTINCT D.ID
+   FROM MOVTO M
+      LEFT JOIN DOCTO D
+         ON D.ID = M.DOCTOID
+      LEFT JOIN CORTE C
+         ON C.ID = D.CORTEID
+   WHERE D.FECHACORTE = :FECHA
+      --AND ((C.TURNOID = :TURNOID) OR (:TURNOID = 4))
+      AND (D.TIPODOCTOID IN (21,31))
+      AND (D.ESTATUSDOCTOID = 1)
+      AND ((D.ESTATUSDOCTOPEDIDOID IS NULL) OR (D.ESTATUSDOCTOPEDIDOID = 0) OR (:FORZADO = 'S'))
+   INTO
+      :DOCTO2ID
+   DO
+   BEGIN
+      UPDATE DOCTO
+      SET ESTATUSDOCTOPEDIDOID = 1
+      WHERE ID = :DOCTO2ID;
+   END  */
+
+
+  delete from MOVTO
+  where movto.doctoid = :doctoid and
+  movto.productoid not in (select PRODUCTLOCATIONS_GROUPED.PRODUCTOID from PRODUCTLOCATIONS_GROUPED);
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1059;
+      SUSPEND;
+   END
+END

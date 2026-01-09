@@ -1,0 +1,8 @@
+UPDATE MENUITEMS
+SET MN_IDPARENT = 106,
+    MN_ETIQUETA = 'Kardex',
+    MN_DESC = 'Kardex',
+    MN_DERECHO = 28,
+    MN_LEVEL = 1,
+    MN_ORDEN = 4
+WHERE (MN_ID = 28);

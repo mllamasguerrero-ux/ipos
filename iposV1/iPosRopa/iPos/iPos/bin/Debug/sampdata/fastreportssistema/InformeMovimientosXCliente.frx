@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/08/2014 19:23:29" ReportInfo.Modified="07/02/2022 12:32:08" ReportInfo.CreatorVersion="2014.2.10.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {                             
+
+   
+        
+        
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC3QPp0QHNuhDELCXwyEP+JgdJmLZHc1ocW8qDDSdU+fAqJbZQP0DeIzFOPHuBmFVIM=">
+      <TableDataSource Name="Table2" Alias="Main" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;&#13;&#10;D.FECHA,&#13;&#10;D.FECHAHORA,&#13;&#10;D.FOLIO,&#13;&#10;D.IMPORTE,&#13;&#10;D.DESCUENTO,&#13;&#10;D.SUBTOTAL,&#13;&#10;D.IVA,&#13;&#10;D.TOTAL,&#13;&#10;S.NOMBRE AS SUCURSALT,&#13;&#10;TD.NOMBRE AS TIPODOC,&#13;&#10;D.PERSONAID,&#13;&#10;pr.clave as PERSONACLAVE,&#13;&#10;PR.NOMBRE AS PERSONANOMBRE,&#13;&#10;D.ID AS DOCTOID,&#13;&#10;D.SALDO,&#13;&#10;D.FOLIOSAT,&#13;&#10;D.SERIESAT,&#13;&#10;D.REFERENCIA,&#13;&#10;V.CLAVE AS CLAVEVENDEDOR,&#13;&#10;V.NOMBRE AS NOMBREVENDEDOR,&#13;&#10;ST.NOMBRE AS SUBTIPO,&#13;&#10;D.PERSONAID,&#13;&#10;D.FECHASURTIDO,&#13;&#10;SURTPERSONA.NOMBRE PERSONASURTIDO,&#13;&#10;D.FECHAGUIAENVIADO,&#13;&#10;D.FECHAGUIARECIBIDO,&#13;&#10;GUIAENCARGADO.NOMBRE ENCARGADOGUIA,&#13;&#10;GUIACAJERO.NOMBRE AUTORIZOGUIA,&#13;&#10;ESTADOSURTIDO.NOMBRE ESTADOSURTIDONOMBRE,&#13;&#10;ESTADOGUIA.NOMBRE ESTADOGUIANOMBRE,&#13;&#10;D.VENCE,&#13;&#10;D.FECHAAPROBACIONCXC,&#13;&#10;CXCPERSONA.NOMBRE PERSONAAPROBACIONCXC,&#13;&#10;GUIARECIBIOPERSONA.NOMBRE PERSONAGUIARECIBIO, &#13;&#10;D.REFERENCIA,&#13;&#10;D.NOTAPAGO,&#13;&#10;(COALESCE(D.SALDO,0) - COALESCE(D.ABONONOAPLICADO,0)) SALDO_SDOC,&#13;&#10;SUPERVISOR.NOMBRE SUPERVISORNOMBRE ,&#13;&#10;CASE WHEN D.SUBTIPODOCTOID IN (15,16) THEN COALESCE(D.observacion,'') ELSE '' END NOTAMOVIL1  ,&#13;&#10;CASE WHEN D.SUBTIPODOCTOID IN (15,16) THEN COALESCE(D.descripcion,'') ELSE '' END NOTAMOVIL2,&#13;&#10;&#13;&#10;DNA.NOTA NOTAAUTORIZACIONCREDITO,&#13;&#10;DNC.NOTA NOTACANCELACION,&#13;&#10;ALM.ID ALMACENID ,&#13;&#10;ALM.NOMBRE ALMACENNOMBRE,&#13;&#10;&#13;&#10;( case when dateadd(coalesce(pr.dias,0) day to d.vence) &lt;= current_date then coalesce(d.saldo,0) else 0 end) saldovencido  ,&#13;&#10;( case when dateadd(coalesce(pr.dias,0) day to d.vence) &gt; current_date then coalesce(d.saldo,0) else 0 end) saldonovencido,&#13;&#10;&#13;&#10;(  case when datediff (day,  coalesce(dateadd(coalesce(pr.dias,0) day to d.vence), current_date),current_date) between 0 and 15 then d.saldo else 0 end) s0_15 ,&#13;&#10;(  case when datediff (day,  coalesce(dateadd(coalesce(pr.dias,0) day to d.vence), current_date),current_date) between 16 and 30 then d.saldo else 0 end) s16_30,&#13;&#10;(  case when datediff (day,  coalesce(dateadd(coalesce(pr.dias,0) day to d.vence), current_date),current_date) between 31 and 45 then d.saldo else 0 end) s31_45,&#13;&#10;(  case when datediff (day,  coalesce(dateadd(coalesce(pr.dias,0) day to d.vence), current_date),current_date) between 46 and 60 then d.saldo else 0 end) s46_60,&#13;&#10;(  case when datediff (day,  coalesce(dateadd(coalesce(pr.dias,0) day to d.vence), current_date),current_date) &gt; 61  then d.saldo else 0 end) s61mas&#13;&#10;&#13;&#10;from docto d&#13;&#10;inner join persona pr on d.personaid = pr.id LEFT OUTER JOIN&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;                         SUCURSAL S ON S.ID = D.SUCURSALTID LEFT OUTER JOIN&#13;&#10;                         TIPODOCTO TD ON TD.ID = D.TIPODOCTOID LEFT OUTER JOIN&#13;&#10;                         PERSONA V ON V.ID = D.VENDEDORID LEFT OUTER JOIN&#13;&#10;                         SUBTIPODOCTO ST ON ST.ID = D.SUBTIPODOCTOID LEFT OUTER JOIN&#13;&#10;                         PERSONA SURTPERSONA ON D.PERSONAIDSURTIDO = SURTPERSONA.ID LEFT OUTER JOIN&#13;&#10;                         GUIA  ON GUIA.ID = D.GUIAID LEFT OUTER JOIN&#13;&#10;                         PERSONA GUIAENCARGADO ON GUIAENCARGADO.ID = GUIA.ENCARGADOGUIAID LEFT OUTER JOIN&#13;&#10;                         PERSONA GUIACAJERO ON GUIACAJERO.ID = GUIA.CAJEROID LEFT OUTER JOIN&#13;&#10;                        ESTADOSURTIDO ON D.ESTADOSURTIDOID = ESTADOSURTIDO.ID LEFT OUTER JOIN&#13;&#10;                        ESTADOGUIA  ON ESTADOGUIA.ID = D.ESTADOGUIAID LEFT OUTER JOIN&#13;&#10;                         PERSONA CXCPERSONA ON CXCPERSONA.ID = D.PERSONAIDAPROBACIONCXC LEFT OUTER JOIN&#13;&#10;                         PERSONA GUIARECIBIOPERSONA ON GUIARECIBIOPERSONA.ID = D.PERSONAIDGUIARECIBIO LEFT OUTER JOIN&#13;&#10;                         PERSONA SUPERVISOR ON SUPERVISOR.ID = D.SUPERVISORID LEFT OUTER JOIN&#13;&#10;                         DOCTONOTA DNA ON DNA.DOCTOID = D.ID AND DNA.TIPODOCTONOTAID = 1   LEFT OUTER JOIN&#13;&#10;                         DOCTO DOCTOREF ON DOCTOREF.ID = D.DOCTOREFID   LEFT OUTER JOIN&#13;&#10;                         DOCTONOTA DNC ON DNC.DOCTOID = DOCTOREF.ID AND DNC.TIPODOCTONOTAID = 2  LEFT OUTER JOIN&#13;&#10;                         ALMACEN ALM ON ALM.ID = D.ALMACENID&#13;&#10;&#13;&#10;&#13;&#10;where&#13;&#10;&#13;&#10;(@TIPODOCTOID = - 21 AND D.TIPODOCTOID IN (21, /*31, */23, 25, 26) OR&#13;&#10;                         @TIPODOCTOID = - 22 AND D.TIPODOCTOID IN (22, 24) OR&#13;&#10;                         @TIPODOCTOID = - 11 AND D.TIPODOCTOID IN (11, 13, 17, 18) OR&#13;&#10;                         @TIPODOCTOID = - 12 AND D.TIPODOCTOID IN (12, 15) OR&#13;&#10;                         D.TIPODOCTOID = @TIPODOCTOID)&#13;&#10;and&#13;&#10;(  @CONSALDO = 'N' or  coalesce(d.saldo,0) &gt; 0 )&#13;&#10;and&#13;&#10;(D.ESFACTURAELECTRONICA = @ESFACTURA or  @ESFACTURA = 'T')&#13;&#10;and&#13;&#10;(D.FECHA BETWEEN @FECHAINI AND @FECHAFIN) AND (D.ESTATUSDOCTOID = 1) AND (D.PERSONAID = @PERSONAID)&#13;&#10;">
+        <Column Name="PERSONAID" DataType="System.Int64"/>
+        <Column Name="SALDOVENCIDO" DataType="System.Decimal"/>
+        <Column Name="SALDONOVENCIDO" DataType="System.Decimal"/>
+        <Column Name="S0_15" DataType="System.Decimal"/>
+        <Column Name="S16_30" DataType="System.Decimal"/>
+        <Column Name="S31_45" DataType="System.Decimal"/>
+        <Column Name="S46_60" DataType="System.Decimal"/>
+        <Column Name="S61MAS" DataType="System.Decimal"/>
+        <Column Name="CLAVEVENDEDOR" DataType="System.String"/>
+        <Column Name="NOMBREVENDEDOR" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="SUCURSALT" DataType="System.String"/>
+        <Column Name="TIPODOC" DataType="System.String"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="FOLIOSAT" DataType="System.Int32"/>
+        <Column Name="SERIESAT" DataType="System.String"/>
+        <Column Name="REFERENCIA" DataType="System.String"/>
+        <Column Name="SUBTIPO" DataType="System.String"/>
+        <Column Name="PERSONAID1" DataType="System.Int64"/>
+        <Column Name="FECHASURTIDO" DataType="System.DateTime"/>
+        <Column Name="PERSONASURTIDO" DataType="System.String"/>
+        <Column Name="FECHAGUIAENVIADO" DataType="System.DateTime"/>
+        <Column Name="FECHAGUIARECIBIDO" DataType="System.DateTime"/>
+        <Column Name="ENCARGADOGUIA" DataType="System.String"/>
+        <Column Name="AUTORIZOGUIA" DataType="System.String"/>
+        <Column Name="ESTADOSURTIDONOMBRE" DataType="System.String"/>
+        <Column Name="ESTADOGUIANOMBRE" DataType="System.String"/>
+        <Column Name="VENCE" DataType="System.DateTime"/>
+        <Column Name="FECHAAPROBACIONCXC" DataType="System.DateTime"/>
+        <Column Name="PERSONAAPROBACIONCXC" DataType="System.String"/>
+        <Column Name="PERSONAGUIARECIBIO" DataType="System.String"/>
+        <Column Name="REFERENCIA1" DataType="System.String"/>
+        <Column Name="NOTAPAGO" DataType="System.String"/>
+        <Column Name="SALDO_SDOC" DataType="System.Decimal"/>
+        <Column Name="SUPERVISORNOMBRE" DataType="System.String"/>
+        <Column Name="NOTAMOVIL1" DataType="System.String"/>
+        <Column Name="NOTAMOVIL2" DataType="System.String"/>
+        <Column Name="NOTAAUTORIZACIONCREDITO" DataType="System.String"/>
+        <Column Name="NOTACANCELACION" DataType="System.String"/>
+        <Column Name="ALMACENID" DataType="System.Int64"/>
+        <Column Name="ALMACENNOMBRE" DataType="System.String"/>
+        <CommandParameter Name="TIPODOCTOID" DataType="1" Expression="[tipodoctoid]" DefaultValue="21"/>
+        <CommandParameter Name="CONSALDO" DataType="16" Size="1" Expression="[consaldo]" DefaultValue="S"/>
+        <CommandParameter Name="ESFACTURA" DataType="16" Size="1" Expression="[esfactura]" DefaultValue="T"/>
+        <CommandParameter Name="FECHAINI" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2020"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2022"/>
+        <CommandParameter Name="PERSONAID" DataType="1" Expression="[personaid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="tipodoctoid" DataType="System.Decimal"/>
+    <Parameter Name="consaldo" DataType="System.String"/>
+    <Parameter Name="esfactura" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="personaid" DataType="System.Decimal"/>
+    <Parameter Name="tipodoctonombre" DataType="System.String"/>
+    <Parameter Name="personanombre" DataType="System.String"/>
+    <Total Name="Total15" Expression="[Main.S0_15]" Evaluator="Data1"/>
+    <Total Name="Total30" Expression="[Main.S16_30]" Evaluator="Data1"/>
+    <Total Name="Total45" Expression="[Main.S31_45]" Evaluator="Data1"/>
+    <Total Name="Total60" Expression="[Main.S46_60]" Evaluator="Data1"/>
+    <Total Name="Total61" Expression="[Main.S61MAS]" Evaluator="Data1"/>
+    <Total Name="Totalvencido" Expression="[Main.SALDOVENCIDO]" Evaluator="Data1"/>
+    <Total Name="Totalnovencido" Expression="[Main.SALDONOVENCIDO]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="455.6" PaperHeight="215.9" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1646.57" Height="198.45">
+      <TextObject Name="Text29" Left="141.75" Top="75.6" Width="122.85" Height="18.9" CanShrink="true" CanBreak="false" Text="Tipo documento" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text31" Left="274.05" Top="75.6" Width="207.9" Height="18.9" CanShrink="true" CanBreak="false" Text="[tipodoctonombre]" Font="Arial, 9pt"/>
+      <TextObject Name="Text23" Left="141.75" Top="18.9" Width="926.1" Height="37.8" CanShrink="true" CanBreak="false" Text="REPORTE DE MOVIMIENTOS DE CLIENTE- VENCIMIENTOS" Font="Arial, 22pt, style=Bold"/>
+      <TextObject Name="Text24" Left="1096.2" Top="18.9" Width="170.1" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text43" Left="510.3" Top="75.6" Width="122.85" Height="18.9" CanShrink="true" CanBreak="false" Text="Cliente" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text44" Left="642.6" Top="75.6" Width="207.9" Height="18.9" CanShrink="true" CanBreak="false" Text="[personanombre]" Font="Arial, 9pt"/>
+      <TextObject Name="Text45" Left="141.75" Top="113.4" Width="122.85" Height="18.9" CanShrink="true" CanBreak="false" Text="Fecha inicial" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text46" Left="274.05" Top="113.4" Width="207.9" Height="18.9" CanShrink="true" CanBreak="false" Text="[fechaini]" Font="Arial, 9pt"/>
+      <TextObject Name="Text47" Left="510.3" Top="113.4" Width="122.85" Height="18.9" CanShrink="true" CanBreak="false" Text="Fecha final" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text48" Left="642.6" Top="113.4" Width="207.9" Height="18.9" CanShrink="true" CanBreak="false" Text="[fechafin]" Font="Arial, 9pt"/>
+      <TextObject Name="Text49" Left="141.75" Top="151.2" Width="122.85" Height="18.9" CanShrink="true" CanBreak="false" Text="Con saldo" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text50" Left="274.05" Top="151.2" Width="207.9" Height="18.9" CanShrink="true" CanBreak="false" Text="[consaldo]" Font="Arial, 9pt"/>
+      <TextObject Name="Text51" Left="510.3" Top="151.2" Width="122.85" Height="18.9" CanShrink="true" CanBreak="false" Text="Es factura" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text52" Left="642.6" Top="151.2" Width="207.9" Height="18.9" CanShrink="true" CanBreak="false" Text="[esfactura]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="202.45" Width="1646.57" Height="18.9">
+      <TextObject Name="Text2" Width="75.6" Height="18.9" Text="CLIENTE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="75.6" Width="207.9" Height="18.9" Text="NOMBRE CLIENTE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="652.05" Width="94.5" Height="18.9" Text="SALD VENCIDO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="746.55" Width="94.5" Height="18.9" Text="NO VENCIDO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="841.05" Width="94.5" Height="18.9" Text="0 A 15 DIAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="935.55" Width="94.5" Height="18.9" Text="16 A 30 DIAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="1030.05" Width="94.5" Height="18.9" Text="31 A 45 DIAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="1124.55" Width="94.5" Height="18.9" Text="46 A 60 DIAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="1219.05" Width="94.5" Height="18.9" Text="MAS 61 DIAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="1323" Width="94.5" Height="18.9" Text="VENDEDOR" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text22" Left="1417.5" Width="217.35" Height="18.9" Text="NOMBRE VENDEDOR DEL CLIENTE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text36" Left="283.5" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text38" Left="378" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text40" Left="557.55" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text42" Left="472.5" Width="85.05" Height="18.9" Text="TIPO DOC." Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="225.35" Width="1646.57" Height="18.9" DataSource="Table2">
+      <TextObject Name="Text1" Width="75.6" Height="18.9" Text="[Main.PERSONACLAVE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text3" Left="75.6" Width="207.9" Height="18.9" Text="[Main.PERSONANOMBRE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="652.05" Width="94.5" Height="18.9" Text="[Main.SALDOVENCIDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="746.55" Width="94.5" Height="18.9" Text="[Main.SALDONOVENCIDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="841.05" Width="94.5" Height="18.9" Text="[Main.S0_15]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="935.55" Width="94.5" Height="18.9" Text="[Main.S16_30]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="1030.05" Width="94.5" Height="18.9" Text="[Main.S31_45]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="1124.55" Width="94.5" Height="18.9" Text="[Main.S46_60]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="1219.05" Width="94.5" Height="18.9" Text="[Main.S61MAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="1323" Width="94.5" Height="18.9" Text="[Main.CLAVEVENDEDOR]" Font="Arial, 7pt"/>
+      <TextObject Name="Text21" Left="1417.5" Width="217.35" Height="18.9" Text="[Main.NOMBREVENDEDOR]" Font="Arial, 7pt"/>
+      <TextObject Name="Text35" Left="283.5" Width="94.5" Height="18.9" Text="[Main.FECHA]" Format="Date" Format.Format="d" Font="Arial, 7pt"/>
+      <TextObject Name="Text37" Left="378" Width="94.5" Height="18.9" Text="[Main.FOLIO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text39" Left="557.55" Width="94.5" Height="18.9" Text="[Main.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text41" Left="472.5" Width="85.05" Height="18.9" Text="[Main.TIPODOC]" Font="Arial, 7pt"/>
+      <DataFooterBand Name="DataFooter1" Top="248.25" Width="1646.57" Height="18.9">
+        <TextObject Name="Text26" Left="841.05" Width="94.5" Height="18.9" Text="[Total15]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text27" Left="935.55" Width="94.5" Height="18.9" Text="[Total30]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text28" Left="1030.05" Width="94.5" Height="18.9" Text="[Total45]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text30" Left="1124.55" Width="94.5" Height="18.9" Text="[Total60]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text32" Left="1219.05" Width="94.5" Height="18.9" Text="[Total61]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text33" Left="652.05" Width="94.5" Height="18.9" Text="[Totalvencido]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text34" Left="746.55" Width="94.5" Height="18.9" Text="[Totalnovencido]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      </DataFooterBand>
+      <Sort>
+        <Sort Expression="[Main.NOMBREVENDEDOR]"/>
+      </Sort>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="271.15" Width="1646.57" Height="28.35">
+      <TextObject Name="Text25" Left="1540.35" Top="9.45" Width="94.5" Height="18.9" Text="[Page]"/>
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

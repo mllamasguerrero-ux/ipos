@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 11:45:50" ReportInfo.Modified="04/24/2017 13:31:22" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Text19_BeforePrint(object sender, EventArgs e)
+    {
+      
+      Text19.Text =  ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION&quot;)) ;
+      string productoDescripcion1 = ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION1&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION1&quot;));
+      string productoDescripcion2 = ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION2&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION2&quot;));
+      
+                      
+      Text19.Text += productoDescripcion1 + productoDescripcion2 ;
+      
+      
+    }
+
+    
+       
+
+    private void Text10_BeforePrint(object sender, EventArgs e)
+    {
+       Text10.Visible =  ((String)Report.GetParameterValue(&quot;mostrarExistencia&quot;)) == &quot;S&quot;;
+    }
+
+    private void Text9_BeforePrint(object sender, EventArgs e)
+    {
+        
+      Text9.Visible =  ((String)Report.GetParameterValue(&quot;mostrarExistencia&quot;)) == &quot;S&quot;;
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2ebjfBpaxeIrj2e6GnBvmNA=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;&#13;&#10;producto.id productoid,&#13;&#10;producto.clave productoclave,&#13;&#10;producto.nombre productonombre,&#13;&#10;producto.descripcion productodescripcion ,&#13;&#10;producto.descripcion1 productodescripcion1,&#13;&#10;producto.descripcion2 productodescripcion2,&#13;&#10;producto.descripcion3 productodescripcion3,&#13;&#10;producto.existencia,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;pc.texto1 texto1,&#13;&#10;pc.texto2 texto2,&#13;&#10;pc.texto3 texto3,&#13;&#10;pc.texto4 texto4,&#13;&#10;pc.texto5 texto5,&#13;&#10;pc.texto6 texto6,&#13;&#10;pc.numero1 numero1,&#13;&#10;pc.numero2 numero2,&#13;&#10;pc.numero3 numero3,&#13;&#10;pc.numero4 numero4,&#13;&#10;pc.fecha1 fecha1,&#13;&#10;pc.fecha2 fecha2,&#13;&#10;linea.id lineaid,&#13;&#10;linea.clave lineaclave,&#13;&#10;linea.nombre lineanombre,&#13;&#10;marca.clave marcaclave,&#13;&#10;marca.nombre marcanombre,&#13;&#10;&#13;&#10;case when coalesce(pp.precio, -1) = -1 then &#13;&#10;&#13;&#10;	case when @listaprecioid = 1 then producto.precio1&#13;&#10;        		when @listaprecioid = 2 then producto.precio2&#13;&#10;       		 when @listaprecioid = 3 then producto.precio3&#13;&#10;       		 when @listaprecioid = 4 then producto.precio4&#13;&#10;       		 when @listaprecioid = 5 then producto.precio5&#13;&#10;       		else producto.precio1 end&#13;&#10; else pp.precio&#13;&#10;end preciocliente,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;(case when coalesce(pp.precio, -1) = -1 then &#13;&#10;&#13;&#10;	case when @listaprecioid = 1 then producto.precio1&#13;&#10;        		when @listaprecioid = 2 then producto.precio2&#13;&#10;       		 when @listaprecioid = 3 then producto.precio3&#13;&#10;       		 when @listaprecioid = 4 then producto.precio4&#13;&#10;       		 when @listaprecioid = 5 then producto.precio5&#13;&#10;       		else producto.precio1 end&#13;&#10; else pp.precio&#13;&#10;end * (1.00 + ((CASE WHEN COALESCE(PARAMETRO.desgloseieps,'N') = 'S' THEN PRODUCTO.TASAIEPS ELSE 0.00 END)/100.00)) * (1.00 + (PRODUCTO.TASAIVA/100.00)))&#13;&#10;as precioclienteconimpuesto&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; from &#13;&#10; producto &#13;&#10; left join productocaracteristicas pc on pc.productoid = producto.id&#13;&#10; left join linea on producto.lineaid = linea.id&#13;&#10;left join marca on producto.marcaid = marca.id&#13;&#10;left join preciopersona pp on pp.productoid = producto.id and pp.personaid = @itemid&#13;&#10;left join parametro on 1 = 1&#13;&#10;&#13;&#10;order by producto.clave&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION1" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION2" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION3" DataType="System.String"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+        <Column Name="LINEAID" DataType="System.Int64"/>
+        <Column Name="LINEACLAVE" DataType="System.String"/>
+        <Column Name="LINEANOMBRE" DataType="System.String"/>
+        <Column Name="MARCACLAVE" DataType="System.String"/>
+        <Column Name="MARCANOMBRE" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="PRECIOCLIENTE" DataType="System.Decimal"/>
+        <Column Name="PRECIOCLIENTECONIMPUESTO" DataType="System.Decimal"/>
+        <CommandParameter Name="itemid" DataType="1" Expression="[clienteid]" DefaultValue="0"/>
+        <CommandParameter Name="listaprecioid" DataType="1" Size="20" Expression="[listaprecioid]" DefaultValue="1"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="clienteid" DataType="System.Decimal"/>
+    <Parameter Name="nombrecliente" DataType="System.String"/>
+    <Parameter Name="listaprecioid" DataType="System.Decimal"/>
+    <Parameter Name="mostrarExistencia" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="280" PaperHeight="210" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="982.8" Height="198.45">
+      <TextObject Name="Text31" Left="18.9" Top="85.05" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text45" Left="113.4" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="18.9" Top="103.95" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="491.4" Top="113.4" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text46" Left="576.45" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="113.4" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="18.9" Width="378" Height="18.9" Text="Precios de producto por cliente" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text24" Left="727.65" Top="9.45" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Left="18.9" Top="28.35" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="113.4" Top="47.25" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="18.9" Top="47.25" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="491.4" Top="56.7" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="576.45" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="113.4" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="576.45" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="18.9" Top="66.15" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="491.4" Top="75.6" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="113.4" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text36" Left="491.4" Top="94.5" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="576.45" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="18.9" Top="122.85" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text56" Left="18.9" Top="160.65" Width="75.6" Height="18.9" Text="Cliente:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text15" Left="113.4" Top="160.65" Width="283.5" Height="18.9" Text="[nombrecliente]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="202.45" Width="982.8" Height="28.35">
+      <TextObject Name="Text52" Left="481.95" Width="179.55" Height="18.9" Text="DESCRIPCION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="368.55" Width="113.4" Height="28.35" Text="PRODUCTO NOMBRE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text55" Left="18.9" Width="122.85" Height="18.9" Text="LINEA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text26" Left="141.75" Width="122.85" Height="18.9" Text="MARCA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text14" Left="661.5" Width="94.5" Height="28.35" Text="PRECIO SIN IMPUESTOS" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text2" Left="264.6" Width="103.95" Height="28.35" Text="PRODUCTO CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text5" Left="756" Width="94.5" Height="28.35" Text="PRECIO CON IMPUESTO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="850.5" Width="94.5" Height="18.9" BeforePrintEvent="Text10_BeforePrint" Text="EXISTENCIA" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="234.8" Width="982.8" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text6" Left="18.9" Width="122.85" Height="18.9" Text="[Table.LINEACLAVE] [Table.LINEANOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text19" Left="481.95" Width="179.55" Height="18.9" CanGrow="true" BeforePrintEvent="Text19_BeforePrint" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="368.55" Width="113.4" Height="18.9" CanGrow="true" Text="[Table.PRODUCTONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="141.75" Width="122.85" Height="18.9" Text="[Table.MARCACLAVE] [Table.MARCANOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="661.5" Width="94.5" Height="18.9" Text="[Table.PRECIOCLIENTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text1" Left="264.6" Width="103.95" Height="18.9" Text="[Table.PRODUCTOCLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="756" Width="94.5" Height="18.9" Text="[Table.PRECIOCLIENTECONIMPUESTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="850.5" Width="94.5" Height="18.9" BeforePrintEvent="Text9_BeforePrint" Text="[Table.EXISTENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="257.7" Width="982.8" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

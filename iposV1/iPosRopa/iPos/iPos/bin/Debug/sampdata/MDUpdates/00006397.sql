@@ -1,0 +1,51 @@
+create or alter procedure RECEPCIONORDENCOMPRA_RECIMOVTO (
+    MOVTOID D_FK,
+    LOTE D_LOTE,
+    FECHAVENCE D_FECHAVENCE,
+    CANTIDADSURTIDA D_CANTIDAD,
+    LOTEIMPORTADO D_FK,
+    PRECIOMANUAL D_PRECIO,
+    CANTIDAD D_CANTIDAD,
+    TIPODIFERENCIAINVENTARIOID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable ESTATUSDOCTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PERSONAID D_FK;
+declare variable TIPODOCTOCANCELARID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable PRODUCTOID D_FK;
+--declare variable CANTIDAD D_CANTIDAD;
+--declare variable PRECIO D_PRECIO;
+declare variable COSTO D_COSTO;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable REFERENCIAS varchar(255);
+declare variable SERIE varchar(31);
+declare variable FOLIO integer;
+declare variable ALMACENTID D_FK;
+declare variable SUCURSALTID D_FK;
+--declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable CANTIDADDEFACTURA D_CANTIDAD;
+declare variable CANTIDADDEREMISION D_CANTIDAD;
+declare variable CANTIDADDEINDEFINIDO D_CANTIDAD;
+declare variable NEWMOVTOID D_FK;
+declare variable DOCTOID D_FK;
+declare variable DESCRIPCION1 D_STDTEXT_64;
+declare variable DESCRIPCION2 D_STDTEXT_64;
+declare variable DESCRIPCION3 D_STDTEXT_64;
+declare variable PORCENTAJEDESCUENTO D_PORCENTAJE;
+BEGIN
+
+      Update movto set
+       PRECIOMANUAL = :PRECIOMANUAL,
+      CANTIDADSURTIDA = :CANTIDADSURTIDA, cantidadfaltante = (:CANTIDAD - :CANTIDADSURTIDA),
+      TIPODIFERENCIAINVENTARIOID = :TIPODIFERENCIAINVENTARIOID , LOTE = :LOTE, FECHAVENCE = :FECHAVENCE, LOTEIMPORTADO = :LOTEIMPORTADO
+      where ID=:MOVTOID  ;
+
+
+
+
+END
+

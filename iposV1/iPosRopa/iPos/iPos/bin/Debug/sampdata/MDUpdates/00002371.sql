@@ -1,0 +1,9 @@
+CREATE OR ALTER TRIGGER REPLDOCTO_BU0 FOR REPLDOCTO
+ACTIVE BEFORE UPDATE POSITION 0
+AS
+begin
+  /* Trigger text */
+  
+  IF(NEW.repltimecambio IS NULL) THEN
+     NEW.repltimecambio = CURRENT_TIMESTAMP;
+end

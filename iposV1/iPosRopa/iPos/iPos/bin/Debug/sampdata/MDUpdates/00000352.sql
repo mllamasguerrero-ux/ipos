@@ -1,0 +1,1 @@
+update parametro set descuentovale = 10

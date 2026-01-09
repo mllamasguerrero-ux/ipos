@@ -1,0 +1,108 @@
+create or alter procedure BITACOBRANZAAGREGARDETALLE (
+    BITCOBRANZAID D_FK,
+    COBRADORID D_FK,
+    FECHA D_FECHA,
+    DOCTOID D_FK,
+    PERSONAID D_FK,
+    SALDO D_PRECIO,
+    FECHAVENCE D_FECHAVENCE,
+    DIAPAGOS D_STDTEXT_LIGHT,
+    ABONO D_PRECIO,
+    DOCTOPAGOID D_FK,
+    ESTADO D_FK,
+    OBSERVACIONES D_OBSERVACION,
+    NUEVAFECHACOBRO D_FECHA)
+returns (
+    IDRETORNO D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable BITACORADETID D_FK;
+BEGIN
+    SELECT first 1 ID FROM BITACOBRANZADET WHERE DOCTOID = :DOCTOID
+    AND FECHA = :FECHA AND COALESCE(ESTADO,1) <> 3 INTO :BITACORADETID;
+
+
+
+   if(:BITACORADETID IS NOT NULL) Then
+   BEGIN
+
+         ERRORCODE = 5003;
+         IDRETORNO = 0;
+         SUSPEND;
+
+   END
+
+
+    INSERT INTO BITACOBRANZADET
+      (
+      BITCOBRANZAID,
+
+      FECHA,
+
+      COBRADORID,
+
+      PERSONAID,
+
+      DOCTOID,
+
+      SALDO,
+
+      FECHAVENCE,
+
+      DIAPAGOS,
+
+      ABONO,
+
+      DOCTOPAGOID,
+
+      ESTADO,
+
+      OBSERVACIONES,
+
+      NUEVAFECHACOBRO
+         )
+
+Values (
+
+
+
+      :BITCOBRANZAID,
+
+      :FECHA,
+
+      :COBRADORID,
+
+      :PERSONAID,
+
+      :DOCTOID,
+
+      :SALDO,
+
+      :FECHAVENCE,
+
+      :DIAPAGOS,
+
+      :ABONO,
+
+      :DOCTOPAGOID,
+
+      :ESTADO,
+
+      :OBSERVACIONES,
+
+      :NUEVAFECHACOBRO
+)
+    returning id into :IDRETORNO;
+
+
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   /*WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1022;
+      SUSPEND;
+   END */
+END

@@ -1,0 +1,1 @@
+update parametro set HAB_IMPR_COTIZACION = 'S'

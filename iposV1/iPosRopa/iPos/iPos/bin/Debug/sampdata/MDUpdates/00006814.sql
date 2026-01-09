@@ -1,0 +1,365 @@
+create or alter procedure APLICAPROMOSMULTIDETALLE (
+    DOCTOID D_FK,
+    FILTROPRODUCTOID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRECIOPROMO D_COSTO;
+declare variable ESPROMOCION D_BOOLCN;
+declare variable PROMOCIONID D_FK;
+declare variable PROMOCIONDESGLOSE D_STDTEXT_64;
+declare variable MONEDEROABONO D_PRECIO;
+declare variable DIASEMANA smallint;
+declare variable CANTIDADLLEVATE D_CANTIDAD;
+declare variable CANTIDADPROMO D_CANTIDAD;
+declare variable TIPOPROMOCIONID D_FK;
+declare variable IMPORTEPROMO D_PRECIO;
+declare variable PORCPROMO D_PORCENTAJE;
+declare variable PRECIOACTUAL D_COSTO;
+declare variable CANTIDADPROMOPORAPLICACION D_CANTIDAD;
+declare variable NUMAPLICACIONES D_CANTIDAD;
+declare variable APLICADOSRESIDUALES D_CANTIDAD;
+declare variable CANTIDADCONPROMO D_CANTIDAD;
+declare variable CANTIDADSINPROMO D_CANTIDAD;
+declare variable PRECIOBUFFER D_COSTO;
+declare variable PRECIOSINPROMO D_COSTO;
+declare variable PROMOCIONIDBUFFER D_FK;
+declare variable PRECIOBUFFERPROMO D_COSTO;
+declare variable ENMONEDERO D_BOOLCN;
+declare variable TASAIVA D_PORCENTAJE;
+declare variable TASAIEPS D_PORCENTAJE;
+declare variable TASAIMPUESTO D_PORCENTAJE;
+declare variable LISTAPRECIOCLIENTE D_FK;
+declare variable MONEDEROLISTAPRECIOID D_FK;
+declare variable MONEDEROCAMPOREF D_CLAVE_NULL;
+declare variable SKIPLOOP D_BOOLCN;
+declare variable LINEAID D_FK;
+declare variable PRECIO1MULTIDETALLE D_COSTO;
+declare variable PRECIOACTUALMULTIDETALLE D_COSTO;
+declare variable CANTIDADMULTIDETALLE D_CANTIDAD;
+declare variable MOVTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable CAJAID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PRODUCTOID D_FK;
+declare variable LOTE D_LOTE;
+declare variable FECHAVENCE D_FECHAVENCE;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable TIPODOCTOID D_FK;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable FALTANTES integer;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable COSTO D_COSTO;
+declare variable PRECIO D_COSTO;
+declare variable SUCURSALTID D_FK;
+declare variable ALMACENTID D_FK;
+declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable FECHA D_FECHA;
+declare variable PERSONAID D_FK;
+declare variable DESCRIPCION1 D_STDTEXT_LARGE;
+declare variable DESCRIPCION2 D_STDTEXT_LARGE;
+declare variable DESCRIPCION3 D_STDTEXT_LARGE;
+declare variable VENDEDORID D_FK;
+declare variable LOTEIMPORTADO D_FK;
+declare variable PRECIOLISTA D_PRECIO;
+declare variable DESCMULTIDETALLE D_DESCRIPCION;
+declare variable FILTROLINEAID D_FK;
+declare variable FILTROPRECIO1 D_PRECIO;
+
+declare variable ACTUALIZARMOVTOS D_BOOLCN;
+BEGIN
+
+
+
+     DIASEMANA = EXTRACT ( WEEKDAY FROM CURRENT_DATE);
+
+     ESPROMOCION = 'N';
+     PROMOCIONID = NULL;
+     PROMOCIONDESGLOSE = NULL;
+     MONEDEROABONO = 0;
+     ACTUALIZARMOVTOS = 'N';
+
+
+     
+    FILTROLINEAID = NULL;
+    FILTROPRECIO1 = NULL;
+
+    IF(COALESCE(:FILTROPRODUCTOID ,0 ) > 0 ) THEN
+    BEGIN
+      SELECT LINEAID, PRECIO1 FROM PRODUCTO WHERE ID = :FILTROPRODUCTOID INTO :FILTROLINEAID, :FILTROPRECIO1;
+    END
+
+     
+   SELECT ALMACENID, SUCURSALID, CAJAID, REFERENCIA , TIPODOCTOID, VENDEDORID , ALMACENTID, SUCURSALTID
+   FROM DOCTO
+   WHERE ID = :DOCTOID
+   INTO :ALMACENID, :SUCURSALID, :CAJAID, :REFERENCIA, :TIPODOCTOID, :VENDEDORID, :ALMACENTID, :SUCURSALTID;
+
+
+
+      FOR SELECT PROMOCION.ID,
+     PROMOCION.CANTIDADLLEVATE,
+     PROMOCION.cantidad,
+     PROMOCION.tipopromocionid,
+     PROMOCION.importe,
+     PROMOCION.porcentajedescuento,
+     PROMOCION.enmonedero ,
+     PROMOCION.lineaid ,
+     MG.PRECIO1 PRECIO1MULTIDETALLE  ,
+     COALESCE(MG.CANTIDADMULTIDETALLE, 0) CANTIDADMULTIDETALLE ,
+     MG.PRECIOACTUALMULTIDETALLE ,
+     PROMOCION.DESCMULTIDETALLE ,
+     COALESCE(MG.TASAIVA,0) TASAIVA,
+     COALESCE(MG.TASAIEPS,0) TASAIEPS,
+     COALESCE(MG.TASAIMPUESTO,0) TASAIMPUESTO
+     FROM PROMOCION
+
+       INNER JOIN
+        (SELECT PRODUCTO.LINEAID, PRODUCTO.PRECIO1 ,
+            COALESCE(PRODUCTO.TASAIVA,0) TASAIVA, COALESCE(PRODUCTO.TASAIEPS,0) TASAIEPS, COALESCE(PRODUCTO.TASAIMPUESTO,0) TASAIMPUESTO,
+           SUM(MOVTO.cantidad) CANTIDADMULTIDETALLE ,
+           CAST(CAST(SUM(MOVTO.precio * MOVTO.CANTIDAD) AS D_COSTO)/ SUM(MOVTO.cantidad) AS D_COSTO) AS PRECIOACTUALMULTIDETALLE
+         FROM MOVTO
+         LEFT JOIN PRODUCTO ON MOVTO.PRODUCTOID = PRODUCTO.ID
+         WHERE COALESCE(MOVTO.CANTIDAD, 0) > 0 AND MOVTO.DOCTOID = :DOCTOID
+               AND (COALESCE(:FILTROLINEAID,0) = 0 or PRODUCTO.LINEAID = COALESCE(:FILTROLINEAID,0) ) 
+               AND (COALESCE(:FILTROPRECIO1, -1) = -1 or PRODUCTO.PRECIO1 = :FILTROPRECIO1 )
+         GROUP BY  PRODUCTO.LINEAID, PRODUCTO.PRECIO1 , PRODUCTO.TASAIVA, PRODUCTO.TASAIEPS, PRODUCTO.TASAIMPUESTO
+        ) MG ON ( MG.LINEAID = PROMOCION.LINEAID --AND  MG.CANTIDADMULTIDETALLE >= PROMOCION.CANTIDADLLEVATE
+         )
+
+
+        LEFT JOIN
+            (SELECT
+                PROMOCION.id PROMOCIONID,
+                SUM(CASE WHEN COALESCE(PROMOCIONSUCURSAL.sucursalid,0) = COALESCE(PARAMETRO.sucursalid,0) THEN 1 ELSE 0 END) APLICAENSUCURSAL,
+                SUM(CASE WHEN COALESCE(PROMOCIONSUCURSAL.sucursalid,0) <> 0 THEN 1 ELSE 0 END) SUCURSALESDONDEAPLICA
+                FROM PROMOCION
+                LEFT JOIN PROMOCIONSUCURSAL ON PROMOCION.ID = PROMOCIONSUCURSAL.promocionid
+                LEFT JOIN PARAMETRO ON 1 = 1
+                GROUP BY PROMOCION.ID
+                ) PROMOSUC ON PROMOSUC.PROMOCIONID = PROMOCION.ID
+     WHERE
+     (
+       (PROMOCION.rangopromocionid = 2 AND PROMOCION.lineaid = MG.lineaid )
+      )
+     AND PROMOCION.fechainicio <= CURRENT_DATE AND PROMOCION.FECHAFIN >= current_date
+     AND PROMOCION.tipopromocionid in (1,2)
+     AND
+     (
+     (PROMOCION.lunes = 'S' AND :DIASEMANA = 1 ) or
+     (PROMOCION.martes = 'S' AND :DIASEMANA = 2 ) or
+     (PROMOCION.miercoles = 'S' AND :DIASEMANA = 3 ) or
+     (PROMOCION.jueves = 'S' AND :DIASEMANA = 4 ) or
+     (PROMOCION.viernes = 'S' AND :DIASEMANA =5 ) or
+     (PROMOCION.sabado = 'S' AND :DIASEMANA = 6 ) or
+     (PROMOCION.domingo = 'S' AND :DIASEMANA = 0 )
+
+     )
+     AND PROMOCION.activo = 'S'        
+     AND PROMOCION.esmultidetalle = 'S'
+        AND (COALESCE( PROMOSUC.SUCURSALESDONDEAPLICA ,0) = 0 OR COALESCE(PROMOSUC.APLICAENSUCURSAL,0) > 0)
+   INTO
+      :PROMOCIONIDBUFFER, :CANTIDADLLEVATE, :CANTIDADPROMO,
+      :tipopromocionid, :IMPORTEPROMO, :PORCPROMO, :ENMONEDERO, :LINEAID, :PRECIO1MULTIDETALLE, :CANTIDADMULTIDETALLE,:PRECIOACTUALMULTIDETALLE ,
+      :DESCMULTIDETALLE, :TASAIVA , :TASAIEPS, :TASAIMPUESTO
+   DO
+   BEGIN
+
+   
+        SELECT
+                   SUM(MOVTO.cantidad) CANTIDADMULTIDETALLE ,
+                   CAST(CAST(SUM((CASE WHEN MOVTO.PROMOCION = 'S' AND MOVTO.PROMOCIONID = :PROMOCIONIDBUFFER THEN MOVTO.PRECIOLISTA ELSE MOVTO.PRECIO END) * MOVTO.CANTIDAD) AS D_COSTO)/ SUM(MOVTO.cantidad) AS D_COSTO) AS PRECIOACTUALMULTIDETALLE
+        FROM MOVTO
+             LEFT JOIN PRODUCTO ON MOVTO.PRODUCTOID = PRODUCTO.ID
+             LEFT JOIN PRODUCTOCARACTERISTICAS ON PRODUCTOCARACTERISTICAS.PRODUCTOID = PRODUCTO.ID
+             WHERE MOVTO.DOCTOID = :DOCTOID  AND
+                   PRODUCTO.lineaid = :LINEAID AND
+                   PRODUCTO.PRECIO1 = :PRECIO1MULTIDETALLE  AND
+                    (COALESCE(:DESCMULTIDETALLE,'') = '' or   COALESCE(PRODUCTOCARACTERISTICAS.texto6,'') LIKE '%' || :DESCMULTIDETALLE || '%')
+              INTO :CANTIDADMULTIDETALLE,:PRECIOACTUALMULTIDETALLE;
+
+
+        IF(:TIPOPROMOCIONID = 1) THEN
+        BEGIN
+
+
+            IF(:CANTIDADMULTIDETALLE >= :CANTIDADLLEVATE) THEN
+            BEGIN
+                CANTIDADPROMOPORAPLICACION = :CANTIDADLLEVATE - :CANTIDADPROMO;
+                NUMAPLICACIONES = FLOOR(:CANTIDADMULTIDETALLE/:CANTIDADLLEVATE);
+                APLICADOSRESIDUALES = :CANTIDADMULTIDETALLE - (:CANTIDADLLEVATE * :NUMAPLICACIONES) - :CANTIDADPROMO;
+                IF(:APLICADOSRESIDUALES < 0) THEN
+                BEGIN
+                    APLICADOSRESIDUALES = 0;
+                END
+                CANTIDADCONPROMO = (:NUMAPLICACIONES * :CANTIDADPROMOPORAPLICACION ) + :APLICADOSRESIDUALES;
+                CANTIDADSINPROMO = :CANTIDADMULTIDETALLE - :CANTIDADCONPROMO;
+                PRECIOBUFFER = CAST(CAST((:CANTIDADSINPROMO * :PRECIO1MULTIDETALLE) AS D_COSTO)/CAST(:CANTIDADMULTIDETALLE AS D_COSTO) AS D_COSTO);
+
+                IF( :PRECIOBUFFER < :PRECIOACTUALMULTIDETALLE) THEN
+                BEGIN
+                   PRECIOACTUALMULTIDETALLE = :PRECIOBUFFER;
+                   ESPROMOCION = 'S';
+                   PROMOCIONID = :PROMOCIONIDBUFFER;
+                   PROMOCIONDESGLOSE = 'GRATIS ' || CAST(:CANTIDADCONPROMO AS VARCHAR(10))
+                                     || ' Y CON PRECIO ' ||  CAST(:PRECIO1MULTIDETALLE AS VARCHAR(10))
+                                     || ' ' || CAST(:CANTIDADSINPROMO AS VARCHAR(10));
+
+
+                    ACTUALIZARMOVTOS = 'S';
+                END
+
+
+            END
+
+         END
+         ELSE IF (:TIPOPROMOCIONID = 2) THEN
+        BEGIN
+            IF(:CANTIDADMULTIDETALLE >= :CANTIDADPROMO) THEN
+            BEGIN
+
+                PRECIOBUFFERPROMO = (:IMPORTEPROMO/((100.00 + :TASAIMPUESTO)/100.00))/:CANTIDADPROMO;
+                                          
+                INSERT INTO TRAZA(VALOR) VALUES ('PRECIOBUFFERPROMO');
+                INSERT INTO TRAZA(VALOR) VALUES (CAST(:PRECIOBUFFERPROMO AS VARCHAR(10)));
+
+                NUMAPLICACIONES = FLOOR(:CANTIDADMULTIDETALLE/:CANTIDADPROMO);
+                CANTIDADCONPROMO = :NUMAPLICACIONES * :CANTIDADPROMO;
+                CANTIDADSINPROMO = :CANTIDADMULTIDETALLE - :CANTIDADCONPROMO;
+                PRECIOBUFFER = ((:PRECIOBUFFERPROMO * :CANTIDADCONPROMO) + (:PRECIO1MULTIDETALLE * :CANTIDADSINPROMO))/:CANTIDADMULTIDETALLE;
+                                       
+                INSERT INTO TRAZA(VALOR) VALUES ('PRECIOBUFFER');
+                INSERT INTO TRAZA(VALOR) VALUES (CAST(:PRECIOBUFFER AS VARCHAR(10)));
+                    
+                --INSERT INTO TRAZA(VALOR) VALUES (CAST(:PRECIOBUFFER AS VARCHAR(10)));
+
+                IF( :PRECIOBUFFER < :PRECIOACTUALMULTIDETALLE) THEN
+                BEGIN
+                   PRECIOACTUALMULTIDETALLE = :PRECIOBUFFER;
+                   ESPROMOCION = 'S';
+                   PROMOCIONID = :PROMOCIONIDBUFFER;
+                   PROMOCIONDESGLOSE = 'CON PRECIO ' || CAST(PRECIOBUFFERPROMO AS VARCHAR(10))
+                                     || ' ' || CAST(:CANTIDADCONPROMO AS VARCHAR(10))
+                                     || ' Y CON PRECIO ' ||  CAST(:PRECIO1MULTIDETALLE AS VARCHAR(10))
+                                     || ' ' || CAST(:CANTIDADSINPROMO AS VARCHAR(10)); 
+                    ACTUALIZARMOVTOS = 'S' ;
+
+                    
+                    INSERT INTO TRAZA(VALOR) VALUES ('PRECIOACTUALMULTIDETALLE');
+                    INSERT INTO TRAZA(VALOR) VALUES (CAST(:PRECIOACTUALMULTIDETALLE AS VARCHAR(10)));
+                END
+
+            END
+        END 
+
+                                     
+
+         IF(COALESCE(:ACTUALIZARMOVTOS, 'N') = 'S') THEN
+         BEGIN
+                    FOR SELECT
+                            MOVTO.ID, MOVTO.PRODUCTOID, MOVTO.LOTE, MOVTO.FECHAVENCE, MOVTO.CANTIDAD,
+                            MOVTO.PRECIO, MOVTO.COSTO,
+                            MOVTO.TIPODIFERENCIAINVENTARIOID , MOVTO.DESCRIPCION1, MOVTO.DESCRIPCION2, MOVTO.DESCRIPCION3,
+                            MOVTO.LOTEIMPORTADO
+                        FROM MOVTO
+                        LEFT JOIN PRODUCTO ON PRODUCTO.id = MOVTO.PRODUCTOID
+                        WHERE   MOVTO.DOCTOID = :DOCTOID  AND
+                                PRODUCTO.lineaid = :LINEAID AND
+                                PRODUCTO.PRECIO1 = :PRECIO1MULTIDETALLE  AND
+                                (COALESCE(:DESCMULTIDETALLE,'') = '' or   PRODUCTO.DESCRIPCION LIKE '%' || :DESCMULTIDETALLE || '%')
+                        INTO
+                            :MOVTOID, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, :PRECIO, :COSTO, 
+                            :TIPODIFERENCIAINVENTARIOID , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3, :LOTEIMPORTADO
+                        DO
+                        BEGIN
+
+                            SELECT ERRORCODE
+                            FROM MOVTO_INSERT (
+                                :DOCTOID, 0, :ALMACENID, :SUCURSALID, :TIPODOCTOID, 0, 0, :PERSONAID, :VENDEDORID, :CAJAID,
+                                0, :PRODUCTOID, :LOTE, :FECHAVENCE, 0, 0, 0, 0, 0, :PRECIOACTUALMULTIDETALLE, 0,
+                                '',  '', :COSTO, :SUCURSALTID, :ALMACENTID, 'S',
+                                :TIPODIFERENCIAINVENTARIOID, CURRENT_DATE, CURRENT_DATE, null,NULL ,NULL,NULL,:MOVTOID,NULL , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , 'S', :LOTEIMPORTADO , 'N' , 'N'
+                            ) INTO :ERRORCODE;
+
+
+
+
+                            IF(:ERRORCODE <> 0) THEN
+                            BEGIN
+                                SUSPEND;
+                                EXIT;
+                            END
+
+
+                            UPDATE MOVTO
+                            SET
+                                PROMOCION = 'S',
+                                PROMOCIONDESGLOSE = :PROMOCIONDESGLOSE,
+                                PROMOCIONID = :PROMOCIONIDBUFFER ,
+                                PROMOCIONMULTIDETALLEID = :PROMOCIONIDBUFFER
+                            WHERE ID = :MOVTOID;
+
+                        END
+          END
+          ELSE
+          BEGIN
+
+                    FOR SELECT
+                            MOVTO.ID, MOVTO.PRODUCTOID, MOVTO.LOTE, MOVTO.FECHAVENCE, MOVTO.CANTIDAD,
+                            MOVTO.PRECIO, MOVTO.COSTO,
+                            MOVTO.TIPODIFERENCIAINVENTARIOID , MOVTO.DESCRIPCION1, MOVTO.DESCRIPCION2, MOVTO.DESCRIPCION3,
+                            MOVTO.LOTEIMPORTADO, MOVTO.PRECIOLISTA
+                        FROM MOVTO
+                        LEFT JOIN PRODUCTO ON PRODUCTO.id = MOVTO.PRODUCTOID
+                        WHERE MOVTO.DOCTOID = :DOCTOID  AND
+                                PRODUCTO.lineaid = :LINEAID AND
+                                PRODUCTO.PRECIO1 = :PRECIO1MULTIDETALLE   AND
+                                MOVTO.PROMOCIONMULTIDETALLEID = :PROMOCIONIDBUFFER   AND
+                                 (COALESCE(:DESCMULTIDETALLE,'') = '' or   PRODUCTO.DESCRIPCION LIKE '%' || :DESCMULTIDETALLE || '%')
+                        INTO
+                            :MOVTOID, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, :PRECIO, :COSTO, 
+                            :TIPODIFERENCIAINVENTARIOID , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3, :LOTEIMPORTADO, :PRECIOLISTA
+                        DO
+                        BEGIN
+
+
+
+                            SELECT ERRORCODE
+                            FROM MOVTO_INSERT (
+                                :DOCTOID, 0, :ALMACENID, :SUCURSALID, :TIPODOCTOID, 0, 0, :PERSONAID, :VENDEDORID, :CAJAID,
+                                0, :PRODUCTOID, :LOTE, :FECHAVENCE, 0, 0, 0, 0, 0, :PRECIOLISTA, 0,
+                                '',  '', :COSTO, :SUCURSALTID, :ALMACENTID, 'N',
+                                :TIPODIFERENCIAINVENTARIOID, CURRENT_DATE, CURRENT_DATE, null,NULL ,NULL,NULL,:MOVTOID,NULL , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , 'S', :LOTEIMPORTADO , 'N' , 'N'
+                            ) INTO :ERRORCODE;
+
+
+
+
+                            IF(:ERRORCODE <> 0) THEN
+                            BEGIN
+                                SUSPEND;
+                                EXIT;
+                            END
+
+
+
+                        END
+             END
+
+
+            
+
+
+  END
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   --WHEN ANY DO
+   --BEGIN
+   --   ERRORCODE = 1052;
+   --   SUSPEND;
+   --END
+END

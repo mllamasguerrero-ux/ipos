@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/02/2014 22:48:13" ReportInfo.Modified="08/14/2014 23:38:43" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Text5_BeforePrint(object sender, EventArgs e)
+    {
+      
+      Text5.Text = ((String)Report.GetColumnValue(&quot;Table.DESCRIPCION&quot;)) + Environment.NewLine +
+        ((String)Report.GetColumnValue(&quot;Table.DESCRIPCION1&quot;))  + Environment.NewLine 
+        + ((String)Report.GetColumnValue(&quot;Table.DESCRIPCION2&quot;)) + Environment.NewLine
+        + ((String)Report.GetColumnValue(&quot;Table.DESCRIPCION3&quot;));     
+    }
+
+    private void Text9_BeforePrint(object sender, EventArgs e)
+    {
+      switch((int)((Decimal)Report.GetParameterValue(&quot;ListaDePrecios&quot;)))
+      {
+        case 0:
+        case 1:     
+            Text9.Text = ((Decimal)Report.GetColumnValue(&quot;Table.PRECIO1&quot;)).ToString(&quot;N2&quot;);
+            break;
+        case 2:    
+            Text9.Text = ((Decimal)Report.GetColumnValue(&quot;Table.PRECIO2&quot;)).ToString(&quot;N2&quot;);
+          break;   
+        case 3:    
+          Text9.Text = ((Decimal)Report.GetColumnValue(&quot;Table.PRECIO3&quot;)).ToString(&quot;N2&quot;);
+          break;  
+        case 4:    
+          Text9.Text = ((Decimal)Report.GetColumnValue(&quot;Table.PRECIO4&quot;)).ToString(&quot;N2&quot;);
+          break;  
+        case 5:    
+          Text9.Text = ((Decimal)Report.GetColumnValue(&quot;Table.PRECIO5&quot;)).ToString(&quot;N2&quot;);
+          break;
+        default: 
+          Text9.Text = ((Decimal)Report.GetColumnValue(&quot;Table.PRECIO1&quot;)).ToString(&quot;N2&quot;);
+          break;
+            
+      }
+    }
+
+    private void Text10_BeforePrint(object sender, EventArgs e)
+    {
+        
+      switch((int)((Decimal)Report.GetParameterValue(&quot;ListaDePrecios&quot;)))
+      {
+        case 0:
+        case 1:     
+          Text10.Text = &quot;PRECIO 1&quot;;
+          break;
+        case 2:    
+          Text10.Text = &quot;PRECIO 2&quot;;
+          break;   
+        case 3:    
+          Text10.Text = &quot;PRECIO 3&quot;;
+          break;  
+        case 4:    
+          Text10.Text = &quot;PRECIO 4&quot;;
+          break;  
+        case 5:    
+          Text10.Text = &quot;PRECIO 5&quot;;
+          break;
+        default: 
+          Text10.Text = &quot;PRECIO 1&quot;;
+          break;
+            
+      }
+    }
+
+    private void Text7_BeforePrint(object sender, EventArgs e)
+    {
+      if(((Boolean)Report.GetParameterValue(&quot;MostrarExistencia&quot;)))
+      {
+        Text7.Visible = true;
+      }
+      else{  
+        Text7.Visible = false;
+      }
+        
+    }
+
+    private void Text8_BeforePrint(object sender, EventArgs e)
+    {
+      
+      if(((Boolean)Report.GetParameterValue(&quot;MostrarExistencia&quot;)))
+      {
+        Text8.Visible = true;
+      }    
+      else{  
+        Text8.Visible = false;
+      }
+    }
+
+    private void Text11_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetParameterValue(&quot;ListaDePrecios&quot;)) == 0)
+      {
+        Text11.Visible = true;
+      }    
+      else{  
+        Text11.Visible = false;
+      }
+    }
+
+    private void Text12_BeforePrint(object sender, EventArgs e)
+    {
+      
+      if(  ((Decimal)Report.GetParameterValue(&quot;ListaDePrecios&quot;)) == 0)
+      {
+        Text12.Visible = true;
+      }    
+      else{  
+        Text12.Visible = false;
+      }
+    }
+
+    private void Text13_BeforePrint(object sender, EventArgs e)
+    {
+      
+      if( ((Decimal)Report.GetParameterValue(&quot;ListaDePrecios&quot;)) == 0)
+      {
+        Text13.Visible = true;
+      }   
+      else{  
+        Text13.Visible = false;
+      }
+    }
+
+    private void Text14_BeforePrint(object sender, EventArgs e)
+    {   
+      if(  ((Decimal)Report.GetParameterValue(&quot;ListaDePrecios&quot;)) == 0)
+      {
+        Text14.Visible = true;
+      }      
+      else{  
+        Text14.Visible = false;
+      }
+      
+    }
+
+    private void Text15_BeforePrint(object sender, EventArgs e)
+    {
+         
+      if( ((Decimal)Report.GetParameterValue(&quot;ListaDePrecios&quot;)) == 0)
+      {
+        Text15.Visible = true;
+      }        
+      else{  
+        Text15.Visible = false;
+      }
+    }
+
+    private void Text16_BeforePrint(object sender, EventArgs e)
+    {
+       
+      if(  ((Decimal)Report.GetParameterValue(&quot;ListaDePrecios&quot;)) == 0)
+      {
+        Text16.Visible = true;
+      }      
+      else{  
+        Text16.Visible = false;
+      }
+    }
+
+    private void Text17_BeforePrint(object sender, EventArgs e)
+    {
+        
+      if( ((Decimal)Report.GetParameterValue(&quot;ListaDePrecios&quot;)) == 0)
+      {
+        Text17.Visible = true;
+      }      
+      else{  
+        Text17.Visible = false;
+      }
+    }
+
+    private void Text18_BeforePrint(object sender, EventArgs e)
+    {
+      
+      if( ((Decimal)Report.GetParameterValue(&quot;ListaDePrecios&quot;)) == 0)
+      {
+        Text18.Visible = true;
+      }    
+      else{  
+        Text18.Visible = false;
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2cb8j8mv9aEp/XSVIJQm3G8=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;      D.FECHA,&#13;&#10;      D.FECHAHORA,&#13;&#10;      COALESCE(T.CLAVE, 'N/D'),&#13;&#10;      D.FOLIO,&#13;&#10;      P.CLAVE,&#13;&#10;      P.DESCRIPCION1,&#13;&#10;      M.CANTIDAD,&#13;&#10;      M.PRECIO,&#13;&#10;      M.IMPORTE,&#13;&#10;      M.DESCUENTO,&#13;&#10;      M.SUBTOTAL,&#13;&#10;      M.IVA,&#13;&#10;      M.TOTAL ,&#13;&#10;      coalesce(S.NOMBRE,' ') as SUCURSALT ,&#13;&#10;      coalesce(TD.nombre, ' ') AS TIPODOC ,&#13;&#10;      coalesce(L.ID,0) AS LINEAID,&#13;&#10;      COALESCE(L.CLAVE, 'N/D') AS LINEACLAVE,&#13;&#10;      COALESCE(L.NOMBRE, 'N/D') AS  LINEANOMBRE,&#13;&#10;      case when D.manejoreceta = 'S' then 'CON RECETA' WHEN D.MANEJORECETA = 'R' THEN 'OMITIO RECETA' ELSE 'NO REQUIERE' END MANEJORECETADOCTO,&#13;&#10;      REC.CEDULA CEDULARECETA,&#13;&#10;      REC.NOMBRE NOMBRERECETA,&#13;&#10;      REC.RECETANUMERO RECETANUMERO&#13;&#10;   FROM MOVTO M&#13;&#10;      LEFT JOIN DOCTO D&#13;&#10;         ON D.ID = M.DOCTOID&#13;&#10;      LEFT JOIN PRODUCTO P&#13;&#10;         ON P.ID = M.PRODUCTOID&#13;&#10;      LEFT JOIN TURNO T&#13;&#10;         ON T.ID = D.TURNOID &#13;&#10;       left join SUCURSAL S&#13;&#10;         ON S.ID = D.SUCURSALTID&#13;&#10;        left join TIPODOCTO  TD&#13;&#10;         on  TD.id = d.tipodoctoid&#13;&#10;          left join linea L&#13;&#10;            on L.ID = P.LINEAID &#13;&#10;              left join (select receta.ventaid,  min(receta.cedula) cedula,&#13;&#10;                          min(receta.nombre) nombre , min(receta.medicoid) medicoid&#13;&#10;                          , min(receta.recetanumero) RECETANUMERO&#13;&#10;                          from receta&#13;&#10;                          group by receta.ventaid ) rec  on rec.ventaid = d.id&#13;&#10;   WHERE (D.TIPODOCTOID = 21)&#13;&#10;     AND D.FECHA BETWEEN @FECHAINI AND @FECHAFIN&#13;&#10;     AND D.ESTATUSDOCTOID = 1&#13;&#10;     AND (&#13;&#10;&#13;&#10;(COALESCE(D.MANEJORECETA,'N') = 'S'  AND @MANEJORECETA = 'CON RECETA')  OR&#13;&#10;(COALESCE(D.MANEJORECETA,'N') = 'R'  AND @MANEJORECETA = 'OMITIO RECETA')  OR&#13;&#10;(COALESCE(D.MANEJORECETA,'N') = 'N'  AND @MANEJORECETA = 'SIN RECETA')  &#13;&#10;&#13;&#10; OR  @MANEJORECETA = 'TODOS')&#13;&#10; AND P.requierereceta = 'S'&#13;&#10;     order by d.fechahora, d.id">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="LINEAID" DataType="System.Int32"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="COALESCE" DataType="System.String"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="SUCURSALT" DataType="System.String"/>
+        <Column Name="TIPODOC" DataType="System.String"/>
+        <Column Name="LINEACLAVE" DataType="System.String"/>
+        <Column Name="LINEANOMBRE" DataType="System.String"/>
+        <Column Name="MANEJORECETADOCTO" DataType="System.String"/>
+        <Column Name="CEDULARECETA" DataType="System.String"/>
+        <Column Name="NOMBRERECETA" DataType="System.String"/>
+        <Column Name="RECETANUMERO" DataType="System.String"/>
+        <CommandParameter Name="MANEJORECETA" DataType="16" Expression="[MANEJORECETA]" DefaultValue="TODOS"/>
+        <CommandParameter Name="FECHAINI" DataType="5" Expression="[FECHAINI]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[FECHAFIN]" DefaultValue="01/01/2011"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="MANEJORECETA" DataType="System.String"/>
+    <Parameter Name="FECHAINI" DataType="System.DateTime"/>
+    <Parameter Name="FECHAFIN" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="217.35">
+      <TextObject Name="Text27" Left="18.9" Top="9.45" Width="378" Height="18.9" Text="Reporte de venta por receta" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text38" Left="18.9" Top="37.8" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="113.4" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="18.9" Top="66.15" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="491.4" Top="66.15" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="576.45" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="113.4" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="576.45" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="18.9" Top="85.05" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="491.4" Top="85.05" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="113.4" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text31" Left="18.9" Top="103.95" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text36" Left="491.4" Top="103.95" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="576.45" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text45" Left="113.4" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="18.9" Top="122.85" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="491.4" Top="122.85" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text46" Left="576.45" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="113.4" Top="141.75" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="18.9" Top="141.75" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text19" Left="897.75" Top="18.9" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text49" Left="18.9" Top="179.55" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Left="283.5" Top="179.55" Width="75.6" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text21" Left="122.85" Top="179.55" Width="94.5" Height="18.9" Text="[FECHAINI]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text22" Left="387.45" Top="179.55" Width="94.5" Height="18.9" Text="[FECHAFIN]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text51" Left="548.1" Top="179.55" Width="75.6" Height="18.9" Text="Tipo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text23" Left="633.15" Top="179.55" Width="151.2" Height="18.9" Text="[MANEJORECETA]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="221.35" Width="1047.06" Height="37.8">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Text="CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="283.5" Width="170.1" Height="18.9" Text="DESCRIPCION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="453.6" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="548.1" Width="132.3" Height="28.35" Text="MANEJO RECETA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text14" Left="680.4" Width="94.5" Height="28.35" Text="CEDULA RECETA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text16" Left="774.9" Width="132.3" Height="28.35" Text="NOMBRE RECETA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text18" Left="907.2" Width="94.5" Height="28.35" Text="RECETA NUMERO" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="263.15" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text7" Left="283.5" Width="170.1" Height="18.9" CanGrow="true" Text="[Table.DESCRIPCION1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="453.6" Width="94.5" Height="18.9" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="548.1" Width="132.3" Height="18.9" Text="[Table.MANEJORECETADOCTO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text13" Left="680.4" Width="94.5" Height="18.9" Text="[Table.CEDULARECETA]" Font="Arial, 9pt"/>
+      <TextObject Name="Text15" Left="774.9" Width="132.3" Height="18.9" Text="[Table.NOMBRERECETA]" Font="Arial, 9pt"/>
+      <TextObject Name="Text17" Left="907.2" Width="94.5" Height="18.9" Text="[Table.RECETANUMERO]" Font="Arial, 9pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="286.05" Width="1047.06" Height="18.9">
+      <TextObject Name="Text20" Left="916.65" Width="94.5" Height="18.9" Text="[Page]"/>
+    </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="322" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="150" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="233" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="48" Top="48" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="FECHAINI" FilterOperation="GreaterThanOrEqual" Value="08/14/2014 23:02:27"/>
+    <LabelControl Name="Label1" Left="48" Top="32" Width="77" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="FECHA INICIO"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="44" Top="104" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="FECHAFIN" FilterOperation="LessThanOrEqual" Value="08/14/2014 23:02:30"/>
+    <LabelControl Name="Label2" Left="44" Top="88" Width="60" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="FECHA FIN"/>
+    <LabelControl Name="Label3" Left="44" Top="144" Width="31" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="TIPO"/>
+    <ComboBoxControl Name="ComboBox1" Left="44" Top="160" Font="Tahoma, 8pt" TabIndex="8" Text="TODOS" ReportParameter="MANEJORECETA" ItemHeight="13" ItemsText="TODOS&#13;&#10;CON RECETA&#13;&#10;OMITIO RECETA&#13;&#10;SIN RECETA"/>
+  </DialogPage>
+</Report>

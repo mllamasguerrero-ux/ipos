@@ -1,0 +1,2 @@
+COMMENT ON COLUMN CONECTADOS.CON_IDENTI IS 
+'Identificador de la tabla CONECTADOS';

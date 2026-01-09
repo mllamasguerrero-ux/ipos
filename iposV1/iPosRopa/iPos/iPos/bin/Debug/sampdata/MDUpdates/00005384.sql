@@ -1,0 +1,144 @@
+create or alter procedure DOCTO_REAGRUPAR_DETALLES (
+    DOCTORECALCULARID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable ESTATUSDOCTOID D_FK;
+declare variable MOVTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PERSONAID D_FK;
+declare variable TIPODOCTORECALCULARID D_FK;
+declare variable PRODUCTOID D_FK;
+declare variable LOTE D_LOTE;
+declare variable FECHAVENCE D_FECHAVENCE;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable PRECIO D_PRECIO;
+declare variable COSTO D_COSTO;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable REFERENCIAS varchar(255);
+declare variable SERIE varchar(31);
+declare variable FOLIO integer;
+declare variable ALMACENTID D_FK;
+declare variable SUCURSALTID D_FK;
+declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable DESCRIPCION1 D_STDTEXT_64;
+declare variable DESCRIPCION2 D_STDTEXT_64;
+declare variable DESCRIPCION3 D_STDTEXT_64;
+declare variable LOTEIMPORTADO D_FK;
+declare variable MOVTOACTUALID D_FK;
+declare variable PORCENTAJEDESCUENTO D_PORCENTAJE;
+declare variable ANAQUELID D_FK;
+declare variable LOCALIDAD D_LOCACION;
+BEGIN
+   -- Leer del DOCTO a cancelar.
+   SELECT ESTATUSDOCTOID, TIPODOCTOID
+   FROM DOCTO
+   WHERE ID = :DOCTORECALCULARID
+   INTO :ESTATUSDOCTOID, :TIPODOCTORECALCULARID;
+
+   -- Si no esta vigente: Salir.
+   IF (:ESTATUSDOCTOID <> 0) THEN
+   BEGIN
+      ERRORCODE = 1082;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Si no es de los tipos b?sicos: Salir.
+   IF (:TIPODOCTORECALCULARID NOT IN (11, 21, 31, 41, 321)) THEN
+   BEGIN
+      ERRORCODE = 1008;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Leer del DOCTO a recalcular.
+   SELECT ALMACENID, SUCURSALID, PERSONAID, SERIE, FOLIO, SUCURSALTID, ALMACENTID
+   FROM DOCTO
+   WHERE ID = :DOCTORECALCULARID
+   INTO :ALMACENID, :SUCURSALID, :PERSONAID, :SERIE, :FOLIO, :SUCURSALTID, :ALMACENTID;
+
+
+
+   -- Agrega los MOVTO.
+   
+
+
+   FOR SELECT
+      ID, PRODUCTOID, LOTE, FECHAVENCE, CANTIDAD, PRECIO, COSTO, 
+      TIPODIFERENCIAINVENTARIOID , DESCRIPCION1, DESCRIPCION2, DESCRIPCION3, LOTEIMPORTADO,
+      MOVTO.descuentoporcentaje , ANAQUELID ,LOCALIDAD
+   FROM MOVTO
+   WHERE DOCTOID = :DOCTORECALCULARID
+   INTO
+      :MOVTOID, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, :PRECIO, :COSTO, 
+      :TIPODIFERENCIAINVENTARIOID , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3, :LOTEIMPORTADO,
+      :PORCENTAJEDESCUENTO , :ANAQUELID , :LOCALIDAD
+   DO
+   BEGIN
+
+        MOVTOACTUALID = NULL;
+
+        SELECT MOVTOACTUALID FROM MOVTO_INSERT_AGRUPADO (
+            :DOCTORECALCULARID ,
+            :TIPODOCTORECALCULARID ,
+            :COSTO ,
+            :LOTE ,
+            :LOTEIMPORTADO ,
+            :PRODUCTOID ,
+            :FECHAVENCE ,
+            :PRECIO ,
+            :PORCENTAJEDESCUENTO ,
+            NULL,
+            :ANAQUELID ,
+            :LOCALIDAD )
+            INTO :MOVTOACTUALID;
+
+       IF(COALESCE(:MOVTOACTUALID, 0) <> :MOVTOID  AND COALESCE(:MOVTOACTUALID, 0) > 0) THEN
+       BEGIN
+
+            DELETE FROM  MOVTO WHERE ID = :MOVTOID;
+                 
+            SELECT ERRORCODE
+            FROM MOVTO_INSERT (
+                :DOCTORECALCULARID, 0, :ALMACENID, :SUCURSALID, :TIPODOCTORECALCULARID, 0, 0, :PERSONAID, 5, 1,
+                0, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, 0, 0, 0, 0, :PRECIO, 0,
+                /*:REFERENCIA*/ '', /*:REFERENCIAS*/ '', :COSTO, :SUCURSALID, :ALMACENID, 'N',
+                :TIPODIFERENCIAINVENTARIOID, CURRENT_DATE, CURRENT_DATE, null,NULL ,NULL,NULL,NULL,NULL , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , NULL, :LOTEIMPORTADO , 'N','N'
+            ) INTO :ERRORCODE;
+       END
+
+
+
+
+
+
+        IF(:ERRORCODE <> 0) THEN
+        BEGIN
+          SUSPEND;
+          EXIT;
+        END
+
+   END
+
+
+   --checar promocion por monto minimo (si es que aplica)
+   /*SELECT ERRORCODE FROM DOCTO_RECALCULAR_PROMOMONTOMIN(:DOCTORECALCULARID)  INTO :ERRORCODE;
+
+   IF(:ERRORCODE <> 0) THEN
+   BEGIN
+          SUSPEND;
+          EXIT;
+   END  */
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+   
+    WHEN ANY DO
+    BEGIN
+        ERRORCODE = 1009;
+        SUSPEND;
+    END
+END

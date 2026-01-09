@@ -1,0 +1,46 @@
+create or alter procedure TERMINALSERVICIO_CONSECUTIVO (
+    TERMINAL D_CLAVE_NULL)
+returns (
+    CONSECUTIVO integer,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable SEQUENCENAME D_CLAVE_NULL;
+declare variable CUENTA integer;
+begin
+  /* Procedure Text */
+               
+   SEQUENCENAME = 'SEQ' ||
+            '_TERMINALSERVID_' || TERMINAL;
+  
+   SELECT COALESCE(COUNT(*), 0) AS CUENTA
+   FROM RDB$GENERATORS
+   WHERE RDB$GENERATOR_NAME = :SEQUENCENAME
+   INTO :CUENTA;
+
+  IF (:CUENTA = 0) THEN
+   BEGIN
+
+            EXECUTE STATEMENT
+               'CREATE SEQUENCE ' || :SEQUENCENAME;
+
+            EXECUTE STATEMENT
+               'ALTER SEQUENCE ' ||  :SEQUENCENAME || ' RESTART WITH ' || 1;
+
+   end
+
+  EXECUTE STATEMENT
+    'SELECT NEXT VALUE FOR ' || :SEQUENCENAME || ' FROM RDB$DATABASE' INTO :CONSECUTIVO;
+
+    IF(COALESCE(:CONSECUTIVO,0) > 99999) THEN
+    BEGIN
+          
+            EXECUTE STATEMENT
+               'ALTER SEQUENCE ' ||  :SEQUENCENAME || ' RESTART WITH ' || 1;
+
+             CONSECUTIVO = 1;
+    END
+
+    ERRORCODE = 0;
+
+  suspend;
+end

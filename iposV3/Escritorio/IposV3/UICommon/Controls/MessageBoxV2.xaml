@@ -1,0 +1,121 @@
+﻿<UserControl x:Class="Controls.MessageBoxV2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             FontSize="16" 
+             x:Name="PopUpController"
+             d:DesignHeight="200" d:DesignWidth="200" Loaded="PopUpController_Loaded" >
+
+    <Popup x:Name="InformationPopup" 
+                   Placement="Left" 
+                    VerticalOffset="10" IsOpen="{Binding MessageToUser.IsOpen}" 
+                   StaysOpen="{Binding MessageToUser.StaysOpen}" MouseDown="InformationPopUpClick"
+                   AllowsTransparency="True" 
+                   >
+
+
+
+
+        <Border x:Name="InformationPopupArea"  BorderThickness="20,20,20,20" CornerRadius="8">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MessageToUser.Tipo}" Value="Warning">
+                                <Setter Property="Background" Value="LightYellow"/>
+                                <Setter Property="BorderBrush" Value="LightYellow"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding MessageToUser.Tipo}" Value="Error">
+                            <Setter Property="Background" Value="#FC4539"/>
+                            <Setter Property="BorderBrush" Value="#FC4539"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding MessageToUser.Tipo}" Value="Information">
+                                <Setter Property="Background" Value="LightGray"/>
+                                <Setter Property="BorderBrush" Value="LightGray"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding MessageToUser.Tipo}" Value="Success">
+                            <Setter Property="Background" Value="#72D475"/>
+                            <Setter Property="BorderBrush" Value="#72D475"/>
+                            </DataTrigger>
+
+                        <DataTrigger Binding="{Binding MessageToUser.Tipo}" Value="Waiting">
+                            <Setter Property="Background" Value="WhiteSmoke"/>
+                            <Setter Property="BorderBrush" Value="WhiteSmoke"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+
+                    <TextBlock Text="{Binding MessageToUser.Title}"
+                                   Grid.Row="0" Grid.Column="0" FontSize="16" FontWeight="Bold"
+                                TextWrapping="Wrap" MaxWidth="300"/>
+
+
+                    <Grid Grid.Row="1" Grid.Column="0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Image  Height="70" Margin="8" Grid.Row="0" Grid.Column="0">
+
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                <Setter Property="Source" Value="/UICommon;component/Resources/warning_10828.png"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding MessageToUser.Tipo}" Value="Warning">
+                                        <Setter Property="Source" Value="/UICommon;component/Resources/warning_10828.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding MessageToUser.Tipo}" Value="Error">
+                                        <Setter Property="Source" Value="/UICommon;component/Resources/emblemimportant_103451.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding MessageToUser.Tipo}" Value="Information">
+                                        <Setter Property="Source" Value="/UICommon;component/Resources/information_info.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding MessageToUser.Tipo}" Value="Success">
+                                        <Setter Property="Source" Value="/UICommon;component/Resources/Good_or_Tick.png"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding MessageToUser.Tipo}" Value="Waiting">
+                                        <Setter Property="Source" Value="/UICommon;component/Resources/information_info.png"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <TextBlock Text="{Binding MessageToUser.Message}"
+                                   Grid.Row="0" Grid.Column="1"
+                                TextWrapping="Wrap" MaxWidth="300" FontSize="15"/>
+                        <ProgressBar Grid.Row="1" Grid.ColumnSpan="2" Height="3" Value="{Binding MessageToUser.OpenProgress}" />
+
+                    </Grid>
+
+
+                <Image Source="/UICommon;component/Resources/exit.png" Height="20" HorizontalAlignment="Left" Margin="8" Grid.Row="2" Grid.Column="0" MouseDown="InformationPopUpCloseClick" />
+
+
+
+                </Grid>
+
+            </Border>
+        </Popup>
+</UserControl>

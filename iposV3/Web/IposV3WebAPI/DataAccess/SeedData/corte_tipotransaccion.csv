@@ -1,0 +1,3 @@
+﻿id;clave;nombre;sentidoinventario;sentidopago
+2;AJUSTEENTRADA;AJUSTE DE ENTRADA;1;0
+3;AJUSTESALIDA;AJUSTE DE SALIDA;-1;0

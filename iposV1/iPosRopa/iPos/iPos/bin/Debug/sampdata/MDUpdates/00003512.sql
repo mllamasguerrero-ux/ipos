@@ -1,0 +1,2 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+VALUES (235, 106, 'Impresion de Precios por Localidad', 'Impresion de Precios por Localidad', 235, 2, 22);

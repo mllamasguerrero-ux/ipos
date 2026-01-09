@@ -1,0 +1,12 @@
+EXECUTE BLOCK
+AS
+BEGIN
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (340, 'Reasignacion valores sin vale');
+  	
+	INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+	VALUES (340, 263, 'Reasignacion valores sin vale', 'Reasignacion valores sin vale', 340, 2, 91);
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 340);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 340);
+
+END

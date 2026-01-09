@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/26/2017 17:23:32" ReportInfo.Modified="08/13/2018 20:55:46" ReportInfo.CreatorVersion="2018.3.5.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Text31_BeforePrint(object sender, EventArgs e)
+    {
+      Decimal totalReporte = ((Decimal)Report.GetColumnValue(&quot;GastosSuma.SUMATOTAL&quot;)) + ((Decimal)Report.GetColumnValue(&quot;NCCreditoRemisionSuma.TOTAL&quot;)) + 
+                      ((Decimal)Report.GetColumnValue(&quot;DepositosSuma.MONTO&quot;)) + ((Decimal)Report.GetColumnValue(&quot;TotalNC.TOTAL&quot;)) + 
+                      ((Decimal)Report.GetColumnValue(&quot;VentasCreditoSuma.MONTO&quot;))  + ((Decimal)Report.GetColumnValue(&quot;TarjetaSuma.TOTAL&quot;));
+      
+      Text31.Text = totalReporte.ToString(&quot;N2&quot;);
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqGXDUjVHoOo39U7VHz/cohboC87uIIffsgzROmdYrsox2j7Fvo1J6UI098DpZ6Caws5XTp8ikXnDFNbVs55yql09wI+/WdC6l+YByQ7aQVw4ZdbYA6SEN8Rnf5fKUrUJHRtkgmCbZS5OCXoGAvKjVFt6XyE/8kgAeyla4IENPgVI=">
+      <TableDataSource Name="Table" Alias="Tarjeta" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;                        coalesce(doctopago.importe,0) total ,&#13;&#10;&#13;&#10;&#13;&#10;                        coalesce(doctopago.importe,0) * (coalesce(docto.comisiontarjetaempresa,0)/100.00) * case when docto.tipodoctoid in (23) then -1 else 1 end   comision  ,&#13;&#10;                        coalesce(doctopago.importe,0) * (coalesce(docto.comisiontarjetaempresa,0)/100.00) * (coalesce(docto.ivacomisiontarjetaempresa,0)/100) * case when docto.tipodoctoid in (23) then -1 else 1 end   ivacomision ,&#13;&#10;                        coalesce(doctopago.importe,0) -&#13;&#10;                          (coalesce(doctopago.importe,0) * (coalesce(docto.comisiontarjetaempresa,0)/100.00) * case when docto.tipodoctoid in (23) then -1 else 1 end ) -&#13;&#10;                          (coalesce(doctopago.importe,0) * (coalesce(docto.comisiontarjetaempresa,0)/100.00) * (coalesce(docto.ivacomisiontarjetaempresa,0)/100) * case when docto.tipodoctoid in (23) then -1 else 1 end)   subtotal&#13;&#10;&#13;&#10;&#13;&#10;                        from docto&#13;&#10;                        inner join doctopago on doctopago.doctoid = docto.id&#13;&#10;                        where docto.fecha = @fecha and&#13;&#10;                        (not (coalesce(docto.hatenidocredito,'N') = 'S' or  coalesce(docto.subtipodoctoid,0) in (7,8)))&#13;&#10;                        and docto.estatusdoctoid in (1,2)&#13;&#10;                        and  ((doctopago.tipopagoid = 1  and  docto.tipodoctoid in (21)) or (doctopago.tipopagoid = 2  and  docto.tipodoctoid in (23)))&#13;&#10;                        and coalesce(doctopago.formapagosatid,0)in (4,28,29)">
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="COMISION" DataType="System.Decimal"/>
+        <Column Name="IVACOMISION" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="VentasCredito" DataType="System.Int32" Enabled="true" SelectCommand="select persona.nombres, persona.apellidos, persona.nombre,  coalesce(docto.total,0)  - sum(case when coalesce(docto.esfacturaelectronica,'N') = 'S' then 0 else coalesce(doctodev.total,0) end ) monto&#13;&#10;                from docto&#13;&#10;                left join docto doctodev on doctodev.tipodoctoid = 22 and docto.id = doctodev.doctorefid and doctodev.estatusdoctoid = 1  and extract(month from docto.fecha) = extract(month from doctodev.fecha)&#13;&#10;                left join plazo on plazo.id = docto.plazo&#13;&#10;                left join persona on persona.id = docto.personaid&#13;&#10;                where docto.fecha = @fecha and&#13;&#10;                (coalesce(docto.hatenidocredito,'N') = 'S' or  coalesce(docto.subtipodoctoid,0) in (7,8) or docto.tipodoctoid = 31 )&#13;&#10;                and (docto.tipodoctoid in (21) or (docto.tipodoctoid = 31 and coalesce(docto.subtipodoctoid,0) not in (7,8)) ) and docto.estatusdoctoid = 1&#13;&#10;                --and coalesce(docto.esfacturaelectronica,'N') = :esfact&#13;&#10;                and coalesce(plazo.clave, '') &lt;&gt; 'T'&#13;&#10;                group by docto.id, docto.total ,persona.nombres, persona.apellidos, persona.nombre">
+        <Column Name="NOMBRES" DataType="System.String"/>
+        <Column Name="APELLIDOS" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="MONTO" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="NotasCreditoDiaFact" DataType="System.Int32" Enabled="true" SelectCommand="select docto.id, docto.foliosat, docto.seriesat, docto.timbradouuid, &#13;&#10;docto.total * (case when docto.tipodoctoid = 22 then 1 else -1 end) total&#13;&#10;                        from docto                 &#13;&#10;                        left join plazo on plazo.id = docto.plazo&#13;&#10;                        where docto.fecha = @fecha&#13;&#10;                        and docto.tipodoctoid in (22,24) and docto.estatusdoctoid in (1,2)&#13;&#10;                        and coalesce(docto.esfacturaelectronica,'N') = 'S'&#13;&#10;                        and coalesce(plazo.clave, '') &lt;&gt; 'T'&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FOLIOSAT" DataType="System.Int32"/>
+        <Column Name="SERIESAT" DataType="System.String"/>
+        <Column Name="TIMBRADOUUID" DataType="System.String"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table3" Alias="Depositos" DataType="System.Int32" Enabled="true" SelectCommand="select coalesce(docto.total, 0) * case when docto.tipodoctoid = 66 then 1 else -1 end  monto&#13;&#10;                    from docto&#13;&#10;                    where docto.fecha = @fecha&#13;&#10;                        and (docto.tipodoctoid in (66))&#13;&#10;                        and docto.estatusdoctoid in (1)">
+        <Column Name="MONTO" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="04/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table4" Alias="Gastos" DataType="System.Int32" Enabled="true" SelectCommand="select docto.id, docto.total&#13;&#10;                    from docto&#13;&#10;                    where docto.fecha = @fecha&#13;&#10;                        and (docto.tipodoctoid in (63))&#13;&#10;                        and docto.estatusdoctoid in (1)">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table5" Alias="TotalNC" DataType="System.Int32" Enabled="true" SelectCommand="select sum(coalesce(docto.subtotal,0) * (case when docto.tipodoctoid = 22 then 1 else -1 end))  subtotal, &#13;&#10;        sum(coalesce(docto.iva,0) * (case when docto.tipodoctoid = 22 then 1 else -1 end))  iva,&#13;&#10;        sum(coalesce(docto.total,0) * (case when docto.tipodoctoid = 22 then 1 else -1 end))  total&#13;&#10;                        from docto&#13;&#10;                        left join plazo on plazo.id = docto.plazo&#13;&#10;                        where docto.fecha = @fecha and&#13;&#10;                        (not (coalesce(docto.hatenidocredito,'N') = 'S' or  coalesce(docto.subtipodoctoid,0) in (7,8)))&#13;&#10;                        and docto.tipodoctoid in (22,24) and docto.estatusdoctoid in (1,2)&#13;&#10;                        and coalesce(plazo.clave, '') &lt;&gt; 'T'">
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table6" Alias="ImpuestosNC" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10; select movto.tasaieps,&#13;&#10;        sum(coalesce(movto.ieps,0) * (case when docto.tipodoctoid = 22 then 1 else -1 end))  ieps&#13;&#10;                        from docto&#13;&#10;                        left join movto on movto.doctoid = docto.id&#13;&#10;                        left join plazo on plazo.id = docto.plazo&#13;&#10;                        where docto.fecha = @fecha and&#13;&#10;                        (not (coalesce(docto.hatenidocredito,'N') = 'S' or  coalesce(docto.subtipodoctoid,0) in (7,8)))&#13;&#10;                        and docto.tipodoctoid in (22,24) and docto.estatusdoctoid in (1,2)&#13;&#10;                        and coalesce(plazo.clave, '') &lt;&gt; 'T'&#13;&#10;         group by movto.tasaieps">
+        <Column Name="TASAIEPS" DataType="System.Decimal"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table7" Alias="NCCreditoRemision" DataType="System.Int32" Enabled="true" SelectCommand="  select  docto.id, sum(coalesce(docto.total,0) * (case when docto.tipodoctoid = 22 then 1 else -1 end))   total&#13;&#10;                        from docto&#13;&#10;                        left join docto doctoventa on  doctoventa.tipodoctoid = 21 and doctoventa.id = docto.doctorefid  &#13;&#10;                        left join docto doctoopuesto on  ((doctoopuesto.tipodoctoid = 24 and docto.tipodoctoid = 22 and doctoopuesto.doctorefid = docto.id) or (doctoopuesto.tipodoctoid = 22 and docto.tipodoctoid = 24 and doctoopuesto.id = docto.doctorefid))  &#13;&#10;                        left join plazo on plazo.id = docto.plazo&#13;&#10;                        where doctoventa.fecha = @fecha and&#13;&#10;                        (coalesce(docto.hatenidocredito,'N') = 'S' or  coalesce(docto.subtipodoctoid,0) in (7,8) )&#13;&#10;                        and docto.tipodoctoid in (22,24) and docto.estatusdoctoid in (1,2)&#13;&#10;                        and coalesce(docto.esfacturaelectronica,'N') = 'N'&#13;&#10;                        --and (doctoventa.fecha is null or  extract(month from docto.fecha) &lt;&gt; extract(month from doctoventa.fecha))&#13;&#10;                        and coalesce(plazo.clave, '') &lt;&gt; 'T'&#13;&#10;                        and (coalesce(doctoopuesto.id,0) = 0 or doctoopuesto.fecha is null or extract(month from doctoopuesto.fecha) &lt;&gt; extract(month from docto.fecha))&#13;&#10;                        group by  docto.id&#13;&#10;&#13;&#10;&#13;&#10;  union&#13;&#10;&#13;&#10;   select docto.id, sum(coalesce(docto.total,0) * -1)   total&#13;&#10;                        from docto&#13;&#10;                        left join docto doctodevo on doctodevo.tipodoctoid = 22 and doctodevo.id = docto.doctorefid&#13;&#10;                        left join docto doctoventa on doctoventa.tipodoctoid = 21 and doctoventa.id = doctodevo.doctorefid&#13;&#10;                        left join plazo on plazo.id = docto.plazo&#13;&#10;                        where doctoventa.fecha = @fecha and&#13;&#10;                        (coalesce(docto.hatenidocredito,'N') = 'S' or  coalesce(docto.subtipodoctoid,0) in (7,8))&#13;&#10;                        and docto.tipodoctoid in (24) and docto.estatusdoctoid in (1,2)&#13;&#10;                        and coalesce(docto.esfacturaelectronica,'N') = 'N' &#13;&#10;                        --and (doctoventa.fecha is null or  extract(month from docto.fecha) &lt;&gt; extract(month from doctoventa.fecha))&#13;&#10;                        and coalesce(plazo.clave, '') &lt;&gt; 'T'&#13;&#10;                        and (doctodevo.fecha is null or extract(month from doctodevo.fecha) &lt;&gt; extract(month from docto.fecha))&#13;&#10;                        &#13;&#10;                        group by docto.id">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table8" Alias="Sucursal" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;first 1 sucursal.nombre as sucursal&#13;&#10;from parametro&#13;&#10;left join sucursal on sucursal.id = parametro.sucursalid">
+        <Column Name="SUCURSAL" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table9" Alias="TarjetaSuma" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;                        sum(coalesce(doctopago.importe,0)) total ,&#13;&#10;&#13;&#10;&#13;&#10;                        sum(coalesce(doctopago.importe,0) * (coalesce(docto.comisiontarjetaempresa,0)/100.00) * case when docto.tipodoctoid in (23) then -1 else 1 end)   comision  ,&#13;&#10;                        sum(coalesce(doctopago.importe,0) * (coalesce(docto.comisiontarjetaempresa,0)/100.00) * (coalesce(docto.ivacomisiontarjetaempresa,0)/100) * case when docto.tipodoctoid in (23) then -1 else 1 end)   ivacomision ,&#13;&#10;                       sum( coalesce(doctopago.importe,0) -&#13;&#10;                          (coalesce(doctopago.importe,0) * (coalesce(docto.comisiontarjetaempresa,0)/100.00) * case when docto.tipodoctoid in (23) then -1 else 1 end ) -&#13;&#10;                          (coalesce(doctopago.importe,0) * (coalesce(docto.comisiontarjetaempresa,0)/100.00) * (coalesce(docto.ivacomisiontarjetaempresa,0)/100) * case when docto.tipodoctoid in (23) then -1 else 1 end) )  subtotal&#13;&#10;&#13;&#10;&#13;&#10;                        from docto&#13;&#10;                        inner join doctopago on doctopago.doctoid = docto.id&#13;&#10;                        where docto.fecha = @fecha and&#13;&#10;                        (not (coalesce(docto.hatenidocredito,'N') = 'S' or  coalesce(docto.subtipodoctoid,0) in (7,8)))&#13;&#10;                        and docto.estatusdoctoid in (1,2)&#13;&#10;                        and  ((doctopago.tipopagoid = 1  and  docto.tipodoctoid in (21)) or (doctopago.tipopagoid = 2  and  docto.tipodoctoid in (23)))&#13;&#10;                        and coalesce(doctopago.formapagosatid,0)in (4,28,29)">
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="COMISION" DataType="System.Decimal"/>
+        <Column Name="IVACOMISION" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table10" Alias="VentasCreditoSuma" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;select sum(monto) monto from&#13;&#10;(&#13;&#10;select persona.nombres, persona.apellidos, persona.nombre,  coalesce(docto.total,0)  - sum(case when coalesce(docto.esfacturaelectronica,'N') = 'S' then 0 else coalesce(doctodev.total,0) end ) monto&#13;&#10;                from docto&#13;&#10;                left join docto doctodev on doctodev.tipodoctoid = 22 and docto.id = doctodev.doctorefid and doctodev.estatusdoctoid = 1  and extract(month from docto.fecha) = extract(month from doctodev.fecha)&#13;&#10;                left join plazo on plazo.id = docto.plazo&#13;&#10;                left join persona on persona.id = docto.personaid&#13;&#10;                where docto.fecha = @fecha and&#13;&#10;                (coalesce(docto.hatenidocredito,'N') = 'S' or  coalesce(docto.subtipodoctoid,0) in (7,8) or docto.tipodoctoid = 31 )&#13;&#10;                and (docto.tipodoctoid in (21) or (docto.tipodoctoid = 31 and coalesce(docto.subtipodoctoid,0) not in (7,8)) ) and docto.estatusdoctoid = 1&#13;&#10;                --and coalesce(docto.esfacturaelectronica,'N') = :esfact&#13;&#10;                and coalesce(plazo.clave, '') &lt;&gt; 'T'&#13;&#10;                group by docto.id, docto.total ,persona.nombres, persona.apellidos, persona.nombre&#13;&#10;) query">
+        <Column Name="MONTO" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table11" Alias="NotasCreditoDiaFactSuma" DataType="System.Int32" Enabled="true" SelectCommand="select sum(&#13;&#10;docto.total * (case when docto.tipodoctoid = 22 then 1 else -1 end))  total, count(*) cuenta&#13;&#10;                        from docto                 &#13;&#10;                        left join plazo on plazo.id = docto.plazo&#13;&#10;                        where docto.fecha = @fecha&#13;&#10;                        and docto.tipodoctoid in (22,24) and docto.estatusdoctoid in (1,2)&#13;&#10;                        and coalesce(docto.esfacturaelectronica,'N') = 'S'&#13;&#10;                        and coalesce(plazo.clave, '') &lt;&gt; 'T'">
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="CUENTA" DataType="System.Int32"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table12" Alias="DepositosSuma" DataType="System.Int32" Enabled="true" SelectCommand="select sum(coalesce(docto.total, 0) * case when docto.tipodoctoid = 66 then 1 else -1 end)  monto&#13;&#10;                    from docto&#13;&#10;                    where docto.fecha = @fecha&#13;&#10;                        and (docto.tipodoctoid in (66))&#13;&#10;                        and docto.estatusdoctoid in (1)">
+        <Column Name="MONTO" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table13" Alias="GastosSuma" DataType="System.Int32" Enabled="true" SelectCommand="select sum(docto.total) sumatotal&#13;&#10;                    from docto&#13;&#10;                    where docto.fecha = @fecha&#13;&#10;                        and (docto.tipodoctoid in (63))&#13;&#10;                        and docto.estatusdoctoid in (1)">
+        <Column Name="SUMATOTAL" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table14" Alias="NCCreditoRemisionSuma" DataType="System.Int32" Enabled="true" SelectCommand=" &#13;&#10;select sum(total) total&#13;&#10;from&#13;&#10;(&#13;&#10;   select  docto.id, sum(coalesce(docto.total,0) * (case when docto.tipodoctoid = 22 then 1 else -1 end))   total&#13;&#10;                        from docto&#13;&#10;                        left join docto doctoventa on  doctoventa.tipodoctoid = 21 and doctoventa.id = docto.doctorefid  &#13;&#10;                        left join docto doctoopuesto on  ((doctoopuesto.tipodoctoid = 24 and docto.tipodoctoid = 22 and doctoopuesto.doctorefid = docto.id) or (doctoopuesto.tipodoctoid = 22 and docto.tipodoctoid = 24 and doctoopuesto.id = docto.doctorefid))  &#13;&#10;                        left join plazo on plazo.id = docto.plazo&#13;&#10;                        where doctoventa.fecha = @fecha and&#13;&#10;                        (coalesce(docto.hatenidocredito,'N') = 'S' or  coalesce(docto.subtipodoctoid,0) in (7,8) )&#13;&#10;                        and docto.tipodoctoid in (22,24) and docto.estatusdoctoid in (1,2)&#13;&#10;                        and coalesce(docto.esfacturaelectronica,'N') = 'N'&#13;&#10;                        and (doctoventa.fecha is null or  extract(month from docto.fecha) = extract(month from doctoventa.fecha))&#13;&#10;                        and coalesce(plazo.clave, '') &lt;&gt; 'T'&#13;&#10;                        and (coalesce(doctoopuesto.id,0) = 0 or doctoopuesto.fecha is null or extract(month from doctoopuesto.fecha) &lt;&gt; extract(month from docto.fecha))&#13;&#10;                        group by  docto.id&#13;&#10;&#13;&#10;&#13;&#10;  union&#13;&#10;&#13;&#10;   select docto.id, sum(coalesce(docto.total,0) * -1)   total&#13;&#10;                        from docto&#13;&#10;                        left join docto doctodevo on doctodevo.tipodoctoid = 22 and doctodevo.id = docto.doctorefid&#13;&#10;                        left join docto doctoventa on doctoventa.tipodoctoid = 21 and doctoventa.id = doctodevo.doctorefid&#13;&#10;                        left join plazo on plazo.id = docto.plazo&#13;&#10;                        where doctoventa.fecha = @fecha and&#13;&#10;                        (coalesce(docto.hatenidocredito,'N') = 'S' or  coalesce(docto.subtipodoctoid,0) in (7,8))&#13;&#10;                        and docto.tipodoctoid in (24) and docto.estatusdoctoid in (1,2)&#13;&#10;                        and coalesce(docto.esfacturaelectronica,'N') = 'N' &#13;&#10;                        and (doctoventa.fecha is null or  extract(month from docto.fecha) = extract(month from doctoventa.fecha))&#13;&#10;                        and coalesce(plazo.clave, '') &lt;&gt; 'T'&#13;&#10;                        and (doctodevo.fecha is null or extract(month from doctodevo.fecha) &lt;&gt; extract(month from docto.fecha))&#13;&#10;                        &#13;&#10;                        group by docto.id&#13;&#10;&#13;&#10;) query">
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table15" Alias="CORTE" DataType="System.Int32" Enabled="true" SelectCommand="SELECT SUM(DOCTO.total)  FROM DOCTO WHERE DOCTO.tipodoctoid=21 and DOCTO.estatusdoctoid=1 AND docto.fecha = @fecha">
+        <Column Name="SUM" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fecha" DataType="System.DateTime"/>
+    <Total Name="TotalTarjeta" Expression="[Tarjeta.TOTAL]" Evaluator="Data2"/>
+    <Total Name="TotalVentasCredito" Expression="[VentasCredito.MONTO]" Evaluator="Data3"/>
+    <Total Name="TotalNCDiasFact" Evaluator="Data4"/>
+    <Total Name="TotalDepositos" Expression="[Depositos.MONTO]" Evaluator="Data1"/>
+    <Total Name="TotalGasto" Expression="[Gastos.TOTAL]" Evaluator="Data1"/>
+    <Total Name="TotalNCRemision" Expression="[NCCreditoRemision.TOTAL]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="103.95">
+      <TextObject Name="Text21" Left="557.55" Top="85.05" Width="94.5" Height="18.9" Text="Fecha" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text22" Left="652.05" Top="85.05" Width="132.3" Height="18.9" Text="[fecha]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text23" Left="793.8" Top="85.05" Width="151.2" Height="18.9" Text="DEVOLUCION TOPE"/>
+      <TextObject Name="Text24" Left="954.45" Top="85.05" Width="66.15" Height="18.9" Text="0"/>
+      <TextObject Name="Text34" Left="406.35" Top="9.45" Width="264.6" Height="18.9" Text="CORTE DE CAJA" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text36" Left="406.35" Top="28.35" Width="264.6" Height="18.9" Text="[Sucursal.SUCURSAL]" HorzAlign="Center" Font="Arial, 14pt"/>
+      <TextObject Name="Text40" Left="236.25" Top="85.05" Width="302.4" Height="18.9" Text="[NotasCreditoDiaFactSuma.CUENTA] notas fiscales"/>
+      <ShapeObject Name="Shape1" Left="406.35" Width="264.6" Height="56.7"/>
+      <ChildBand Name="Child1" Top="106.62" Width="1047.06" Height="198.45" CanGrow="true">
+        <SubreportObject Name="Subreport5" Top="18.9" Width="236.25" Height="170.1" ReportPage="Page6"/>
+        <SubreportObject Name="Subreport6" Left="264.6" Top="18.9" Width="274.05" Height="170.1" ReportPage="Page7"/>
+        <SubreportObject Name="Subreport4" Left="557.55" Top="18.9" Width="236.25" Height="170.1" ReportPage="Page5"/>
+        <SubreportObject Name="Subreport7" Left="803.25" Top="18.9" Width="236.25" Height="170.1" ReportPage="Page8"/>
+        <ChildBand Name="Child2" Top="307.73" Width="1047.06" Height="217.35">
+          <SubreportObject Name="Subreport2" Left="9.45" Top="47.25" Width="453.6" Height="170.1" ReportPage="Page3"/>
+          <SubreportObject Name="Subreport1" Left="472.5" Top="47.25" Width="567" Height="170.1" ReportPage="Page2"/>
+          <TextObject Name="Text45" Left="9.45" Top="28.35" Width="453.6" Height="18.9" Text="Ventas de credito , remision o facturas" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TextObject Name="Text59" Left="472.5" Top="28.35" Width="567" Height="18.9" Text="Ventas de tarjeta" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <ChildBand Name="Child3" Top="527.75" Width="1047.06" Height="217.35">
+            <SubreportObject Name="Subreport3" Left="472.5" Top="28.35" Width="567" Height="160.65" ReportPage="Page4"/>
+            <TextObject Name="Text28" Left="28.35" Top="28.35" Width="94.5" Height="18.9" Text="Total"/>
+            <TextObject Name="Text29" Left="28.35" Top="56.7" Width="94.5" Height="18.9" Text="Corte"/>
+            <TextObject Name="Text30" Left="28.35" Top="85.05" Width="94.5" Height="18.9" Text="Diferencia"/>
+            <TextObject Name="Text31" Left="151.2" Top="28.35" Width="132.3" Height="18.9" BeforePrintEvent="Text31_BeforePrint" HorzAlign="Right" Font="Arial, 10pt, style=Italic"/>
+            <TextObject Name="Text32" Left="151.2" Top="56.7" Width="132.3" Height="18.9" Text="[CORTE.SUM]" HorzAlign="Right" Font="Arial, 10pt, style=Italic"/>
+            <TextObject Name="Text33" Left="151.2" Top="85.05" Width="132.3" Height="18.9" Text="[ToDecimal(Text31.Text) - ToDecimal(Text32.Text) ]" HorzAlign="Right" Font="Arial, 10pt, style=Italic"/>
+            <TextObject Name="Text60" Left="472.5" Top="18.9" Width="567" Height="18.9" Text="Notas fiscales" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          </ChildBand>
+        </ChildBand>
+      </ChildBand>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="747.77" Width="1047.06" Height="18.9"/>
+    <DataBand Name="Data1" Top="769.33" Width="1047.06" Height="18.9"/>
+    <PageFooterBand Name="PageFooter1" Top="790.9" Width="1047.06" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <ReportPage Name="Page2" PaperWidth="150" FirstPageSource="15" OtherPagesSource="15" Guides="519.75" Border.Lines="All">
+    <DataBand Name="Data2" Top="12.12" Width="491.4" DataSource="Table">
+      <DataHeaderBand Name="DataHeader1" Width="491.4" Height="9.45">
+        <TextObject Name="Text48" Left="245.7" Width="94.5" Height="9.45" Text="SUBTOTAL" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text49" Left="340.2" Width="75.6" Height="9.45" Text="COMISION" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text50" Left="415.8" Width="75.6" Height="9.45" Text="IVA ACRED" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text51" Left="160.65" Width="85.05" Height="9.45" Text="TOTAL" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text52" Width="151.2" Height="9.45" Text="NOMBRE" Format="Currency" Format.UseLocale="true" WordWrap="false" Font="Arial, 7pt, style=Bold" Trimming="EllipsisCharacter"/>
+      </DataHeaderBand>
+      <DataBand Name="Data10" Top="14.78" Width="491.4" Height="9.45">
+        <TextObject Name="Text1" Left="245.7" Width="94.5" Height="9.45" Text="[Tarjeta.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text2" Left="340.2" Width="75.6" Height="9.45" Text="[Tarjeta.COMISION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text3" Left="415.8" Width="75.6" Height="9.45" Text="[Tarjeta.IVACOMISION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text4" Left="160.65" Width="85.05" Height="9.45" Text="[Tarjeta.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <DataFooterBand Name="DataFooter2" Top="26.9" Width="491.4" Height="9.45">
+        <TextObject Name="Text26" Left="160.65" Width="85.05" Height="9.45" Text="[TarjetaSuma.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text41" Left="245.7" Width="94.5" Height="9.45" Text="[TarjetaSuma.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text43" Left="340.2" Width="75.6" Height="9.45" Text="[TarjetaSuma.COMISION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text54" Left="415.8" Width="75.6" Height="9.45" Text="[TarjetaSuma.IVACOMISION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text61" Width="160.65" Height="9.45" Text="TOTALES VENTA TARJETA" Format="Currency" Format.UseLocale="true" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataFooterBand>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page3" PaperWidth="120" FirstPageSource="15" OtherPagesSource="15">
+    <DataBand Name="Data3" Top="12.12" Width="378" DataSource="Table1">
+      <DataHeaderBand Name="DataHeader2" Width="378" Height="9.45">
+        <TextObject Name="Text46" Width="264.6" Height="9.45" Text="NOMBRE" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text47" Left="264.6" Width="113.4" Height="9.45" Text="TOTAL" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt, style=Bold" Trimming="EllipsisCharacter"/>
+      </DataHeaderBand>
+      <DataBand Name="Data11" Top="14.78" Width="378" Height="9.45">
+        <TextObject Name="Text5" Width="264.6" Height="9.45" Text="[VentasCredito.NOMBRE]" Font="Arial, 7pt"/>
+        <TextObject Name="Text6" Left="264.6" Width="113.4" Height="9.45" Text="[VentasCredito.MONTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <DataFooterBand Name="DataFooter3" Top="26.9" Width="378" Height="9.45">
+        <TextObject Name="Text27" Left="264.6" Width="113.4" Height="9.45" Text="[VentasCreditoSuma.MONTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text62" Left="75.6" Width="189" Height="9.45" Text="TOTALES VENTA DE CREDITO" Format="Currency" Format.UseLocale="true" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataFooterBand>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page4" PaperWidth="150" FirstPageSource="15" OtherPagesSource="15">
+    <DataBand Name="Data4" Top="12.12" Width="491.4" DataSource="Table2">
+      <DataHeaderBand Name="DataHeader3" Width="491.4" Height="9.45">
+        <TextObject Name="Text53" Width="103.95" Height="9.45" Text="Folio fiscal" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text55" Left="132.3" Width="103.95" Height="9.45" Text="Total" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text56" Left="236.25" Width="255.15" Height="9.45" Text="UUID" Font="Arial, 7pt, style=Bold"/>
+      </DataHeaderBand>
+      <DataBand Name="Data12" Top="14.78" Width="491.4" Height="9.45">
+        <TextObject Name="Text7" Width="94.5" Height="9.45" Text="[NotasCreditoDiaFact.FOLIOSAT]" Font="Arial, 7pt"/>
+        <TextObject Name="Text8" Left="94.5" Width="37.8" Height="9.45" Text="[NotasCreditoDiaFact.SERIESAT]" Font="Arial, 7pt"/>
+        <TextObject Name="Text9" Left="132.3" Width="103.95" Height="9.45" Text="[NotasCreditoDiaFact.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text10" Left="236.25" Width="255.15" Height="9.45" Text="[NotasCreditoDiaFact.TIMBRADOUUID]" Font="Arial, 7pt"/>
+      </DataBand>
+      <DataFooterBand Name="DataFooter4" Top="26.9" Width="491.4" Height="9.45">
+        <TextObject Name="Text35" Left="132.3" Width="103.95" Height="9.45" Text="[NotasCreditoDiaFactSuma.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text63" Left="28.35" Width="94.5" Height="9.45" Text="TOTAL:" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataFooterBand>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page5" PaperWidth="62.5" FirstPageSource="15" OtherPagesSource="15">
+    <DataBand Name="Data5" Top="12.12" Width="160.65" DataSource="Table3">
+      <DataHeaderBand Name="DataHeader4" Width="160.65" Height="9.45">
+        <TextObject Name="Text57" Width="75.6" Height="9.45" Text="Depositos" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt, style=Bold" Trimming="EllipsisCharacter"/>
+      </DataHeaderBand>
+      <DataBand Name="Data13" Top="14.78" Width="160.65" Height="9.45">
+        <TextObject Name="Text11" Left="66.15" Width="94.5" Height="9.45" Text="[Depositos.MONTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <DataFooterBand Name="DataFooter5" Top="26.9" Width="160.65" Height="9.45">
+        <TextObject Name="Text37" Left="66.15" Width="94.5" Height="9.45" Text="[DepositosSuma.MONTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text64" Width="66.15" Height="9.45" Text="TOTAL:" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataFooterBand>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page6" PaperWidth="62.5" FirstPageSource="15" OtherPagesSource="15">
+    <DataBand Name="Data6" Top="12.12" Width="160.65" DataSource="Table4">
+      <DataHeaderBand Name="DataHeader6" Width="160.65" Height="9.45">
+        <TextObject Name="Text58" Width="94.5" Height="9.45" Text="Gastos" Format="Currency" Format.UseLocale="true" WordWrap="false" Font="Arial, 7pt, style=Bold" Trimming="EllipsisCharacter"/>
+      </DataHeaderBand>
+      <DataBand Name="Data14" Top="14.78" Width="160.65" Height="9.45">
+        <TextObject Name="Text12" Left="66.15" Width="94.5" Height="9.45" Text="[Gastos.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <DataFooterBand Name="DataFooter6" Top="26.9" Width="160.65" Height="9.45">
+        <TextObject Name="Text38" Left="66.15" Width="94.5" Height="9.45" Text="[GastosSuma.SUMATOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text65" Width="66.15" Height="9.45" Text="TOTAL:" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataFooterBand>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page7" PaperWidth="72.5" FirstPageSource="15" OtherPagesSource="15">
+    <DataBand Name="Data7" Top="12.12" Width="198.45" Height="9.45" DataSource="Table5">
+      <TextObject Name="Text13" Left="75.6" Width="122.85" Height="9.45" Text="[TotalNC.SUBTOTAL]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text16" Width="75.6" Height="9.45" Text="Suma" Font="Arial, 7pt"/>
+      <DataHeaderBand Name="DataHeader5" Width="198.45" Height="9.45">
+        <TextObject Name="Text42" Width="56.7" Height="9.45" Text="NC" HorzAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      </DataHeaderBand>
+      <DataBand Name="Data8" Top="24.23" Width="198.45" Height="9.45" DataSource="Table6">
+        <TextObject Name="Text19" Width="75.6" Height="9.45" Text="Ieps [ImpuestosNC.TASAIEPS]" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text20" Left="75.6" Width="122.85" Height="9.45" Text="[ImpuestosNC.IEPS]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <DataFooterBand Name="DataFooter1" Top="36.35" Width="198.45" Height="18.9">
+        <TextObject Name="Text14" Left="75.6" Width="122.85" Height="9.45" Text="[TotalNC.IVA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text15" Left="75.6" Top="9.45" Width="122.85" Height="9.45" Text="[TotalNC.TOTAL]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text17" Width="75.6" Height="9.45" Text="Iva" Font="Arial, 7pt"/>
+        <TextObject Name="Text18" Top="9.45" Width="75.6" Height="9.45" Text="Total" Font="Arial, 7pt"/>
+      </DataFooterBand>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page8" PaperWidth="62.5" FirstPageSource="15" OtherPagesSource="15">
+    <DataBand Name="Data9" Top="12.12" Width="160.65" DataSource="Table14">
+      <DataHeaderBand Name="DataHeader7" Width="160.65" Height="9.45">
+        <TextObject Name="Text44" Width="47.25" Height="9.45" Text="N" HorzAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      </DataHeaderBand>
+      <DataBand Name="Data15" Top="14.78" Width="160.65" Height="9.45">
+        <TextObject Name="Text66" Width="66.15" Height="9.45" Text="TOTAL:" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text39" Left="66.15" Width="94.5" Height="9.45" Text="[NCCreditoRemisionSuma.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <DataFooterBand Name="DataFooter7" Top="26.9" Width="160.65"/>
+    </DataBand>
+  </ReportPage>
+</Report>

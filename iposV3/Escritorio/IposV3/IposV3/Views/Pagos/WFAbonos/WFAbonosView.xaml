@@ -1,0 +1,430 @@
+
+<UserControl x:Class="IposV3.Views.WFAbonosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+                xmlns:SfExt="clr-namespace:SyncfusionExt;assembly=UICommon"
+            xmlns:local="clr-namespace:IposV3"
+            xmlns:localCommon="clr-namespace:UICommon;assembly=UICommon"
+            xmlns:localCont="clr-namespace:Controls;assembly=UICommon"
+            xmlns:localConv="clr-namespace:Converters;assembly=UICommon"
+              xmlns:cbind="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ac="clr-namespace:AdornedControl;assembly=AdornedControl"
+             mc:Ignorable="d"
+             Name="CurrentUserControl"
+            VerticalAlignment="Stretch"
+            Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.98'}"
+             >
+
+    <UserControl.Resources>
+        <localConv:DecimalNullableConverter x:Key="DecimalNullableConverter"/>
+        <localConv:IntNullableConverter x:Key="IntNullableConverter"/>
+        <localConv:DateTimeOffsetToDateTimeConverter x:Key="DateTimeOffsetToDateTimeConverter"/>
+
+        <Style x:Key="customCellStyle" TargetType="Syncfusion:VirtualizingCellsControl">
+            <Setter Property="cal:Message.Attach" Value="[Event MouseDoubleClick] = [Action SelectItemByCell($dataContext)]"/>
+        </Style>
+
+        <Style x:Key="filterControlStyle" TargetType="Syncfusion:GridFilterControl">
+            <Setter Property="FilterMode" Value="AdvancedFilter" />
+        </Style>
+
+
+    </UserControl.Resources>
+
+    <ScrollViewer x:Name="MainScrollViewer"   MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.90'}"
+                  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+        <StackPanel Name="ForePanel"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"   >
+            <localCont:MessageBoxV2 MessageToUser="{Binding MessageToUser}"  Width="10"  HorizontalAlignment="Right"/>
+            <ScrollViewer x:Name="ScrollViewerWrap" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" 
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=15*x/60}" MinHeight="50">
+                <WrapPanel Name="MainPanel"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" MinWidth="100" MinHeight="100" >
+                    <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"    >
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}">Abono</TextBlock>
+                    </StackPanel>
+                    <WrapPanel  MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"   >
+
+                        <Button MinWidth="120" Margin="6" Padding="6" x:Name="SeleccionarTransaccionConSaldo"
+                                Content="Seleccionar" Visibility="{cbind:Binding Path=!BIsReadOnly}" Background="LightGray"/>
+                    </WrapPanel>
+
+
+                    <Border  Visibility="{cbind:Binding Path=EsTransaccionDeSalida}"
+                        Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="DimGray" BorderThickness="1">
+                        <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}" >
+                            <Label Content="Nombre:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ClientePago.Nombres}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Domicilio:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ClientePago.Domicilio_Calle}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Ciudad:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ClientePago.Domicilio_Ciudad}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="CP:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ClientePago.Domicilio_Codigopostal}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="RFC:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ClientePago.Rfc}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Colonia:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ClientePago.Domicilio_Colonia}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Estado:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ClientePago.Domicilio_Estado}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Tel:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ClientePago.Telefono1}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+
+                        </WrapPanel>
+                    </Border>
+
+
+                    <Border  Visibility="{cbind:Binding Path=!EsTransaccionDeSalida}" 
+                        Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="DimGray" BorderThickness="1">
+                        <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}" >
+                            <Label Content="Nombre:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ProveedorPago.Nombres}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Domicilio:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ProveedorPago.Domicilio_Calle}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Ciudad:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ProveedorPago.Domicilio_Ciudad}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="CP:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ProveedorPago.Domicilio_Codigopostal}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="RFC:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ProveedorPago.Rfc}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Colonia:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ProveedorPago.Domicilio_Colonia}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Estado:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ProveedorPago.Domicilio_Estado}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Tel:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding ProveedorPago.Telefono1}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+
+                        </WrapPanel>
+                    </Border>
+
+
+                    <Border  
+                        Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="DimGray" BorderThickness="1">
+                        <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}" >
+                            <Label Content="Folio:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding CurrentDocto.Folio}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Fecha:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding CurrentDocto.Fecha}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Total:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding CurrentDocto.Total}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Ab. No Aplicados:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Folio Facturado:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding CurrentDocto.Docto_fact_elect_Foliosat}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Saldo:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="{Binding CurrentDocto.Saldo}" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+                            <Label Content="Saldo No Aplicado:" Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.75*x/12.5}" />
+                            <Label Content="" Style="{DynamicResource LabelValueFormTemplate}" Margin="10,0,10,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.75*x/12.5}" />
+
+
+                        </WrapPanel>
+                    </Border>
+
+                </WrapPanel>
+            </ScrollViewer>
+
+            <ScrollViewer  HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" 
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=20*x/60}" MinHeight="50">
+
+
+                <ac:AdornedControl IsAdornerVisible="{Binding IsBusy}"
+		        >
+                    <ac:AdornedControl.AdornerContent>
+                        <localCont:LoadingWait></localCont:LoadingWait>
+                    </ac:AdornedControl.AdornerContent>
+
+                    <Syncfusion:SfDataGrid x:Name="SfTableDataGridView" 
+                      ItemsSource="{Binding AbonosItems}" 
+                      RowStyle="{StaticResource customCellStyle}"
+                       AllowFiltering="True"
+                       FilterPopupStyle="{StaticResource filterControlStyle}"
+                      Margin="2,2,2,2"  AutoGenerateColumns="False" Background="#FFFFFFFF" IsReadOnly="True"  RowHeight="35" HorizontalAlignment="Left"   
+                                   MinWidth="100" Width="{Binding ElementName=ForePanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=20*x/60}" MinHeight="150"  >
+
+                        <Syncfusion:SfDataGrid.Resources>
+                            <SfExt:BindingProxy x:Key="ProxyElement" Data="{Binding}"/>
+                        </Syncfusion:SfDataGrid.Resources>
+
+                        <Syncfusion:SfDataGrid.Columns>
+
+                            <Syncfusion:GridTemplateColumn  AllowFocus="False"  Width="50" IsHidden="{cbind:Binding Source={StaticResource ProxyElement}, Path=!Data.HabilitarVerAbono}">
+                                <Syncfusion:GridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Width="35" cal:Message.Attach="[Event Click]=[Edititem($dataContext)]"  Style="{StaticResource MaterialDesignIconButton}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Eye"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </Syncfusion:GridTemplateColumn.CellTemplate>
+                            </Syncfusion:GridTemplateColumn>
+
+
+                            <Syncfusion:GridTextColumn  MappingName="EmpresaId" HeaderText="EmpresaId" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="SucursalId" HeaderText="SucursalId" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Id" HeaderText="Id" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Pagoid" HeaderText="Pagoid" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Fecha" HeaderText="Fecha" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Fechahora" HeaderText="Fechahora" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Formapago" HeaderText="Formapago" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Monto" HeaderText="Monto" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Formapagoclave" HeaderText="Formapagoclave" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Formapagonombre" HeaderText="Formapagonombre" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Formapagosatclave" HeaderText="Formapagosatclave" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Formapagosatnombre" HeaderText="Formapagosatnombre" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Referenciabancaria" HeaderText="Referenciabancaria" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Tipopagoclave" HeaderText="Tipopagoclave" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Tipopagonombre" HeaderText="Tipopagonombre" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Bancoclave" HeaderText="Bancoclave" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Banconombre" HeaderText="Banconombre" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Fechaelaboracion" HeaderText="Fechaelaboracion" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Fecharecepcion" HeaderText="Fecharecepcion" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Reciboelectronicoid" HeaderText="Reciboelectronicoid" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Esconpinpadbancomer" HeaderText="Esconpinpadbancomer" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Bancomerparamid" HeaderText="Bancomerparamid" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Comision" HeaderText="Comision" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Notas" HeaderText="Notas" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Aplicado" HeaderText="Aplicado" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Fechaaplicado" HeaderText="Fechaaplicado" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Montopagocompuesto" HeaderText="Montopagocompuesto" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Refinterno" HeaderText="Refinterno" ColumnSizer="SizeToHeader"/>
+
+                            <Syncfusion:GridTextColumn  MappingName="Tipoabononombre" HeaderText="Tipoabononombre" ColumnSizer="SizeToHeader"/>
+
+                        </Syncfusion:SfDataGrid.Columns>
+                    </Syncfusion:SfDataGrid>
+                </ac:AdornedControl>
+
+            </ScrollViewer>
+
+
+            <ScrollViewer  HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" 
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=25*x/60}" MinHeight="50">
+
+
+                <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}">
+                    <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,20">
+                        <Border BorderThickness="0,2,0,0" BorderBrush="LightBlue"  >
+                            <WrapPanel Margin="0,10,0,0" IsEnabled="{cbind:Binding !BIsItemReadOnly}">
+
+                                <WrapPanel  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}">
+
+                                    <WrapPanel Margin="0,0,20,0" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.5*x/12.5}"  Height="30"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="F. Recepcion:" />
+                                        <DatePicker x:Name="DoctoPagoItem_Fecharecepcion" HorizontalAlignment="Left" Margin="5,5,0,0"  VerticalAlignment="Top" SelectedDate="{Binding Converter={StaticResource DateTimeOffsetToDateTimeConverter}, Path=DoctoPagoItem.Fecharecepcion}"  IsEnabled="{cbind:Binding !BIsItemReadOnly}"  />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Fecharecepcion}"  Margin="0,0,0,0"/>
+                                    </WrapPanel>
+
+                                    <WrapPanel Margin="20,0,20,0" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.5*x/12.5}"  Height="30"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="F. Elaboracion:" />
+                                        <DatePicker x:Name="DoctoPagoItem_Fechaelaboracion" HorizontalAlignment="Left" Margin="5,5,0,0"  VerticalAlignment="Top" SelectedDate="{Binding Converter={StaticResource DateTimeOffsetToDateTimeConverter}, Path=DoctoPagoItem.Fechaelaboracion}"  IsEnabled="{cbind:Binding !BIsItemReadOnly}" />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Fechaelaboracion}"  Margin="0,0,0,0"/>
+                                    </WrapPanel>
+
+                                    <WrapPanel Margin="20,0,20,0" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.5*x/12.5}"  Height="30"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="F. Aplicado:" />
+                                        <DatePicker x:Name="DoctoPagoItem_Fechaaplicado" HorizontalAlignment="Left" Margin="5,5,0,0"  VerticalAlignment="Top" SelectedDate="{Binding Converter={StaticResource DateTimeOffsetToDateTimeConverter}, Path=DoctoPagoItem.Fechaaplicado}"  IsEnabled="{cbind:Binding !BIsItemReadOnly}" />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Fechaaplicado}"  Margin="0,0,0,0"/>
+                                    </WrapPanel>
+
+                                    <WrapPanel Margin="20,0,20,0" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.5*x/12.5}"  Height="30"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Aplicado" HorizontalAlignment="Center" />
+                                        <CheckBox x:Name="DoctoPagoItem_Aplicado"  IsChecked="{Binding DoctoPagoItem.Aplicado, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,5,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsItemReadOnly}" />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Aplicado}"  Margin="0,0,0,0"/>
+                                    </WrapPanel>
+
+                                </WrapPanel>
+
+                                <WrapPanel Margin="0,10,10,10" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}">
+
+                                    <WrapPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2*x/12.5}"  Height="30"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,20,0"  Content="Monto:" />
+                                        <Syncfusion:DoubleTextBox x:Name="DoctoPagoItem_Monto" HorizontalAlignment="Stretch"  Margin="20,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding DoctoPagoItem.Monto, Converter={StaticResource DecimalNullableConverter}}" VerticalAlignment="Top"  IsScrollingOnCircle="False"   />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Monto}"  Margin="0,0,0,0"/>
+                                    </WrapPanel>
+
+                                </WrapPanel>
+
+                                <WrapPanel Margin="5,0,20,10" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.5*x/12.5}">
+
+                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.5*x/12.5}"  Height="65"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Forma de pago" />
+                                        <ComboBox  x:Name="DoctoPagoItem_Formapagoid" 
+			                                                       ItemsSource="{Binding Catalogs[Formapago]}"
+                                                                   SelectedValuePath="Id"
+                                                                   SelectedValue="{Binding DoctoPagoItem.Formapagoid}"
+                                                                   DisplayMemberPath="Nombre" IsReadOnly="{Binding BIsItemReadOnly}"/>
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Formapagoid}"  Margin="0,0,0,0"/>
+                                    </StackPanel>
+
+
+                                </WrapPanel>
+
+                                <WrapPanel Margin="20,0,10,0" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=9*x/12.5}" IsEnabled="{cbind:Binding Path=HabilitarPanelBancario}">
+
+                                    <StackPanel Margin="0,0,5,10" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.3*x/12.5}"  Height="65"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Banco:" />
+                                        <ComboBox  x:Name="DoctoPagoItem_Bancoid" 
+			                                                        ItemsSource="{Binding Catalogs[Banco]}"
+                        
+                                                                    SelectedValuePath="Id"
+                                                                    SelectedValue="{Binding DoctoPagoItem.Bancoid}"
+                                                                    DisplayMemberPath="Nombre"
+ 			                                                        IsReadOnly="{Binding BIsReadOnly}" />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Bancoid}"  Margin="0,0,0,0"/>
+                                    </StackPanel>
+
+                                    <StackPanel Margin="5,0,5,10" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.3*x/12.5}"  Height="65"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Referencia:" />
+                                        <TextBox x:Name="DoctoPagoItem_ReferenciaBancaria" Text="{Binding DoctoPagoItem.Referenciabancaria}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_ReferenciaBancaria}"  Margin="0,0,0,0"/>
+                                    </StackPanel>
+
+                                    <StackPanel Margin="10,0,5,10" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.25*x/12.5}"  Height="65"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Cuenta pago:" />
+                                        <TextBox x:Name="DoctoPagoItem_Cuentapagocredito" Text="{Binding DoctoPagoItem.Cuentapagocredito}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Cuentapagocredito}"  Margin="0,0,0,0"/>
+                                    </StackPanel>
+
+
+                                    <StackPanel Margin="5,0,5,10" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.4*x/12.5}"  Height="65"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Ref. interno" />
+                                        <TextBox x:Name="DoctoPagoItem_Refinterno" Text="{Binding DoctoPagoItem.Refinterno}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Refinterno}"  Margin="0,0,0,0"/>
+                                    </StackPanel>
+
+                                    <StackPanel Margin="10,0,0,10" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.6*x/12.5}"  Height="65"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Cuenta recepcion:" />
+                                        <ComboBox  x:Name="DoctoPagoItem_Cuentabancoempresaid" 
+			                                                           ItemsSource="{Binding Catalogs[Cuentabanco]}"
+                        
+                                                                       SelectedValuePath="Id"
+                                                                       SelectedValue="{Binding DoctoPagoItem.Cuentabancoempresaid}"
+                                                                       DisplayMemberPath="Nombre"
+ 			                                                            IsReadOnly="{Binding BIsReadOnly}" />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Cuentabancoempresaid}"  Margin="0,0,0,0"/>
+                                    </StackPanel>
+
+                                </WrapPanel>
+
+
+                                <WrapPanel Margin="0,0,7,0" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}">
+
+                                    <WrapPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=8*x/12.5}"  Height="30"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="NOTAS:" />
+                                        <TextBox x:Name="DoctoPagoItem_Notas" MinWidth="250" Text="{Binding DoctoPagoItem.Notas}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsItemReadOnly}"   />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=DoctoPagoItem_Notas}"  Margin="0,0,0,0"/>
+                                    </WrapPanel>
+
+                                </WrapPanel>
+
+
+                            </WrapPanel>
+                        </Border>
+                    </StackPanel>
+
+
+                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="6" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}">
+                        <Rectangle  Width="120"/>
+                        <Rectangle  Width="120"/>
+                        <WrapPanel  IsEnabled="{cbind:Binding !BIsItemReadOnly}">
+                            <Button MinWidth="120" Padding="6" x:Name="Accept" Content="Ok" 
+                                IsEnabled="{cbind:Binding !DoctoPagoItem.HasErrors}" Foreground="WhiteSmoke"/>
+                        </WrapPanel>
+                        <Rectangle  Width="120"/>
+                        <WrapPanel  IsEnabled="{cbind:Binding HabilitarNuevo}">
+                            <Button MinWidth="120" Padding="6" x:Name="IrANuevoPago"
+                                Content="Nuevo Pago"  Background="LightGray"/>
+                        </WrapPanel>
+
+                        <Rectangle  Width="120"/>
+
+                        <WrapPanel  IsEnabled="{cbind:Binding HabilitarOpcionDeRecibo}">
+                            <Button MinWidth="120" Padding="6" x:Name="ImprimirRecibo"
+                                Content="Recibo"  Background="LightGray"/>
+                        </WrapPanel>
+
+                        <WrapPanel  IsEnabled="{cbind:Binding HabilitarOpcionDeReciboElectronico}">
+                            <Button MinWidth="120" Padding="6" x:Name="ReciboElectronico"
+                                Content="R. Electronico"  Background="LightGray"/>
+                        </WrapPanel>
+                        <WrapPanel  IsEnabled="{cbind:Binding HabilitarOpcionDeCancelar}">
+                            <Button MinWidth="120" Padding="6"
+                                    x:Name="CancelarPago"
+                                    Content="Cancelar Pago"  Background="LightGray"/>
+                        </WrapPanel>
+                        <Rectangle  Width="120"/>
+
+                    </WrapPanel>
+
+
+                </WrapPanel>
+
+            </ScrollViewer>
+
+
+
+
+
+
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

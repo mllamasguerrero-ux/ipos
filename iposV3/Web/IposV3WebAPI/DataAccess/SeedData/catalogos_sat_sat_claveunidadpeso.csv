@@ -1,0 +1,473 @@
+﻿ID;ACTIVO;CREADO;CREADOPOR_USERID;MODIFICADO;MODIFICADOPOR_USERID;CLAVE;NOMBRE;DESCRIPCION;NOTA;FECHAINICIO;FECHAFIN;SIMBOLO;BANDERA
+1;S;22.01.2022 07:49;;22.01.2022 07:49;;Tu;Contenedor externo;Tipo de caja de contención que sirve como contenedor de transporte externo, no especificado como equipo de transporte.;;01.06.2021;;;Embalaje
+2;S;22.01.2022 07:49;;22.01.2022 07:49;;X1A;Tambor de acero;;;01.06.2021;;;Embalaje
+3;S;22.01.2022 07:49;;22.01.2022 07:49;;X1B;Tambor de aluminio;;;01.06.2021;;;Embalaje
+4;S;22.01.2022 07:49;;22.01.2022 07:49;;X1D;Tambor contrachapado;;;01.06.2021;;;Embalaje
+5;S;22.01.2022 07:49;;22.01.2022 07:49;;X1F;Contenedor flexible;Contenedor de empaque de construcción flexible.;;01.06.2021;;;Embalaje
+6;S;22.01.2022 07:49;;22.01.2022 07:49;;X1G;Tambor de fibra;;;01.06.2021;;;Embalaje
+7;S;22.01.2022 07:49;;22.01.2022 07:49;;X1w;Tambor de madera;;;01.06.2021;;;Embalaje
+8;S;22.01.2022 07:49;;22.01.2022 07:49;;X2C;Barril de madera;;;01.06.2021;;;Embalaje
+9;S;22.01.2022 07:49;;22.01.2022 07:49;;X3A;Bidón de acero;;;01.06.2021;;;Embalaje
+10;S;22.01.2022 07:49;;22.01.2022 07:49;;X3H;Bidón de plástico;;;01.06.2021;;;Embalaje
+11;S;22.01.2022 07:49;;22.01.2022 07:49;;X43;Bolsa de gran tamaño;Bolsa de tela de plástico o de papel que tiene las dimensiones del pallet sobre el que está construido.;;01.06.2021;;;Embalaje
+12;S;22.01.2022 07:49;;22.01.2022 07:49;;X44;Bolsa de plástico;Un tipo de bolsa de plástico, normalmente utilizada para envolver piezas promocionales, publicaciones, muestras de productos y / o catálogos.;;01.06.2021;;;Embalaje
+13;S;22.01.2022 07:49;;22.01.2022 07:49;;X4A;Caja de acero;;;01.06.2021;;;Embalaje
+14;S;22.01.2022 07:49;;22.01.2022 07:49;;X4B;Caja de aluminio;;;01.06.2021;;;Embalaje
+15;S;22.01.2022 07:49;;22.01.2022 07:49;;X4C;Caja de  madera natural;;;01.06.2021;;;Embalaje
+16;S;22.01.2022 07:49;;22.01.2022 07:49;;X4D;Caja de contrachapado;;;01.06.2021;;;Embalaje
+17;S;22.01.2022 07:49;;22.01.2022 07:49;;X4F;Caja de madera reconstituida;;;01.06.2021;;;Embalaje
+18;S;22.01.2022 07:49;;22.01.2022 07:49;;X4G;Caja de cartón;;;01.06.2021;;;Embalaje
+19;S;22.01.2022 07:49;;22.01.2022 07:49;;X4H;Caja de plástico;;;01.06.2021;;;Embalaje
+20;S;22.01.2022 07:49;;22.01.2022 07:49;;X5H;Bolsa de plástico tejido;;;01.06.2021;;;Embalaje
+21;S;22.01.2022 07:49;;22.01.2022 07:49;;X5L;Bolsa textil;;;01.06.2021;;;Embalaje
+22;S;22.01.2022 07:49;;22.01.2022 07:49;;X5M;Bolsa de papel;;;01.06.2021;;;Embalaje
+23;S;22.01.2022 07:49;;22.01.2022 07:49;;X6H;Recipiente de plástico, Contenedor compuesto.;;;01.06.2021;;;Embalaje
+24;S;22.01.2022 07:49;;22.01.2022 07:49;;X6P;Recipiente de vidrio, Contenedor compuesto.;;;01.06.2021;;;Embalaje
+25;S;22.01.2022 07:49;;22.01.2022 07:49;;X7A;Estuche para carro;Tipo de contenedor portátil diseñado para almacenar equipo para el transporte en un automóvil.;;01.06.2021;;;Embalaje
+26;S;22.01.2022 07:49;;22.01.2022 07:49;;X7B;Estuche de madera;Un estuche de madera para retener sustancias o artículos.;;01.06.2021;;;Embalaje
+27;S;22.01.2022 07:49;;22.01.2022 07:49;;X8A;Pallet de madera;Plataforma o caja abierta de madera, en la que se conservan las mercancías para facilitar su manejo mecánico durante el transporte y almacenamiento.;;01.06.2021;;;Embalaje
+28;S;22.01.2022 07:49;;22.01.2022 07:49;;X8B;Cajón de madera;Un contenedor de madera, en el que se conservan las mercancías para facilitar su manipulación mecánica durante el transporte y almacenamiento.;;01.06.2021;;;Embalaje
+29;S;22.01.2022 07:49;;22.01.2022 07:49;;X8C;Madera flejada;Piezas sueltas o sin contenedor de madera atadas o envueltas.;;01.06.2021;;;Embalaje
+30;S;22.01.2022 07:49;;22.01.2022 07:49;;XAA;Contenedor intermedio  para gráneles de plástico rígido;;;01.06.2021;;;Embalaje
+31;S;22.01.2022 07:49;;22.01.2022 07:49;;XAB;Contenedor de fibra;Recipiente de contención de fibra, utilizado para retener sustancias o artículos.;;01.06.2021;;;Embalaje
+32;S;22.01.2022 07:49;;22.01.2022 07:49;;XAC;Contenedor de papel;Recipiente de contención de papel, para retener sustancias o artículos.;;01.06.2021;;;Embalaje
+33;S;22.01.2022 07:49;;22.01.2022 07:49;;XAD;Contenedor de madera;Recipiente de contención de madera, para retener sustancias o artículos.;;01.06.2021;;;Embalaje
+34;S;22.01.2022 07:49;;22.01.2022 07:49;;XAE;Aerosol;Una unidad de cuenta que define el número de Aerosoles;;01.06.2021;;;Embalaje
+35;S;22.01.2022 07:49;;22.01.2022 07:49;;XAF;Pallet modular con collares,  80cms * 60cms;Pallet de tamaño estándar con dimensiones de 80 centímetros por 60 centímetros (cms).;;01.06.2021;;;Embalaje
+36;S;22.01.2022 07:49;;22.01.2022 07:49;;XAG;Pallet o empaquetado;La carga del pallet se asegura con una película de plástico transparente envuelta alrededor y luego encogido firmemente.;;01.06.2021;;;Embalaje
+37;S;22.01.2022 07:49;;22.01.2022 07:49;;XAH;Pallet, 100cms X 110cms;Pallet tamaño estándar con dimensiones de 100 centímetros por 110 centímetros (cms).;;01.06.2021;;;Embalaje
+38;S;22.01.2022 07:49;;22.01.2022 07:49;;XAI;Contenedor tipo concha;;;01.06.2021;;;Embalaje
+39;S;22.01.2022 07:49;;22.01.2022 07:49;;XAJ;Cono;Contenedor utilizado en el transporte de material lineal como el hilo.;;01.06.2021;;;Embalaje
+40;S;22.01.2022 07:49;;22.01.2022 07:49;;XAL;Esfera;Recipiente de contención esférico para retener sustancias o artículos.;;01.06.2021;;;Embalaje
+41;S;22.01.2022 07:49;;22.01.2022 07:49;;XAM;Ampolleta no protegida;;;01.06.2021;;;Embalaje
+42;S;22.01.2022 07:49;;22.01.2022 07:49;;XAP;Ampolleta protegida;;;01.06.2021;;;Embalaje
+43;S;22.01.2022 07:49;;22.01.2022 07:49;;XAT;Atomizador;;;01.06.2021;;;Embalaje
+44;S;22.01.2022 07:49;;22.01.2022 07:49;;XAV;Cápsula;;;01.06.2021;;;Embalaje
+45;S;22.01.2022 07:49;;22.01.2022 07:49;;XB4;Cinturón;Banda utiliza para retener varios artículos juntos.;;01.06.2021;;;Embalaje
+46;S;22.01.2022 07:49;;22.01.2022 07:49;;XBA;Barril;;;01.06.2021;;;Embalaje
+47;S;22.01.2022 07:49;;22.01.2022 07:49;;XBB;Bobina;;;01.06.2021;;;Embalaje
+48;S;22.01.2022 07:49;;22.01.2022 07:49;;XBC;Cajón para botellas / Estante para botellas;;;01.06.2021;;;Embalaje
+49;S;22.01.2022 07:49;;22.01.2022 07:49;;XBD;Tablero;;;01.06.2021;;;Embalaje
+50;S;22.01.2022 07:49;;22.01.2022 07:49;;XBE;Flejado;;;01.06.2021;;;Embalaje
+51;S;22.01.2022 07:49;;22.01.2022 07:49;;XBF;Globo no protegido;;;01.06.2021;;;Embalaje
+52;S;22.01.2022 07:49;;22.01.2022 07:49;;XBG;Bolso;Recipiente de material flexible con tapa abierta o cerrada.;;01.06.2021;;;Embalaje
+53;S;22.01.2022 07:49;;22.01.2022 07:49;;XBH;Manojo;;;01.06.2021;;;Embalaje
+54;S;22.01.2022 07:49;;22.01.2022 07:49;;XBI;Compartimiento;;;01.06.2021;;;Embalaje
+55;S;22.01.2022 07:49;;22.01.2022 07:49;;XBJ;Cubeta;;;01.06.2021;;;Embalaje
+56;S;22.01.2022 07:49;;22.01.2022 07:49;;XBK;Cesta;;;01.06.2021;;;Embalaje
+57;S;22.01.2022 07:49;;22.01.2022 07:49;;XBL;Paca comprimida;;;01.06.2021;;;Embalaje
+58;S;22.01.2022 07:49;;22.01.2022 07:49;;XBM;Cuenco;;;01.06.2021;;;Embalaje
+59;S;22.01.2022 07:49;;22.01.2022 07:49;;XBN;Paca no comprimida;;;01.06.2021;;;Embalaje
+60;S;22.01.2022 07:49;;22.01.2022 07:49;;XBO;Botella no-protegida y cilíndrica;Recipiente de forma cilíndrica de cuello estrecho sin material de empaque protector externo.;;01.06.2021;;;Embalaje
+61;S;22.01.2022 07:49;;22.01.2022 07:49;;XBP;Globo protegido;;;01.06.2021;;;Embalaje
+62;S;22.01.2022 07:49;;22.01.2022 07:49;;XBQ;Botella cilíndrica protegida;Recipiente de forma cilíndrica de cuello estrecho con material de empaque protector externo.;;01.06.2021;;;Embalaje
+63;S;22.01.2022 07:49;;22.01.2022 07:49;;XBR;Barra;;;01.06.2021;;;Embalaje
+64;S;22.01.2022 07:49;;22.01.2022 07:49;;XBS;Botella, no-protegida en forma de bulbo;Recipiente en forma de bulbo de cuello estrecho sin material de empaque protector externo.;;01.06.2021;;;Embalaje
+65;S;22.01.2022 07:49;;22.01.2022 07:49;;XBT;Rollo de tela;;;01.06.2021;;;Embalaje
+66;S;22.01.2022 07:49;;22.01.2022 07:49;;XBU;Butt;Barril de 1/2 tonel;;01.06.2021;;;Embalaje
+67;S;22.01.2022 07:49;;22.01.2022 07:49;;XBV;Botella de bulbo protegido;Recipiente en forma de bulbo de cuello estrecho con material de empaque protector externo.;;01.06.2021;;;Embalaje
+68;S;22.01.2022 07:49;;22.01.2022 07:49;;XBW;Caja para líquidos;;;01.06.2021;;;Embalaje
+69;S;22.01.2022 07:49;;22.01.2022 07:49;;XBX;Caja;;;01.06.2021;;;Embalaje
+70;S;22.01.2022 07:49;;22.01.2022 07:49;;XBY;Tablero, con fleje/ agrupados/ armados;;;01.06.2021;;;Embalaje
+71;S;22.01.2022 07:49;;22.01.2022 07:49;;XBZ;Barras, con fleje/ agrupados/ armados;;;01.06.2021;;;Embalaje
+72;S;22.01.2022 07:49;;22.01.2022 07:49;;XCA;Lata rectangular;;;01.06.2021;;;Embalaje
+73;S;22.01.2022 07:49;;22.01.2022 07:49;;XCB;Cajón para cerveza;;;01.06.2021;;;Embalaje
+74;S;22.01.2022 07:49;;22.01.2022 07:49;;XCC;Mantequera;;;01.06.2021;;;Embalaje
+75;S;22.01.2022 07:49;;22.01.2022 07:49;;XCD;Lata con mango y boquilla;;;01.06.2021;;;Embalaje
+76;S;22.01.2022 07:49;;22.01.2022 07:49;;XCE;Cesto tejido;;;01.06.2021;;;Embalaje
+77;S;22.01.2022 07:49;;22.01.2022 07:49;;XCF;Cofre;;;01.06.2021;;;Embalaje
+78;S;22.01.2022 07:49;;22.01.2022 07:49;;XCG;Contenedor tipo Jaula;;;01.06.2021;;;Embalaje
+79;S;22.01.2022 07:49;;22.01.2022 07:49;;XCH;Cajonera;;;01.06.2021;;;Embalaje
+80;S;22.01.2022 07:49;;22.01.2022 07:49;;XCI;Frasco;;;01.06.2021;;;Embalaje
+81;S;22.01.2022 07:49;;22.01.2022 07:49;;XCJ;Ataúd;;;01.06.2021;;;Embalaje
+82;S;22.01.2022 07:49;;22.01.2022 07:49;;XCK;Barrica;;;01.06.2021;;;Embalaje
+83;S;22.01.2022 07:49;;22.01.2022 07:49;;XCL;Espiral;;;01.06.2021;;;Embalaje
+84;S;22.01.2022 07:49;;22.01.2022 07:49;;XCM;Paquete de tarjetas;Paquete plano normalmente hecho de cartón desde / hacia el cual el producto es a menudo colgado o unido.;;01.06.2021;;;Embalaje
+85;S;22.01.2022 07:49;;22.01.2022 07:49;;XCN;Contenedor, no especificado como equipo de transporte;;;01.06.2021;;;Embalaje
+86;S;22.01.2022 07:49;;22.01.2022 07:49;;XCO;Garrafón no protegido;;;01.06.2021;;;Embalaje
+87;S;22.01.2022 07:49;;22.01.2022 07:49;;XCP;Garrafón protegido;;;01.06.2021;;;Embalaje
+88;S;22.01.2022 07:49;;22.01.2022 07:49;;XCQ;Cartucho;Paquete que contiene una carga tal como un explosivo propulsor para armas de fuego o tóner de tinta para una impresora.;;01.06.2021;;;Embalaje
+89;S;22.01.2022 07:49;;22.01.2022 07:49;;XCR;Cajón;;;01.06.2021;;;Embalaje
+90;S;22.01.2022 07:49;;22.01.2022 07:49;;XCS;Estuche;;;01.06.2021;;;Embalaje
+91;S;22.01.2022 07:49;;22.01.2022 07:49;;XCT;Cartón;;;01.06.2021;;;Embalaje
+92;S;22.01.2022 07:49;;22.01.2022 07:49;;XCU;Vaso;;;01.06.2021;;;Embalaje
+93;S;22.01.2022 07:49;;22.01.2022 07:49;;XCV;Cubierta;;;01.06.2021;;;Embalaje
+94;S;22.01.2022 07:49;;22.01.2022 07:49;;XCW;Jaula estilo rodillo;;;01.06.2021;;;Embalaje
+95;S;22.01.2022 07:49;;22.01.2022 07:49;;XCX;Lata cilíndrica;;;01.06.2021;;;Embalaje
+96;S;22.01.2022 07:49;;22.01.2022 07:49;;XCY;Cilindro;;;01.06.2021;;;Embalaje
+97;S;22.01.2022 07:49;;22.01.2022 07:49;;XCZ;Lona;;;01.06.2021;;;Embalaje
+98;S;22.01.2022 07:49;;22.01.2022 07:49;;XDA;Cajón multicapa de plástico;;;01.06.2021;;;Embalaje
+99;S;22.01.2022 07:49;;22.01.2022 07:49;;XDB;Cajón de varias capas de madera;;;01.06.2021;;;Embalaje
+100;S;22.01.2022 07:49;;22.01.2022 07:49;;XDC;Cajón multicapa de cartón;;;01.06.2021;;;Embalaje
+101;S;22.01.2022 07:49;;22.01.2022 07:49;;XDG;Jaula, Según la clasificación de la compañía (Commonwealth Handling Equipment Pool (CHEP));;;01.06.2021;;;Embalaje
+102;S;22.01.2022 07:49;;22.01.2022 07:49;;XDH;Caja, Según la clasificación de la compañía (CHEP), Eurobox;Caja montada sobre una base de pallet Según la clasificación de la compañía (CHEP).;;01.06.2021;;;Embalaje
+103;S;22.01.2022 07:49;;22.01.2022 07:49;;XDI;Tambor de hierro;;;01.06.2021;;;Embalaje
+104;S;22.01.2022 07:49;;22.01.2022 07:49;;XDJ;damajuana o garrafa, no protegido;;;01.06.2021;;;Embalaje
+105;S;22.01.2022 07:49;;22.01.2022 07:49;;XDK;Cajón a granel, cartón;;;01.06.2021;;;Embalaje
+106;S;22.01.2022 07:49;;22.01.2022 07:49;;XDL;Cajas de plástico;;;01.06.2021;;;Embalaje
+107;S;22.01.2022 07:49;;22.01.2022 07:49;;XDM;Cajones a granel de madera;;;01.06.2021;;;Embalaje
+108;S;22.01.2022 07:49;;22.01.2022 07:49;;XDN;Dispensador;;;01.06.2021;;;Embalaje
+109;S;22.01.2022 07:49;;22.01.2022 07:49;;XDP;damajuana o garrafa, protegido;;;01.06.2021;;;Embalaje
+110;S;22.01.2022 07:49;;22.01.2022 07:49;;XDR;Tambor;;;01.06.2021;;;Embalaje
+111;S;22.01.2022 07:49;;22.01.2022 07:49;;XDS;Bandeja de una capa sin cubierta y de plástico;;;01.06.2021;;;Embalaje
+112;S;22.01.2022 07:49;;22.01.2022 07:49;;XDT;Bandeja de una capa sin cubierta y de madera;;;01.06.2021;;;Embalaje
+113;S;22.01.2022 07:49;;22.01.2022 07:49;;XDU;Bandeja de una capa sin cubierta y  poliestireno;;;01.06.2021;;;Embalaje
+114;S;22.01.2022 07:49;;22.01.2022 07:49;;XDV;Bandeja de una capa sin cubierta y de cartón;;;01.06.2021;;;Embalaje
+115;S;22.01.2022 07:49;;22.01.2022 07:49;;XDW;Bandeja de dos capas sin tapa y con bandeja de plástico;;;01.06.2021;;;Embalaje
+116;S;22.01.2022 07:49;;22.01.2022 07:49;;XDX;Bandeja de dos capas sin cubierta y de madera;;;01.06.2021;;;Embalaje
+117;S;22.01.2022 07:49;;22.01.2022 07:49;;XDY;Bandeja de dos capas sin cubierta y de cartón;;;01.06.2021;;;Embalaje
+118;S;22.01.2022 07:49;;22.01.2022 07:49;;XEC;Bolsa de plástico;;;01.06.2021;;;Embalaje
+119;S;22.01.2022 07:49;;22.01.2022 07:49;;XED;Estuche, con pallet de base;;;01.06.2021;;;Embalaje
+120;S;22.01.2022 07:49;;22.01.2022 07:49;;XEE;Estuche, con pallet base de madera;;;01.06.2021;;;Embalaje
+121;S;22.01.2022 07:49;;22.01.2022 07:49;;XEF;Estuche, con pallet base de cartón;;;01.06.2021;;;Embalaje
+122;S;22.01.2022 07:49;;22.01.2022 07:49;;XEG;Estuche, con pallet base de plástico;;;01.06.2021;;;Embalaje
+123;S;22.01.2022 07:49;;22.01.2022 07:49;;XEH;Estuche, con pallet base de metal;;;01.06.2021;;;Embalaje
+124;S;22.01.2022 07:49;;22.01.2022 07:49;;XEI;Estuche isotérmico;;;01.06.2021;;;Embalaje
+125;S;22.01.2022 07:49;;22.01.2022 07:49;;XEN;Sobre;;;01.06.2021;;;Embalaje
+126;S;22.01.2022 07:49;;22.01.2022 07:49;;XFB;Bolsa flexible;Bolsa de contención flexible hecha de plástico, usado típicamente para el transporte de mercancías no peligrosas a granel, que usan contenedores de transporte de tamaño estándar.;;01.06.2021;;;Embalaje
+127;S;22.01.2022 07:49;;22.01.2022 07:49;;XFC;Cajón para fruta;;;01.06.2021;;;Embalaje
+128;S;22.01.2022 07:49;;22.01.2022 07:49;;XFD;Cajón enmarcado;;;01.06.2021;;;Embalaje
+129;S;22.01.2022 07:49;;22.01.2022 07:49;;XFE;Tanque flexible;Contenedor flexible de plástico, usado típicamente para el transporte de cargas no peligrosas a granel usando contenedores de transporte de tamaño estándar.;;01.06.2021;;;Embalaje
+130;S;22.01.2022 07:49;;22.01.2022 07:49;;XFI;Firkin;Barril de 41 litros;;01.06.2021;;;Embalaje
+131;S;22.01.2022 07:49;;22.01.2022 07:49;;XFL;Matraz;;;01.06.2021;;;Embalaje
+132;S;22.01.2022 07:49;;22.01.2022 07:49;;XFO;Cajón para zapatos;;;01.06.2021;;;Embalaje
+133;S;22.01.2022 07:49;;22.01.2022 07:49;;XFP;Caja auxiliar para película fotográfica;;;01.06.2021;;;Embalaje
+134;S;22.01.2022 07:49;;22.01.2022 07:49;;XFR;Marco;;;01.06.2021;;;Embalaje
+135;S;22.01.2022 07:49;;22.01.2022 07:49;;XFT;Contenedor para alimentos;;;01.06.2021;;;Embalaje
+136;S;22.01.2022 07:49;;22.01.2022 07:49;;XFW;Carro de cama plana;Módulo con ruedas en el que las bandejas u otros artículos de forma regular se empacan para fines de transporte.;;01.06.2021;;;Embalaje
+137;S;22.01.2022 07:49;;22.01.2022 07:49;;XFX;Bolsa flexible tipo contenedor;;;01.06.2021;;;Embalaje
+138;S;22.01.2022 07:49;;22.01.2022 07:49;;XGB;Botella para gas;Cilindro metálico de cuello estrecho para la retención de gas licuado o comprimido.;;01.06.2021;;;Embalaje
+139;S;22.01.2022 07:49;;22.01.2022 07:49;;XGI;Viga;;;01.06.2021;;;Embalaje
+140;S;22.01.2022 07:49;;22.01.2022 07:49;;XGL;Contenedor tipo galón;Contenedor con una capacidad de un galón.;;01.06.2021;;;Embalaje
+141;S;22.01.2022 07:49;;22.01.2022 07:49;;XGR;Recipiente de vidrio;Recipiente de contención de vidrio para retener sustancias o artículos.;;01.06.2021;;;Embalaje
+142;S;22.01.2022 07:49;;22.01.2022 07:49;;XGU;Bandeja contenedor para apilar horizontalmente objetos planos;Bandeja para contiene objetos planos apilados uno encima del otro.;;01.06.2021;;;Embalaje
+143;S;22.01.2022 07:49;;22.01.2022 07:49;;XGY;Costal de Yute;Hecho de yute, usado para transportar mercancías gruesas, tales como granos, patatas, y otros productos agrícolas.;;01.06.2021;;;Embalaje
+144;S;22.01.2022 07:49;;22.01.2022 07:49;;XGZ;Vigas con correas o agrupadas;;;01.06.2021;;;Embalaje
+145;S;22.01.2022 07:49;;22.01.2022 07:49;;XHA;Cesta con mango y de plástico;;;01.06.2021;;;Embalaje
+146;S;22.01.2022 07:49;;22.01.2022 07:49;;XHB;Cesta con mango y de madera;;;01.06.2021;;;Embalaje
+147;S;22.01.2022 07:49;;22.01.2022 07:49;;XHC;Cesta  con asa y de  cartón;;;01.06.2021;;;Embalaje
+148;S;22.01.2022 07:49;;22.01.2022 07:49;;XHG;Hogshead;Barril de 1/4 de tonel;;01.06.2021;;;Embalaje
+149;S;22.01.2022 07:49;;22.01.2022 07:49;;XHN;Gancho;Artefacto, cuya forma con un gancho en la parte superior, tiene el propósito de colgar artículos de un carril.;;01.06.2021;;;Embalaje
+150;S;22.01.2022 07:49;;22.01.2022 07:49;;XHR;Cesto;;;01.06.2021;;;Embalaje
+151;S;22.01.2022 07:49;;22.01.2022 07:49;;XIA;Paquete con pantalla y de madera;;;01.06.2021;;;Embalaje
+152;S;22.01.2022 07:49;;22.01.2022 07:49;;XIB;Paquete  con pantalla y de cartón;;;01.06.2021;;;Embalaje
+153;S;22.01.2022 07:49;;22.01.2022 07:49;;XIC;Paquete con pantalla y de plástico;;;01.06.2021;;;Embalaje
+154;S;22.01.2022 07:49;;22.01.2022 07:49;;XID;Paquete con pantalla y de metal;;;01.06.2021;;;Embalaje
+155;S;22.01.2022 07:49;;22.01.2022 07:49;;XIE;Paquete de mostrador.;;;01.06.2021;;;Embalaje
+156;S;22.01.2022 07:49;;22.01.2022 07:49;;XIF;Envase para alimentos;Envase flexible tubular o de piel, posiblemente transparente, a menudo utilizado para contener alimentos (por ejemplo salami).;;01.06.2021;;;Embalaje
+157;S;22.01.2022 07:49;;22.01.2022 07:49;;XIG;Paquete envuelto en papel;;;01.06.2021;;;Embalaje
+158;S;22.01.2022 07:49;;22.01.2022 07:49;;XIH;Tambor de plástico;;;01.06.2021;;;Embalaje
+159;S;22.01.2022 07:49;;22.01.2022 07:49;;XIK;Paquete de cartón con los agujeros para botellas;Material de empaque realizado en cartón que facilita la separación de botellas individuales de vidrio o plástico.;;01.06.2021;;;Embalaje
+160;S;22.01.2022 07:49;;22.01.2022 07:49;;XIL;Bandeja rígida con tapa y apilable (CEN TS 14482: 2002);Bandeja rígida apilable empotrada compatible con CEN TS 14482: 2002.;;01.06.2021;;;Embalaje
+161;S;22.01.2022 07:49;;22.01.2022 07:49;;XIN;Lingote;;;01.06.2021;;;Embalaje
+162;S;22.01.2022 07:49;;22.01.2022 07:49;;XIZ;Lingotes  con correas/ agrupados;;;01.06.2021;;;Embalaje
+163;S;22.01.2022 07:49;;22.01.2022 07:49;;XJB;Bolsa jumbo;Bolsa de contención flexible, ampliamente utilizada para almacenamiento, transporte y manipulación de materiales en polvo, escamas o granulares. Típicamente construido a partir de tejido de polipropileno (PP) tejido en forma de bolsas cúbicas.;;01.06.2021;;;Embalaje
+164;S;22.01.2022 07:49;;22.01.2022 07:49;;XJC;Bidón rectangular;;;01.06.2021;;;Embalaje
+165;S;22.01.2022 07:49;;22.01.2022 07:49;;XJG;Jarra;;;01.06.2021;;;Embalaje
+166;S;22.01.2022 07:49;;22.01.2022 07:49;;XJR;Tarro;;;01.06.2021;;;Embalaje
+167;S;22.01.2022 07:49;;22.01.2022 07:49;;XJT;Bolsa de yute;;;01.06.2021;;;Embalaje
+168;S;22.01.2022 07:49;;22.01.2022 07:49;;XJY;Bidón, cilíndrico;;;01.06.2021;;;Embalaje
+169;S;22.01.2022 07:49;;22.01.2022 07:49;;XKG;Barrilete;;;01.06.2021;;;Embalaje
+170;S;22.01.2022 07:49;;22.01.2022 07:49;;XKI;Kit (Conjunto de piezas);Conjunto de artículos o implementos utilizados para un propósito específico.;;01.06.2021;;;Embalaje
+171;S;22.01.2022 07:49;;22.01.2022 07:49;;XLE;Valijas;Colección de bolsas, cajas y / o contenedores que contienen objetos personales para un viaje.;;01.06.2021;;;Embalaje
+172;S;22.01.2022 07:49;;22.01.2022 07:49;;XLG;Bitácora;;;01.06.2021;;;Embalaje
+173;S;22.01.2022 07:49;;22.01.2022 07:49;;XLT;Lote;;;01.06.2021;;;Embalaje
+174;S;22.01.2022 07:49;;22.01.2022 07:49;;XLU;Caja de arrastre;Caja de madera para el transporte y almacenamiento de frutas y verduras.;;01.06.2021;;;Embalaje
+175;S;22.01.2022 07:49;;22.01.2022 07:49;;XLV;Contenedor pequeño;Contenedor de madera o metal, usado para empacar artículos de uso doméstico y personales.;;01.06.2021;;;Embalaje
+176;S;22.01.2022 07:49;;22.01.2022 07:49;;XLZ;Registros  con fleje/ agrupados/ armados;;;01.06.2021;;;Embalaje
+177;S;22.01.2022 07:49;;22.01.2022 07:49;;XMA;Cajón metálico;Caja de contención hecha de metal para retener sustancias o artículos.;;01.06.2021;;;Embalaje
+178;S;22.01.2022 07:49;;22.01.2022 07:49;;XMB;Múltiplo de bolsas;;;01.06.2021;;;Embalaje
+179;S;22.01.2022 07:49;;22.01.2022 07:49;;XMC;Cajón para leche;;;01.06.2021;;;Embalaje
+180;S;22.01.2022 07:49;;22.01.2022 07:49;;XME;Contenedor de metal;Tipo de caja de contención hecha de metal para retener sustancias o artículos, no especificado de otro modo como equipo de transporte.;;01.06.2021;;;Embalaje
+181;S;22.01.2022 07:49;;22.01.2022 07:49;;XMR;Recipiente de metal;Recipiente de contención de metal para retener sustancias o artículos.;;01.06.2021;;;Embalaje
+182;S;22.01.2022 07:49;;22.01.2022 07:49;;XMS;Saco milti-pared;;;01.06.2021;;;Embalaje
+183;S;22.01.2022 07:49;;22.01.2022 07:49;;XMT;Tapete;;;01.06.2021;;;Embalaje
+184;S;22.01.2022 07:49;;22.01.2022 07:49;;XMW;Contenedor envuelto en plástico;Recipiente de contención envuelto en plástico para retener sustancias o artículos.;;01.06.2021;;;Embalaje
+185;S;22.01.2022 07:49;;22.01.2022 07:49;;XMX;Caja pequeña de cerillos;;;01.06.2021;;;Embalaje
+186;S;22.01.2022 07:49;;22.01.2022 07:49;;XNA;No disponible;;;01.06.2021;;;Embalaje
+187;S;22.01.2022 07:49;;22.01.2022 07:49;;XNE;Sin empaque o no empaquetado;;;01.06.2021;;;Embalaje
+188;S;22.01.2022 07:49;;22.01.2022 07:49;;XNF;Sin empaque o no empaquetado, unidad simple;;;01.06.2021;;;Embalaje
+189;S;22.01.2022 07:49;;22.01.2022 07:49;;XNG;Sin empaque o no empaquetado, unidades múltiples;;;01.06.2021;;;Embalaje
+190;S;22.01.2022 07:49;;22.01.2022 07:49;;XNS;Caja nido;;;01.06.2021;;;Embalaje
+191;S;22.01.2022 07:49;;22.01.2022 07:49;;XNT;Red;;;01.06.2021;;;Embalaje
+192;S;22.01.2022 07:49;;22.01.2022 07:49;;XNU;Red de plástico con tubo;;;01.06.2021;;;Embalaje
+193;S;22.01.2022 07:49;;22.01.2022 07:49;;XNV;Red textil con tubo;;;01.06.2021;;;Embalaje
+194;S;22.01.2022 07:49;;22.01.2022 07:49;;XOA;Pallet, Según la clasificación de la compañía (Commonwealth Handling Equipment Pool (CHEP) 40 cm x 60 cm;Pallet de dimensiones 40 centímetros x 60 centímetros.;;01.06.2021;;;Embalaje
+195;S;22.01.2022 07:49;;22.01.2022 07:49;;XOB;Pallet, Según la clasificación de la compañía (Commonwealth Handling Equipment Pool (CHEP) 80 cm x 120 cm;Pallet de dimensiones 80 centímetros x 120 centímetros.;;01.06.2021;;;Embalaje
+196;S;22.01.2022 07:49;;22.01.2022 07:49;;XOC;Pallet, Según la clasificación de la compañía (Commonwealth Handling Equipment Pool (CHEP) 100 cm x 120 cm;Pallet de dimensiones 100 centímetros x 120 centímetros.;;01.06.2021;;;Embalaje
+197;S;22.01.2022 07:49;;22.01.2022 07:49;;XOD;Pallet, AS 4068-1993;Pallet con  estándar australiano de dimensiones 115.5 centímetros x 116.5 centímetros.;;01.06.2021;;;Embalaje
+198;S;22.01.2022 07:49;;22.01.2022 07:49;;XOE;Pallet, ISO T11;Pallet con estándar ISO de dimensiones 110 centímetros x 110 centímetros, prevalente en la región Asia-Pacífico.;;01.06.2021;;;Embalaje
+199;S;22.01.2022 07:49;;22.01.2022 07:49;;XOF;Plataforma, peso o dimensión no especificada;Plataforma de carga equivalente del Pallet de dimensiones desconocidas o peso desconocido.;;01.06.2021;;;Embalaje
+200;S;22.01.2022 07:49;;22.01.2022 07:49;;XOK;Bloque;Una pieza sólida de una sustancia dura, tal como granito, que tiene uno o más lados planos.;;01.06.2021;;;Embalaje
+201;S;22.01.2022 07:49;;22.01.2022 07:49;;XOT;Octabin;Envase estándar de cartón de grandes dimensiones para almacenar por ejemplo verduras, gránulos de plástico u otros productos secos.;;01.06.2021;;;Embalaje
+202;S;22.01.2022 07:49;;22.01.2022 07:49;;XP2;Charola;Recipiente ancho y abierto, usualmente de metal.;;01.06.2021;;;Embalaje
+203;S;22.01.2022 07:49;;22.01.2022 07:49;;XPA;Cajetilla;Paquete pequeño.;;01.06.2021;;;Embalaje
+204;S;22.01.2022 07:49;;22.01.2022 07:49;;XPB;Pallet, Caja combinada y abierta con caja y pallet.;;;01.06.2021;;;Embalaje
+205;S;22.01.2022 07:49;;22.01.2022 07:49;;XPC;Paquete postal;;;01.06.2021;;;Embalaje
+206;S;22.01.2022 07:49;;22.01.2022 07:49;;XPD;Pallet modular con collares (80cms * 100cms);Pallet tamaño estándar de dimensiones 80 centímetros por 100 centímetros (cms).;;01.06.2021;;;Embalaje
+207;S;22.01.2022 07:49;;22.01.2022 07:49;;XPE;Pallet modular con collares (80cms * 120cms);Pallet tamaño estándar de dimensiones 80 centímetros por 120 centímetros (cms).;;01.06.2021;;;Embalaje
+208;S;22.01.2022 07:49;;22.01.2022 07:49;;XPF;Corral;Pequeño recinto abierto para retener animales.;;01.06.2021;;;Embalaje
+209;S;22.01.2022 07:49;;22.01.2022 07:49;;XPG;Placa;;;01.06.2021;;;Embalaje
+210;S;22.01.2022 07:49;;22.01.2022 07:49;;XPH;Cantaro;;;01.06.2021;;;Embalaje
+211;S;22.01.2022 07:49;;22.01.2022 07:49;;XPI;Pleca;;;01.06.2021;;;Embalaje
+212;S;22.01.2022 07:49;;22.01.2022 07:49;;XPJ;Canastilla;;;01.06.2021;;;Embalaje
+213;S;22.01.2022 07:49;;22.01.2022 07:49;;XPK;Paquete;Unidad de empaque estándar.;;01.06.2021;;;Embalaje
+214;S;22.01.2022 07:49;;22.01.2022 07:49;;XPL;Balde;;;01.06.2021;;;Embalaje
+215;S;22.01.2022 07:49;;22.01.2022 07:49;;XPN;Tablón;;;01.06.2021;;;Embalaje
+216;S;22.01.2022 07:49;;22.01.2022 07:49;;XPO;Bolsa pequeña;;;01.06.2021;;;Embalaje
+217;S;22.01.2022 07:49;;22.01.2022 07:49;;XPR;Contenedor de plástico;Recipiente de contención de plástico para retener sustancias o artículos.;;01.06.2021;;;Embalaje
+218;S;22.01.2022 07:49;;22.01.2022 07:49;;XPT;Maceta;;;01.06.2021;;;Embalaje
+219;S;22.01.2022 07:49;;22.01.2022 07:49;;XPU;Cacerola;;;01.06.2021;;;Embalaje
+220;S;22.01.2022 07:49;;22.01.2022 07:49;;XPV;Tubos, con fleje/ agrupados/ armados;;;01.06.2021;;;Embalaje
+221;S;22.01.2022 07:49;;22.01.2022 07:49;;XPX;Pallet;Plataforma o caja abierta, generalmente de madera, en la que se conservan las mercancías para facilitar el manejo mecánico durante el transporte y almacenamiento.;;01.06.2021;;;Embalaje
+222;S;22.01.2022 07:49;;22.01.2022 07:49;;XPY;Placas con fleje/ agrupados/ armados;;;01.06.2021;;;Embalaje
+223;S;22.01.2022 07:49;;22.01.2022 07:49;;XPZ;Tablones con fleje/ agrupados/ armados;;;01.06.2021;;;Embalaje
+224;S;22.01.2022 07:49;;22.01.2022 07:49;;XQA;Tambor de acero con cabeza no desmontable;;;01.06.2021;;;Embalaje
+225;S;22.01.2022 07:49;;22.01.2022 07:49;;XQB;Tambor de  acero con cabeza extraíble;;;01.06.2021;;;Embalaje
+226;S;22.01.2022 07:49;;22.01.2022 07:49;;XQC;Tambor de aluminio con cabeza no extraíble;;;01.06.2021;;;Embalaje
+227;S;22.01.2022 07:49;;22.01.2022 07:49;;XQD;Tambor de aluminio con cabeza extraíble;;;01.06.2021;;;Embalaje
+228;S;22.01.2022 07:49;;22.01.2022 07:49;;XQF;Tambor, plástico con cabeza no desmontable;;;01.06.2021;;;Embalaje
+229;S;22.01.2022 07:49;;22.01.2022 07:49;;XQG;Tambor, plástico, cabeza extraíble;;;01.06.2021;;;Embalaje
+230;S;22.01.2022 07:49;;22.01.2022 07:49;;XQH;Barril de madera con tapón;;;01.06.2021;;;Embalaje
+231;S;22.01.2022 07:49;;22.01.2022 07:49;;XQJ;Barril de madera con cabeza desprendible;;;01.06.2021;;;Embalaje
+232;S;22.01.2022 07:49;;22.01.2022 07:49;;XQK;Bidón de acero con cabeza no desmontable;;;01.06.2021;;;Embalaje
+233;S;22.01.2022 07:49;;22.01.2022 07:49;;XQL;Bidón de acero con cabeza desmontable;;;01.06.2021;;;Embalaje
+234;S;22.01.2022 07:49;;22.01.2022 07:49;;XQM;Bidón de plástico con cabeza no desmontable;;;01.06.2021;;;Embalaje
+235;S;22.01.2022 07:49;;22.01.2022 07:49;;XQN;Bidón de plástico con cabeza extraíble;;;01.06.2021;;;Embalaje
+236;S;22.01.2022 07:49;;22.01.2022 07:49;;XQP;Caja de madera natural estándar;;;01.06.2021;;;Embalaje
+237;S;22.01.2022 07:49;;22.01.2022 07:49;;XQQ;Caja de madera natural con muros a prueba de filtraciones;;;01.06.2021;;;Embalaje
+238;S;22.01.2022 07:49;;22.01.2022 07:49;;XQR;Caja de plástico expandida;;;01.06.2021;;;Embalaje
+239;S;22.01.2022 07:49;;22.01.2022 07:49;;XQS;Caja de plástico sólida;;;01.06.2021;;;Embalaje
+240;S;22.01.2022 07:49;;22.01.2022 07:49;;XRD;Rod;;;01.06.2021;;;Embalaje
+241;S;22.01.2022 07:49;;22.01.2022 07:49;;XRG;Anillo;;;01.06.2021;;;Embalaje
+242;S;22.01.2022 07:49;;22.01.2022 07:49;;XRJ;Estante, Perchero para ropa;;;01.06.2021;;;Embalaje
+243;S;22.01.2022 07:49;;22.01.2022 07:49;;XRK;Estante;;;01.06.2021;;;Embalaje
+244;S;22.01.2022 07:49;;22.01.2022 07:49;;XRL;Carrete;Dispositivo giratorio cilíndrico con un reborde en cada extremo en el que se enrollan los materiales.;;01.06.2021;;;Embalaje
+245;S;22.01.2022 07:49;;22.01.2022 07:49;;XRO;Rollo;;;01.06.2021;;;Embalaje
+246;S;22.01.2022 07:49;;22.01.2022 07:49;;XRT;Red Roja;Material de confinamiento hecho de redes de malla roja para retener artículos (por ejemplo árboles).;;01.06.2021;;;Embalaje
+247;S;22.01.2022 07:49;;22.01.2022 07:49;;XRZ;Varillas  con fleje/ agrupados/ armados;;;01.06.2021;;;Embalaje
+248;S;22.01.2022 07:49;;22.01.2022 07:49;;XSA;Saco;;;01.06.2021;;;Embalaje
+249;S;22.01.2022 07:49;;22.01.2022 07:49;;XSB;Losa;;;01.06.2021;;;Embalaje
+250;S;22.01.2022 07:49;;22.01.2022 07:49;;XSC;Cajón poco profundo;;;01.06.2021;;;Embalaje
+251;S;22.01.2022 07:49;;22.01.2022 07:49;;XSD;Huso;;;01.06.2021;;;Embalaje
+252;S;22.01.2022 07:49;;22.01.2022 07:49;;XSE;Baúl;;;01.06.2021;;;Embalaje
+253;S;22.01.2022 07:49;;22.01.2022 07:49;;XSH;Bolsa pequeña hermética;;;01.06.2021;;;Embalaje
+254;S;22.01.2022 07:49;;22.01.2022 07:49;;XSI;Patín;Una plataforma o plataforma móvil baja para facilitar el manejo y transporte de mercancías.;;01.06.2021;;;Embalaje
+255;S;22.01.2022 07:49;;22.01.2022 07:49;;XSK;Carcasa esqueleto;;;01.06.2021;;;Embalaje
+256;S;22.01.2022 07:49;;22.01.2022 07:49;;XSL;Hoja de deslizamiento;Láminas de plástico duro se utilizan principalmente como la base sobre la cual apilan mercancías para optimizar el espacio dentro de un contenedor. Puede utilizarse como alternativa a un embalaje paletizado.;;01.06.2021;;;Embalaje
+257;S;22.01.2022 07:49;;22.01.2022 07:49;;XSM;Hoja de metal;;;01.06.2021;;;Embalaje
+258;S;22.01.2022 07:49;;22.01.2022 07:49;;XSO;Carrete pequeño;Contenedor de empaque utilizado en el transporte de artículos tales como alambre, cable, cinta e hilo.;;01.06.2021;;;Embalaje
+259;S;22.01.2022 07:49;;22.01.2022 07:49;;XSP;Hoja de empaque de plástico;;;01.06.2021;;;Embalaje
+260;S;22.01.2022 07:49;;22.01.2022 07:49;;XSS;Cajón de acero;;;01.06.2021;;;Embalaje
+261;S;22.01.2022 07:49;;22.01.2022 07:49;;XSU;Maleta;;;01.06.2021;;;Embalaje
+262;S;22.01.2022 07:49;;22.01.2022 07:49;;XSV;Sobre de acero;;;01.06.2021;;;Embalaje
+263;S;22.01.2022 07:49;;22.01.2022 07:49;;XSW;Envoltorio;Mercancías retenidas en una película de plástico transparente que ha sido envuelta alrededor y luego encogido fuertemente a las mercancías.;;01.06.2021;;;Embalaje
+264;S;22.01.2022 07:49;;22.01.2022 07:49;;XSY;Manga;;;01.06.2021;;;Embalaje
+265;S;22.01.2022 07:49;;22.01.2022 07:49;;XSZ;Hojas  con fleje/ agrupados/ armados;;;01.06.2021;;;Embalaje
+266;S;22.01.2022 07:49;;22.01.2022 07:49;;XT1;Tableta;Artículo suelto o sin empaque en forma de barra, bloque o pieza.;;01.06.2021;;;Embalaje
+267;S;22.01.2022 07:49;;22.01.2022 07:49;;XTB;Tina;;;01.06.2021;;;Embalaje
+268;S;22.01.2022 07:49;;22.01.2022 07:49;;XTC;Caja para té;;;01.06.2021;;;Embalaje
+269;S;22.01.2022 07:49;;22.01.2022 07:49;;XTD;Tubo plegable;;;01.06.2021;;;Embalaje
+270;S;22.01.2022 07:49;;22.01.2022 07:49;;XTG;Contenedor de tanque genérico;Recipiente especialmente construido para el transporte de líquidos y gases a granel.;;01.06.2021;;;Embalaje
+271;S;22.01.2022 07:49;;22.01.2022 07:49;;XTI;Tierce;Barril de 1/6 parte de tonel;;01.06.2021;;;Embalaje
+272;S;22.01.2022 07:49;;22.01.2022 07:49;;XTK;Tanque rectangular;;;01.06.2021;;;Embalaje
+273;S;22.01.2022 07:49;;22.01.2022 07:49;;XTL;Tina con tapa;;;01.06.2021;;;Embalaje
+274;S;22.01.2022 07:49;;22.01.2022 07:49;;XTN;Hojalata;;;01.06.2021;;;Embalaje
+275;S;22.01.2022 07:49;;22.01.2022 07:49;;XTO;Tonel;Barril con capacidad para 982 litros;;01.06.2021;;;Embalaje
+276;S;22.01.2022 07:49;;22.01.2022 07:49;;XTR;Maletero;;;01.06.2021;;;Embalaje
+277;S;22.01.2022 07:49;;22.01.2022 07:49;;XTS;Estructura;;;01.06.2021;;;Embalaje
+278;S;22.01.2022 07:49;;22.01.2022 07:49;;XTT;Bolsa de mano;Una gran bolsa o cesto.;;01.06.2021;;;Embalaje
+279;S;22.01.2022 07:49;;22.01.2022 07:49;;XTU;Tubo;;;01.06.2021;;;Embalaje
+280;S;22.01.2022 07:49;;22.01.2022 07:49;;XTV;Tubo con boquilla;Tubo de plástico, metal o cartón, provisto de una boquilla, que contiene un producto líquido o semilíquido, por ejemplo silicio.;;01.06.2021;;;Embalaje
+281;S;22.01.2022 07:49;;22.01.2022 07:49;;XTW;Pallet tricapa;Una paleta ligera hecha de cartón ondulado resistente.;;01.06.2021;;;Embalaje
+282;S;22.01.2022 07:49;;22.01.2022 07:49;;XTY;Tanque cilíndrico;;;01.06.2021;;;Embalaje
+283;S;22.01.2022 07:49;;22.01.2022 07:49;;XTZ;Tubos  con fleje/ agrupados/ armados;;;01.06.2021;;;Embalaje
+284;S;22.01.2022 07:49;;22.01.2022 07:49;;XUC;Sin empaque;;;01.06.2021;;;Embalaje
+285;S;22.01.2022 07:49;;22.01.2022 07:49;;XUN;Unidad;Tipo de paquete compuesto de un solo artículo u objeto, no especificado de otro modo como una unidad de equipo de transporte.;;01.06.2021;;;Embalaje
+286;S;22.01.2022 07:49;;22.01.2022 07:49;;XVA;Tanque;;;01.06.2021;;;Embalaje
+287;S;22.01.2022 07:49;;22.01.2022 07:49;;XVG;Tanque de gas (a 1,031 mbar y 15° C);;;01.06.2021;;;Embalaje
+288;S;22.01.2022 07:49;;22.01.2022 07:49;;XVI;Frasco pequeño;;;01.06.2021;;;Embalaje
+289;S;22.01.2022 07:49;;22.01.2022 07:49;;XVK;Paquete transportable;Tipo de cajón de madera.;;01.06.2021;;;Embalaje
+290;S;22.01.2022 07:49;;22.01.2022 07:49;;XVL;Contenedor para líquidos a granel;;;01.06.2021;;;Embalaje
+291;S;22.01.2022 07:49;;22.01.2022 07:49;;XVN;Vehículo;Medio de transporte autopropulsado.;;01.06.2021;;;Embalaje
+292;S;22.01.2022 07:49;;22.01.2022 07:49;;XVO;Contenedor para sólido de partículas grandes a granel ("nódulos");;;01.06.2021;;;Embalaje
+293;S;22.01.2022 07:49;;22.01.2022 07:49;;XVP;Envasado al vacío;;;01.06.2021;;;Embalaje
+294;S;22.01.2022 07:49;;22.01.2022 07:49;;XVQ;Tanque para Gas licuado (a temperatura / presión anormal);;;01.06.2021;;;Embalaje
+295;S;22.01.2022 07:49;;22.01.2022 07:49;;XVR;Contenedor para sólidos de partículas granulares a granel (Granos);;;01.06.2021;;;Embalaje
+296;S;22.01.2022 07:49;;22.01.2022 07:49;;XVS;Contenedor de chatarra a granel;Chatarra suelta o sin empaquetar transportada a granel.;;01.06.2021;;;Embalaje
+297;S;22.01.2022 07:49;;22.01.2022 07:49;;XVY;Contenedor para sólido de partículas finas a granel ("polvos");;;01.06.2021;;;Embalaje
+298;S;22.01.2022 07:49;;22.01.2022 07:49;;XWA;Contenedor de granel intermedio;Recipiente reutilizable hecho de metal, plástico, textiles, madera o materiales compuestos utilizados para facilitar el transporte de sólidos y líquidos a granel en volúmenes manejables.;;01.06.2021;;;Embalaje
+299;S;22.01.2022 07:49;;22.01.2022 07:49;;XWB;Botella de mimbre;;;01.06.2021;;;Embalaje
+300;S;22.01.2022 07:49;;22.01.2022 07:49;;XWC;Contenedor intermedio para gráneles y de acero;;;01.06.2021;;;Embalaje
+301;S;22.01.2022 07:49;;22.01.2022 07:49;;XWD;Contenedor intermedio para gráneles y de aluminio;;;01.06.2021;;;Embalaje
+302;S;22.01.2022 07:49;;22.01.2022 07:49;;XWF;Contenedor intermedio para gráneles y de metal;;;01.06.2021;;;Embalaje
+303;S;22.01.2022 07:49;;22.01.2022 07:49;;XWG;Contenedor intermedio para gráneles y de acero presurizado menor a 10 kpa;;;01.06.2021;;;Embalaje
+304;S;22.01.2022 07:49;;22.01.2022 07:49;;XWH;Contenedor intermedio para gráneles y de aluminio, presurizado menor a 10 kpa;;;01.06.2021;;;Embalaje
+305;S;22.01.2022 07:49;;22.01.2022 07:49;;XWJ;Contenedor intermedio para gráneles y de metal con una presión de 10 kpa;;;01.06.2021;;;Embalaje
+306;S;22.01.2022 07:49;;22.01.2022 07:49;;XWK;Contenedor intermedio para gráneles y de acero para líquido;;;01.06.2021;;;Embalaje
+307;S;22.01.2022 07:49;;22.01.2022 07:49;;XWL;Contenedor intermedio para gráneles y de aluminio para líquido;;;01.06.2021;;;Embalaje
+308;S;22.01.2022 07:49;;22.01.2022 07:49;;XWM;Contenedor intermedio para gráneles y de metal para líquido;;;01.06.2021;;;Embalaje
+309;S;22.01.2022 07:49;;22.01.2022 07:49;;XWN;Contenedor intermedio para gráneles con tejido plástico sin capa con revestimiento;;;01.06.2021;;;Embalaje
+310;S;22.01.2022 07:49;;22.01.2022 07:49;;XWP;Contenedor intermedio para gráneles con tejido plástico y recubierto;;;01.06.2021;;;Embalaje
+311;S;22.01.2022 07:49;;22.01.2022 07:49;;XWQ;Contenedor intermedio para gráneles con tejido plástico con revestimiento;;;01.06.2021;;;Embalaje
+312;S;22.01.2022 07:49;;22.01.2022 07:49;;XWR;Contenedor intermedio para gráneles con tejido plástico, revestido y con forro;;;01.06.2021;;;Embalaje
+313;S;22.01.2022 07:49;;22.01.2022 07:49;;XWS;Contenedor intermedio para gráneles con película de plástico;;;01.06.2021;;;Embalaje
+314;S;22.01.2022 07:49;;22.01.2022 07:49;;XWT;Contenedor intermedio para gráneles textil sin capa / forro;;;01.06.2021;;;Embalaje
+315;S;22.01.2022 07:49;;22.01.2022 07:49;;XWU;Contenedor intermedio para gráneles de madera natural con forro interior;;;01.06.2021;;;Embalaje
+316;S;22.01.2022 07:49;;22.01.2022 07:49;;XWV;Contenedor intermedio para gráneles textil recubierto;;;01.06.2021;;;Embalaje
+317;S;22.01.2022 07:49;;22.01.2022 07:49;;XWW;Contenedor intermedio para gráneles textil con revestimiento;;;01.06.2021;;;Embalaje
+318;S;22.01.2022 07:49;;22.01.2022 07:49;;XWX;Contenedor intermedio para gráneles textil recubierto y con forro;;;01.06.2021;;;Embalaje
+319;S;22.01.2022 07:49;;22.01.2022 07:49;;XWY;Contenedor intermedio para gráneles contrachapado con revestimiento interior;;;01.06.2021;;;Embalaje
+320;S;22.01.2022 07:49;;22.01.2022 07:49;;XWZ;Contenedor intermedio para gráneles de madera reconstituida con revestimiento interior;;;01.06.2021;;;Embalaje
+321;S;22.01.2022 07:49;;22.01.2022 07:49;;XXA;Bolsa de tejido plástico, sin abrigo interior ni forro;;;01.06.2021;;;Embalaje
+322;S;22.01.2022 07:49;;22.01.2022 07:49;;XXB;Bolsa de tejido plástico a prueba de filtraciones;;;01.06.2021;;;Embalaje
+323;S;22.01.2022 07:49;;22.01.2022 07:49;;XXC;Bolsa de tejido plástico resistente al agua;;;01.06.2021;;;Embalaje
+324;S;22.01.2022 07:49;;22.01.2022 07:49;;XXD;Bolsa con película de plástico;;;01.06.2021;;;Embalaje
+325;S;22.01.2022 07:49;;22.01.2022 07:49;;XXF;Bolsa textil sin capa ni forro interior;;;01.06.2021;;;Embalaje
+326;S;22.01.2022 07:49;;22.01.2022 07:49;;XXG;Bolsa textil a prueba de filtraciones;;;01.06.2021;;;Embalaje
+327;S;22.01.2022 07:49;;22.01.2022 07:49;;XXH;Bolsa textil resistente al agua;;;01.06.2021;;;Embalaje
+328;S;22.01.2022 07:49;;22.01.2022 07:49;;XXJ;Bolsa de papel multi-pared;;;01.06.2021;;;Embalaje
+329;S;22.01.2022 07:49;;22.01.2022 07:49;;XXK;Bolsa de papel multi-pared, resistente al agua;;;01.06.2021;;;Embalaje
+330;S;22.01.2022 07:49;;22.01.2022 07:49;;XYA;Empaque compuesto, recipiente de plástico en tambor de acero;;;01.06.2021;;;Embalaje
+331;S;22.01.2022 07:49;;22.01.2022 07:49;;XYB;Empaque compuesto, recipiente de plástico en cajas de acero;;;01.06.2021;;;Embalaje
+332;S;22.01.2022 07:49;;22.01.2022 07:49;;XYC;Empaque compuesto, recipiente de plástico en tambor de aluminio;;;01.06.2021;;;Embalaje
+333;S;22.01.2022 07:49;;22.01.2022 07:49;;XYD;Empaque compuesto, recipiente de plástico en cajón de aluminio;;;01.06.2021;;;Embalaje
+334;S;22.01.2022 07:49;;22.01.2022 07:49;;XYF;Empaque compuesto, recipiente de plástico en caja de madera;;;01.06.2021;;;Embalaje
+335;S;22.01.2022 07:49;;22.01.2022 07:49;;XYG;Empaque compuesto, recipiente de plástico en tambor de madera contrachapada;;;01.06.2021;;;Embalaje
+336;S;22.01.2022 07:49;;22.01.2022 07:49;;XYH;Empaque compuesto, recipiente de plástico en caja de madera contrachapada;;;01.06.2021;;;Embalaje
+337;S;22.01.2022 07:49;;22.01.2022 07:49;;XYJ;Empaque compuesto, recipiente de plástico en tambor de fibra;;;01.06.2021;;;Embalaje
+338;S;22.01.2022 07:49;;22.01.2022 07:49;;XYK;Empaque compuesto, recipiente de plástico en caja de cartón;;;01.06.2021;;;Embalaje
+339;S;22.01.2022 07:49;;22.01.2022 07:49;;XYL;Empaque compuesto, recipiente de plástico en el tambor de plástico;;;01.06.2021;;;Embalaje
+340;S;22.01.2022 07:49;;22.01.2022 07:49;;XYM;Empaque compuesto, recipiente de plástico en caja de plástico sólido;;;01.06.2021;;;Embalaje
+341;S;22.01.2022 07:49;;22.01.2022 07:49;;XYN;Empaque compuesto, receptáculo de vidrio en tambor de acero;;;01.06.2021;;;Embalaje
+342;S;22.01.2022 07:49;;22.01.2022 07:49;;XYP;Empaque compuesto, receptáculo de vidrio en caja de cajas de acero;;;01.06.2021;;;Embalaje
+343;S;22.01.2022 07:49;;22.01.2022 07:49;;XYQ;Empaque compuesto, recipiente de vidrio en tambor de aluminio;;;01.06.2021;;;Embalaje
+344;S;22.01.2022 07:49;;22.01.2022 07:49;;XYR;Empaque compuesto, receptáculo de vidrio en caja de aluminio;;;01.06.2021;;;Embalaje
+345;S;22.01.2022 07:49;;22.01.2022 07:49;;XYS;Empaque compuesto, recipiente de vidrio en caja de madera;;;01.06.2021;;;Embalaje
+346;S;22.01.2022 07:49;;22.01.2022 07:49;;XYT;Empaque compuesto, recipiente de vidrio en tambor de madera contrachapada;;;01.06.2021;;;Embalaje
+347;S;22.01.2022 07:49;;22.01.2022 07:49;;Xyv;Empaque compuesto, recipiente de vidrio en el cesto de mimbre;;;01.06.2021;;;Embalaje
+348;S;22.01.2022 07:49;;22.01.2022 07:49;;XYW;Empaque compuesto, recipiente de vidrio en tambor de fibra;;;01.06.2021;;;Embalaje
+349;S;22.01.2022 07:49;;22.01.2022 07:49;;XYX;Empaque compuesto, recipiente de vidrio en caja de cartón;;;01.06.2021;;;Embalaje
+350;S;22.01.2022 07:49;;22.01.2022 07:49;;XYY;Empaque compuesto, recipiente de vidrio en paquete de plástico expandible;;;01.06.2021;;;Embalaje
+351;S;22.01.2022 07:49;;22.01.2022 07:49;;XYZ;Empaque compuesto, recipiente de vidrio en paquete de plástico sólido;;;01.06.2021;;;Embalaje
+352;S;22.01.2022 07:49;;22.01.2022 07:49;;XZA;Contenedor de granel intermedio, papel, multi-pared;;;01.06.2021;;;Embalaje
+353;S;22.01.2022 07:49;;22.01.2022 07:49;;XZB;Bolsa grande;;;01.06.2021;;;Embalaje
+354;S;22.01.2022 07:49;;22.01.2022 07:49;;XZC;Contenedor intermedio para gráneles de papel, multi-pared y resistente al agua;;;01.06.2021;;;Embalaje
+355;S;22.01.2022 07:49;;22.01.2022 07:49;;XZD;Contenedor intermedio para gráneles de plástico rígido, con equipo estructural para sólidos;;;01.06.2021;;;Embalaje
+356;S;22.01.2022 07:49;;22.01.2022 07:49;;XZF;Contenedor intermedio para gráneles de plástico rígido, autoportante para sólidos;;;01.06.2021;;;Embalaje
+357;S;22.01.2022 07:49;;22.01.2022 07:49;;XZG;Contenedor intermedio para gráneles de plástico rígido, con equipo estructural, presurizado;;;01.06.2021;;;Embalaje
+358;S;22.01.2022 07:49;;22.01.2022 07:49;;XZH;Contenedor intermedio para gráneles de plástico rígido, autoportante y presurizado;;;01.06.2021;;;Embalaje
+359;S;22.01.2022 07:49;;22.01.2022 07:49;;XZJ;Contenedor intermedio para gráneles de plástico rígido, con equipo estructural para líquidos;;;01.06.2021;;;Embalaje
+360;S;22.01.2022 07:49;;22.01.2022 07:49;;XZK;Contenedor intermedio para gráneles de plástico rígido, autoportante, líquidos;;;01.06.2021;;;Embalaje
+361;S;22.01.2022 07:49;;22.01.2022 07:49;;XZL;Contenedor intermedio para gráneles, compuesto y de plástico rígido, sólidos;;;01.06.2021;;;Embalaje
+362;S;22.01.2022 07:49;;22.01.2022 07:49;;XZM;Contenedor intermedio para gráneles, compuesto y de plástico flexible, sólidos;;;01.06.2021;;;Embalaje
+363;S;22.01.2022 07:49;;22.01.2022 07:49;;XZN;Contenedor intermedio para gráneles, compuesto y de plástico rígido, presurizado;;;01.06.2021;;;Embalaje
+364;S;22.01.2022 07:49;;22.01.2022 07:49;;XZP;Contenedor intermedio para gráneles, compuesto y de plástico flexible, presurizado;;;01.06.2021;;;Embalaje
+365;S;22.01.2022 07:49;;22.01.2022 07:49;;XZQ;Contenedor intermedio para gráneles, compuesto y de plástico rígido, líquidos;;;01.06.2021;;;Embalaje
+366;S;22.01.2022 07:49;;22.01.2022 07:49;;XZR;Contenedor intermedio para gráneles, compuesto y de plástico flexible para líquidos;;;01.06.2021;;;Embalaje
+367;S;22.01.2022 07:49;;22.01.2022 07:49;;XZS;Contenedor intermedio para gráneles, compuesto;;;01.06.2021;;;Embalaje
+368;S;22.01.2022 07:49;;22.01.2022 07:49;;XZT;Contenedor intermedio para gráneles con tablero de fibras;;;01.06.2021;;;Embalaje
+369;S;22.01.2022 07:49;;22.01.2022 07:49;;XZU;Contenedor intermedio para gráneles flexible;;;01.06.2021;;;Embalaje
+370;S;22.01.2022 07:49;;22.01.2022 07:49;;XZV;Contenedor intermedio para gráneles de metal, distinto del acero;;;01.06.2021;;;Embalaje
+371;S;22.01.2022 07:49;;22.01.2022 07:49;;XZW;Contenedor intermedio para gráneles, de madera natural;;;01.06.2021;;;Embalaje
+372;S;22.01.2022 07:49;;22.01.2022 07:49;;XZX;Contenedor intermedio para gráneles, de contrachapado;;;01.06.2021;;;Embalaje
+373;S;22.01.2022 07:49;;22.01.2022 07:49;;XZY;Contenedor intermedio para gráneles, de madera reconstituida;;;01.06.2021;;;Embalaje
+374;S;22.01.2022 07:49;;22.01.2022 07:49;;KGM;Kilogramo;Una unidad de masa igual a mil gramos.;;01.06.2021;;kg;Masa
+375;S;22.01.2022 07:49;;22.01.2022 07:49;;MC;Microgramo;;;01.06.2021;;µg;Masa
+376;S;22.01.2022 07:49;;22.01.2022 07:49;;DJ;Decagramo;;;01.06.2021;;dag;Masa
+377;S;22.01.2022 07:49;;22.01.2022 07:49;;DG;Decigramo;;;01.06.2021;;dg;Masa
+378;S;22.01.2022 07:49;;22.01.2022 07:49;;GRM;Gramo;Medida de masa, de símbolo g, que es igual a la milésima parte de un kilogramo.;;01.06.2021;;g;Masa
+379;S;22.01.2022 07:49;;22.01.2022 07:49;;CGM;Centigramo;;;01.06.2021;;cg;Masa
+380;S;22.01.2022 07:49;;22.01.2022 07:49;;TNE;Tonelada (tonelada métrica);Sinónimo: tonelada métrica;;01.06.2021;;t;Masa
+381;S;22.01.2022 07:49;;22.01.2022 07:49;;DTN;Decitonelada métrica;Sinónimo: centner, métrico 100 kg; Quintal, métrico 100 kg;;01.06.2021;;dt or dtn;Masa
+382;S;22.01.2022 07:49;;22.01.2022 07:49;;MGM;Miligramo;Medida de masa, de símbolo mg, que es igual a la milésima parte de un gramo.;;01.06.2021;;mg;Masa
+383;S;22.01.2022 07:49;;22.01.2022 07:49;;HGM;Hectogramo;;;01.06.2021;;hg;Masa
+384;S;22.01.2022 07:49;;22.01.2022 07:49;;KTN;Kilotonelada Métrica;;;01.06.2021;;kt;Masa
+385;S;22.01.2022 07:49;;22.01.2022 07:49;;2U;Megagramo;;;01.06.2021;;Mg;Masa
+386;S;22.01.2022 07:49;;22.01.2022 07:49;;LBR;Libra;Unidad monetaria de Irlanda (hasta su sustitución por el euro), Reino Unido, Chipre, Egipto, Líbano, Malta, Siria y otros países.;;01.06.2021;;lb;Masa
+387;S;22.01.2022 07:49;;22.01.2022 07:49;;GRN;Grano;Es la mínima unidad de masa en el sistema inglés de medidas.;;01.06.2021;;gr;Masa
+388;S;22.01.2022 07:49;;22.01.2022 07:49;;ONZ;Onza (avoirdupois);Es una unidad de masa usada desde la Antigua Roma;;01.06.2021;;oz;Masa
+389;S;22.01.2022 07:49;;22.01.2022 07:49;;CWI;Hundredweight;;;01.06.2021;;cwt (UK);Masa
+390;S;22.01.2022 07:49;;22.01.2022 07:49;;CWA;Hundred pound;;;01.06.2021;;cwt (US);Masa
+391;S;22.01.2022 07:49;;22.01.2022 07:49;;LTN;Tonelada (UK) o tonelada larga (estados unidos);Sinónimo: tonelada bruta (2240 ??lb);;01.06.2021;;ton (UK);Masa
+392;S;22.01.2022 07:49;;22.01.2022 07:49;;STI;Estone (UK);;;01.06.2021;;st;Masa
+393;S;22.01.2022 07:49;;22.01.2022 07:49;;STN;Tonelada (estados unidos) o tonelada corta (UK y estados unidos);Sinónimo: tonelada neta (2000 lb);;01.06.2021;;ton (US);Masa
+394;S;22.01.2022 07:49;;22.01.2022 07:49;;APZ;Onza troy u onza farmacéutica;;;01.06.2021;;tr oz;Masa
+395;S;22.01.2022 07:49;;22.01.2022 07:49;;F13;Slug;Una unidad de masa. Un slug es la masa acelerada a 1 pie por segundo por segundo por una fuerza de 1 libra.;;01.06.2021;;slug;Masa
+396;S;22.01.2022 07:49;;22.01.2022 07:49;;K64;Libra (avoirdupois) por grado fahrenheit;;;01.06.2021;;lb/°F;Masa
+397;S;22.01.2022 07:49;;22.01.2022 07:49;;L69;Tonelada por kelvin;;;01.06.2021;;t/K;Masa
+398;S;22.01.2022 07:49;;22.01.2022 07:49;;L87;Tonelada corta por grado fahrenheit;;;01.06.2021;;ton (US)/°F;Masa
+399;S;22.01.2022 07:49;;22.01.2022 07:49;;M85;Tonelada, ensayo;Unidad de masa no conforme al sistema internacional, utilizada en la mineralogía;;01.06.2021;;;Masa
+400;S;22.01.2022 07:49;;22.01.2022 07:49;;M86;Libra Alemana;Anticuada unidad de masa usada en Alemania.;;01.06.2021;;pfd;Masa
+401;S;22.01.2022 07:49;;22.01.2022 07:49;;J33;Microgramo por kilogramo;;;01.06.2021;;µg/kg;Masa
+402;S;22.01.2022 07:49;;22.01.2022 07:49;;L32;Nanogramo por kilogramo;;;01.06.2021;;ng/kg;Masa
+403;S;22.01.2022 07:49;;22.01.2022 07:49;;NA;Miligramo por kilogramo;;;01.06.2021;;mg/kg;Masa
+404;S;22.01.2022 07:49;;22.01.2022 07:49;;M29;Kilogramo por kilogramo;;;01.06.2021;;kg/kg;Masa
+405;S;22.01.2022 07:49;;22.01.2022 07:49;;M91;Libra por libra;Proporción de la masa consistente en la libra avoirdupois;;01.06.2021;;lb/lb;Masa
+406;S;22.01.2022 07:49;;22.01.2022 07:49;;Q29;Microgramo por hectogramo;Microgramo por hectogramo;;01.06.2021;;µg/hg;Masa
+407;S;22.01.2022 07:49;;22.01.2022 07:49;;MTQ;Metro cúbico;Sinónimo: metro cúbico;;01.06.2021;;m³;Volumen
+408;S;22.01.2022 07:49;;22.01.2022 07:49;;MAL;Megalitro;;;01.06.2021;;Ml;Volumen
+409;S;22.01.2022 07:49;;22.01.2022 07:49;;LTR;Litro;Es una unidad de volumen equivalente a un decímetro cúbico (1 dm³).;;01.06.2021;;l;Volumen
+410;S;22.01.2022 07:49;;22.01.2022 07:49;;MMQ;Milímetro cúbico;Medida de longitud, de símbolo mm, que es igual a la milésima parte de un metro.;;01.06.2021;;mm³;Volumen
+411;S;22.01.2022 07:49;;22.01.2022 07:49;;CMQ;Centímetro cúbico;Medida de longitud, de símbolo cm, que es igual a la centésima parte de un metro.;;01.06.2021;;cm³;Volumen
+412;S;22.01.2022 07:49;;22.01.2022 07:49;;DMQ;Decímetro cúbico;Medida de longitud, de símbolo dm, que es igual a la décima parte de un metro.;;01.06.2021;;dm³;Volumen
+413;S;22.01.2022 07:49;;22.01.2022 07:49;;MLT;Mililitro;Medida de volumen, de símbolo ml, que es igual a la milésima parte de un litro.;;01.06.2021;;ml;Volumen
+414;S;22.01.2022 07:49;;22.01.2022 07:49;;HLT;Hectolitro;Es una unidad de volumen equivalente a cien litros, representado por el símbolo hl. Es el segundo múltiplo del litro y también equivale a 100 decímetros cúbicos (0,1 metros cúbicos).;;01.06.2021;;hl;Volumen
+415;S;22.01.2022 07:49;;22.01.2022 07:49;;CLT;Centilitro;Medida de volumen, de símbolo cl, que es igual a la centésima parte de un litro.;;01.06.2021;;cl;Volumen
+416;S;22.01.2022 07:49;;22.01.2022 07:49;;DMA;Decámetro cúbico;;;01.06.2021;;dam³;Volumen
+417;S;22.01.2022 07:49;;22.01.2022 07:49;;H19;Hectómetro cúbico;;;01.06.2021;;hm³;Volumen
+418;S;22.01.2022 07:49;;22.01.2022 07:49;;H20;Kilómetro cúbico;;;01.06.2021;;km³;Volumen
+419;S;22.01.2022 07:49;;22.01.2022 07:49;;M71;Metro cúbico por pascal (joules);Unidad de Energía del sistema internacional, metro elevado al exponente 3 y dividido por la unidad pascal.;;01.06.2021;;m³/Pa;Volumen
+420;S;22.01.2022 07:49;;22.01.2022 07:49;;DLT;Decilitro;;;01.06.2021;;dl;Volumen
+421;S;22.01.2022 07:49;;22.01.2022 07:49;;4G;Microlitro;;;01.06.2021;;µl;Volumen
+422;S;22.01.2022 07:49;;22.01.2022 07:49;;K6;Kilolitro;;;01.06.2021;;kl;Volumen
+423;S;22.01.2022 07:49;;22.01.2022 07:49;;A44;Decalitro;;;01.06.2021;;dal;Volumen
+424;S;22.01.2022 07:49;;22.01.2022 07:49;;G94;Centímetro cúbico por bar;;;01.06.2021;;cm³/bar;Volumen
+425;S;22.01.2022 07:49;;22.01.2022 07:49;;G95;Litro por bar;;;01.06.2021;;l/bar;Volumen
+426;S;22.01.2022 07:49;;22.01.2022 07:49;;G96;Metro cúbico por bar;;;01.06.2021;;m³/bar;Volumen
+427;S;22.01.2022 07:49;;22.01.2022 07:49;;G97;Mililitro por bar;;;01.06.2021;;ml/bar;Volumen
+428;S;22.01.2022 07:49;;22.01.2022 07:49;;5I;Pies cúbicos estándar;Utilice estándar (código común WSD);Las unidades marcadas como borradas en el catálogo internacional de UNEC;01.06.2021;;Std;Volumen
+429;S;22.01.2022 07:49;;22.01.2022 07:49;;INQ;Pulgada cúbica;Sinónimo: pulgada cuadrada;;01.06.2021;;in³;Volumen
+430;S;22.01.2022 07:49;;22.01.2022 07:49;;FTQ;Pie cúbico;;;01.06.2021;;ft³;Volumen
+431;S;22.01.2022 07:49;;22.01.2022 07:49;;YDQ;Yarda cúbica;;;01.06.2021;;yd³;Volumen
+432;S;22.01.2022 07:49;;22.01.2022 07:49;;GLI;Galón (UK);Es una unidad de volumen que se emplea en los países anglófonos;;01.06.2021;;gal (UK);Volumen
+433;S;22.01.2022 07:49;;22.01.2022 07:49;;GLL;Galón (EUA);Es una unidad de volumen que se emplea en los países anglófonos;;01.06.2021;;gal (US);Volumen
+434;S;22.01.2022 07:49;;22.01.2022 07:49;;PT;Pinta (US);Utilice pinta líquida (código común PTL);Unidades no recomendadas .;01.06.2021;;Pt (US);Volumen
+435;S;22.01.2022 07:49;;22.01.2022 07:49;;PTI;Pint (uk);Es una unidad de volumen inglesa en el sistema imperial y los Estados Unidos.;;01.06.2021;;pt (UK);Volumen
+436;S;22.01.2022 07:49;;22.01.2022 07:49;;QTI;Cuarto (UK);Es una unidad de medida de volumen equivalente a media fanega.;;01.06.2021;;qt (UK);Volumen
+437;S;22.01.2022 07:49;;22.01.2022 07:49;;PTL;Pinta líquida (estados unidos);;;01.06.2021;;liq pt (US);Volumen
+438;S;22.01.2022 07:49;;22.01.2022 07:49;;QTL;Cuarto de líquido (estadis unidos);;;01.06.2021;;liq qt (US);Volumen
+439;S;22.01.2022 07:49;;22.01.2022 07:49;;PTD;Pinta seca (estados unidos);;;01.06.2021;;dry pt (US);Volumen
+440;S;22.01.2022 07:49;;22.01.2022 07:49;;OZI;Onza líquida (UK);;;01.06.2021;;fl oz (UK);Volumen
+441;S;22.01.2022 07:49;;22.01.2022 07:49;;QT;Cuarto (EUA);Utilice cuarto de galón líquido (código común QTL);.;01.06.2021;;Qt (US);Volumen
+442;S;22.01.2022 07:49;;22.01.2022 07:49;;J57;Barril (uk petróleo);Es el nombre de varias unidades de volumen usadas en el Reino Unido y en los Estados Unidos.;;01.06.2021;;bbl (UK liq.);Volumen
+443;S;22.01.2022 07:49;;22.01.2022 07:49;;K21;Pie cúbico por grado fahrenheit;;;01.06.2021;;ft³/°F;Volumen
+444;S;22.01.2022 07:49;;22.01.2022 07:49;;K23;Pie cúbico por psi (libra por pulgada cuadrada);;;01.06.2021;;ft³/psi;Volumen
+445;S;22.01.2022 07:49;;22.01.2022 07:49;;L43;Peck (UK);Un peck es una unidad tradicional de medida de volúmenes.;;01.06.2021;;pk (UK);Volumen
+446;S;22.01.2022 07:49;;22.01.2022 07:49;;L61;Pinta (US seco);Utilice pinta seca (código común PTD);Las unidades marcadas como borradas en el catálogo internacional de UNECE;01.06.2021;;Pt (US seco);Volumen
+447;S;22.01.2022 07:49;;22.01.2022 07:49;;L62;Cuarto de galón (seco de los EUA);Utilice cuarto seco (EUA) (código común QTD);Las unidades marcadas como borradas en el catálogo internacional de UNECE, serán retenidas indefinidamente en las listas de códigos. En su caso, estas unidades podrán ser reinstalado a través del proceso de mantenimiento.;01.06.2021;;Qt (US seco);Volumen
+448;S;22.01.2022 07:49;;22.01.2022 07:49;;L84;Tonelada (flota UK);;;01.06.2021;;British shipping ton;Volumen
+449;S;22.01.2022 07:49;;22.01.2022 07:49;;L86;Tonelada (flota estados unidos);;;01.06.2021;;(US) shipping ton;Volumen
+450;S;22.01.2022 07:49;;22.01.2022 07:49;;M11;Yarda cúbica por grado fahrenheit;;;01.06.2021;;yd³/°F;Volumen
+451;S;22.01.2022 07:49;;22.01.2022 07:49;;M14;Yarda cúbica por psi (libra por pulgada cuadrada);;;01.06.2021;;yd³/psi;Volumen
+452;S;22.01.2022 07:49;;22.01.2022 07:49;;OZA;Onza líquida (estados unidos);;;01.06.2021;;fl oz (US);Volumen
+453;S;22.01.2022 07:49;;22.01.2022 07:49;;BUI;Bushel (UK);Un bushel tiene 4 pecks o 32 quarts, y equivale a 1,03205 del bushel de los Estados Unidos,;;01.06.2021;;bushel (UK);Volumen
+454;S;22.01.2022 07:49;;22.01.2022 07:49;;BUA;Bushel (EUA);El bushel es una unidad de medida de capacidad para mercancía sólida;;01.06.2021;;bu (US);Volumen
+455;S;22.01.2022 07:49;;22.01.2022 07:49;;BLL;Barril (EUA);Un barril estadounidense es igual a:42 galones estadounidenses;;01.06.2021;;barrel (US);Volumen
+456;S;22.01.2022 07:49;;22.01.2022 07:49;;BLD;Barril seco (EUA);;;01.06.2021;;bbl (US);Volumen
+457;S;22.01.2022 07:49;;22.01.2022 07:49;;GLD;Galón seco (EUA);;;01.06.2021;;dry gal (US);Volumen
+458;S;22.01.2022 07:49;;22.01.2022 07:49;;QTD;Cuarto seco (estados unidos);;;01.06.2021;;dry qt (US);Volumen
+459;S;22.01.2022 07:49;;22.01.2022 07:49;;G26;Estere;;;01.06.2021;;st;Volumen
+460;S;22.01.2022 07:49;;22.01.2022 07:49;;G21;Taza (unidad de volumen);;;01.06.2021;;cup (US);Volumen
+461;S;22.01.2022 07:49;;22.01.2022 07:49;;G24;Cucharada (estados unidos);1/2 onzas fluidas, 3 cucharaditas, 15 mililitros;;01.06.2021;;tablespoon (US);Volumen
+462;S;22.01.2022 07:49;;22.01.2022 07:49;;G25;Cucharilla (estados unidos);1/6 onzas fluidas o 5 mililitros;;01.06.2021;;teaspoon (US);Volumen
+463;S;22.01.2022 07:49;;22.01.2022 07:49;;G23;Peck;Es una unidad de medida imperial y habitual en  Estados Unidos de volumen seco.;;01.06.2021;;pk (US);Volumen
+464;S;22.01.2022 07:49;;22.01.2022 07:49;;M67;Acre-pie;Unidad de volúmen, la cúal es usada en los Estados Unidos para medir la capacidad de las presas.;;01.06.2021;;acre-ft (US survey);Volumen
+465;S;22.01.2022 07:49;;22.01.2022 07:49;;M68;Cordón;Unidad tradicional del volumen de leña apilada que se ha medido con un cordón.;;01.06.2021;;cord;Volumen
+466;S;22.01.2022 07:49;;22.01.2022 07:49;;M69;Milla cúbica (reino unido);;;01.06.2021;;mi³;Volumen
+467;S;22.01.2022 07:49;;22.01.2022 07:49;;M70;Unidad tradicional de capacidad de carga;;;01.06.2021;;RT;Volumen
+468;S;22.01.2022 07:49;;22.01.2022 07:49;;Q32;Femtolitro;;;01.06.2021;;fl;Volumen
+469;S;22.01.2022 07:49;;22.01.2022 07:49;;Q33;Picolitro;;;01.06.2021;;pl;Volumen
+470;S;22.01.2022 07:49;;22.01.2022 07:49;;Q34;Nanolitro;;;01.06.2021;;nl;Volumen
+471;S;22.01.2022 07:49;;22.01.2022 07:49;;NM3;Metro cúbico normalizado;Metros cúbicos normalizados (temperatura 0 ° C y presión 101325 milibares);;01.06.2021;;;Volumen
+472;S;22.01.2022 07:49;;22.01.2022 07:49;;SM3;Metro cúbico estándar;Metro cúbico estándar (temperatura 15 ° C y presión 101325 milibares);;01.06.2021;;;Volumen

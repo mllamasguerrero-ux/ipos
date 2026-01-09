@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/08/2014 19:23:29" ReportInfo.Modified="12/22/2014 13:27:30" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    public long vendedorId = 0;
+
+   
+
+    private void CBVendedor_TextChanged(object sender, EventArgs e)
+    {
+      string[] split = CBVendedor.Text.Split(new string[] { &quot;# Vendedor: &quot; }, StringSplitOptions.None);
+      string strNumCliente = &quot;0&quot;;
+      if(split.Length &gt; 1)     
+        strNumCliente = split[1];
+      
+      try
+      {
+        vendedorId = long.Parse(strNumCliente);
+      }
+      catch{
+      }
+    }
+        
+
+    private void btnOk_Click(object sender, EventArgs e)
+    {
+      
+    }
+
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {                             
+      if(CBSumarizado.CheckBox.Checked)
+        Data1.Visible = false;
+      else
+        Data1.Visible = true;
+    }
+
+    private void Child1_BeforePrint(object sender, EventArgs e)
+    {
+                    
+      if(CBSumarizado.CheckBox.Checked)
+        Child1.Visible = false;
+      else
+        Child1.Visible = true;
+    }
+
+    private void Child5_BeforePrint(object sender, EventArgs e)
+    {      
+      if(CBSumarizado.CheckBox.Checked)
+        Child5.Visible = false;
+      else
+        Child5.Visible = true;
+      
+    }
+
+    private void Child4_BeforePrint(object sender, EventArgs e)
+    {
+         
+      if(CBSumarizado.CheckBox.Checked)
+        Child4.Visible = true;
+      else
+        Child4.Visible = false;
+    }
+
+    private void GroupFooter1_BeforePrint(object sender, EventArgs e)
+    {
+           
+      if(CBSumarizado.CheckBox.Checked)
+        GroupFooter1.Visible = true;
+      else
+        GroupFooter1.Visible = false;
+    }
+
+   
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlsyZ3PY0dDnWASdj+69m6bd18xmaoPLFdLIVigh3QXu3lAAH+Xd2kNdS6o1Q37jvkZkESaQtfytQQ1uxpDGaWysUcjUr1fBFZ201La/OZpJPCXlnfw+cv05h0jNzwsL4few==">
+      <TableDataSource Name="Table" Alias="Main" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;docto.folio,&#13;&#10;persona.clave clienteclave,&#13;&#10;persona.nombre clientenombre,&#13;&#10;docto.fecha,&#13;&#10;docto.importe, &#13;&#10;docto.total,&#13;&#10;sum(case when doctopago.formapagoid in (1) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;                else 0&#13;&#10;     end&#13;&#10;    ) totalefectivo   ,&#13;&#10;    sum(case when doctopago.formapagoid in (3) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;                else 0&#13;&#10;     end&#13;&#10;    ) totalcheque  ,&#13;&#10;&#13;&#10;    sum(case when doctopago.formapagoid in (15) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;                else 0&#13;&#10;     end&#13;&#10;    ) totaltransferencia    ,&#13;&#10;&#13;&#10;    sum(case when doctopago.formapagoid in (2) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;                else 0&#13;&#10;     end&#13;&#10;    ) totaltarjeta,&#13;&#10;&#13;&#10;     sum(case when doctopago.formapagoid  in (5,14,16) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;                else 0&#13;&#10;     end&#13;&#10;    ) totalotros,&#13;&#10;docto.saldo,&#13;&#10;docto.vence, &#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;vendedor.nombre vendedordelcliente  ,&#13;&#10;list(case when doctopago.formapagoid in (1,2,3,5, 14,15,16) then null else coalesce(doctopago.banco,'') || ' ' || coalesce(doctopago.notas,'') || ' ' || coalesce(doctopago.referenciabancaria,'')   end) notaspago,&#13;&#10;&#13;&#10;docto.vendedorid cajeroid,&#13;&#10;&#13;&#10;cajero.nombre nombrecajero,&#13;&#10;cajero.clave clavecajero&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; from docto&#13;&#10; left  join persona on persona.id = docto.personaid&#13;&#10; left join persona vendedor on vendedor.id = persona.vendedorid&#13;&#10; left join doctopago on doctopago.doctoid = docto.id&#13;&#10;left join persona cajero on cajero.id = docto.vendedorid&#13;&#10;&#13;&#10; where tipodoctoid in ( 21,24,25,201,31 )   /*and docto.personaid &lt;&gt; 1*/&#13;&#10; and docto.estatusdoctoid = 1&#13;&#10;and (@usuarioid  = 0 or docto.vendedorid = @usuarioid)&#13;&#10;and docto.fecha &gt;= @fechainicial and docto.fecha &lt;= @fechafinal&#13;&#10;&#13;&#10; group by&#13;&#10; docto.folio,&#13;&#10;persona.clave ,&#13;&#10;persona.nombre ,&#13;&#10;docto.fecha,&#13;&#10;docto.saldo,&#13;&#10;docto.importe,&#13;&#10;docto.total,&#13;&#10;docto.vence, &#13;&#10;vendedor.nombre,&#13;&#10;docto.vendedorid,&#13;&#10;&#13;&#10;cajero.nombre,&#13;&#10;&#13;&#10;cajero.clave&#13;&#10;&#13;&#10;order by docto.fecha&#13;&#10;">
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="CLIENTECLAVE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="TOTALEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="TOTALCHEQUE" DataType="System.Decimal"/>
+        <Column Name="TOTALTRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="TOTALTARJETA" DataType="System.Decimal"/>
+        <Column Name="TOTALOTROS" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="VENCE" DataType="System.DateTime"/>
+        <Column Name="VENDEDORDELCLIENTE" DataType="System.String"/>
+        <Column Name="NOTASPAGO" DataType="System.String"/>
+        <Column Name="CAJEROID" DataType="System.Int64"/>
+        <Column Name="NOMBRECAJERO" DataType="System.String"/>
+        <Column Name="CLAVECAJERO" DataType="System.String"/>
+        <CommandParameter Name="usuarioid" DataType="1" Expression="vendedorId" DefaultValue="0"/>
+        <CommandParameter Name="fechainicial" DataType="5" Expression="[fechainicio]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafinal" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="vendedor" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Vendedor: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Vendedor: ' || cast(id as varchar(13)) nombre from persona where tipopersonaid  in (20)&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="vendedorid" DataType="System.Decimal"/>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Total Name="Total" Expression="[Main.TOTAL]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="TotalEfectivo" Expression="[Main.TOTALEFECTIVO]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="TotalCheque" Expression="[Main.TOTALCHEQUE]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="TotalTransferencia" Expression="[Main.TOTALTRANSFERENCIA]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="TotalTarjeta" Expression="[Main.TOTALTARJETA]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="TotalOtros" Expression="[Main.TOTALOTROS]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="TotalSaldo" Expression="[Main.SALDO]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="594.1" PaperHeight="420.1" RawPaperSize="66">
+    <ReportTitleBand Name="ReportTitle1" Width="2170.1" Height="160.65">
+      <TextObject Name="Text29" Left="9.45" Top="75.6" Width="94.5" Height="18.9" Text="Vendedor" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text31" Left="122.85" Top="75.6" Width="302.4" Height="18.9" Text="[CBVendedor.Text]" Font="Arial, 9pt"/>
+      <TextObject Name="Text30" Left="9.45" Top="103.95" Width="94.5" Height="18.9" Text="Fecha Inicio" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text33" Left="122.85" Top="103.95" Width="302.4" Height="18.9" Text="[fechainicio]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text32" Left="9.45" Top="132.3" Width="94.5" Height="18.9" Text="Fecha fin" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text34" Left="122.85" Top="132.3" Width="302.4" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text51" Left="-8996.4" Top="-9450" Width="85.05" Height="18.9" Text="TOTALCHEQUE"/>
+      <TextObject Name="Text52" Left="-8911.35" Top="-9450" Width="75.6" Height="18.9" Text="TOTALTRANSFERENCIA"/>
+      <TextObject Name="Text53" Left="-8835.75" Top="-9450" Width="75.6" Height="18.9" Text="TOTALTARJETA"/>
+      <TextObject Name="Text54" Left="-8760.15" Top="-9450" Width="75.6" Height="18.9" Text="TOTALOTROS"/>
+      <TextObject Name="Text55" Left="-9072" Top="-9450" Width="75.6" Height="18.9" Text="TOTALEFECTIVO"/>
+      <TextObject Name="Text56" Left="-9147.6" Top="-9450" Width="75.6" Height="18.9" Text="TOTAL"/>
+      <TextObject Name="Text57" Left="-9450" Top="-9450" Width="94.5" Height="18.9" Text="USUARIO:"/>
+      <TextObject Name="Text58" Left="-9450" Top="-9427.1" Width="94.5" Height="18.9" Text="USUARIO:"/>
+      <TextObject Name="Text47" Left="160.65" Top="9.45" Width="774.9" Height="37.8" Text="REPORTE DE CORTE DE CAJA POR CAJERO" Font="Arial, 22pt, style=Bold"/>
+      <TextObject Name="Text35" Left="1096.2" Top="56.7" Width="94.5" Height="18.9" Text="[Date]"/>
+      <ChildBand Name="Child4" Top="164.65" Width="2170.1" Height="28.35" BeforePrintEvent="Child4_BeforePrint">
+        <TextObject Name="Text59" Left="623.7" Width="85.05" Height="28.35" Text="TOTAL CHEQUE" Font="Arial, 9pt, style=Bold"/>
+        <TextObject Name="Text60" Left="708.75" Width="85.05" Height="28.35" Text="TOTAL TRANSF." Font="Arial, 9pt, style=Bold"/>
+        <TextObject Name="Text61" Left="793.8" Width="85.05" Height="28.35" Text="TOTAL TARJETA" Font="Arial, 9pt, style=Bold"/>
+        <TextObject Name="Text62" Left="878.85" Width="85.05" Height="28.35" Text="TOTAL OTROS" Font="Arial, 9pt, style=Bold"/>
+        <TextObject Name="Text63" Left="538.65" Width="85.05" Height="28.35" Text="TOTAL EFECTIVO" Font="Arial, 9pt, style=Bold"/>
+        <TextObject Name="Text64" Left="453.6" Width="85.05" Height="18.9" Text="TOTAL" Font="Arial, 9pt, style=Bold"/>
+        <TextObject Name="Text65" Width="94.5" Height="18.9" Text="USUARIO:" Font="Arial, 9pt, style=Bold"/>
+        <TextObject Name="Text66" Left="963.9" Width="85.05" Height="28.35" Text="SUMA SALDOS" Font="Arial, 9pt, style=Bold"/>
+        <ChildBand Name="Child5" Top="197" Width="2170.1" Height="0.76" BeforePrintEvent="Child5_BeforePrint"/>
+      </ChildBand>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="201.76" Width="2170.1" Height="0.76"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="206.52" Width="2170.1" Height="28.35" Condition="[Main.CAJEROID]">
+      <TextObject Name="Text36" Width="359.1" Height="18.9" Text="[[Main.NOMBRECAJERO]]" Font="Arial, 9pt, style=Bold, Italic"/>
+      <LineObject Name="Line1" Top="18.9" Width="718.2"/>
+      <ChildBand Name="Child1" Top="238.87" Width="2170.1" Height="37.8" BeforePrintEvent="Child1_BeforePrint">
+        <TextObject Name="Text2" Left="18.9" Width="56.7" Height="18.9" Text="VENTA" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text4" Left="75.6" Width="103.95" Height="28.35" Text="CLIENTE CLAVE" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text6" Left="179.55" Width="198.45" Height="28.35" Text="CLIENTE NOMBRE" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text8" Left="378" Width="75.6" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text10" Left="453.6" Width="85.05" Height="18.9" Text="TOTAL" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text12" Left="538.65" Width="85.05" Height="28.35" Text="TOTAL EFECTIVO" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text14" Left="623.7" Width="85.05" Height="28.35" Text="TOTAL CHEQUE" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text16" Left="708.75" Width="85.05" Height="28.35" Text="TOTAL TRANSF." Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text20" Left="878.85" Width="85.05" Height="28.35" Text="TOTAL OTROS" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text22" Left="963.9" Width="85.05" Height="18.9" Text="SALDO" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text24" Left="1048.95" Width="75.6" Height="18.9" Text="VENCE" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text28" Left="1313.55" Width="245.7" Height="37.8" Text="NOTAS PAGO" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text18" Left="793.8" Width="85.05" Height="28.35" Text="TOTAL TARJETA" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text26" Left="1124.55" Width="189" Height="28.35" Text="VENDEDOR DEL CLIENTE" Font="Arial, 8pt, style=Bold"/>
+      </ChildBand>
+      <DataBand Name="Data1" Top="280.67" Width="2170.1" Height="28.35" CanGrow="true" BeforePrintEvent="Data1_BeforePrint" DataSource="Table">
+        <TextObject Name="Text1" Left="18.9" Width="56.7" Height="18.9" Text="[Main.FOLIO]" Font="Arial, 8pt"/>
+        <TextObject Name="Text3" Left="75.6" Width="103.95" Height="18.9" Text="[Main.CLIENTECLAVE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text5" Left="179.55" Width="198.45" Height="18.9" CanGrow="true" Text="[Main.CLIENTENOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text7" Left="378" Width="75.6" Height="18.9" Text="[Main.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+        <TextObject Name="Text9" Left="453.6" Width="85.05" Height="18.9" Text="[Main.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text11" Left="538.65" Width="85.05" Height="18.9" Text="[Main.TOTALEFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text13" Left="623.7" Width="85.05" Height="18.9" Text="[Main.TOTALCHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text15" Left="708.75" Width="85.05" Height="18.9" Text="[Main.TOTALTRANSFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text19" Left="878.85" Width="85.05" Height="18.9" Text="[Main.TOTALOTROS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text21" Left="963.9" Width="85.05" Height="18.9" Text="[Main.SALDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text23" Left="1048.95" Width="75.6" Height="18.9" Text="[Main.VENCE]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+        <TextObject Name="Text27" Left="1313.55" Width="245.7" Height="18.9" Text="[Main.NOTASPAGO]" Font="Arial, 8pt"/>
+        <TextObject Name="Text17" Left="793.8" Width="85.05" Height="18.9" Text="[Main.TOTALTARJETA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text25" Left="1124.55" Width="189" Height="18.9" CanGrow="true" Text="[Main.VENDEDORDELCLIENTE]" Font="Arial, 8pt"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="313.02" Width="2170.1" Height="18.9" BeforePrintEvent="GroupFooter1_BeforePrint">
+        <TextObject Name="Text37" Left="453.6" Width="85.05" Height="18.9" Text="[Total]" Font="Arial, 8pt"/>
+        <TextObject Name="Text38" Left="538.65" Width="85.05" Height="18.9" Text="[TotalEfectivo]" Font="Arial, 8pt"/>
+        <TextObject Name="Text39" Left="623.7" Width="85.05" Height="18.9" Text="[TotalCheque]" Font="Arial, 8pt"/>
+        <TextObject Name="Text40" Left="708.75" Width="85.05" Height="18.9" Text="[TotalTransferencia]" Font="Arial, 8pt"/>
+        <TextObject Name="Text41" Left="793.8" Width="85.05" Height="18.9" Text="[TotalTarjeta]" Font="Arial, 8pt"/>
+        <TextObject Name="Text42" Left="878.85" Width="85.05" Height="18.9" Text="[TotalOtros]" Font="Arial, 8pt"/>
+        <TextObject Name="Text44" Left="963.9" Width="94.5" Height="18.9" Text="[TotalSaldo]" Font="Arial, 8pt"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="335.92" Width="2170.1" Height="28.35">
+      <TextObject Name="Text43" Left="1143.45" Top="9.45" Width="94.5" Height="18.9" Text="[Page]"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" ClickEvent="" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <ComboBoxControl Name="CBVendedor" Left="52" Top="144" Width="165" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Vendedor: 0" TextChangedEvent="CBVendedor_TextChanged" DataColumn="vendedor.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+    <LabelControl Name="Label1" Left="56" Top="120" Width="39" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Cajero" ClickEvent=""/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="52" Top="32" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechainicio" FilterOperation="GreaterThanOrEqual" Value="12/09/2014 09:35:58"/>
+    <LabelControl Name="Label2" Left="52" Top="16" Width="57" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="fechainicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="56" Top="84" Font="Tahoma, 8pt" TabIndex="6" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="12/09/2014 09:36:00"/>
+    <LabelControl Name="Label3" Left="56" Top="68" Width="46" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="fechafin"/>
+    <CheckBoxControl Name="CBSumarizado" Left="64" Top="192" Width="81" Height="17" Font="Tahoma, 8pt" TabIndex="8" Text="Sumarizado"/>
+  </DialogPage>
+</Report>

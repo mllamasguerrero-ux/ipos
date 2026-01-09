@@ -1,0 +1,69 @@
+create or alter procedure TRASPASOALMACEN_CANCEL (
+    DOCTOCANCELARID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable ESTATUSDOCTOID D_FK;
+declare variable DOCTOID D_FK;
+declare variable MOVTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PERSONAID D_FK;
+declare variable TIPODOCTOCANCELARID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable DOCTOCOMPLEMENTOID D_FK;
+BEGIN
+
+   ERRORCODE  = 0;
+
+   -- Leer del DOCTO a cancelar.
+   SELECT ESTATUSDOCTOID, TIPODOCTOID, DOCTOREFID
+   FROM DOCTO
+   WHERE ID = :DOCTOCANCELARID
+   INTO :ESTATUSDOCTOID, :TIPODOCTOCANCELARID, :DOCTOCOMPLEMENTOID;
+
+   -- Si no esta vigente: Salir.
+   IF (:ESTATUSDOCTOID <> 1) THEN
+   BEGIN
+      ERRORCODE = 1007;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Si no es de los tipos b?sicos: Salir.
+   IF (:TIPODOCTOCANCELARID NOT IN (211)) THEN
+   BEGIN
+      ERRORCODE = 1008;
+      SUSPEND;
+      EXIT;
+   END
+
+   SELECT ERRORCODE FROM  TRASPASOALMACEN_GEN_CANCEL(:DOCTOCANCELARID)
+   INTO :ERRORCODE;
+
+   IF(:ERRORCODE <> 0) THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+
+         
+   SELECT ERRORCODE FROM  TRASPASOALMACEN_GEN_CANCEL(:DOCTOCOMPLEMENTOID)
+   INTO :ERRORCODE;
+   
+   IF(:ERRORCODE <> 0) THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+   
+    WHEN ANY DO
+    BEGIN
+        ERRORCODE = 1009;
+        SUSPEND;
+    END
+END

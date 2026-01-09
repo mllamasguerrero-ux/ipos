@@ -1,0 +1,78 @@
+CREATE OR ALTER VIEW PRODUCTOS(
+    ID,
+    PRODUCTO,
+    CLAVE,
+    DESCRIPCION1,
+    DESCRIPCION2,
+    PRECIO1,
+    LIMITEPRECIO2,
+    PRECIO2,
+    EAN,
+    EXISTENCIA,
+    PROVEEDOR,
+    INVENTARIABLE,
+    NEGATIVOS,
+    TASAIVA,
+    PRECIO_MAS_IVA,
+    DESCONTINUADO,
+    ESPRODUCTOPADRE,
+    EXISTENCIAAPARTADO,
+    TEXTO1,
+    TEXTO2,
+    TEXTO3,
+    TEXTO4,
+    TEXTO5,
+    TEXTO6,
+    NUMERO1,
+    NUMERO2,
+    NUMERO3,
+    NUMERO4,
+    FECHA1,
+    FECHA2,
+    ENPROCESODESALIDA,
+    TASAIMPUESTO,
+    PRECIO_MAS_IMPUESTO,
+    TASAIEPS,
+    PRECIO_MAS_IEPS,
+    PROMOMOVIL,
+    HISTORIALMOVIL)
+AS
+SELECT P.ID,
+    upper(COALESCE(TRIM(P.CLAVE), ''))
+    || upper(COALESCE(TRIM(P.EAN), ''))
+    || upper(COALESCE(TRIM(P.NOMBRE), ''))
+    || upper(COALESCE(TRIM(P.DESCRIPCION), ''))
+    || upper(COALESCE(TRIM(P.DESCRIPCION1),''))
+    || upper(COALESCE(TRIM(P.DESCRIPCION2), '')) producto,
+     P.CLAVE, P.DESCRIPCION1, P.DESCRIPCION2, P.PRECIO1, P.LIMITEPRECIO2, P.PRECIO2 , P.EAN , P.EXISTENCIA, PR.NOMBRE as PROVEEDOR , P.INVENTARIABLE, P.NEGATIVOS
+     , P.tasaiva TASAIVA, (P.precio1  * (1 + (P.TASAIEPS/100)) * (1 + (P.TASAIVA/100))) AS PRECIO_MAS_IVA
+     , COALESCE(M.descontinuado,'N') AS DESCONTINUADO,   COALESCE(p.esproductopadre,'N') AS ESPRODUCTOPADRE ,
+     p.existenciaapartado,
+     c.texto1, 
+     c.texto2,
+     c.texto3,
+     c.texto4,
+     c.texto5,
+     c.texto6,
+     c.numero1,
+     c.numero2, 
+     c.numero3,
+     c.numero4,
+     c.fecha1, 
+     c.fecha2,
+     p.ENPROCESODESALIDA,   
+     P.tasaimpuesto TASAIMPUESTO,
+     round((P.precio1  * (1 + (P.TASAIEPS/100.00)) * (1 + (P.TASAIVA/100.00))),2) AS PRECIO_MAS_IMPUESTO  ,
+     P.tasaieps TASAIEPS,
+     (P.precio1 * (1 + (P.TASAIEPS/100.0000))) AS PRECIO_MAS_IEPS ,
+     P.PROMOMOVIL,
+     P.HISTORIALMOVIL
+  FROM PRODUCTO  P
+   LEFT join persona PR
+      on PR.id = P.proveedor1id
+      LEFT JOIN MARCA M ON M.id = P.marcaid
+      left join productocaracteristicas c on c.productoid = p.id
+
+
+  ORDER BY CLAVE
+;

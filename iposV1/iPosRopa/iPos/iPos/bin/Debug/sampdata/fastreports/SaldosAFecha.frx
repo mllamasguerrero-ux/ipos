@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/14/2015 07:21:39" ReportInfo.Modified="07/14/2015 07:31:27" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls6KACbEoyEHBudan+4Pm+ecBsg7Sq56+Im5uuXMPl2vKOQd83k9x1fPcXV8jjN6RdXqprYXRndOoyWhxJpmK2ixqHj/Jkolm/rLy2geIgxOZ">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select  persona.clave, persona.nombre, docto.fecha, docto.folio, docto.seriesat, docto.foliosat&#13;&#10;,docto.total ,&#13;&#10;sum(case when doctopago.tipopagoid in (1,3) then coalesce((case when coalesce(doctopago.tipoabonoid ,0) = 3 or (coalesce(doctopago.tipoabonoid,0) &lt;&gt; 3 and doctopago.formapagoid = 7)  then doctopago.importe * -1 else doctopago.importe end),0)&#13;&#10;         else 0 end) abonoatalfecha ,&#13;&#10;docto.total - sum(case when doctopago.tipopagoid in (1,3) then coalesce((case when coalesce(doctopago.tipoabonoid,0) = 3  or (coalesce(doctopago.tipoabonoid,0) &lt;&gt; 3 and doctopago.formapagoid = 7) then doctopago.importe * -1 else doctopago.importe end),0)&#13;&#10;         else 0 end) saldoatalfecha  ,&#13;&#10;&#13;&#10;&#13;&#10;docto.abono abonoactual,       &#13;&#10;docto.saldo saldoactual,  &#13;&#10;docto.total - sum(case when doctopago.tipopagoid in (1,3) then coalesce((case when coalesce(doctopago.tipoabonoid,0) = 3   or (coalesce(doctopago.tipoabonoid,0) &lt;&gt; 3 and doctopago.formapagoid = 7) then doctopago.importe * -1 else doctopago.importe end),0)&#13;&#10;         else 0 end) - docto.saldo diferenciaensaldos,&#13;&#10;docto.id doctoid      ,&#13;&#10;tipodocto.nombre tipodocto&#13;&#10;from docto&#13;&#10;left join persona on docto.personaid = persona.id&#13;&#10;left join doctopago on doctopago.doctoid = docto.id  and doctopago.formapagoid in (1,2,3,5,6,7,14,15,16) and coalesce(doctopago.fecha,@fechacorte) &lt;=  @fechacorte&#13;&#10;left join tipodocto on tipodocto.id = docto.tipodoctoid&#13;&#10;where docto.tipodoctoid in (21,31) and  docto.estatusdoctoid = 1  and docto.personaid not in (1)&#13;&#10;and docto.fecha &lt;= @fechacorte&#13;&#10;&#13;&#10;&#13;&#10;group by  persona.clave, persona.nombre, docto.fecha, docto.folio, docto.seriesat, docto.foliosat&#13;&#10;,docto.total   , docto.abono, docto.saldo  , docto.id   ,tipodocto.nombre">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="SERIESAT" DataType="System.String"/>
+        <Column Name="FOLIOSAT" DataType="System.Int32"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="ABONOATALFECHA" DataType="System.Decimal"/>
+        <Column Name="SALDOATALFECHA" DataType="System.Decimal"/>
+        <Column Name="ABONOACTUAL" DataType="System.Decimal"/>
+        <Column Name="SALDOACTUAL" DataType="System.Decimal"/>
+        <Column Name="DIFERENCIAENSALDOS" DataType="System.Decimal"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="TIPODOCTO" DataType="System.String"/>
+        <CommandParameter Name="fechacorte" DataType="5" Expression="[fechaCorte]" DefaultValue="2014-12-31"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="fechaCorte" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="279.4" PaperHeight="215.9" RawPaperSize="119">
+    <ReportTitleBand Name="ReportTitle1" Width="980.53" Height="94.5">
+      <TextObject Name="Text25" Left="189" Top="18.9" Width="330.75" Height="18.9" Text="SALDO A DETERMINADA FECHA" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text26" Left="189" Top="47.25" Width="56.7" Height="18.9" Text="Fecha:"/>
+      <TextObject Name="Text27" Left="255.15" Top="47.25" Width="94.5" Height="18.9" Text="[fechaCorte]"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="98.5" Width="980.53" Height="28.35">
+      <TextObject Name="Text2" Width="56.7" Height="18.9" Text="CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="56.7" Width="113.4" Height="18.9" Text="NOMBRE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="170.1" Width="56.7" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="226.8" Width="56.7" Height="18.9" Text="FOLIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="283.5" Width="37.8" Height="18.9" Text="SERIE SAT" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="321.3" Width="56.7" Height="18.9" Text="FOLIOSAT" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="378" Width="56.7" Height="18.9" Text="TOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="434.7" Width="66.15" Height="28.35" Text="ABONOATALFECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="500.85" Width="66.15" Height="28.35" Text="SALDOATALFECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="567" Width="75.6" Height="18.9" Text="TIPODOCTO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text22" Left="642.6" Width="66.15" Height="28.35" Text="SALDO ACTUAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text24" Left="822.15" Width="66.15" Height="18.9" Text="DOCTOID" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text29" Left="708.75" Width="56.7" Height="18.9" Text="ABONOACTUAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text31" Left="765.45" Width="56.7" Height="18.9" Text="DIFERENCIAENSALDOS" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="130.85" Width="980.53" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="56.7" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="56.7" Width="113.4" Height="18.9" Text="[Table.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="170.1" Width="56.7" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="226.8" Width="56.7" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="283.5" Width="37.8" Height="18.9" Text="[Table.SERIESAT]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="321.3" Width="56.7" Height="18.9" Text="[Table.FOLIOSAT]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="378" Width="56.7" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="434.7" Width="66.15" Height="18.9" Text="[Table.ABONOATALFECHA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="500.85" Width="66.15" Height="18.9" Text="[Table.SALDOATALFECHA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="567" Width="75.6" Height="18.9" Text="[Table.TIPODOCTO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text21" Left="642.6" Width="66.15" Height="18.9" Text="[Table.SALDOACTUAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="822.15" Width="66.15" Height="18.9" Text="[Table.DOCTOID]" Font="Arial, 8pt"/>
+      <TextObject Name="Text28" Left="708.75" Width="56.7" Height="18.9" Text="[Table.ABONOACTUAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text30" Left="765.45" Width="56.7" Height="18.9" Text="[Table.DIFERENCIAENSALDOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="153.75" Width="980.53" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="52" Top="76" Font="Tahoma, 8pt" TabIndex="2" Text="martes, 14 de julio de 2015" ReportParameter="fechaCorte" Value="07/14/2015 07:30:48"/>
+    <LabelControl Name="Label1" Left="52" Top="60" Width="61" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="fechaCorte"/>
+  </DialogPage>
+</Report>

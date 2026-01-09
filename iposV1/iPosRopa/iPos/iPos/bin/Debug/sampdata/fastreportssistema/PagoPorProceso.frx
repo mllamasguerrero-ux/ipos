@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/01/2016 15:06:27" ReportInfo.Modified="12/01/2016 16:02:11" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9ukSVm5CFub647WHoDBfK1IM=">
+      <TableDataSource Name="Table" Alias="PagoPorProceso" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;doctopago.id pagoid,&#13;&#10;doctopago.doctosalidaid documentoid,&#13;&#10;doctopago.importe pagoimporte,&#13;&#10;doctopago.fecha,&#13;&#10;doctopago.fechahora,&#13;&#10;doctopago.notas,&#13;&#10;docto.folio foliodocumentopagado,&#13;&#10;docto.total totaldocumentopagado,&#13;&#10;persona.nombre personanombre,&#13;&#10;persona.nombres personanombres,&#13;&#10;persona.apellidos personaapellidos,&#13;&#10;vendedor.nombre cajeronombre,&#13;&#10;vendedor.nombres cajeronombres,&#13;&#10;vendedor.apellidos cajeroapellidos,&#13;&#10;tipodocto.nombre  tipodoctonombre&#13;&#10;from doctopago&#13;&#10;left join docto on doctopago.doctosalidaid = docto.id&#13;&#10;left join persona on docto.personaid = persona.id&#13;&#10;left join corte on corte.id = doctopago.corteid&#13;&#10;left join persona vendedor on corte.cajeroid = vendedor.id&#13;&#10;left join tipodocto on docto.tipodoctoid = tipodocto.id&#13;&#10;where doctopago.formapagoid = 17 and doctopago.tipopagoid = 2&#13;&#10;and doctopago.fecha &gt;= @fechaini and docto.fecha &lt;= @fechafin&#13;&#10;and (docto.tipodoctoid = @tipodoctoid or&#13;&#10;    (@tipodoctoid = -11 and docto.tipodoctoid in (11,12,13)) or&#13;&#10;    (@tipodoctoid = -21 and docto.tipodoctoid in (21,22,23)) or&#13;&#10;    @tipodoctoid = 0 )&#13;&#10;    and (docto.personaid = @proveedorid or docto.personaid = @clienteid or  @personaid = 0  )&#13;&#10;&#13;&#10;union&#13;&#10;&#13;&#10;select&#13;&#10;doctopago.id pagoid,&#13;&#10;doctopago.doctoid documentoid,&#13;&#10;doctopago.importe pagoimporte,   &#13;&#10;doctopago.fecha,&#13;&#10;doctopago.fechahora,&#13;&#10;doctopago.notas,&#13;&#10;docto.folio foliodocumentopagado,&#13;&#10;docto.total totaldocumentopagado,&#13;&#10;persona.nombre personanombre,&#13;&#10;persona.nombres personanombres,&#13;&#10;persona.apellidos personaapellidos,&#13;&#10;vendedor.nombre cajeronombre,&#13;&#10;vendedor.nombres cajeronombres,&#13;&#10;vendedor.apellidos cajeroapellidos,&#13;&#10;tipodocto.nombre  tipodoctonombre&#13;&#10;from doctopago&#13;&#10;left join docto on doctopago.doctoid = docto.id&#13;&#10;left join persona on docto.personaid = persona.id&#13;&#10;left join corte on corte.id = doctopago.corteid&#13;&#10;left join persona vendedor on corte.cajeroid = vendedor.id&#13;&#10;left join tipodocto on docto.tipodoctoid = tipodocto.id&#13;&#10;where doctopago.formapagoid = 17 and doctopago.tipopagoid = 1 &#13;&#10;and doctopago.fecha &gt;= @fechaini and docto.fecha &lt;= @fechafin&#13;&#10;and (docto.tipodoctoid = @tipodoctoid or&#13;&#10;    (@tipodoctoid = -11 and docto.tipodoctoid in (11,12,13)) or&#13;&#10;    (@tipodoctoid = -21 and docto.tipodoctoid in (21,22,23)) or&#13;&#10;    @tipodoctoid = 0 )   &#13;&#10;    and (docto.personaid = @proveedorid or docto.personaid = @clienteid or  @personaid = 0  )&#13;&#10;">
+        <Column Name="PAGOID" DataType="System.Int64"/>
+        <Column Name="DOCUMENTOID" DataType="System.Int64"/>
+        <Column Name="PAGOIMPORTE" DataType="System.Decimal"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="NOTAS" DataType="System.String"/>
+        <Column Name="FOLIODOCUMENTOPAGADO" DataType="System.Int32"/>
+        <Column Name="TOTALDOCUMENTOPAGADO" DataType="System.Decimal"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="CAJERONOMBRE" DataType="System.String"/>
+        <Column Name="CAJERONOMBRES" DataType="System.String"/>
+        <Column Name="CAJEROAPELLIDOS" DataType="System.String"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="FECHAINI" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="TIPODOCTOID" DataType="1" Expression="[tipodoctoid]" DefaultValue="0"/>
+        <CommandParameter Name="CLIENTEID" DataType="1" Expression="[clienteid]" DefaultValue="0"/>
+        <CommandParameter Name="PROVEEDORID" DataType="1" Expression="[proveedorid]" DefaultValue="0"/>
+        <CommandParameter Name="PERSONAID" DataType="1" Expression="[personaid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="proveedorid" DataType="System.Decimal"/>
+    <Parameter Name="clienteid" DataType="System.Decimal"/>
+    <Parameter Name="tipodoctoid" DataType="System.Decimal"/>
+    <Parameter Name="personaid" DataType="System.Decimal"/>
+    <Parameter Name="proveedor" DataType="System.String"/>
+    <Parameter Name="cliente" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="292.95">
+      <TextObject Name="Text49" Width="378" Height="18.9" Text="PAGO POR PROCESO" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text33" Top="207.9" Width="66.15" Height="18.9" Text="Desde:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="75.6" Top="207.9" Width="160.65" Height="18.9" Text="[fechaini]"/>
+      <TextObject Name="Text35" Left="274.05" Top="207.9" Width="66.15" Height="18.9" Text="Hasta:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text36" Left="349.65" Top="207.9" Width="217.35" Height="18.9" Text="[fechafin]"/>
+      <TextObject Name="Text38" Top="47.25" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="94.5" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Top="66.15" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Left="472.5" Top="66.15" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="557.55" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="94.5" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="557.55" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text51" Top="94.5" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text52" Left="472.5" Top="94.5" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="94.5" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text53" Top="122.85" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text54" Left="472.5" Top="122.85" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="557.55" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text45" Left="94.5" Top="151.2" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text55" Top="151.2" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="472.5" Top="151.2" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text46" Left="557.55" Top="151.2" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="94.5" Top="170.1" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text56" Top="170.1" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text57" Top="236.25" Width="85.05" Height="18.9" Text="Proveedor:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text17" Left="85.05" Top="236.25" Width="217.35" Height="18.9" Text="[proveedor]"/>
+      <TextObject Name="Text58" Top="264.6" Width="85.05" Height="18.9" Text="Cliente: " Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text18" Left="85.05" Top="264.6" Width="217.35" Height="18.9" Text="[cliente]"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="296.95" Width="718.2" Height="28.35">
+      <TextObject Name="Text2" Left="56.7" Width="103.95" Height="18.9" Text="DOCUMENTO"/>
+      <TextObject Name="Text4" Width="56.7" Height="18.9" Text="FOLIO"/>
+      <TextObject Name="Text6" Left="160.65" Width="94.5" Height="18.9" Text="FECHA"/>
+      <TextObject Name="Text8" Left="255.15" Width="94.5" Height="18.9" Text="HORA"/>
+      <TextObject Name="Text10" Left="349.65" Width="113.4" Height="18.9" Text="CAJERO"/>
+      <TextObject Name="Text12" Left="463.05" Width="66.15" Height="18.9" Text="RECIBO"/>
+      <TextObject Name="Text14" Left="529.2" Width="56.7" Height="18.9" Text="TOTAL"/>
+      <TextObject Name="Text16" Left="585.9" Width="75.6" Height="18.9" Text="IMPORTE"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="329.3" Width="718.2" Height="37.8" DataSource="Table">
+      <TextObject Name="Text1" Left="56.7" Width="103.95" Height="18.9" Text="[PagoPorProceso.TIPODOCTONOMBRE]"/>
+      <TextObject Name="Text3" Width="56.7" Height="18.9" Text="[PagoPorProceso.FOLIODOCUMENTOPAGADO]"/>
+      <TextObject Name="Text5" Left="160.65" Width="94.5" Height="18.9" Text="[PagoPorProceso.FECHA]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text7" Left="255.15" Width="94.5" Height="18.9" Text="[PagoPorProceso.FECHAHORA]" Format="Time" Format.Format="t"/>
+      <TextObject Name="Text9" Left="349.65" Width="113.4" Height="18.9" Text="[PagoPorProceso.CAJERONOMBRE]"/>
+      <TextObject Name="Text11" Left="463.05" Width="66.15" Height="18.9" Text="[PagoPorProceso.PAGOID]"/>
+      <TextObject Name="Text13" Left="529.2" Width="56.7" Height="18.9" Text="[PagoPorProceso.TOTALDOCUMENTOPAGADO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="585.9" Width="75.6" Height="18.9" Text="[PagoPorProceso.PAGOIMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="371.1" Width="718.2" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

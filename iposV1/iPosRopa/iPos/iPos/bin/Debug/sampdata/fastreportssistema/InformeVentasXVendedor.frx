@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 11:45:50" ReportInfo.Modified="03/05/2014 11:38:18" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Text19_BeforePrint(object sender, EventArgs e)
+    {
+      
+      Text19.Text =  ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION&quot;)) ;
+      string productoDescripcion1 = ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION1&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION1&quot;));
+      string productoDescripcion2 = ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION2&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION2&quot;));
+      
+                      
+      Text19.Text += productoDescripcion1 + productoDescripcion2 ;
+      
+      
+    }
+
+    private void Text53_BeforePrint(object sender, EventArgs e)
+    {
+      
+      if(  ((Decimal)Report.GetParameterValue(&quot;itemid&quot;)) == 0)
+      {
+        Text53.Text = &quot;Todos&quot;;
+      }
+      else
+      {
+        Text53.Text = ((String)Report.GetColumnValue(&quot;Vendedor.CLAVE&quot;)) + &quot; &quot; +  ((String)Report.GetColumnValue(&quot;Vendedor.NOMBRES&quot;)) + &quot; &quot; + ((String)Report.GetColumnValue(&quot;Vendedor.APELLIDOS&quot;));
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2RX0q5v0BNjf5fy10g0H6GU=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;&#13;&#10;docto.id doctoid,&#13;&#10;docto.fecha doctofecha,&#13;&#10;docto.folio doctofolio,&#13;&#10;producto.id productoid,&#13;&#10;producto.clave productoclave,&#13;&#10;producto.nombre productonombre,&#13;&#10;producto.descripcion productodescripcion ,&#13;&#10;producto.descripcion1 productodescripcion1,&#13;&#10;producto.descripcion2 productodescripcion2,&#13;&#10;producto.descripcion3 productodescripcion3,&#13;&#10;&#13;&#10;pr.id personaid,&#13;&#10;pr.clave personaclave,&#13;&#10;pr.nombre personanombre,&#13;&#10;pr.nombres personanombres,&#13;&#10;pr.apellidos personaapellidos,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;pc.texto1 texto1,&#13;&#10;pc.texto2 texto2,&#13;&#10;pc.texto3 texto3,&#13;&#10;pc.texto4 texto4,&#13;&#10;pc.texto5 texto5,&#13;&#10;pc.texto6 texto6,&#13;&#10;pc.numero1 numero1,&#13;&#10;pc.numero2 numero2,&#13;&#10;pc.numero3 numero3,&#13;&#10;pc.numero4 numero4,&#13;&#10;pc.fecha1 fecha1,&#13;&#10;pc.fecha2 fecha2,&#13;&#10;&#13;&#10;movto.precio,&#13;&#10;movto.subtotal,&#13;&#10;movto.iva,&#13;&#10;movto.total,&#13;&#10; case when coalesce(pr.dias,0) &gt; 0 then dateadd(pr.dias day to docto.fecha) else null end fechavence,&#13;&#10;&#13;&#10;estatusdocto.clave clave_estatusdocto,&#13;&#10;&#13;&#10;v.clave clavevendedor,&#13;&#10;&#13;&#10;v.id vendedorid,&#13;&#10;v.clave vendedorclave,&#13;&#10;v.nombre vendedornombre,&#13;&#10;v.nombres vendedornombres,&#13;&#10;v.apellidos vendedorapellidos  ,&#13;&#10;&#13;&#10;vfinal.id vfinalid,&#13;&#10;vfinal.clave vfinalclave,&#13;&#10;vfinal.nombres vfinalnombres,&#13;&#10;vfinal.apellidos vfinalapellidos&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; from movto&#13;&#10; left join docto on movto.doctoid = docto.id&#13;&#10; left join producto on producto.id = movto.productoid &#13;&#10; left join productocaracteristicas pc on pc.productoid = producto.id&#13;&#10; left join persona pr on pr.id = docto.personaid&#13;&#10; left join persona v on v.id = docto.vendedorid&#13;&#10; left join estatusdocto on estatusdocto.id = docto.estatusdoctoid&#13;&#10; left join persona vfinal on docto.vendedorfinal = vfinal.id&#13;&#10; where  movto.cantidad &gt; 0 and docto.tipodoctoid = 21 and  (docto.vendedorfinal = @itemid  or @itemid = 0) and docto.fecha &gt;= @fechaini and docto.fecha &lt;= @fechafin">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="DOCTOFECHA" DataType="System.DateTime"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION1" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION2" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION3" DataType="System.String"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="PERSONAID" DataType="System.Int64"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="CLAVE_ESTATUSDOCTO" DataType="System.String"/>
+        <Column Name="VENDEDORID" DataType="System.Int64"/>
+        <Column Name="VENDEDORCLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRES" DataType="System.String"/>
+        <Column Name="VENDEDORAPELLIDOS" DataType="System.String"/>
+        <Column Name="CLAVEVENDEDOR" DataType="System.String"/>
+        <Column Name="VFINALID" DataType="System.Int64"/>
+        <Column Name="VFINALNOMBRES" DataType="System.String"/>
+        <Column Name="VFINALAPELLIDOS" DataType="System.String"/>
+        <Column Name="VFINALCLAVE" DataType="System.String"/>
+        <CommandParameter Name="itemid" DataType="1" Expression="[itemid]" DefaultValue="0"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Vendedor" DataType="System.Int32" Enabled="true" SelectCommand="select * from persona where id = @itemid;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="TIPOPERSONAID" DataType="System.Int64"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="MEMO" DataType="System.String"/>
+        <Column Name="SALUDOID" DataType="System.Int64"/>
+        <Column Name="NOMBRES" DataType="System.String"/>
+        <Column Name="APELLIDOS" DataType="System.String"/>
+        <Column Name="RAZONSOCIAL" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CONTACTO1" DataType="System.String"/>
+        <Column Name="CONTACTO2" DataType="System.String"/>
+        <Column Name="USERNAME" DataType="System.String"/>
+        <Column Name="CLAVEACCESO" DataType="System.String"/>
+        <Column Name="DOMICILIO" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="CIUDAD" DataType="System.String"/>
+        <Column Name="MUNICIPIO" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="PAIS" DataType="System.String"/>
+        <Column Name="CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="TELEFONO1" DataType="System.String"/>
+        <Column Name="TELEFONO2" DataType="System.String"/>
+        <Column Name="TELEFONO3" DataType="System.String"/>
+        <Column Name="CELULAR" DataType="System.String"/>
+        <Column Name="NEXTEL" DataType="System.String"/>
+        <Column Name="EMAIL1" DataType="System.String"/>
+        <Column Name="EMAIL2" DataType="System.String"/>
+        <Column Name="EMPRESAID" DataType="System.Int64"/>
+        <Column Name="VENDEDORID" DataType="System.Int64"/>
+        <Column Name="ESCLIENTE" DataType="System.String"/>
+        <Column Name="ESCLIENTEGENERAL" DataType="System.String"/>
+        <Column Name="ESPROVEEDOR" DataType="System.String"/>
+        <Column Name="ESUSUARIO" DataType="System.String"/>
+        <Column Name="LISTAPRECIOID" DataType="System.Int64"/>
+        <Column Name="VIGENCIA" DataType="System.DateTime"/>
+        <Column Name="RESET_PASS" DataType="System.Int16"/>
+        <Column Name="HAB_PAGOTARJETA" DataType="System.String"/>
+        <Column Name="HAB_PAGOCREDITO" DataType="System.String"/>
+        <Column Name="HAB_PAGOCHEQUE" DataType="System.String"/>
+        <Column Name="CORTEID" DataType="System.Int64"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="SALDOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="SALDOSPOSITIVOS" DataType="System.Decimal"/>
+        <Column Name="SALDOSNEGATIVOS" DataType="System.Decimal"/>
+        <Column Name="SALDOAPARTADOPOSITIVO" DataType="System.Decimal"/>
+        <Column Name="SALDOAPARTADONEGATIVO" DataType="System.Decimal"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="GAFFETE" DataType="System.String"/>
+        <Column Name="LIMITECREDITO" DataType="System.Decimal"/>
+        <Column Name="DIAS" DataType="System.Int32"/>
+        <Column Name="REVISION" DataType="System.String"/>
+        <Column Name="PAGOS" DataType="System.String"/>
+        <Column Name="BLOQUEADO" DataType="System.String"/>
+        <Column Name="TICKETLARGO" DataType="System.String"/>
+        <Column Name="ENTREGACALLE" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGACOLONIA" DataType="System.String"/>
+        <Column Name="ENTREGAMUNICIPIO" DataType="System.String"/>
+        <Column Name="ENTREGAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="HAB_PAGOTRANSFERENCIA" DataType="System.String"/>
+        <Column Name="CREDITOFORMAPAGOABONOS" DataType="System.Int64"/>
+        <Column Name="CREDITOREFERENCIAABONOS" DataType="System.String"/>
+        <Column Name="RETIENEISR" DataType="System.String"/>
+        <Column Name="RETIENEIVA" DataType="System.String"/>
+        <CommandParameter Name="itemid" DataType="1" Expression="[itemid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="itemid" DataType="System.Decimal"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="207.9">
+      <TextObject Name="Text31" Left="18.9" Top="85.05" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text45" Left="113.4" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="18.9" Top="103.95" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="491.4" Top="113.4" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text46" Left="576.45" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="113.4" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="18.9" Width="378" Height="18.9" Text="Ventas por vendedor - detalle" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text24" Left="727.65" Top="9.45" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Left="18.9" Top="28.35" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="113.4" Top="47.25" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="18.9" Top="47.25" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="491.4" Top="56.7" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="576.45" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="113.4" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="576.45" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="18.9" Top="66.15" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="491.4" Top="75.6" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="113.4" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text36" Left="491.4" Top="94.5" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="576.45" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="18.9" Top="122.85" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text49" Left="18.9" Top="160.65" Width="94.5" Height="18.9" Text="Vendedor:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text53" Left="132.3" Top="160.65" Width="387.45" Height="18.9" BeforePrintEvent="Text53_BeforePrint"/>
+      <TextObject Name="Text50" Left="18.9" Top="189" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text51" Left="538.65" Top="189" Width="75.6" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="132.3" Top="189" Width="94.5" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="623.7" Top="189" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="211.9" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Width="66.15" Height="18.9" Text="FECHA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text5" Left="189" Width="75.6" Height="28.35" Text="ESTATUS DOCTO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text52" Left="491.4" Width="179.55" Height="18.9" Text="DESCRIPCION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="396.9" Width="94.5" Height="28.35" Text="PRODUCTO NOMBRE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="670.95" Width="94.5" Height="18.9" Text="SUBTOTAL" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="765.45" Width="75.6" Height="18.9" Text="IVA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text14" Left="841.05" Width="85.05" Height="18.9" Text="TOTAL" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text54" Left="926.1" Width="113.4" Height="18.9" Text="CAJERO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text55" Left="66.15" Width="122.85" Height="18.9" Text="VENDEDOR" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text56" Left="264.6" Width="132.3" Height="28.35" Text="CLIENTE" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="244.25" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Width="66.15" Height="18.9" Text="[Table.DOCTOFECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="264.6" Width="132.3" Height="18.9" CanGrow="true" Text="[Table.PERSONANOMBRES] [Table.PERSONAAPELLIDOS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="189" Width="75.6" Height="18.9" Text="[Table.CLAVE_ESTATUSDOCTO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text6" Left="66.15" Width="122.85" Height="18.9" Text="[Table.VFINALCLAVE] &#13;&#10;[Table.VFINALNOMBRES] [Table.VFINALAPELLIDOS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text19" Left="491.4" Width="179.55" Height="18.9" CanGrow="true" BeforePrintEvent="Text19_BeforePrint" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="396.9" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.PRODUCTONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="670.95" Width="94.5" Height="18.9" Text="[Table.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="765.45" Width="75.6" Height="18.9" Text="[Table.IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="841.05" Width="85.05" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="926.1" Width="113.4" Height="18.9" Text="[Table.VENDEDORCLAVE] &#13;&#10;[Table.VENDEDORNOMBRES] [Table.VENDEDORAPELLIDOS]" Font="Arial, 9pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="267.15" Width="1047.06" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

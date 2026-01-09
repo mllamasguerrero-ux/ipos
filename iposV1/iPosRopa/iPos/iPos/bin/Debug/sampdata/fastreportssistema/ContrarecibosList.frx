@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/17/2020 17:13:39" ReportInfo.Modified="04/17/2020 17:57:02" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQqlLS7TKuP1mXmmnqAfPOvu8=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;contrarecibohdr.id,&#13;&#10;contrarecibohdr.activo,&#13;&#10;contrarecibohdr.fecha,&#13;&#10;contrarecibohdr.personaid,&#13;&#10;contrarecibohdr.vendedorid,&#13;&#10;contrarecibohdr.estatusid,&#13;&#10;contrarecibohdr.total,&#13;&#10;contrarecibohdr.abono,&#13;&#10;contrarecibohdr.saldo,&#13;&#10;contrarecibohdr.folio,&#13;&#10;contrarecibohdr.observaciones ,&#13;&#10;persona.nombre nombrecliente,&#13;&#10;estatusdocto.nombre nombreestatus,&#13;&#10;estadopagocontrarecibo.nombre nombreestatuspago&#13;&#10; from&#13;&#10;contrarecibohdr left join contrarecibodtl&#13;&#10;    on contrarecibohdr.id = contrarecibodtl.contrareciboid&#13;&#10;    left join persona on persona.id = contrarecibohdr.personaid&#13;&#10;    left join estatusdocto on estatusdocto.id = contrarecibohdr.estatusid&#13;&#10;    left join estadopagocontrarecibo on  estadopagocontrarecibo.id = contrarecibohdr.estatuspagoid&#13;&#10; where &#13;&#10;((@folio in (0, contrarecibohdr.folio))) and&#13;&#10;(( @filtrarfecha &lt;&gt; 'S' or contrarecibohdr.fecha &gt;= @fechaini and contrarecibohdr.fecha &lt;=@fechafin)) and&#13;&#10;((@personaid in (0, contrarecibohdr.personaid))) and&#13;&#10;((@venta in (0, contrarecibodtl.folio))) and&#13;&#10;&#13;&#10;((@estatusid = -1 and contrarecibohdr.estatusid &lt;&gt; 2) or contrarecibohdr.estatusid = @estatusid)&#13;&#10;group by&#13;&#10;contrarecibohdr.id,&#13;&#10;contrarecibohdr.activo,&#13;&#10;contrarecibohdr.fecha,&#13;&#10;contrarecibohdr.personaid,&#13;&#10;contrarecibohdr.vendedorid,&#13;&#10;contrarecibohdr.estatusid,&#13;&#10;contrarecibohdr.total,&#13;&#10;contrarecibohdr.abono,&#13;&#10;contrarecibohdr.saldo,&#13;&#10;contrarecibohdr.folio,&#13;&#10;contrarecibohdr.observaciones  ,&#13;&#10;persona.nombre,&#13;&#10;estatusdocto.nombre ,&#13;&#10;estadopagocontrarecibo.nombre">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="PERSONAID" DataType="System.Int64"/>
+        <Column Name="VENDEDORID" DataType="System.Int64"/>
+        <Column Name="ESTATUSID" DataType="System.Int64"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="ABONO" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="OBSERVACIONES" DataType="System.String"/>
+        <Column Name="NOMBRECLIENTE" DataType="System.String"/>
+        <Column Name="NOMBREESTATUS" DataType="System.String"/>
+        <Column Name="NOMBREESTATUSPAGO" DataType="System.String"/>
+        <CommandParameter Name="folio" DataType="1" Expression="[folio]" DefaultValue="0"/>
+        <CommandParameter Name="filtrarfecha" DataType="16" Expression="[filtrarFecha]" DefaultValue="N"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="personaid" DataType="1" Expression="[personaid]" DefaultValue="0"/>
+        <CommandParameter Name="venta" DataType="1" Expression="[venta]" DefaultValue="0"/>
+        <CommandParameter Name="estatusid" DataType="1" Expression="[estatusid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="folio" DataType="System.Decimal"/>
+    <Parameter Name="filtrarFecha" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="personaid" DataType="System.Int64"/>
+    <Parameter Name="venta" DataType="System.Int64"/>
+    <Parameter Name="estatusid" DataType="System.Int64"/>
+    <Parameter Name="personaNombre" DataType="System.String"/>
+    <Parameter Name="estatusNombre" DataType="System.String"/>
+    <Parameter Name="filtrarFolioContrarecibo" DataType="System.String"/>
+    <Parameter Name="filtrarFolioVenta" DataType="System.String"/>
+    <Parameter Name="filtroCliente" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="283.5">
+      <TextObject Name="Text15" Left="292.95" Top="66.15" Width="330.75" Height="18.9" Text="[estatusNombre]"/>
+      <TextObject Name="Text16" Left="292.95" Top="103.95" Width="94.5" Height="18.9" Text="[filtrarFolioContrarecibo]"/>
+      <TextObject Name="Text17" Left="434.7" Top="103.95" Width="189" Height="18.9" Text="[folio]"/>
+      <TextObject Name="Text18" Left="292.95" Top="141.75" Width="94.5" Height="18.9" Text="[filtrarFolioVenta]"/>
+      <TextObject Name="Text19" Left="434.7" Top="141.75" Width="189" Height="18.9" Text="[venta]"/>
+      <TextObject Name="Text20" Left="292.95" Top="179.55" Width="94.5" Height="18.9" Text="[filtrarFecha]"/>
+      <TextObject Name="Text21" Left="434.7" Top="179.55" Width="94.5" Height="18.9" Text="[fechaini]"/>
+      <TextObject Name="Text22" Left="585.9" Top="179.55" Width="94.5" Height="18.9" Text="[fechafin]"/>
+      <TextObject Name="Text23" Left="292.95" Top="217.35" Width="94.5" Height="18.9" Text="[filtroCliente]"/>
+      <TextObject Name="Text24" Left="434.7" Top="217.35" Width="94.5" Height="18.9" Text="[personaNombre]"/>
+      <TextObject Name="Text25" Left="75.6" Top="9.45" Width="869.4" Height="37.8" Text="Contrarecibos" Font="Arial, 20pt, style=Bold"/>
+      <TextObject Name="Text26" Left="56.7" Top="66.15" Width="94.5" Height="18.9" Text="Estado" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text27" Left="56.7" Top="103.95" Width="207.9" Height="18.9" Text="Filtro por folio contrarecibo" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text28" Left="56.7" Top="141.75" Width="207.9" Height="18.9" Text="Filtro por folio venta" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text29" Left="56.7" Top="179.55" Width="207.9" Height="18.9" Text="Filtro por fecha" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text30" Left="56.7" Top="217.35" Width="207.9" Height="18.9" Text="Filtro por cliente" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="287.5" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Width="113.4" Height="18.9" Text="FECHA" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="113.4" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text6" Left="207.9" Width="198.45" Height="18.9" Text="CLIENTE" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="406.35" Width="132.3" Height="18.9" Text="ESTADO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text10" Left="538.65" Width="113.4" Height="18.9" Text="ESTADO PAGO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text12" Left="652.05" Width="113.4" Height="18.9" Text="TOTAL" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text14" Left="765.45" Width="264.6" Height="18.9" Text="OBSERVACIONES" Font="Arial, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="319.85" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="113.4" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="113.4" Width="94.5" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="207.9" Width="198.45" Height="18.9" Text="[Table.NOMBRECLIENTE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text7" Left="406.35" Width="132.3" Height="18.9" Text="[Table.NOMBREESTATUS]" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="538.65" Width="113.4" Height="18.9" Text="[Table.NOMBREESTATUSPAGO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text11" Left="652.05" Width="113.4" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="765.45" Width="264.6" Height="18.9" Text="[Table.OBSERVACIONES]" Font="Arial, 9pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="342.75" Width="1047.06" Height="75.6"/>
+  </ReportPage>
+</Report>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/14/2015 08:54:46" ReportInfo.Modified="12/28/2015 20:58:06" ReportInfo.CreatorVersion="2014.2.10.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlsyr2eXbo0s7yLJSd6PztSl+O4lDOjzfB6CFy9oUhmKX+1kkLXQujJLqapmlmWSJF52p72FDzX4mpry/08/yeYu7laTFish7c1WbwHueAQwQQQ/tTwmrziYbvm8BH92lp//8A3W8wNNnoQeF9XhqxrI4=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select producto.clave,&#13;&#10;producto.nombre,&#13;&#10;producto.descripcion,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2,&#13;&#10;producto.existencia,&#13;&#10;producto.costoreposicion,&#13;&#10;coalesce(producto.costoreposicion,0) * coalesce(producto.existencia,0) importecostoreposicion,&#13;&#10;producto.costopromedio,  &#13;&#10;coalesce(producto.costopromedio,0) * coalesce(producto.existencia,0) importecostopromedio&#13;&#10;&#13;&#10;from producto&#13;&#10;where coalesce(producto.existencia , 0) &gt; 0&#13;&#10;">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="IMPORTECOSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="COSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="IMPORTECOSTOPROMEDIO" DataType="System.Decimal"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Total Name="REPO" Expression="[Table.IMPORTECOSTOREPOSICION]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="PROM" Expression="[Table.IMPORTECOSTOPROMEDIO]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="56.7">
+      <TextObject Name="Text21" Left="75.6" Top="9.45" Width="292.95" Height="28.35" Text="Inventario actual" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text22" Left="368.55" Top="9.45" Width="141.75" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="60.7" Width="1047.06" Height="18.9">
+      <TextObject Name="Text2" Width="75.6" Height="18.9" Text="CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="75.6" Width="292.95" Height="18.9" Text="DESCRIPCION1" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="368.55" Width="198.45" Height="18.9" Text="DESCRIPCION2" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="567" Width="85.05" Height="18.9" Text="EXISTENCIA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text14" Left="661.5" Width="94.5" Height="18.9" Text="COSTO_REPO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text16" Left="756" Width="94.5" Height="18.9" Text="IMP_REPO." Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text18" Left="850.5" Width="94.5" Height="18.9" Text="COST_PROM" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text20" Left="945" Width="94.5" Height="18.9" Text="IMP_PROM" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="83.6" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="75.6" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text7" Left="75.6" Width="292.95" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="368.55" Width="198.45" Height="18.9" Text="[Table.DESCRIPCION2]" Font="Arial, 9pt"/>
+      <TextObject Name="Text11" Left="567" Width="85.05" Height="18.9" Text="[Table.EXISTENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="661.5" Width="94.5" Height="18.9" Text="[Table.COSTOREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="756" Width="94.5" Height="18.9" Text="[Table.IMPORTECOSTOREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="850.5" Width="94.5" Height="18.9" Text="[Table.COSTOPROMEDIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="945" Width="94.5" Height="18.9" Text="[Table.IMPORTECOSTOPROMEDIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="106.5" Width="1047.06" Height="18.9">
+      <TextObject Name="Text3" Left="756" Width="94.5" Height="18.9" Text="[REPO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="945" Width="94.5" Height="18.9" Text="[PROM]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="129.4" Width="1047.06" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

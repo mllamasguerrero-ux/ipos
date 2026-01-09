@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/18/2017 14:02:48" ReportInfo.Modified="04/19/2017 13:31:39" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+using System.Globalization;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Text11_BeforePrint(object sender, EventArgs e)
+    {
+      try{
+        string strFecha = ((String)Report.GetColumnValue(&quot;DatosBancomer.FECHAHORACOMERCIO&quot;));
+        
+        if(strFecha != null &amp;&amp; strFecha.Length &gt;= 12)
+        {      
+          DateTime dt = DateTime.ParseExact(
+            strFecha, 
+            &quot;yyMMddHHmmss&quot;, 
+            CultureInfo.InvariantCulture);
+          Text11.Text = dt.ToString(&quot;dd/MM/yyyy HH:mm:ss&quot;);
+        }                        
+      }
+      catch{
+      }
+                                      
+    }
+
+    private void Text25_BeforePrint(object sender, EventArgs e)
+    {
+      try{
+           string strNumeroTarjeta = ((String)Report.GetColumnValue(&quot;DatosBancomer.NUMEROTARJETA&quot;));
+        
+           Text25.Text = strNumeroTarjeta.Substring( strNumeroTarjeta.Length - 5, 4).PadLeft(16,'*');
+      }
+      catch{
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9uoyLPK4MD4EWR5OwBBJSYTc=">
+      <TableDataSource Name="Table" Alias="DatosBancomer" DataType="System.Int32" Enabled="true" SelectCommand="SELECT     BANCOMERPARAM.CREDITODEBITO,&#13;&#10;    BANCOMERPARAM.NOMBREAPLICACION,&#13;&#10;    BANCOMERPARAM.NUMEROTARJETA,&#13;&#10;    REQUESTBANCOMER.AFILIACION,&#13;&#10;    REQUESTBANCOMER.TERMINAL,&#13;&#10;    REQUESTBANCOMER.SESSION,&#13;&#10;    REQUESTBANCOMER.FECHAHORACOMERCIO,&#13;&#10;    (CAST(REQUESTBANCOMER.IMPORTECASH AS NUMERIC(18,2)) / 100.00) IMPORTECASH,&#13;&#10;    (CAST(REQUESTBANCOMER.IMPORTE AS NUMERIC(18,2)) / 100.00) IMPORTE,&#13;&#10;    REQUESTBANCOMER.CODTRANSACTION,&#13;&#10;    REQUESTBANCOMER.MODOINGRESO,&#13;&#10;    REQUESTBANCOMER.REFERENCIAFINANCIERA,&#13;&#10;    REQUESTBANCOMER.REFERENCIACOMERCIO,&#13;&#10;    REQUESTBANCOMER.NOAUTORIZACION,&#13;&#10;    case when coalesce(REQUESTBANCOMER.TIPOMONEDA,0) = 0 then 'PESO' else 'DOLAR' end TIPOMONEDA ,&#13;&#10;&#13;&#10;    CASE WHEN COALESCE(REQUESTBANCOMER.codtransaction,'') = '001' THEN 'VENTA'&#13;&#10;         WHEN COALESCE(REQUESTBANCOMER.codtransaction,'') = '201' THEN 'CANCELACION'&#13;&#10;         ELSE  ''&#13;&#10;    END  TIPOTRANS,&#13;&#10;&#13;&#10;    PERSONA.clave USUARIO ,&#13;&#10;    RESPONSEBANCOMER.LEYENDA&#13;&#10;&#13;&#10;FROM BANCOMERPARAM&#13;&#10;LEFT JOIN REQUESTBANCOMER&#13;&#10;ON BANCOMERPARAM.CLSREQUESTID = REQUESTBANCOMER.ID   &#13;&#10;LEFT JOIN responsebancomer ON BANCOMERPARAM.clsresponseid = RESPONSEBANCOMER.ID&#13;&#10;&#13;&#10;LEFT JOIN doctopago ON DOCTOPAGO.ID = BANCOMERPARAM.doctopagoid&#13;&#10;LEFT JOIN CORTE ON CORTE.ID = DOCTOPAGO.corteid&#13;&#10;LEFT JOIN PERSONA ON PERSONA.ID = CORTE.cajeroid&#13;&#10;&#13;&#10;WHERE requestbancomer.fechahoracomercio &gt;= @FECHAINICIO  AND requestbancomer.fechahoracomercio &lt;= @FECHAFIN&#13;&#10;AND ( REQUESTBANCOMER.TERMINAL = @TERMN or  @TERMN = CAST('T' AS D_NOMBRE_NULL) )">
+        <Column Name="CREDITODEBITO" DataType="System.String"/>
+        <Column Name="NOMBREAPLICACION" DataType="System.String"/>
+        <Column Name="NUMEROTARJETA" DataType="System.String"/>
+        <Column Name="AFILIACION" DataType="System.String"/>
+        <Column Name="TERMINAL" DataType="System.String"/>
+        <Column Name="SESSION" DataType="System.String"/>
+        <Column Name="FECHAHORACOMERCIO" DataType="System.String"/>
+        <Column Name="IMPORTECASH" DataType="System.Decimal"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="CODTRANSACTION" DataType="System.String"/>
+        <Column Name="MODOINGRESO" DataType="System.String"/>
+        <Column Name="REFERENCIAFINANCIERA" DataType="System.String"/>
+        <Column Name="REFERENCIACOMERCIO" DataType="System.String"/>
+        <Column Name="NOAUTORIZACION" DataType="System.String"/>
+        <Column Name="TIPOMONEDA" DataType="System.String"/>
+        <Column Name="TIPOTRANS" DataType="System.String"/>
+        <Column Name="USUARIO" DataType="System.String"/>
+        <Column Name="LEYENDA" DataType="System.String"/>
+        <CommandParameter Name="FECHAINICIO" DataType="13" Expression="[FECHAINICIO]"/>
+        <CommandParameter Name="FECHAFIN" DataType="13" Expression="[FECHAFIN]"/>
+        <CommandParameter Name="TERMN" DataType="13" Expression="[TERMN]"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="FECHAINICIO" DataType="System.String"/>
+    <Parameter Name="FECHAFIN" DataType="System.String"/>
+    <Parameter Name="TERMN" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="700" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="2570.4" Height="37.8">
+      <TextObject Name="HEADERTEXT" Top="9.45" Width="2390.85" Height="18.9" Text="REPORTE MOVIMIENTOS BANCOMER" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="2570.4" Height="37.8">
+      <TextObject Name="Text2" Width="94.5" Height="28.35" Text="AFILIACION" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="28.35" Text="TERMINAL" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="28.35" Text="SESION" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="28.35" Text="PRODUCTO" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text10" Left="378" Width="189" Height="28.35" Text="EMISOR" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text12" Left="567" Width="198.45" Height="28.35" Text="FECHA" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text14" Left="765.45" Width="94.5" Height="28.35" Text="OPERACION" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text16" Left="859.95" Width="141.75" Height="28.35" Text="NO. AUTORIZACION" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text18" Left="1001.7" Width="198.45" Height="28.35" Text="REFERENCIA FINANCIERA" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="1200.15" Width="132.3" Height="28.35" Text="TIPO MONEDA" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text22" Left="1332.45" Width="94.5" Height="28.35" Text="IMPORTE" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text24" Left="1426.95" Width="122.85" Height="28.35" Text="IMPORTE CASH" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text26" Left="1549.8" Width="132.3" Height="28.35" Text="NO. TARJETA" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text28" Left="1682.1" Width="122.85" Height="28.35" Text="MODO INGRESO" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text30" Left="1804.95" Width="491.4" Height="28.35" Text="REFERENCIA COMERCIO" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text32" Left="2296.35" Width="94.5" Height="28.35" Text="USUARIO" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="2390.85" Width="160.65" Height="28.35" Text="LEYENDA" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="83.6" Width="2570.4" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[DatosBancomer.AFILIACION]" HorzAlign="Center"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Text="[DatosBancomer.TERMINAL]" HorzAlign="Center"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" Text="[DatosBancomer.SESSION]" HorzAlign="Center"/>
+      <TextObject Name="Text9" Left="378" Width="189" Height="18.9" Text="[DatosBancomer.NOMBREAPLICACION]" HorzAlign="Center"/>
+      <TextObject Name="Text11" Left="567" Width="198.45" Height="18.9" BeforePrintEvent="Text11_BeforePrint" Text="[DatosBancomer.FECHAHORACOMERCIO]" HorzAlign="Center"/>
+      <TextObject Name="Text7" Left="283.5" Width="94.5" Height="18.9" Text="[DatosBancomer.CREDITODEBITO]" HorzAlign="Center"/>
+      <TextObject Name="Text13" Left="765.45" Width="94.5" Height="18.9" Text="[DatosBancomer.TIPOTRANS]" HorzAlign="Center"/>
+      <TextObject Name="Text15" Left="859.95" Width="141.75" Height="18.9" Text="[DatosBancomer.NOAUTORIZACION]" HorzAlign="Center"/>
+      <TextObject Name="Text17" Left="1001.7" Width="198.45" Height="18.9" Text="[DatosBancomer.REFERENCIAFINANCIERA]" HorzAlign="Center" VertAlign="Bottom"/>
+      <TextObject Name="Text19" Left="1200.15" Width="132.3" Height="18.9" Text="[DatosBancomer.TIPOMONEDA]" HorzAlign="Center" VertAlign="Bottom"/>
+      <TextObject Name="Text21" Left="1332.45" Width="94.5" Height="18.9" Text="[DatosBancomer.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" VertAlign="Bottom" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="1426.95" Width="122.85" Height="18.9" Text="[DatosBancomer.IMPORTECASH]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" VertAlign="Bottom" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="1549.8" Width="132.3" Height="18.9" BeforePrintEvent="Text25_BeforePrint" Text="[DatosBancomer.NUMEROTARJETA]" HorzAlign="Center" VertAlign="Bottom"/>
+      <TextObject Name="Text27" Left="1682.1" Width="122.85" Height="18.9" Text="[DatosBancomer.MODOINGRESO]" HorzAlign="Center" VertAlign="Bottom"/>
+      <TextObject Name="Text31" Left="2296.35" Width="94.5" Height="18.9" Text="[DatosBancomer.USUARIO]" HorzAlign="Center" VertAlign="Bottom"/>
+      <TextObject Name="Text29" Left="1804.95" Width="491.4" Height="18.9" Text="[DatosBancomer.REFERENCIACOMERCIO]" HorzAlign="Center" VertAlign="Bottom"/>
+      <TextObject Name="Text33" Left="2390.85" Width="160.65" Height="18.9" Text="[DatosBancomer.LEYENDA]"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="106.5" Width="2570.4" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

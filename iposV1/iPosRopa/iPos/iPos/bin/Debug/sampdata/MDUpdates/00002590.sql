@@ -1,0 +1,1 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) VALUES (197, 8, 'Pedidos moviles por autorizar', 'Pedidos moviles por autorizar', 197, 3, 14);

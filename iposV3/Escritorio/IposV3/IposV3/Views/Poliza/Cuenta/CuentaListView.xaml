@@ -1,0 +1,151 @@
+
+<UserControl x:Class="IposV3.Views.CuentaListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+                xmlns:SfExt="clr-namespace:SyncfusionExt;assembly=UICommon"
+            xmlns:local="clr-namespace:IposV3"
+            xmlns:localCommon="clr-namespace:UICommon;assembly=UICommon"
+            xmlns:localCont="clr-namespace:Controls;assembly=UICommon"
+            xmlns:localConv="clr-namespace:Converters;assembly=UICommon"
+              xmlns:cbind="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ac="clr-namespace:AdornedControl;assembly=AdornedControl"
+             mc:Ignorable="d"
+             Name="CurrentUserControl"
+            Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.75'}" 
+            Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.75'}"
+             >
+
+    <UserControl.Resources>
+
+        <Style x:Key="customCellStyle" TargetType="Syncfusion:VirtualizingCellsControl">
+            <Setter Property="cal:Message.Attach" Value="[Event MouseDoubleClick] = [Action SelectItemByCell($dataContext)]"/>
+        </Style>
+
+        <Style x:Key="filterControlStyle" TargetType="Syncfusion:GridFilterControl">
+            <Setter Property="FilterMode" Value="AdvancedFilter" />
+        </Style>
+
+
+    </UserControl.Resources>
+
+    <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+        <StackPanel Name="ForePanel"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"   >
+            <localCont:MessageBoxV2 MessageToUser="{Binding MessageToUser}"  Width="10"  HorizontalAlignment="Right"/>
+            <ScrollViewer x:Name="ScrollViewerWrap" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" 
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=14*x/60}" MinHeight="50">
+                <WrapPanel Name="MainPanel"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" MinWidth="100" MinHeight="100" >
+                    <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"    >
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}">Cuenta</TextBlock>
+                    </StackPanel>
+                    <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="Auto"  >
+                        <Label  Style="{DynamicResource LabelPanelHeaderTemplate}" VerticalAlignment="Top" Margin="10,1,10,0">Palabras Claves:</Label>
+                        <TextBox x:Name="TSTPalabrasClave" Margin="10,0,10,3" TextWrapping="Wrap" VerticalAlignment="Top"  Height="25"  Text="{Binding KendoParams.GeneralFilter.Value}"
+                         localCommon:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
+                          cal:Message.Attach="[Event KeyDown] = [Action TSTPalabrasClaveKeyDown($pressedKey)]"/>
+
+                    </StackPanel>
+                    <WrapPanel  MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"   >
+                        <Button x:Name="TSBBuscar" VerticalAlignment="Top" Width="43"  Height="30" Margin="10,30,10,0" Style="{StaticResource MaterialDesignIconButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="FileDocumentBoxSearchOutline"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="AddItem"   VerticalAlignment="Top" Width="43"  Margin="0,30,0,0" Height="30" 
+                                Style="{StaticResource MaterialDesignIconButton}"  Visibility="{cbind:Binding Path=AllowAdd}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Add"/>
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
+
+                </WrapPanel>
+            </ScrollViewer>
+
+
+
+            <ac:AdornedControl IsAdornerVisible="{Binding IsBusy}"
+		        >
+             <ac:AdornedControl.AdornerContent>
+                    <localCont:LoadingWait></localCont:LoadingWait>
+             </ac:AdornedControl.AdornerContent>
+
+             <Syncfusion:SfDataGrid x:Name="SfTableDataGridView" 
+                      ItemsSource="{Binding Items}" 
+                      RowStyle="{StaticResource customCellStyle}"
+                       AllowFiltering="True"
+                       FilterPopupStyle="{StaticResource filterControlStyle}"
+                      Margin="2,2,2,2"  AutoGenerateColumns="False" Background="#FFFFFFFF" IsReadOnly="True"  RowHeight="35" HorizontalAlignment="Left"   
+                                   MinWidth="100" Width="{Binding ElementName=MainScrollViewer, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=42*x/60}" MinHeight="150"  >
+
+                    <Syncfusion:SfDataGrid.Resources>
+                        <SfExt:BindingProxy x:Key="ProxyElement" Data="{Binding}"/>
+                    </Syncfusion:SfDataGrid.Resources>
+                 
+                    <Syncfusion:SfDataGrid.Columns>
+
+                        <Syncfusion:GridTemplateColumn  AllowFocus="False"  Width="50" IsHidden="{cbind:Binding Source={StaticResource ProxyElement}, Path=!Data.AllowShow}">
+                        <Syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="35" cal:Message.Attach="[Event Click]=[ShowItem($dataContext)]"  Style="{StaticResource MaterialDesignIconButton}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Eye"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </Syncfusion:GridTemplateColumn.CellTemplate>
+                    </Syncfusion:GridTemplateColumn>
+                        <Syncfusion:GridTemplateColumn  AllowFocus="False" Width="50" IsHidden="{cbind:Binding Source={StaticResource ProxyElement}, Path=!Data.AllowEdit}" >
+                        <Syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="35"  cal:Message.Attach="[Event Click]=[Edititem($dataContext)]" Style="{StaticResource MaterialDesignIconButton}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Edit"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </Syncfusion:GridTemplateColumn.CellTemplate>
+                    </Syncfusion:GridTemplateColumn>
+
+
+                    <Syncfusion:GridTextColumn  MappingName="Activo" HeaderText="Activo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Clave" HeaderText="Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Numucuenta" HeaderText="Numucuenta" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Descripcion" HeaderText="Descripcion" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Esfact" HeaderText="Es factura" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Leyenda" HeaderText="Leyenda" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="TipolineapolizaClave" HeaderText="Tipo linea poliza clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="TipolineapolizaNombre" HeaderText="Tipo linea poliza nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="FormapagosatClave" HeaderText="Forma pago sat clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="FormapagosatNombre" HeaderText="Forma pago sat nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Tasa" HeaderText="Tasa" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="TipolineapolizaespecialClave" HeaderText="Tipo linea poliza especial clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="TipolineapolizaespecialNombre" HeaderText="Tipo linea poliza especial nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Orden" HeaderText="Orden" ColumnSizer="SizeToHeader"/>
+
+                </Syncfusion:SfDataGrid.Columns>
+              </Syncfusion:SfDataGrid>
+            </ac:AdornedControl>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

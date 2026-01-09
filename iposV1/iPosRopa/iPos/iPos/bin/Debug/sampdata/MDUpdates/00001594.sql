@@ -1,0 +1,1 @@
+update persona set almacenid = 1;

@@ -1,0 +1,1 @@
+insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10049, 'Gastos cancelar de corte actual');

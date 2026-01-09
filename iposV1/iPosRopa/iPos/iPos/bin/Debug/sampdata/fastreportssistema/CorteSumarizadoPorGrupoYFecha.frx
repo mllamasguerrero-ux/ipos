@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/28/2015 19:13:57" ReportInfo.Modified="09/10/2016 18:13:36" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Data1_BeforeLayout(object sender, EventArgs e)
+    {
+      
+    }
+
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+      if(((String)Report.GetColumnValue(&quot;Table.DESGLOSEIEPS&quot;)) != &quot;S&quot; &amp;&amp; ((Decimal)Report.GetColumnValue(&quot;Table.TASAIEPS_&quot;)) == 0)
+      {
+        Text51.Visible = false;  
+        Text52.Visible = false;
+        Text53.Visible = false;
+        Text54.Visible = false;
+      }
+      else
+      {  
+        Text51.Visible = true;  
+        Text52.Visible = true;
+        Text53.Visible = true;
+        Text54.Visible = true;
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9ui52CZyKrdG5dNy29lf++bM=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from REP_CORTESUM_GRUPOFECHA (@fecha)">
+        <Column Name="SUCURSAL" DataType="System.String"/>
+        <Column Name="MONTOIEPS" DataType="System.Decimal"/>
+        <Column Name="TITULO" DataType="System.String"/>
+        <Column Name="NUMERO_TICKETS" DataType="System.Int64"/>
+        <Column Name="NUMERO_DEVOLUCIONES" DataType="System.Int64"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="INGRESO_TARJETA" DataType="System.Decimal"/>
+        <Column Name="INGRESO_EFECTIVO" DataType="System.Decimal"/>
+        <Column Name="INGRESO_CREDITO" DataType="System.Decimal"/>
+        <Column Name="INGRESO_VALE" DataType="System.Decimal"/>
+        <Column Name="INGRESO_CHEQUE" DataType="System.Decimal"/>
+        <Column Name="CAMBIO_CHEQUE" DataType="System.Decimal"/>
+        <Column Name="EGRESO" DataType="System.Decimal"/>
+        <Column Name="TASAIEPS_" DataType="System.Decimal"/>
+        <Column Name="MONTOIEPS_" DataType="System.Decimal"/>
+        <Column Name="DESGLOSEIEPS" DataType="System.String"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="TOTALTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="TOTALSINTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="GRUPOUSUARIOID" DataType="System.Int64"/>
+        <Column Name="CLAVEGRUPOUSUARIO" DataType="System.String"/>
+        <Column Name="NOMBREGRUPOUSUARIO" DataType="System.String"/>
+        <Column Name="FECHACORTE" DataType="System.DateTime"/>
+        <Column Name="SUBTOTALCONIVA" DataType="System.Decimal"/>
+        <Column Name="SUBTOTALSINIVA" DataType="System.Decimal"/>
+        <Column Name="SALDOFINAL" DataType="System.Decimal"/>
+        <Column Name="INGRESO" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fecha" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="620" PaperHeight="210.1" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="2268" Height="189">
+      <TextObject Name="Text61" Left="9.45" Top="9.45" Width="378" Height="18.9" Text="CORTE SUMARIZADO POR FECHA" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text62" Left="718.2" Top="18.9" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text63" Left="9.45" Top="28.35" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text64" Left="103.95" Top="47.25" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text65" Left="9.45" Top="47.25" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text66" Left="481.95" Top="56.7" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text67" Left="567" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text55" Left="9.45" Top="85.05" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text68" Left="103.95" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text69" Left="567" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text70" Left="9.45" Top="66.15" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text71" Left="481.95" Top="75.6" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text72" Left="103.95" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text73" Left="481.95" Top="94.5" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text74" Left="567" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text56" Left="103.95" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text57" Left="9.45" Top="103.95" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text58" Left="481.95" Top="113.4" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text59" Left="567" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text60" Left="103.95" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text75" Left="9.45" Top="122.85" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text78" Left="9.45" Top="160.65" Width="94.5" Height="18.9" Text="Fecha:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text80" Left="122.85" Top="160.65" Width="94.5" Height="18.9" Text="[fecha]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="193" Width="2268" Height="37.8">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="SUCURSAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="264.6" Width="94.5" Height="18.9" Text="TITULO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="359.1" Width="94.5" Height="18.9" Text="#TICKETS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="453.6" Width="94.5" Height="18.9" Text="#DEVOLUCIONES" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="548.1" Width="94.5" Height="37.8" Text="SUBTOTAL (VENTAS - DEV - CANC)" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="642.6" Width="94.5" Height="37.8" Text="IVA(VENTAS - DEV - CANC)" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="737.1" Width="94.5" Height="28.35" Text="IEPS (VENTAS - DEV - CANC)" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="831.6" Width="94.5" Height="28.35" Text="TOTAL (VENTAS - DEV - CANC)" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="1115.1" Width="94.5" Height="28.35" Text="INGRESO EFECTIVO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text22" Left="1209.6" Width="94.5" Height="28.35" Text="INGRESO TARJETA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text24" Left="1304.1" Width="94.5" Height="28.35" Text="INGRESO CREDITO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text26" Left="1398.6" Width="94.5" Height="18.9" Text="INGRESO_VALE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text28" Left="1493.1" Width="94.5" Height="28.35" Text="INGRESO CHEQUE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text30" Left="1587.6" Width="94.5" Height="18.9" Text="CAMBIO CHEQUE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text32" Left="1776.6" Width="94.5" Height="18.9" Text="EGRESO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text81" Left="1965.6" Width="37.8" Height="18.9" Text="ACT" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text82" Left="926.1" Width="94.5" Height="18.9" Text="TRASLADOS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text83" Left="1020.6" Width="94.5" Height="28.35" Text="TOTAL SIN TRASLADO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text84" Left="94.5" Width="170.1" Height="28.35" Text="GRUPO USUARIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text85" Left="2003.4" Width="94.5" Height="28.35" Text="SUBTOTAL CON IVA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text86" Left="2097.9" Width="94.5" Height="28.35" Text="SUBTOTAL SIN IVA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text87" Left="1682.1" Width="94.5" Height="18.9" Text="INGRESO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text88" Left="1871.1" Width="94.5" Height="18.9" Text="SALDO" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="234.8" Width="2268" Height="18.9" CanGrow="true" Condition="[Table.GRUPOUSUARIOID]">
+      <TextObject Name="Text31" Left="1776.6" Width="94.5" Height="18.9" Text="[Table.EGRESO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="831.6" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="1115.1" Width="94.5" Height="18.9" Text="[Table.INGRESO_EFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="1209.6" Width="94.5" Height="18.9" Text="[Table.INGRESO_TARJETA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="1304.1" Width="94.5" Height="18.9" Text="[Table.INGRESO_CREDITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="1398.6" Width="94.5" Height="18.9" Text="[Table.INGRESO_VALE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="1493.1" Width="94.5" Height="18.9" Text="[Table.INGRESO_CHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text29" Left="1587.6" Width="94.5" Height="18.9" Text="[Table.CAMBIO_CHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.SUCURSAL]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="264.6" Width="94.5" Height="18.9" Text="[Table.TITULO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="359.1" Width="94.5" Height="18.9" Text="[Table.NUMERO_TICKETS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="453.6" Width="94.5" Height="18.9" Text="[Table.NUMERO_DEVOLUCIONES]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="548.1" Width="94.5" Height="18.9" Text="[Table.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="642.6" Width="94.5" Height="18.9" Text="[Table.IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="737.1" Width="94.5" Height="18.9" Text="[Table.MONTOIEPS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text33" Left="1965.6" Width="37.8" Height="18.9" Text="[Table.ACTIVO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text34" Left="926.1" Width="94.5" Height="18.9" Text="[Table.TOTALTRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text35" Left="1020.6" Width="94.5" Height="18.9" Text="[Table.TOTALSINTRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="94.5" Width="170.1" Height="18.9" Text="[Table.NOMBREGRUPOUSUARIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="2003.4" Width="94.5" Height="18.9" Text="[Table.SUBTOTALCONIVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text36" Left="2097.9" Width="94.5" Height="18.9" Text="[Table.SUBTOTALSINIVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text37" Left="1682.1" Width="94.5" Height="18.9" Text="[Table.INGRESO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text38" Left="1871.1" Width="94.5" Height="18.9" Text="[Table.SALDOFINAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <DataBand Name="Data1" Top="257.7" Width="2268" Height="18.9" CanShrink="true" BeforePrintEvent="Data1_BeforePrint" DataSource="Table">
+        <TextObject Name="Text51" Left="132.3" Width="94.5" Height="18.9" CanShrink="true" Text="[Table.TASAIEPS_]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text52" Left="321.3" Width="94.5" Height="18.9" CanShrink="true" Text="[Table.MONTOIEPS_]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text53" Left="37.8" Width="94.5" Height="18.9" CanShrink="true" Text="Tasa Ieps:" Font="Arial, 8pt"/>
+        <TextObject Name="Text54" Left="255.15" Width="56.7" Height="18.9" CanShrink="true" Text="Monto:" Font="Arial, 8pt"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="280.6" Width="2268"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="284.6" Width="2268" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

@@ -1,0 +1,4 @@
+|||||100+++++//this.(nombreTablaMinPrimeraLetra)Dao = (nombreTablaMinPrimeraLetra)Dao;
+            this.(nombreTablaMinPrimeraLetra)Dao = (nombreTablaMinPrimeraLetra)Dao;
+            !!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

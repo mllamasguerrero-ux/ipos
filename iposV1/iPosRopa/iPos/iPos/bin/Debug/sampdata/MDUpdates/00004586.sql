@@ -1,0 +1,10 @@
+CREATE GENERATOR SEQ_SAT_METODOPAGO;
+
+
+
+
+
+
+
+
+

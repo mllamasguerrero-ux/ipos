@@ -1,0 +1,27 @@
+﻿id;sat_clave;sat_descripcion;sat_personafisica;sat_personamoral;sat_fechainicio;sat_fechafin
+1;null;null;Física;Moral;null;null
+2;G01;Adquisición de mercancias;Sí;Sí;1/1/2017;null
+3;G02;Devoluciones, descuentos o bonificaciones;Sí;Sí;1/1/2017;null
+4;G03;Gastos en general;Sí;Sí;1/1/2017;null
+5;I01;Construcciones;Sí;Sí;1/1/2017;null
+6;I02;Mobilario y equipo de oficina por inversiones;Sí;Sí;1/1/2017;null
+7;I03;Equipo de transporte;Sí;Sí;1/1/2017;null
+8;I04;Equipo de computo y accesorios;Sí;Sí;1/1/2017;null
+9;I05;Dados, troqueles, moldes, matrices y herramental;Sí;Sí;1/1/2017;null
+10;I06;Comunicaciones telefónicas;Sí;Sí;1/1/2017;null
+11;I07;Comunicaciones satelitales;Sí;Sí;1/1/2017;null
+12;I08;Otra maquinaria y equipo;Sí;Sí;1/1/2017;null
+13;D01;Honorarios médicos, dentales y gastos hospitalarios.;Sí;No;1/1/2017;null
+14;D02;Gastos médicos por incapacidad o discapacidad;Sí;No;1/1/2017;null
+15;D03;Gastos funerales.;Sí;No;1/1/2017;null
+16;D04;Donativos.;Sí;No;1/1/2017;null
+17;D05;Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación).;Sí;No;1/1/2017;null
+18;D06;Aportaciones voluntarias al SAR.;Sí;No;1/1/2017;null
+19;D07;Primas por seguros de gastos médicos.;Sí;No;1/1/2017;null
+20;D08;Gastos de transportación escolar obligatoria.;Sí;No;1/1/2017;null
+21;D09;Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones.;Sí;No;1/1/2017;null
+22;D10;Pagos por servicios educativos (colegiaturas);Sí;No;1/1/2017;null
+23;P01;Por definir;Sí;Sí;3/31/2017;null
+24;S01;Sin efectos fiscales.;Sí;Sí;1/1/2017;null
+25;CP01;Pagos;Sí;Sí;1/1/2017;null
+26;CN01;Nómina;Sí;No;1/1/2017;null

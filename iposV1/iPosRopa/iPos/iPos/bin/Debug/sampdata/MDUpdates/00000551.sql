@@ -1,0 +1,107 @@
+create or alter procedure COMPRA_DEVOLVER (
+    COMPRADOCTOID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable DOCTOID D_FK;
+declare variable DOCTO2ID D_FK;
+declare variable MOVTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable CAJAID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PRODUCTOID D_FK;
+declare variable LOTE D_LOTE;
+declare variable FECHAVENCE D_FECHAVENCE;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable TIPODOCTOID D_FK;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable FALTANTES integer;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable COSTO D_COSTO;
+declare variable SUCURSALTID D_FK;
+declare variable ALMACENTID D_FK;
+declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable FECHA D_FECHA;
+declare variable PERSONAID D_FK;
+declare variable VENDEDORID D_FK;
+BEGIN
+   IF ((:COMPRADOCTOID IS NULL) OR (:COMPRADOCTOID = 0)) THEN
+   BEGIN
+      ERRORCODE = 1064;
+      SUSPEND;
+      EXIT;
+   END
+
+   TIPODOCTOID = 12; -- Devolucion de Compra
+
+   REFERENCIA = 'Dev. Compra';
+  
+   SELECT ALMACENID, SUCURSALID, CAJAID
+   FROM DOCTO
+   WHERE ID = :COMPRADOCTOID
+   INTO :ALMACENID, :SUCURSALID, :CAJAID;
+
+   -- Inicializara para primer registro de movto
+   DOCTOID = 0;
+   FECHA = CURRENT_DATE;
+
+   -- Agrega un MOVTO para cada registro con FALTANTES
+   FOR SELECT
+      M.PRODUCTOID,
+      M.LOTE,
+      M.FECHAVENCE,
+      M.CANTIDADFALTANTE,
+      M.COSTO,
+      M.TIPODIFERENCIAINVENTARIOID ,
+      D.PERSONAID,
+      D.VENDEDORID
+   FROM MOVTO M
+     LEFT JOIN DOCTO D
+       ON D.ID = M.DOCTOID
+   WHERE M.DOCTOID = :COMPRADOCTOID
+      AND (M.CANTIDADFALTANTE > 0)
+   INTO
+      :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, :COSTO, :TIPODIFERENCIAINVENTARIOID, :PERSONAID, :VENDEDORID
+   DO
+   BEGIN
+      COSTO = 0;
+
+      SUCURSALTID = 0;
+      ALMACENTID = 0;
+     
+      -- INSERT INTO TRAZA VALUES (5);
+      SELECT DOCTOID, MOVTOID, ERRORCODE
+      FROM MOVTO_INSERT(:DOCTOID, 0, :ALMACENID, :SUCURSALID, :TIPODOCTOID, 0, 0, :PERSONAID, :VENDEDORID, 1, 0,
+         :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, 0, :CANTIDAD, 0, 0, 0, 0,
+         :REFERENCIA, '', :COSTO, :SUCURSALTID, :ALMACENTID, 'N', :TIPODIFERENCIAINVENTARIOID,
+         :FECHA, :FECHA, 0.00,NULL,NULL,NULL,NULL,NULL)
+      INTO :DOCTOID, :MOVTOID, :ERRORCODE;
+
+        IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+   END
+
+   SELECT ERRORCODE
+   FROM DOCTO_SAVE(:DOCTOID)
+   INTO :ERRORCODE;
+
+    IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+    BEGIN
+        SUSPEND;
+        EXIT;
+    END
+   
+    ERRORCODE = 0;
+   SUSPEND;
+   
+    WHEN ANY DO
+    BEGIN
+        ERRORCODE = 1065;
+        SUSPEND;
+    END
+
+   -- Marcar los faltantes como ya generados.
+END

@@ -1,0 +1,1 @@
+update tipodocto set sentidoinventario = -1 where id = 321

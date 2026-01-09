@@ -1,0 +1,1 @@
+insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10123, 'Ver costo en cambio de precio');

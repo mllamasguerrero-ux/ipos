@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/28/2014 11:02:39" ReportInfo.Modified="01/28/2014 11:58:48" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2b+YvoK5/Q7TZIaH0q9cDLQ=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;d.id, d.fecha, d.folio , d.esfacturaelectronica, c.clave clavecliente, c.nombre nombrecliente,&#13;&#10;p.clave claveproducto, p.nombre nombreproducto, p.descripcion descripcionproducto, p.descripcion1,&#13;&#10;pc.texto1, pc.texto2,  coalesce(m.cantidad,0) cantidad , coalesce(m.cantidaddefactura,0) cantidaddefactura ,&#13;&#10;coalesce(m.precio,0) precio,&#13;&#10;&#13;&#10;case when d.tipodoctoid = 22 then&#13;&#10;COALESCE(m.CANTIDADDEFACTURA,0)*  COALESCE(m.PRECIO,0) * -1&#13;&#10;else&#13;&#10;COALESCE(m.CANTIDADDEFACTURA,0)*  COALESCE(m.PRECIO,0) &#13;&#10;end&#13;&#10;montofacturado,&#13;&#10;  td.nombre tipodocto,&#13;&#10;&#13;&#10;m.tasaiva,&#13;&#10;&#13;&#10;case when d.tipodoctoid = 22 then&#13;&#10;(coalesce(m.tasaiva,0) /100) * COALESCE(m.CANTIDADDEFACTURA,0)*  COALESCE(m.PRECIO,0) * -1&#13;&#10;else&#13;&#10;(coalesce(m.tasaiva,0) /100) * COALESCE(m.CANTIDADDEFACTURA,0)*  COALESCE(m.PRECIO,0)&#13;&#10;end&#13;&#10; iva ,&#13;&#10;&#13;&#10;&#13;&#10;case when d.tipodoctoid = 22 then&#13;&#10;(1 + (coalesce(m.tasaiva,0) /100)) * COALESCE(m.CANTIDADDEFACTURA,0)*  COALESCE(m.PRECIO,0) * -1&#13;&#10;else&#13;&#10;(1 + (coalesce(m.tasaiva,0) /100)) * COALESCE(m.CANTIDADDEFACTURA,0)*  COALESCE(m.PRECIO,0)&#13;&#10;end  total&#13;&#10;&#13;&#10; from docto d&#13;&#10; inner join movto m on d.id = m.doctoid&#13;&#10; left join persona c on d.personaid = c.id&#13;&#10; left join producto p on p.id =m.productoid&#13;&#10; left join productocaracteristicas pc on pc.productoid = p.id&#13;&#10; left join tipodocto td on td.id = d.tipodoctoid&#13;&#10;&#13;&#10; where d.estatusdoctoid = 1 and d.tipodoctoid in (21,22)&#13;&#10;&#13;&#10;and d.fecha&gt;= @fechaini and d.fecha &lt;= @fechafin&#13;&#10;order by d.tipodoctoid, d.fecha&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="ESFACTURAELECTRONICA" DataType="System.String"/>
+        <Column Name="CLAVECLIENTE" DataType="System.String"/>
+        <Column Name="NOMBRECLIENTE" DataType="System.String"/>
+        <Column Name="CLAVEPRODUCTO" DataType="System.String"/>
+        <Column Name="NOMBREPRODUCTO" DataType="System.String"/>
+        <Column Name="DESCRIPCIONPRODUCTO" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="CANTIDADDEFACTURA" DataType="System.Decimal"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="MONTOFACTURADO" DataType="System.Decimal"/>
+        <Column Name="TIPODOCTO" DataType="System.String"/>
+        <Column Name="TASAIVA" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <CommandParameter Name="fechaIni" DataType="5" Expression="[p_fechaini]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[p_fechafin]" DefaultValue="01/01/2020"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="p_fechaini" DataType="System.DateTime"/>
+    <Parameter Name="p_fechafin" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="380" PaperHeight="210.1">
+    <ReportTitleBand Name="ReportTitle1" Width="1360.8" Height="85.05">
+      <TextObject Name="Text33" Left="330.75" Top="56.7" Width="94.5" Height="18.9" Text="[p_fechaini]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text34" Left="576.45" Top="56.7" Width="94.5" Height="18.9" Text="[p_fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text35" Left="226.8" Top="9.45" Width="463.05" Height="28.35" Text="Reporte de ventas de productos facturados" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text42" Left="226.8" Top="56.7" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 9pt"/>
+      <TextObject Name="Text43" Left="472.5" Top="56.7" Width="94.5" Height="18.9" Text="fecha fin:" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="89.05" Width="1360.8" Height="37.8">
+      <TextObject Name="Text2" Left="66.15" Width="56.7" Height="28.35" Text="FECHA" Font="Arial, 9pt"/>
+      <TextObject Name="Text4" Left="122.85" Width="66.15" Height="28.35" Text="FOLIO" Font="Arial, 9pt"/>
+      <TextObject Name="Text6" Left="255.15" Width="66.15" Height="28.35" Text="CLAVE CLIENTE" Font="Arial, 9pt"/>
+      <TextObject Name="Text8" Left="321.3" Width="75.6" Height="28.35" Text="NOMBRE CLIENTE" Font="Arial, 9pt"/>
+      <TextObject Name="Text10" Left="396.9" Width="66.15" Height="28.35" Text="CLAVE PRODUCTO" Font="Arial, 9pt"/>
+      <TextObject Name="Text12" Left="463.05" Width="56.7" Height="28.35" Text="CLAVE PRODUCTO" Font="Arial, 9pt"/>
+      <TextObject Name="Text14" Left="519.75" Width="66.15" Height="28.35" Text="NOMBRE PRODUCTO" Font="Arial, 9pt"/>
+      <TextObject Name="Text16" Left="585.9" Width="75.6" Height="28.35" Text="DESCRIPCION PRODUCTO" Font="Arial, 9pt"/>
+      <TextObject Name="Text20" Left="737.1" Width="66.15" Height="28.35" Text="TEXTO1" Font="Arial, 9pt"/>
+      <TextObject Name="Text22" Left="803.25" Width="56.7" Height="28.35" Text="TEXTO2" Font="Arial, 9pt"/>
+      <TextObject Name="Text24" Left="859.95" Width="66.15" Height="28.35" Text="CANTIDAD" Font="Arial, 9pt"/>
+      <TextObject Name="Text26" Left="926.1" Width="66.15" Height="28.35" Text="CANTIDAD DE FACTURA" Font="Arial, 9pt"/>
+      <TextObject Name="Text28" Left="992.25" Width="56.7" Height="28.35" Text="PRECIO" Font="Arial, 9pt"/>
+      <TextObject Name="Text30" Left="1048.95" Width="66.15" Height="28.35" Text="MONTO FACTURADO" Font="Arial, 9pt"/>
+      <TextObject Name="Text32" Width="66.15" Height="28.35" Text="TIPO DOCTO" Font="Arial, 9pt"/>
+      <TextObject Name="Text37" Left="1115.1" Width="75.6" Height="28.35" Text="TASA IVA" Font="Arial, 9pt"/>
+      <TextObject Name="Text39" Left="1190.7" Width="75.6" Height="28.35" Text="IVA" Font="Arial, 9pt"/>
+      <TextObject Name="Text41" Left="1266.3" Width="75.6" Height="28.35" Text="TOTAL" Font="Arial, 9pt"/>
+      <TextObject Name="Text18" Left="661.5" Width="75.6" Height="28.35" Text="DESCRIPCION 1" Font="Arial, 9pt"/>
+      <TextObject Name="Text45" Left="189" Width="66.15" Height="28.35" Text="ES FACT. ELECT." Font="Arial, 9pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="130.85" Width="1360.8" Height="37.8" DataSource="Table">
+      <TextObject Name="Text1" Left="66.15" Top="9.45" Width="56.7" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="122.85" Top="9.45" Width="66.15" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="255.15" Top="9.45" Width="66.15" Height="18.9" Text="[Table.CLAVECLIENTE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text7" Left="321.3" Top="9.45" Width="75.6" Height="18.9" Text="[Table.NOMBRECLIENTE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="396.9" Top="9.45" Width="66.15" Height="18.9" Text="[Table.CLAVEPRODUCTO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text11" Left="463.05" Top="9.45" Width="56.7" Height="18.9" Text="[Table.CLAVEPRODUCTO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text13" Left="519.75" Top="9.45" Width="66.15" Height="18.9" Text="[Table.NOMBREPRODUCTO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text15" Left="585.9" Top="9.45" Width="75.6" Height="18.9" Text="[Table.DESCRIPCIONPRODUCTO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text17" Left="661.5" Top="9.45" Width="75.6" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text19" Left="737.1" Top="9.45" Width="66.15" Height="18.9" Text="[Table.TEXTO1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="803.25" Top="9.45" Width="56.7" Height="18.9" Text="[Table.TEXTO2]" Font="Arial, 9pt"/>
+      <TextObject Name="Text23" Left="859.95" Top="9.45" Width="66.15" Height="18.9" Text="[Table.CANTIDAD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="926.1" Top="9.45" Width="66.15" Height="18.9" Text="[Table.CANTIDADDEFACTURA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="992.25" Top="9.45" Width="56.7" Height="18.9" Text="[Table.PRECIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text29" Left="1048.95" Top="9.45" Width="66.15" Height="18.9" Text="[Table.MONTOFACTURADO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text31" Top="9.45" Width="66.15" Height="18.9" Text="[Table.TIPODOCTO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text36" Left="1115.1" Top="9.45" Width="75.6" Height="18.9" Text="[Table.TASAIVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text38" Left="1190.7" Top="9.45" Width="75.6" Height="18.9" Text="[Table.IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text40" Left="1266.3" Top="9.45" Width="75.6" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text44" Left="189" Top="9.45" Width="66.15" Height="18.9" Text="[Table.ESFACTURAELECTRONICA]" Font="Arial, 9pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="172.65" Width="1360.8" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="28" Top="44" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="p_fechaini" FilterOperation="GreaterThanOrEqual" Value="01/28/2014 11:23:40"/>
+    <LabelControl Name="Label1" Left="28" Top="28" Width="56" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="p_fechaini"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="28" Top="104" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="p_fechafin" FilterOperation="LessThanOrEqual" Value="01/28/2014 11:23:43"/>
+    <LabelControl Name="Label2" Left="28" Top="88" Width="58" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="p_fechafin"/>
+  </DialogPage>
+</Report>

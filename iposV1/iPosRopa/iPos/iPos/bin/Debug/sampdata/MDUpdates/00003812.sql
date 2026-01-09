@@ -1,0 +1,162 @@
+create or alter procedure REP_VENTA_CONSALDO (
+    FECHAREF D_FECHA,
+    TIPODOCTOID D_FK,
+    VENCIDOS char(1),
+    PALMACENID D_FK)
+returns (
+    NUMERO integer,
+    FECHA D_FECHA,
+    FECHAHORA D_TIMESTAMP,
+    TURNOCLAVE D_CLAVE,
+    DOCTOFOLIO D_DOCTOFOLIO,
+    IMPORTE D_IMPORTE,
+    DESCUENTO D_IMPORTE,
+    SUBTOTAL D_IMPORTE,
+    IVA D_IMPORTE,
+    TOTAL D_IMPORTE,
+    SUCURSALT D_NOMBRE,
+    TIPODOC D_NOMBRE,
+    SALDO D_PRECIO,
+    ESTATUSDOCTONOMBRE D_NOMBRE,
+    ESFACTURAELECTRONICA D_BOOLCN,
+    SERIEFOLIOSAT D_NOMBRE,
+    PERSONA D_NOMBRE,
+    VENDEDOR D_NOMBRE,
+    VENDEDORDELCLIENTEID D_ID,
+    VENDEDORDELCLIENTENOMBRE D_NOMBRE,
+    VENDEDORDELCLIENTECLAVE D_CLAVE_NULL,
+    IEPS D_IMPORTE,
+    IMPUESTO D_IMPORTE,
+    PERSONACLAVE D_CLAVE_NULL,
+    PERSONANOMBRES D_STDTEXT_MEDIUM,
+    PERSONAAPELLIDOS D_STDTEXT_MEDIUM,
+    FECHAVENCE D_FECHAVENCE,
+    ALMACENID D_FK,
+    ALMACENTID D_FK,
+    NOMBREALMACEN D_NOMBRE_NULL,
+    NOMBREALMACENTRASPASO D_NOMBRE_NULL,
+    DOCTOID D_FK)
+as
+BEGIN
+   NUMERO = 0;
+
+
+   FOR SELECT
+      NUMERO,
+      FECHA,
+      FECHAHORA,
+      TURNOCLAVE,
+      DOCTOFOLIO,
+      IMPORTE,
+      DESCUENTO,
+      SUBTOTAL,
+      IVA,
+      TOTAL,
+      SUCURSALT ,
+      TIPODOC ,
+      SALDO ,
+      ESTATUSDOCTONOMBRE ,
+      ESFACTURAELECTRONICA ,
+      SERIEFOLIOSAT ,
+      PERSONA   ,
+      VENDEDOR  ,
+      VENDEDORDELCLIENTEID ,
+      VENDEDORDELCLIENTENOMBRE ,
+      VENDEDORDELCLIENTECLAVE ,
+      IEPS,
+      IMPUESTO,
+      PERSONACLAVE ,
+      PERSONANOMBRES ,
+      PERSONAAPELLIDOS ,
+      FECHAVENCE,
+      ALMACENID,
+      ALMACENTID ,
+      nombrealmacen,
+      nombrealmacentraspaso  ,
+      DOCTOID
+
+   FROM REP_DOCTO_CONSALDO(:FECHAREF, :TIPODOCTOID,:VENCIDOS , :PALMACENID )
+   INTO
+      :NUMERO,
+      :FECHA ,
+      :FECHAHORA ,
+      :TURNOCLAVE,
+      :DOCTOFOLIO ,
+      :IMPORTE ,
+      :DESCUENTO,
+      :SUBTOTAL,
+      :IVA ,
+      :TOTAL ,
+      :SUCURSALT ,
+      :TIPODOC ,
+      :SALDO ,
+      :ESTATUSDOCTONOMBRE ,
+      :ESFACTURAELECTRONICA ,
+      :SERIEFOLIOSAT ,
+      :PERSONA ,
+      :VENDEDOR,
+      :VENDEDORDELCLIENTEID ,
+      :VENDEDORDELCLIENTENOMBRE ,
+      :VENDEDORDELCLIENTECLAVE,  
+      :IEPS,
+      :IMPUESTO ,
+      :PERSONACLAVE ,
+      :PERSONANOMBRES ,
+      :PERSONAAPELLIDOS ,
+      :FECHAVENCE   ,
+      :ALMACENID,
+      :ALMACENTID,
+      :NOMBREALMACEN,
+      :NOMBREALMACENTRASPASO,
+      :DOCTOID
+   DO
+   BEGIN
+      SUSPEND;
+   END
+
+   if (:numero = 0) then
+   begin
+      numero = 0;
+      fecha = current_date;
+      fechahora = current_date;
+      TURNOCLAVE = 'N/D';
+      doctofolio = 0;
+      IMPORTE = 0.00;
+      SUBTOTAL = 0.00;
+      IVA = 0.00;
+      TOTAL = 0.00;
+      SUCURSALT = ' ';
+      TIPODOC = ' ';  
+      SALDO  = 0.00;
+      ESTATUSDOCTONOMBRE  = ' ';
+      ESFACTURAELECTRONICA  = 'N';
+      SERIEFOLIOSAT  = ' ';
+      PERSONA = ' ';
+      VENDEDOR = '';
+
+      
+      VENDEDORDELCLIENTEID = 0;
+      VENDEDORDELCLIENTENOMBRE = '';
+      VENDEDORDELCLIENTECLAVE = '';
+                         
+      IEPS = 0;
+      IMPUESTO = 0;
+      -- sin suspend para no regresar renglon falso
+
+      
+      PERSONACLAVE = '';
+      PERSONANOMBRES = '';
+      PERSONAAPELLIDOS = '';
+      FECHAVENCE  = current_date;
+      
+      ALMACENID = 0;
+      ALMACENTID = 0;
+      
+      NOMBREALMACEN = '';
+      NOMBREALMACENTRASPASO = '';
+
+      DOCTOID = 0;
+
+   end
+
+END

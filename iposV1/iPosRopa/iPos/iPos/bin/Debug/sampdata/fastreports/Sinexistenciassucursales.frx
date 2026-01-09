@@ -1,0 +1,1772 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/05/2015 16:12:41" ReportInfo.Modified="08/17/2015 13:56:32" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+using FastReport.Controls;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+                                     
+
+    private void Button1_Click(object sender, EventArgs e)
+    {                                                     
+      
+    }
+
+    private void Page1_ManualBuild(object sender, EventArgs e)
+    {
+        
+    }
+
+    private void Table01_ManualBuild(object sender, EventArgs e)
+    {                 
+      
+      if( ((String)Report.GetParameterValue(&quot;NombreSucursal1&quot;)) == &quot;&quot;)
+        return;
+      
+      DataSourceBase rowData = Report.GetDataSource(&quot;PRODUCTOMATRIZ&quot;);   
+      
+      DataSourceBase rowDataSuc1 = Report.GetDataSource(&quot;PRODUCTOSUCURSAL1&quot;);   
+                                   
+      
+      int iCount = 0;
+      rowData.First();
+      FastReport.Table.TableCell tc = null;
+      Table01.PrintRow(0);
+      while (rowData.HasMoreRows)
+      {      
+        rowDataSuc1.First();
+        decimal existenciaMatriz = (decimal)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.EXISTENCIA&quot;); 
+       
+        if(existenciaMatriz &gt; 0)
+        {
+          decimal existenciaSucursal = 0;
+          while (rowDataSuc1.HasMoreRows)
+          {   
+             
+            string productName = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;);  
+            string productNameSucursal = (string)Report.GetColumnValue(&quot;PRODUCTOSUCURSAL1.CLAVE&quot;);
+            
+            if( productName.Trim().Equals(productNameSucursal.Trim()))
+            {           
+              existenciaSucursal =  (decimal)Report.GetColumnValue(&quot;PRODUCTOSUCURSAL1.EXISTENCIA&quot;);     
+              break;
+            } 
+            rowDataSuc1.Next();
+          }   
+        
+        
+          if(existenciaSucursal == 0)
+          {
+            FastReport.Table.TableRow tr =  new FastReport.Table.TableRow();
+            
+            tc = new FastReport.Table.TableCell();
+            tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;);
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.NOMBRE&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION&quot;);  
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }         
+            tr.AddChild(tc);
+            
+                               
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION2&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }     
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.TEXTO1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);  
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.TEXTO3&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = Report.GetColumnValue(&quot;PRODUCTOMATRIZ.NUMERO1&quot;).ToString();
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();    
+            tc.HorzAlign =  HorzAlign.Right; 
+            try{                                   
+              tc.Text = existenciaMatriz.ToString(); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+                        
+            
+            
+            
+            Table01.Rows.Add(tr);            
+            Table01.PrintRow(iCount);
+            Table01.PrintColumns();
+            iCount++;
+          }
+        }
+        rowData.Next();
+        
+      }                       
+      
+    }
+    
+    
+    private void Table02_ManualBuild(object sender, EventArgs e)
+    {          
+      
+      if( ((String)Report.GetParameterValue(&quot;NombreSucursal2&quot;)) == &quot;&quot;)
+        return;
+      
+      DataSourceBase rowData = Report.GetDataSource(&quot;PRODUCTOMATRIZ&quot;);   
+      
+      DataSourceBase rowDataSuc1 = Report.GetDataSource(&quot;PRODUCTOSUCURSAL2&quot;);                       
+                       
+      rowData.First();
+      FastReport.Table.TableCell tc = null;
+      
+                
+      Table02.PrintRow(0);
+      int iCount = 0;
+      
+      while (rowData.HasMoreRows)
+      {                                   
+        
+        rowDataSuc1.First();
+        decimal existenciaMatriz = (decimal)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.EXISTENCIA&quot;); 
+       
+        if(existenciaMatriz &gt; 0)
+        {
+          decimal existenciaSucursal = 0;
+          while (rowDataSuc1.HasMoreRows)
+          {                                        
+            
+            string productName = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;);  
+            string productNameSucursal = (string)Report.GetColumnValue(&quot;PRODUCTOSUCURSAL2.CLAVE&quot;);           
+
+            
+            if( productName.Trim().Equals(productNameSucursal.Trim()))
+            {        
+              existenciaSucursal =  (decimal)Report.GetColumnValue(&quot;PRODUCTOSUCURSAL2.EXISTENCIA&quot;);     
+              break;
+            } 
+            rowDataSuc1.Next();
+          }   
+                                                                               
+                                                                                                
+          string productoName = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;); 
+        
+          if(existenciaSucursal == 0 &amp;&amp; productoName != null &amp;&amp; productoName.Trim().Length &gt; 0)
+          {
+            FastReport.Table.TableRow tr =  new FastReport.Table.TableRow();
+            
+            tc = new FastReport.Table.TableCell();
+            tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;);
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.NOMBRE&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION&quot;);  
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }         
+            tr.AddChild(tc);
+            
+                               
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION2&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }     
+            tr.AddChild(tc);
+                                
+            
+            
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.TEXTO1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);       
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.TEXTO3&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.NUMERO1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = existenciaMatriz.ToString(); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+                        
+            
+            
+            
+            Table02.Rows.Add(tr);            
+            Table02.PrintRow(iCount);
+            Table02.PrintColumns(); 
+            iCount++;
+          }
+        }
+        rowData.Next();
+        
+      }                      
+      
+    }
+    
+    
+    
+    
+    private void Table03_ManualBuild(object sender, EventArgs e)
+    {        
+      
+      
+      if( ((String)Report.GetParameterValue(&quot;NombreSucursal3&quot;)) == &quot;&quot;)
+        return;
+      
+      DataSourceBase rowData = Report.GetDataSource(&quot;PRODUCTOMATRIZ&quot;);   
+      
+      DataSourceBase rowDataSuc1 = Report.GetDataSource(&quot;PRODUCTOSUCURSAL3&quot;);   
+                                   
+                       
+      rowData.First();
+      FastReport.Table.TableCell tc = null;
+      
+                
+      Table03.PrintRow(0);
+      int iCount = 0;
+      
+      while (rowData.HasMoreRows)
+      {      
+        rowDataSuc1.First();
+        decimal existenciaMatriz = (decimal)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.EXISTENCIA&quot;); 
+       
+        if(existenciaMatriz &gt; 0)
+        {
+          decimal existenciaSucursal = 0;
+          while (rowDataSuc1.HasMoreRows)
+          {   
+             
+            string productName = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;);  
+            string productNameSucursal = (string)Report.GetColumnValue(&quot;PRODUCTOSUCURSAL3.CLAVE&quot;);
+            
+            if( productName.Trim().Equals(productNameSucursal.Trim()))
+            {           
+              existenciaSucursal =  (decimal)Report.GetColumnValue(&quot;PRODUCTOSUCURSAL3.EXISTENCIA&quot;);     
+              break;
+            } 
+            rowDataSuc1.Next();
+          }   
+        
+          string productoName = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;); 
+        
+          if(existenciaSucursal == 0 &amp;&amp; productoName != null &amp;&amp; productoName.Trim().Length &gt; 0)
+          {
+            FastReport.Table.TableRow tr =  new FastReport.Table.TableRow();
+            
+            tc = new FastReport.Table.TableCell();
+            tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;);
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.NOMBRE&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION&quot;);  
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }         
+            tr.AddChild(tc);
+            
+                               
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION2&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }     
+            tr.AddChild(tc);
+            
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.TEXTO1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);                    
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.TEXTO3&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.NUMERO1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = existenciaMatriz.ToString(); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+                        
+            
+            
+            
+            Table03.Rows.Add(tr);            
+            Table03.PrintRow(iCount);
+            Table03.PrintColumns(); 
+            iCount++;
+          }
+        }
+        rowData.Next();
+        
+      }                      
+      
+    }
+    
+    
+    
+    
+    
+    private void Table04_ManualBuild(object sender, EventArgs e)
+    {        
+      
+      if( ((String)Report.GetParameterValue(&quot;NombreSucursal4&quot;)) == &quot;&quot;)
+        return;
+      
+      DataSourceBase rowData = Report.GetDataSource(&quot;PRODUCTOMATRIZ&quot;);   
+      
+      DataSourceBase rowDataSuc1 = Report.GetDataSource(&quot;PRODUCTOSUCURSAL4&quot;);   
+                                   
+                       
+      rowData.First();
+      FastReport.Table.TableCell tc = null;
+      
+                
+      Table04.PrintRow(0);
+      int iCount = 0;
+      
+      while (rowData.HasMoreRows)
+      {      
+        rowDataSuc1.First();
+        decimal existenciaMatriz = (decimal)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.EXISTENCIA&quot;); 
+       
+        if(existenciaMatriz &gt; 0)
+        {
+          decimal existenciaSucursal = 0;
+          while (rowDataSuc1.HasMoreRows)
+          {   
+             
+            string productName = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;);  
+            string productNameSucursal = (string)Report.GetColumnValue(&quot;PRODUCTOSUCURSAL4.CLAVE&quot;);
+            
+            if( productName.Trim().Equals(productNameSucursal.Trim()))
+            {           
+              existenciaSucursal =  (decimal)Report.GetColumnValue(&quot;PRODUCTOSUCURSAL4.EXISTENCIA&quot;);     
+              break;
+            } 
+            rowDataSuc1.Next();
+          }   
+        
+          string productoName = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;); 
+        
+          if(existenciaSucursal == 0 &amp;&amp; productoName != null &amp;&amp; productoName.Trim().Length &gt; 0)
+          {
+            FastReport.Table.TableRow tr =  new FastReport.Table.TableRow();
+            
+            tc = new FastReport.Table.TableCell();
+            tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;);
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.NOMBRE&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION&quot;);  
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }         
+            tr.AddChild(tc);
+            
+                               
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION2&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }     
+            tr.AddChild(tc);
+            
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.TEXTO1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);               
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.TEXTO3&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.NUMERO1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = existenciaMatriz.ToString(); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+                        
+            
+            
+            
+            Table04.Rows.Add(tr);            
+            Table04.PrintRow(iCount);
+            Table04.PrintColumns(); 
+            iCount++;
+          }
+        }
+        rowData.Next();
+        
+      }                      
+      
+    }
+    
+    
+    private void Table05_ManualBuild(object sender, EventArgs e)
+    {                 
+      
+      if( ((String)Report.GetParameterValue(&quot;NombreSucursal5&quot;)) == &quot;&quot;)
+        return;
+      
+      DataSourceBase rowData = Report.GetDataSource(&quot;PRODUCTOMATRIZ&quot;);   
+      
+      DataSourceBase rowDataSuc1 = Report.GetDataSource(&quot;PRODUCTOSUCURSAL5&quot;);   
+                                   
+                       
+      rowData.First();
+      FastReport.Table.TableCell tc = null;
+      
+                
+      Table05.PrintRow(0);
+      int iCount = 0;
+      
+      while (rowData.HasMoreRows)
+      {      
+        rowDataSuc1.First();
+        decimal existenciaMatriz = (decimal)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.EXISTENCIA&quot;); 
+       
+        if(existenciaMatriz &gt; 0)
+        {
+          decimal existenciaSucursal = 0;
+          while (rowDataSuc1.HasMoreRows)
+          {   
+             
+            string productName = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;);  
+            string productNameSucursal = (string)Report.GetColumnValue(&quot;PRODUCTOSUCURSAL5.CLAVE&quot;);
+            
+            if( productName.Trim().Equals(productNameSucursal.Trim()))
+            {           
+              existenciaSucursal =  (decimal)Report.GetColumnValue(&quot;PRODUCTOSUCURSAL5.EXISTENCIA&quot;);     
+              break;
+            } 
+            rowDataSuc1.Next();
+          }   
+        
+          string productoName = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;); 
+        
+          if(existenciaSucursal == 0 &amp;&amp; productoName != null &amp;&amp; productoName.Trim().Length &gt; 0)
+          {
+            FastReport.Table.TableRow tr =  new FastReport.Table.TableRow();
+            
+            tc = new FastReport.Table.TableCell();
+            tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.CLAVE&quot;);
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.NOMBRE&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION&quot;);  
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }         
+            tr.AddChild(tc);
+            
+                               
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.DESCRIPCION2&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }     
+            tr.AddChild(tc);
+            
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.TEXTO1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);                           
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.TEXTO3&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = (string)Report.GetColumnValue(&quot;PRODUCTOMATRIZ.NUMERO1&quot;); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+            
+            tc = new FastReport.Table.TableCell();
+            try{                                   
+              tc.Text = existenciaMatriz.ToString(); 
+            }
+            catch(Exception ex)
+            {
+              tc.Text = &quot;&quot;;
+            }    
+            tr.AddChild(tc);
+            
+                        
+            
+            
+            
+            Table05.Rows.Add(tr);            
+            Table05.PrintRow(iCount);
+            Table05.PrintColumns(); 
+            iCount++;
+          }
+        }
+        rowData.Next();
+        
+      }                      
+      
+    }
+    
+
+    private void ReportTitle1_BeforePrint(object sender, EventArgs e)
+    {
+        
+      DataSourceBase rowData = Report.GetDataSource(&quot;PRODUCTOMATRIZ&quot;);     
+      rowData.Init();
+      
+      
+      
+      if( ((String)Report.GetParameterValue(&quot;NombreSucursal1&quot;)) == &quot;&quot;)      
+      {
+        DataSourceBase rowDataSuc1 = Report.GetDataSource(&quot;PRODUCTOSUCURSAL1&quot;);     
+        rowDataSuc1.Init();
+      }
+         
+      if( ((String)Report.GetParameterValue(&quot;NombreSucursal2&quot;)) == &quot;&quot;)      
+      {
+        DataSourceBase rowDataSuc2 = Report.GetDataSource(&quot;PRODUCTOSUCURSAL2&quot;);     
+        rowDataSuc2.Init();  
+      }
+         
+      if( ((String)Report.GetParameterValue(&quot;NombreSucursal3&quot;)) == &quot;&quot;)      
+      {
+      
+        DataSourceBase rowDataSuc3 = Report.GetDataSource(&quot;PRODUCTOSUCURSAL3&quot;);     
+        rowDataSuc3.Init(); 
+      }
+         
+      if( ((String)Report.GetParameterValue(&quot;NombreSucursal4&quot;)) == &quot;&quot;)      
+      {
+      
+        DataSourceBase rowDataSuc4 = Report.GetDataSource(&quot;PRODUCTOSUCURSAL4&quot;);     
+        rowDataSuc4.Init(); 
+      }
+         
+      if( ((String)Report.GetParameterValue(&quot;NombreSucursal5&quot;)) == &quot;&quot;)      
+      {
+      
+        DataSourceBase rowDataSuc5 = Report.GetDataSource(&quot;PRODUCTOSUCURSAL5&quot;);     
+        rowDataSuc5.Init();   
+      }
+          
+      
+    }
+      
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection1" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlsyPW2+DbPITHBpH45gkkG5Zy/xJVEQdyfCn3Ea8j6zI5OcEvhUZKRAwOEGuQsDLLy1uc1651HeWL6YhWfKnUNgF6313Np7Qto5u3QPo2SBfo" ConnectionStringExpression="[ConexionSucursal1]">
+      <TableDataSource Name="Table1" Alias="PRODUCTOSUCURSAL1" DataType="System.Int32" Enabled="true" SelectCommand="SELECT * FROM PRODUCTO left join PRODUCTOCARACTERISTICAS ON PRODUCTOCARACTERISTICAS.PRODUCTOID = PRODUCTO.ID">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="EAN" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="DESCRIPCION3" DataType="System.String"/>
+        <Column Name="PROVEEDOR1ID" DataType="System.Int32"/>
+        <Column Name="PROVEEDOR2ID" DataType="System.Int32"/>
+        <Column Name="LINEAID" DataType="System.Int32"/>
+        <Column Name="MARCAID" DataType="System.Int32"/>
+        <Column Name="PRECIO1" DataType="System.Decimal"/>
+        <Column Name="PRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIO3" DataType="System.Decimal"/>
+        <Column Name="PRECIO4" DataType="System.Decimal"/>
+        <Column Name="PRECIO5" DataType="System.Decimal"/>
+        <Column Name="TASAIVAID" DataType="System.Int64"/>
+        <Column Name="TASAIVA" DataType="System.Decimal"/>
+        <Column Name="MONEDAID" DataType="System.Int64"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="COSTOULTIMO" DataType="System.Decimal"/>
+        <Column Name="COSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOSUSTITUTOID" DataType="System.Int64"/>
+        <Column Name="MANEJALOTE" DataType="System.String"/>
+        <Column Name="ESKIT" DataType="System.String"/>
+        <Column Name="IMPRIMIR" DataType="System.String"/>
+        <Column Name="INVENTARIABLE" DataType="System.String"/>
+        <Column Name="NEGATIVOS" DataType="System.String"/>
+        <Column Name="LIMITEPRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIOMAXIMOPUBLICO" DataType="System.Decimal"/>
+        <Column Name="FECHACAMBIOPRECIO" DataType="System.DateTime"/>
+        <Column Name="MANEJASTOCK" DataType="System.String"/>
+        <Column Name="STOCK" DataType="System.Decimal"/>
+        <Column Name="CAMBIARPRECIO" DataType="System.String"/>
+        <Column Name="COMPRAENTIENDA" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="SUBSTITUTO" DataType="System.String"/>
+        <Column Name="CBARRAS" DataType="System.String"/>
+        <Column Name="CEMPAQUE" DataType="System.String"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="U_EMPAQUE" DataType="System.Decimal"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="INI_MAYO" DataType="System.Decimal"/>
+        <Column Name="MAYOKGS" DataType="System.String"/>
+        <Column Name="TIPOABC" DataType="System.String"/>
+        <Column Name="COMISION" DataType="System.Decimal"/>
+        <Column Name="OFERTA" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAFACTURADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="ESPRODUCTOFINAL" DataType="System.String"/>
+        <Column Name="ESPRODUCTOPADRE" DataType="System.String"/>
+        <Column Name="ESSUBPRODUCTO" DataType="System.String"/>
+        <Column Name="TOMARPRECIOPADRE" DataType="System.String"/>
+        <Column Name="TOMARCOMISIONPADRE" DataType="System.String"/>
+        <Column Name="TOMAROFERTAPADRE" DataType="System.String"/>
+        <Column Name="PRODUCTOPADRE" DataType="System.Int64"/>
+        <Column Name="EXISTENCIAFACTURADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAAPARTADO" DataType="System.Decimal"/>
+        <Column Name="ULTIMOORIGENFISCALVENTA" DataType="System.Int64"/>
+        <Column Name="EXIST_FAC_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="EXIST_REM_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="CANTTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="PLUG" DataType="System.String"/>
+        <Column Name="ENPROCESODESALIDA" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION_COMODIN" DataType="System.String"/>
+        <Column Name="CUENTAPREDIAL" DataType="System.String"/>
+        <Column Name="IMAGEN" DataType="System.String"/>
+        <Column Name="TASAIEPS" DataType="System.Decimal"/>
+        <Column Name="TASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="MINUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="SPRECIO1" DataType="System.Decimal"/>
+        <Column Name="SPRECIO2" DataType="System.Decimal"/>
+        <Column Name="SPRECIO3" DataType="System.Decimal"/>
+        <Column Name="SPRECIO4" DataType="System.Decimal"/>
+        <Column Name="SPRECIO5" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="REQUIERERECETA" DataType="System.String"/>
+        <Column Name="CLASIFICA" DataType="System.String"/>
+        <Column Name="PROMOMOVIL" DataType="System.String"/>
+        <Column Name="HISTORIALMOVIL" DataType="System.String"/>
+        <Column Name="MARGENMOVIL" DataType="System.Decimal"/>
+        <Column Name="MPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="CPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="TPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="APRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="PRECIOSUGERIDO" DataType="System.Decimal"/>
+        <Column Name="ID1" DataType="System.Int64"/>
+        <Column Name="ACTIVO1" DataType="System.String"/>
+        <Column Name="CREADO1" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="MODIFICADO1" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="CLAVE1" DataType="System.String"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <FirebirdDataConnection Name="Connection2" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls6KACbEoyEHBudan+4Pm+eceU5Ut1/GocOiIx2b0DMu1bAWNVq3FbXv0IO3QaECb0vRqgMO7sQ7ZRWBdbsTARNE=" ConnectionStringExpression="[ConexionSucursal2]">
+      <TableDataSource Name="Table3" Alias="PRODUCTOSUCURSAL2" DataType="System.Int32" Enabled="true" SelectCommand="SELECT * FROM PRODUCTO left join PRODUCTOCARACTERISTICAS ON PRODUCTOCARACTERISTICAS.PRODUCTOID = PRODUCTO.ID&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="EAN" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="DESCRIPCION3" DataType="System.String"/>
+        <Column Name="PROVEEDOR1ID" DataType="System.Int32"/>
+        <Column Name="PROVEEDOR2ID" DataType="System.Int32"/>
+        <Column Name="LINEAID" DataType="System.Int32"/>
+        <Column Name="MARCAID" DataType="System.Int32"/>
+        <Column Name="PRECIO1" DataType="System.Decimal"/>
+        <Column Name="PRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIO3" DataType="System.Decimal"/>
+        <Column Name="PRECIO4" DataType="System.Decimal"/>
+        <Column Name="PRECIO5" DataType="System.Decimal"/>
+        <Column Name="TASAIVAID" DataType="System.Int64"/>
+        <Column Name="TASAIVA" DataType="System.Decimal"/>
+        <Column Name="MONEDAID" DataType="System.Int64"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="COSTOULTIMO" DataType="System.Decimal"/>
+        <Column Name="COSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOSUSTITUTOID" DataType="System.Int64"/>
+        <Column Name="MANEJALOTE" DataType="System.String"/>
+        <Column Name="ESKIT" DataType="System.String"/>
+        <Column Name="IMPRIMIR" DataType="System.String"/>
+        <Column Name="INVENTARIABLE" DataType="System.String"/>
+        <Column Name="NEGATIVOS" DataType="System.String"/>
+        <Column Name="LIMITEPRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIOMAXIMOPUBLICO" DataType="System.Decimal"/>
+        <Column Name="FECHACAMBIOPRECIO" DataType="System.DateTime"/>
+        <Column Name="MANEJASTOCK" DataType="System.String"/>
+        <Column Name="STOCK" DataType="System.Decimal"/>
+        <Column Name="CAMBIARPRECIO" DataType="System.String"/>
+        <Column Name="COMPRAENTIENDA" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="SUBSTITUTO" DataType="System.String"/>
+        <Column Name="CBARRAS" DataType="System.String"/>
+        <Column Name="CEMPAQUE" DataType="System.String"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="U_EMPAQUE" DataType="System.Decimal"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="INI_MAYO" DataType="System.Decimal"/>
+        <Column Name="MAYOKGS" DataType="System.String"/>
+        <Column Name="TIPOABC" DataType="System.String"/>
+        <Column Name="COMISION" DataType="System.Decimal"/>
+        <Column Name="OFERTA" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAFACTURADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="ESPRODUCTOFINAL" DataType="System.String"/>
+        <Column Name="ESPRODUCTOPADRE" DataType="System.String"/>
+        <Column Name="ESSUBPRODUCTO" DataType="System.String"/>
+        <Column Name="TOMARPRECIOPADRE" DataType="System.String"/>
+        <Column Name="TOMARCOMISIONPADRE" DataType="System.String"/>
+        <Column Name="TOMAROFERTAPADRE" DataType="System.String"/>
+        <Column Name="PRODUCTOPADRE" DataType="System.Int64"/>
+        <Column Name="EXISTENCIAFACTURADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAAPARTADO" DataType="System.Decimal"/>
+        <Column Name="ULTIMOORIGENFISCALVENTA" DataType="System.Int64"/>
+        <Column Name="EXIST_FAC_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="EXIST_REM_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="CANTTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="PLUG" DataType="System.String"/>
+        <Column Name="ENPROCESODESALIDA" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION_COMODIN" DataType="System.String"/>
+        <Column Name="CUENTAPREDIAL" DataType="System.String"/>
+        <Column Name="IMAGEN" DataType="System.String"/>
+        <Column Name="TASAIEPS" DataType="System.Decimal"/>
+        <Column Name="TASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="MINUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="SPRECIO1" DataType="System.Decimal"/>
+        <Column Name="SPRECIO2" DataType="System.Decimal"/>
+        <Column Name="SPRECIO3" DataType="System.Decimal"/>
+        <Column Name="SPRECIO4" DataType="System.Decimal"/>
+        <Column Name="SPRECIO5" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="REQUIERERECETA" DataType="System.String"/>
+        <Column Name="CLASIFICA" DataType="System.String"/>
+        <Column Name="PROMOMOVIL" DataType="System.String"/>
+        <Column Name="HISTORIALMOVIL" DataType="System.String"/>
+        <Column Name="MARGENMOVIL" DataType="System.Decimal"/>
+        <Column Name="MPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="CPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="TPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="APRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="ID1" DataType="System.Int64"/>
+        <Column Name="ACTIVO1" DataType="System.String"/>
+        <Column Name="CREADO1" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="MODIFICADO1" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="CLAVE1" DataType="System.String"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+        <Column Name="PRECIOSUGERIDO" DataType="System.Decimal"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <FirebirdDataConnection Name="Connection3" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls6KACbEoyEHBudan+4Pm+eceU5Ut1/GocOiIx2b0DMu1bAWNVq3FbXv0IO3QaECb0tWIxUXCkKY2wV3YCFMg7YI=" ConnectionStringExpression="[ConexionSucursal3]">
+      <TableDataSource Name="Table2" Alias="PRODUCTOSUCURSAL3" DataType="System.Int32" Enabled="true" SelectCommand="SELECT * FROM PRODUCTO left join PRODUCTOCARACTERISTICAS ON PRODUCTOCARACTERISTICAS.PRODUCTOID = PRODUCTO.ID">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="EAN" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="DESCRIPCION3" DataType="System.String"/>
+        <Column Name="PROVEEDOR1ID" DataType="System.Int32"/>
+        <Column Name="PROVEEDOR2ID" DataType="System.Int32"/>
+        <Column Name="LINEAID" DataType="System.Int32"/>
+        <Column Name="MARCAID" DataType="System.Int32"/>
+        <Column Name="PRECIO1" DataType="System.Decimal"/>
+        <Column Name="PRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIO3" DataType="System.Decimal"/>
+        <Column Name="PRECIO4" DataType="System.Decimal"/>
+        <Column Name="PRECIO5" DataType="System.Decimal"/>
+        <Column Name="TASAIVAID" DataType="System.Int64"/>
+        <Column Name="TASAIVA" DataType="System.Decimal"/>
+        <Column Name="MONEDAID" DataType="System.Int64"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="COSTOULTIMO" DataType="System.Decimal"/>
+        <Column Name="COSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOSUSTITUTOID" DataType="System.Int64"/>
+        <Column Name="MANEJALOTE" DataType="System.String"/>
+        <Column Name="ESKIT" DataType="System.String"/>
+        <Column Name="IMPRIMIR" DataType="System.String"/>
+        <Column Name="INVENTARIABLE" DataType="System.String"/>
+        <Column Name="NEGATIVOS" DataType="System.String"/>
+        <Column Name="LIMITEPRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIOMAXIMOPUBLICO" DataType="System.Decimal"/>
+        <Column Name="FECHACAMBIOPRECIO" DataType="System.DateTime"/>
+        <Column Name="MANEJASTOCK" DataType="System.String"/>
+        <Column Name="STOCK" DataType="System.Decimal"/>
+        <Column Name="CAMBIARPRECIO" DataType="System.String"/>
+        <Column Name="COMPRAENTIENDA" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="SUBSTITUTO" DataType="System.String"/>
+        <Column Name="CBARRAS" DataType="System.String"/>
+        <Column Name="CEMPAQUE" DataType="System.String"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="U_EMPAQUE" DataType="System.Decimal"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="INI_MAYO" DataType="System.Decimal"/>
+        <Column Name="MAYOKGS" DataType="System.String"/>
+        <Column Name="TIPOABC" DataType="System.String"/>
+        <Column Name="COMISION" DataType="System.Decimal"/>
+        <Column Name="OFERTA" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAFACTURADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="ESPRODUCTOFINAL" DataType="System.String"/>
+        <Column Name="ESPRODUCTOPADRE" DataType="System.String"/>
+        <Column Name="ESSUBPRODUCTO" DataType="System.String"/>
+        <Column Name="TOMARPRECIOPADRE" DataType="System.String"/>
+        <Column Name="TOMARCOMISIONPADRE" DataType="System.String"/>
+        <Column Name="TOMAROFERTAPADRE" DataType="System.String"/>
+        <Column Name="PRODUCTOPADRE" DataType="System.Int64"/>
+        <Column Name="EXISTENCIAFACTURADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAAPARTADO" DataType="System.Decimal"/>
+        <Column Name="ULTIMOORIGENFISCALVENTA" DataType="System.Int64"/>
+        <Column Name="EXIST_FAC_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="EXIST_REM_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="CANTTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="PLUG" DataType="System.String"/>
+        <Column Name="ENPROCESODESALIDA" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION_COMODIN" DataType="System.String"/>
+        <Column Name="CUENTAPREDIAL" DataType="System.String"/>
+        <Column Name="IMAGEN" DataType="System.String"/>
+        <Column Name="TASAIEPS" DataType="System.Decimal"/>
+        <Column Name="TASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="MINUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="SPRECIO1" DataType="System.Decimal"/>
+        <Column Name="SPRECIO2" DataType="System.Decimal"/>
+        <Column Name="SPRECIO3" DataType="System.Decimal"/>
+        <Column Name="SPRECIO4" DataType="System.Decimal"/>
+        <Column Name="SPRECIO5" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="REQUIERERECETA" DataType="System.String"/>
+        <Column Name="CLASIFICA" DataType="System.String"/>
+        <Column Name="PROMOMOVIL" DataType="System.String"/>
+        <Column Name="HISTORIALMOVIL" DataType="System.String"/>
+        <Column Name="MARGENMOVIL" DataType="System.Decimal"/>
+        <Column Name="MPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="CPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="TPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="APRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="ID1" DataType="System.Int64"/>
+        <Column Name="ACTIVO1" DataType="System.String"/>
+        <Column Name="CREADO1" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="MODIFICADO1" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="CLAVE1" DataType="System.String"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <FirebirdDataConnection Name="Connection4" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls6KACbEoyEHBudan+4Pm+eceU5Ut1/GocOiIx2b0DMu1bAWNVq3FbXv0IO3QaECb0oKDgHx9GaeEbObjGks/L0o=" ConnectionStringExpression="[ConexionSucursal4]">
+      <TableDataSource Name="Table4" Alias="PRODUCTOSUCURSAL4" DataType="System.Int32" Enabled="true" SelectCommand="SELECT * FROM PRODUCTO left join PRODUCTOCARACTERISTICAS ON PRODUCTOCARACTERISTICAS.PRODUCTOID = PRODUCTO.ID">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="EAN" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="DESCRIPCION3" DataType="System.String"/>
+        <Column Name="PROVEEDOR1ID" DataType="System.Int32"/>
+        <Column Name="PROVEEDOR2ID" DataType="System.Int32"/>
+        <Column Name="LINEAID" DataType="System.Int32"/>
+        <Column Name="MARCAID" DataType="System.Int32"/>
+        <Column Name="PRECIO1" DataType="System.Decimal"/>
+        <Column Name="PRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIO3" DataType="System.Decimal"/>
+        <Column Name="PRECIO4" DataType="System.Decimal"/>
+        <Column Name="PRECIO5" DataType="System.Decimal"/>
+        <Column Name="TASAIVAID" DataType="System.Int64"/>
+        <Column Name="TASAIVA" DataType="System.Decimal"/>
+        <Column Name="MONEDAID" DataType="System.Int64"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="COSTOULTIMO" DataType="System.Decimal"/>
+        <Column Name="COSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOSUSTITUTOID" DataType="System.Int64"/>
+        <Column Name="MANEJALOTE" DataType="System.String"/>
+        <Column Name="ESKIT" DataType="System.String"/>
+        <Column Name="IMPRIMIR" DataType="System.String"/>
+        <Column Name="INVENTARIABLE" DataType="System.String"/>
+        <Column Name="NEGATIVOS" DataType="System.String"/>
+        <Column Name="LIMITEPRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIOMAXIMOPUBLICO" DataType="System.Decimal"/>
+        <Column Name="FECHACAMBIOPRECIO" DataType="System.DateTime"/>
+        <Column Name="MANEJASTOCK" DataType="System.String"/>
+        <Column Name="STOCK" DataType="System.Decimal"/>
+        <Column Name="CAMBIARPRECIO" DataType="System.String"/>
+        <Column Name="COMPRAENTIENDA" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="SUBSTITUTO" DataType="System.String"/>
+        <Column Name="CBARRAS" DataType="System.String"/>
+        <Column Name="CEMPAQUE" DataType="System.String"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="U_EMPAQUE" DataType="System.Decimal"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="INI_MAYO" DataType="System.Decimal"/>
+        <Column Name="MAYOKGS" DataType="System.String"/>
+        <Column Name="TIPOABC" DataType="System.String"/>
+        <Column Name="COMISION" DataType="System.Decimal"/>
+        <Column Name="OFERTA" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAFACTURADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="ESPRODUCTOFINAL" DataType="System.String"/>
+        <Column Name="ESPRODUCTOPADRE" DataType="System.String"/>
+        <Column Name="ESSUBPRODUCTO" DataType="System.String"/>
+        <Column Name="TOMARPRECIOPADRE" DataType="System.String"/>
+        <Column Name="TOMARCOMISIONPADRE" DataType="System.String"/>
+        <Column Name="TOMAROFERTAPADRE" DataType="System.String"/>
+        <Column Name="PRODUCTOPADRE" DataType="System.Int64"/>
+        <Column Name="EXISTENCIAFACTURADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAAPARTADO" DataType="System.Decimal"/>
+        <Column Name="ULTIMOORIGENFISCALVENTA" DataType="System.Int64"/>
+        <Column Name="EXIST_FAC_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="EXIST_REM_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="CANTTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="PLUG" DataType="System.String"/>
+        <Column Name="ENPROCESODESALIDA" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION_COMODIN" DataType="System.String"/>
+        <Column Name="CUENTAPREDIAL" DataType="System.String"/>
+        <Column Name="IMAGEN" DataType="System.String"/>
+        <Column Name="TASAIEPS" DataType="System.Decimal"/>
+        <Column Name="TASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="MINUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="SPRECIO1" DataType="System.Decimal"/>
+        <Column Name="SPRECIO2" DataType="System.Decimal"/>
+        <Column Name="SPRECIO3" DataType="System.Decimal"/>
+        <Column Name="SPRECIO4" DataType="System.Decimal"/>
+        <Column Name="SPRECIO5" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="REQUIERERECETA" DataType="System.String"/>
+        <Column Name="CLASIFICA" DataType="System.String"/>
+        <Column Name="PROMOMOVIL" DataType="System.String"/>
+        <Column Name="HISTORIALMOVIL" DataType="System.String"/>
+        <Column Name="MARGENMOVIL" DataType="System.Decimal"/>
+        <Column Name="MPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="CPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="TPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="APRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="ID1" DataType="System.Int64"/>
+        <Column Name="ACTIVO1" DataType="System.String"/>
+        <Column Name="CREADO1" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="MODIFICADO1" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="CLAVE1" DataType="System.String"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <FirebirdDataConnection Name="Connection5" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls6KACbEoyEHBudan+4Pm+eceU5Ut1/GocOiIx2b0DMu1bAWNVq3FbXv0IO3QaECb0l3AD6v+ZLtZGtctDzUHFCs=" ConnectionStringExpression="[ConexionSucursal5]">
+      <TableDataSource Name="Table5" Alias="PRODUCTOSUCURSAL5" DataType="System.Int32" Enabled="true" SelectCommand="SELECT * FROM PRODUCTO left join PRODUCTOCARACTERISTICAS ON PRODUCTOCARACTERISTICAS.PRODUCTOID = PRODUCTO.ID">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="EAN" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="DESCRIPCION3" DataType="System.String"/>
+        <Column Name="PROVEEDOR1ID" DataType="System.Int32"/>
+        <Column Name="PROVEEDOR2ID" DataType="System.Int32"/>
+        <Column Name="LINEAID" DataType="System.Int32"/>
+        <Column Name="MARCAID" DataType="System.Int32"/>
+        <Column Name="PRECIO1" DataType="System.Decimal"/>
+        <Column Name="PRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIO3" DataType="System.Decimal"/>
+        <Column Name="PRECIO4" DataType="System.Decimal"/>
+        <Column Name="PRECIO5" DataType="System.Decimal"/>
+        <Column Name="TASAIVAID" DataType="System.Int64"/>
+        <Column Name="TASAIVA" DataType="System.Decimal"/>
+        <Column Name="MONEDAID" DataType="System.Int64"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="COSTOULTIMO" DataType="System.Decimal"/>
+        <Column Name="COSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOSUSTITUTOID" DataType="System.Int64"/>
+        <Column Name="MANEJALOTE" DataType="System.String"/>
+        <Column Name="ESKIT" DataType="System.String"/>
+        <Column Name="IMPRIMIR" DataType="System.String"/>
+        <Column Name="INVENTARIABLE" DataType="System.String"/>
+        <Column Name="NEGATIVOS" DataType="System.String"/>
+        <Column Name="LIMITEPRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIOMAXIMOPUBLICO" DataType="System.Decimal"/>
+        <Column Name="FECHACAMBIOPRECIO" DataType="System.DateTime"/>
+        <Column Name="MANEJASTOCK" DataType="System.String"/>
+        <Column Name="STOCK" DataType="System.Decimal"/>
+        <Column Name="CAMBIARPRECIO" DataType="System.String"/>
+        <Column Name="COMPRAENTIENDA" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="SUBSTITUTO" DataType="System.String"/>
+        <Column Name="CBARRAS" DataType="System.String"/>
+        <Column Name="CEMPAQUE" DataType="System.String"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="U_EMPAQUE" DataType="System.Decimal"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="INI_MAYO" DataType="System.Decimal"/>
+        <Column Name="MAYOKGS" DataType="System.String"/>
+        <Column Name="TIPOABC" DataType="System.String"/>
+        <Column Name="COMISION" DataType="System.Decimal"/>
+        <Column Name="OFERTA" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAFACTURADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="ESPRODUCTOFINAL" DataType="System.String"/>
+        <Column Name="ESPRODUCTOPADRE" DataType="System.String"/>
+        <Column Name="ESSUBPRODUCTO" DataType="System.String"/>
+        <Column Name="TOMARPRECIOPADRE" DataType="System.String"/>
+        <Column Name="TOMARCOMISIONPADRE" DataType="System.String"/>
+        <Column Name="TOMAROFERTAPADRE" DataType="System.String"/>
+        <Column Name="PRODUCTOPADRE" DataType="System.Int64"/>
+        <Column Name="EXISTENCIAFACTURADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAAPARTADO" DataType="System.Decimal"/>
+        <Column Name="ULTIMOORIGENFISCALVENTA" DataType="System.Int64"/>
+        <Column Name="EXIST_FAC_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="EXIST_REM_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="CANTTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="PLUG" DataType="System.String"/>
+        <Column Name="ENPROCESODESALIDA" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION_COMODIN" DataType="System.String"/>
+        <Column Name="CUENTAPREDIAL" DataType="System.String"/>
+        <Column Name="IMAGEN" DataType="System.String"/>
+        <Column Name="TASAIEPS" DataType="System.Decimal"/>
+        <Column Name="TASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="MINUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="SPRECIO1" DataType="System.Decimal"/>
+        <Column Name="SPRECIO2" DataType="System.Decimal"/>
+        <Column Name="SPRECIO3" DataType="System.Decimal"/>
+        <Column Name="SPRECIO4" DataType="System.Decimal"/>
+        <Column Name="SPRECIO5" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="REQUIERERECETA" DataType="System.String"/>
+        <Column Name="CLASIFICA" DataType="System.String"/>
+        <Column Name="PROMOMOVIL" DataType="System.String"/>
+        <Column Name="HISTORIALMOVIL" DataType="System.String"/>
+        <Column Name="MARGENMOVIL" DataType="System.Decimal"/>
+        <Column Name="MPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="CPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="TPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="APRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="ID1" DataType="System.Int64"/>
+        <Column Name="ACTIVO1" DataType="System.String"/>
+        <Column Name="CREADO1" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="MODIFICADO1" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="CLAVE1" DataType="System.String"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2YyBtNKV3c5zdAZwrQPbo8M=" ConnectionStringExpression="[ConexionMatriz]">
+      <TableDataSource Name="Table" Alias="PRODUCTOMATRIZ" DataType="System.Int32" Enabled="true" SelectCommand="SELECT * FROM PRODUCTO left join PRODUCTOCARACTERISTICAS ON PRODUCTOCARACTERISTICAS.PRODUCTOID = PRODUCTO.ID&#13;&#10;ORDER BY PRODUCTO.CLAVE">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="EAN" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="DESCRIPCION3" DataType="System.String"/>
+        <Column Name="PROVEEDOR1ID" DataType="System.Int32"/>
+        <Column Name="PROVEEDOR2ID" DataType="System.Int32"/>
+        <Column Name="LINEAID" DataType="System.Int32"/>
+        <Column Name="MARCAID" DataType="System.Int32"/>
+        <Column Name="PRECIO1" DataType="System.Decimal"/>
+        <Column Name="PRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIO3" DataType="System.Decimal"/>
+        <Column Name="PRECIO4" DataType="System.Decimal"/>
+        <Column Name="PRECIO5" DataType="System.Decimal"/>
+        <Column Name="TASAIVAID" DataType="System.Int64"/>
+        <Column Name="TASAIVA" DataType="System.Decimal"/>
+        <Column Name="MONEDAID" DataType="System.Int64"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="COSTOULTIMO" DataType="System.Decimal"/>
+        <Column Name="COSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOSUSTITUTOID" DataType="System.Int64"/>
+        <Column Name="MANEJALOTE" DataType="System.String"/>
+        <Column Name="ESKIT" DataType="System.String"/>
+        <Column Name="IMPRIMIR" DataType="System.String"/>
+        <Column Name="INVENTARIABLE" DataType="System.String"/>
+        <Column Name="NEGATIVOS" DataType="System.String"/>
+        <Column Name="LIMITEPRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIOMAXIMOPUBLICO" DataType="System.Decimal"/>
+        <Column Name="FECHACAMBIOPRECIO" DataType="System.DateTime"/>
+        <Column Name="MANEJASTOCK" DataType="System.String"/>
+        <Column Name="STOCK" DataType="System.Decimal"/>
+        <Column Name="CAMBIARPRECIO" DataType="System.String"/>
+        <Column Name="COMPRAENTIENDA" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="SUBSTITUTO" DataType="System.String"/>
+        <Column Name="CBARRAS" DataType="System.String"/>
+        <Column Name="CEMPAQUE" DataType="System.String"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="U_EMPAQUE" DataType="System.Decimal"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="INI_MAYO" DataType="System.Decimal"/>
+        <Column Name="MAYOKGS" DataType="System.String"/>
+        <Column Name="TIPOABC" DataType="System.String"/>
+        <Column Name="COMISION" DataType="System.Decimal"/>
+        <Column Name="OFERTA" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAFACTURADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="ESPRODUCTOFINAL" DataType="System.String"/>
+        <Column Name="ESPRODUCTOPADRE" DataType="System.String"/>
+        <Column Name="ESSUBPRODUCTO" DataType="System.String"/>
+        <Column Name="TOMARPRECIOPADRE" DataType="System.String"/>
+        <Column Name="TOMARCOMISIONPADRE" DataType="System.String"/>
+        <Column Name="TOMAROFERTAPADRE" DataType="System.String"/>
+        <Column Name="PRODUCTOPADRE" DataType="System.Int64"/>
+        <Column Name="EXISTENCIAFACTURADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAINDEFINIDOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAAPARTADO" DataType="System.Decimal"/>
+        <Column Name="ULTIMOORIGENFISCALVENTA" DataType="System.Int64"/>
+        <Column Name="EXIST_FAC_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="EXIST_REM_INTERCAMBIO" DataType="System.Decimal"/>
+        <Column Name="COSTOTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="CANTTOTALENTRADAS" DataType="System.Decimal"/>
+        <Column Name="PLUG" DataType="System.String"/>
+        <Column Name="ENPROCESODESALIDA" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION_COMODIN" DataType="System.String"/>
+        <Column Name="CUENTAPREDIAL" DataType="System.String"/>
+        <Column Name="IMAGEN" DataType="System.String"/>
+        <Column Name="TASAIEPS" DataType="System.Decimal"/>
+        <Column Name="TASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="MINUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="SPRECIO1" DataType="System.Decimal"/>
+        <Column Name="SPRECIO2" DataType="System.Decimal"/>
+        <Column Name="SPRECIO3" DataType="System.Decimal"/>
+        <Column Name="SPRECIO4" DataType="System.Decimal"/>
+        <Column Name="SPRECIO5" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="REQUIERERECETA" DataType="System.String"/>
+        <Column Name="CLASIFICA" DataType="System.String"/>
+        <Column Name="PROMOMOVIL" DataType="System.String"/>
+        <Column Name="HISTORIALMOVIL" DataType="System.String"/>
+        <Column Name="MARGENMOVIL" DataType="System.Decimal"/>
+        <Column Name="MPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="CPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="TPRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="APRECIO4MOVIL" DataType="System.Decimal"/>
+        <Column Name="PRECIOSUGERIDO" DataType="System.Decimal"/>
+        <Column Name="ID1" DataType="System.Int64"/>
+        <Column Name="ACTIVO1" DataType="System.String"/>
+        <Column Name="CREADO1" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="MODIFICADO1" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID1" DataType="System.Int64"/>
+        <Column Name="CLAVE1" DataType="System.String"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="ConexionMatriz" DataType="System.String"/>
+    <Parameter Name="ConexionSucursal1" DataType="System.String"/>
+    <Parameter Name="ConexionSucursal2" DataType="System.String"/>
+    <Parameter Name="ConexionSucursal3" DataType="System.String"/>
+    <Parameter Name="ConexionSucursal4" DataType="System.String"/>
+    <Parameter Name="ConexionSucursal5" DataType="System.String"/>
+    <Parameter Name="NombreSucursal1" DataType="System.String"/>
+    <Parameter Name="NombreSucursal2" DataType="System.String"/>
+    <Parameter Name="NombreSucursal3" DataType="System.String"/>
+    <Parameter Name="NombreSucursal4" DataType="System.String"/>
+    <Parameter Name="NombreSucursal5" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" ManualBuildEvent="Page1_ManualBuild">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="103.95" BeforePrintEvent="ReportTitle1_BeforePrint">
+      <TextObject Name="Text2" Left="122.85" Top="9.45" Width="652.05" Height="56.7" Text="Reporte de productos sin existencias en sucursales que si estan en matriz" Font="Arial, 20pt"/>
+      <TextObject Name="Text7" Left="595.35" Top="66.15" Width="179.55" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text8" Left="481.95" Top="66.15" Width="94.5" Height="18.9" Text="Fecha:"/>
+      <TextObject Name="Text14" Left="18.9" Top="18.9" Width="37.8" Height="18.9" Visible="false" Text="[PRODUCTOSUCURSAL1.ID]"/>
+      <TextObject Name="Text15" Left="18.9" Top="37.8" Width="37.8" Height="18.9" Visible="false" Text="[PRODUCTOSUCURSAL2.ID]"/>
+      <TextObject Name="Text16" Left="18.9" Top="56.7" Width="37.8" Height="18.9" Visible="false" Text="[PRODUCTOSUCURSAL3.ID]"/>
+      <TextObject Name="Text17" Left="56.7" Top="18.9" Width="37.8" Height="18.9" Visible="false" Text="[PRODUCTOSUCURSAL4.ID]"/>
+      <TextObject Name="Text18" Left="56.7" Top="37.8" Width="37.8" Height="18.9" Visible="false" Text="[PRODUCTOSUCURSAL5.ID]"/>
+      <TextObject Name="Text19" Left="56.7" Top="56.7" Width="37.8" Height="18.9" Visible="false" Text="[PRODUCTOMATRIZ.ID]"/>
+      <ChildBand Name="Child1" Top="107.95" Width="1047.06" Height="66.15" CanShrink="true">
+        <TableObject Name="Table01" Top="37.8" Width="1001.7" Height="18.9" ManualBuildEvent="Table01_ManualBuild">
+          <TableColumn Name="Column1" Width="113.4"/>
+          <TableColumn Name="Column2" Width="132.3"/>
+          <TableColumn Name="Column3" Width="141.75"/>
+          <TableColumn Name="Column4" Width="179.55"/>
+          <TableColumn Name="Column5" Width="132.3"/>
+          <TableColumn Name="Column6" Width="122.85"/>
+          <TableColumn Name="Column7" Width="56.7"/>
+          <TableColumn Name="Column43" Width="56.7"/>
+          <TableColumn Name="Column48"/>
+          <TableRow Name="Row1">
+            <TableCell Name="Cell1" Text="CLAVE" Font="Arial, 8pt"/>
+            <TableCell Name="Cell2" Text="NOMBRE" Font="Arial, 8pt"/>
+            <TableCell Name="Cell3" Text="DESCRIPCION" Font="Arial, 8pt"/>
+            <TableCell Name="Cell4" Text="DESCRIPCION 1" Font="Arial, 8pt"/>
+            <TableCell Name="Cell5" Text="DESCRIPCION 2" Font="Arial, 8pt"/>
+            <TableCell Name="Cell26" Text="COLOR" Font="Arial, 8pt"/>
+            <TableCell Name="Cell27" Text="TALLA1" Format="Number" Format.UseLocale="true" Font="Arial, 8pt"/>
+            <TableCell Name="Cell75" Text="TALLA2" Font="Arial, 8pt"/>
+            <TableCell Name="Cell80" Text="EXIST." HorzAlign="Right" Font="Arial, 8pt"/>
+          </TableRow>
+        </TableObject>
+        <TextObject Name="Text1" Top="9.45" Width="463.05" Height="18.9" Text="Productos que estan en matriz y no en la sucursal :" Font="Arial, 12pt, style=Bold"/>
+        <TextObject Name="Text3" Left="481.95" Top="9.45" Width="245.7" Height="18.9" Text="[NombreSucursal1]" Font="Arial, 12pt"/>
+        <ChildBand Name="Child2" Top="178.1" Width="1047.06" Height="66.15" CanShrink="true">
+          <TableObject Name="Table02" Top="37.8" Width="1001.7" Height="18.9" ManualBuildEvent="Table02_ManualBuild">
+            <TableColumn Name="Column36" Width="113.4"/>
+            <TableColumn Name="Column37" Width="132.3"/>
+            <TableColumn Name="Column38" Width="151.2"/>
+            <TableColumn Name="Column39" Width="170.1"/>
+            <TableColumn Name="Column40" Width="132.3"/>
+            <TableColumn Name="Column41" Width="122.85"/>
+            <TableColumn Name="Column42" Width="56.7"/>
+            <TableColumn Name="Column44" Width="56.7"/>
+            <TableColumn Name="Column49"/>
+            <TableRow Name="Row10">
+              <TableCell Name="Cell68" Text="CLAVE" Font="Arial, 8pt"/>
+              <TableCell Name="Cell69" Text="NOMBRE" Font="Arial, 8pt"/>
+              <TableCell Name="Cell70" Text="DESCRIPCION" Font="Arial, 8pt"/>
+              <TableCell Name="Cell71" Text="DESCRIPCION 1" Font="Arial, 8pt"/>
+              <TableCell Name="Cell72" Text="DESCRIPCION 2" Font="Arial, 8pt"/>
+              <TableCell Name="Cell73" Text="DESCRIPCION 3" Font="Arial, 8pt"/>
+              <TableCell Name="Cell74" Text="TALLA" Format="Number" Format.UseLocale="true" Font="Arial, 8pt"/>
+              <TableCell Name="Cell76" Text="TALLA2" HorzAlign="Right" Font="Arial, 8pt"/>
+              <TableCell Name="Cell81" Text="EXIST." HorzAlign="Right" Font="Arial, 8pt"/>
+            </TableRow>
+          </TableObject>
+          <TextObject Name="Text9" Top="9.45" Width="463.05" Height="18.9" Text="Productos que estan en matriz y no en la sucursal :" Font="Arial, 12pt, style=Bold"/>
+          <TextObject Name="Text4" Left="481.95" Top="9.45" Width="245.7" Height="18.9" Text="[NombreSucursal2]" Font="Arial, 12pt"/>
+          <ChildBand Name="Child3" Top="248.25" Width="1047.06" Height="66.15">
+            <TableObject Name="Table03" Top="37.8" Width="1001.7" Height="18.9" ManualBuildEvent="Table03_ManualBuild">
+              <TableColumn Name="Column15" Width="113.4"/>
+              <TableColumn Name="Column16" Width="132.3"/>
+              <TableColumn Name="Column17" Width="151.2"/>
+              <TableColumn Name="Column18" Width="170.1"/>
+              <TableColumn Name="Column19" Width="132.3"/>
+              <TableColumn Name="Column20" Width="122.85"/>
+              <TableColumn Name="Column21" Width="56.7"/>
+              <TableColumn Name="Column45" Width="56.7"/>
+              <TableColumn Name="Column50"/>
+              <TableRow Name="Row7">
+                <TableCell Name="Cell47" Text="CLAVE" Font="Arial, 8pt"/>
+                <TableCell Name="Cell48" Text="NOMBRE" Font="Arial, 8pt"/>
+                <TableCell Name="Cell49" Text="DESCRIPCION" Font="Arial, 8pt"/>
+                <TableCell Name="Cell50" Text="DESCRIPCION 1" Font="Arial, 8pt"/>
+                <TableCell Name="Cell51" Text="DESCRIPCION 2" Font="Arial, 8pt"/>
+                <TableCell Name="Cell52" Text="DESCRIPCION 3" Font="Arial, 8pt"/>
+                <TableCell Name="Cell53" Text="TALLA" Format="Number" Format.UseLocale="true" Font="Arial, 8pt"/>
+                <TableCell Name="Cell77" Text="TALLA2" HorzAlign="Right" Font="Arial, 8pt"/>
+                <TableCell Name="Cell82" Text="EXIST." HorzAlign="Right" Font="Arial, 8pt"/>
+              </TableRow>
+            </TableObject>
+            <TextObject Name="Text10" Top="9.45" Width="463.05" Height="18.9" Text="Productos que estan en matriz y no en la sucursal :" Font="Arial, 12pt, style=Bold"/>
+            <TextObject Name="Text5" Left="481.95" Top="9.45" Width="245.7" Height="18.9" Text="[NombreSucursal3]" Font="Arial, 12pt"/>
+            <ChildBand Name="Child4" Top="318.4" Width="1047.06" Height="66.15">
+              <TableObject Name="Table04" Top="37.8" Width="1001.7" Height="18.9" ManualBuildEvent="Table04_ManualBuild">
+                <TableColumn Name="Column22" Width="113.4"/>
+                <TableColumn Name="Column23" Width="132.3"/>
+                <TableColumn Name="Column24" Width="151.2"/>
+                <TableColumn Name="Column25" Width="170.1"/>
+                <TableColumn Name="Column26" Width="132.3"/>
+                <TableColumn Name="Column27" Width="122.85"/>
+                <TableColumn Name="Column28" Width="56.7"/>
+                <TableColumn Name="Column46" Width="56.7"/>
+                <TableColumn Name="Column51"/>
+                <TableRow Name="Row8">
+                  <TableCell Name="Cell54" Text="CLAVE" Font="Arial, 8pt"/>
+                  <TableCell Name="Cell55" Text="NOMBRE" Font="Arial, 8pt"/>
+                  <TableCell Name="Cell56" Text="DESCRIPCION" Font="Arial, 8pt"/>
+                  <TableCell Name="Cell57" Text="DESCRIPCION 1" Font="Arial, 8pt"/>
+                  <TableCell Name="Cell58" Text="DESCRIPCION 2" Font="Arial, 8pt"/>
+                  <TableCell Name="Cell59" Text="DESCRIPCION 3" Font="Arial, 8pt"/>
+                  <TableCell Name="Cell60" Text="TALLA" Format="Number" Format.UseLocale="true" Font="Arial, 8pt"/>
+                  <TableCell Name="Cell78" Text="TALLA2" HorzAlign="Right" Font="Arial, 8pt"/>
+                  <TableCell Name="Cell83" Text="EXIST." HorzAlign="Right" Font="Arial, 8pt"/>
+                </TableRow>
+              </TableObject>
+              <TextObject Name="Text11" Top="9.45" Width="463.05" Height="18.9" Text="Productos que estan en matriz y no en la sucursal :" Font="Arial, 12pt, style=Bold"/>
+              <TextObject Name="Text6" Left="481.95" Top="9.45" Width="245.7" Height="18.9" Text="[NombreSucursal4]" Font="Arial, 12pt"/>
+              <ChildBand Name="Child5" Top="388.55" Width="1047.06" Height="75.6">
+                <TableObject Name="Table05" Top="37.8" Width="1001.7" Height="18.9" ManualBuildEvent="Table05_ManualBuild">
+                  <TableColumn Name="Column29" Width="113.4"/>
+                  <TableColumn Name="Column30" Width="132.3"/>
+                  <TableColumn Name="Column31" Width="151.2"/>
+                  <TableColumn Name="Column32" Width="170.1"/>
+                  <TableColumn Name="Column33" Width="132.3"/>
+                  <TableColumn Name="Column34" Width="122.85"/>
+                  <TableColumn Name="Column35" Width="56.7"/>
+                  <TableColumn Name="Column47" Width="56.7"/>
+                  <TableColumn Name="Column52"/>
+                  <TableRow Name="Row9">
+                    <TableCell Name="Cell61" Text="CLAVE" Font="Arial, 8pt"/>
+                    <TableCell Name="Cell62" Text="NOMBRE" Font="Arial, 8pt"/>
+                    <TableCell Name="Cell63" Text="DESCRIPCION" Font="Arial, 8pt"/>
+                    <TableCell Name="Cell64" Text="DESCRIPCION 1" Font="Arial, 8pt"/>
+                    <TableCell Name="Cell65" Text="DESCRIPCION 2" Font="Arial, 8pt"/>
+                    <TableCell Name="Cell66" Text="DESCRIPCION 3" Font="Arial, 8pt"/>
+                    <TableCell Name="Cell67" Text="TALLA" Format="Number" Format.UseLocale="true" Font="Arial, 8pt"/>
+                    <TableCell Name="Cell79" Text="TALLA2" HorzAlign="Right" Font="Arial, 8pt"/>
+                    <TableCell Name="Cell84" Text="EXIST." HorzAlign="Right" Font="Arial, 8pt"/>
+                  </TableRow>
+                </TableObject>
+                <TextObject Name="Text12" Top="9.45" Width="463.05" Height="18.9" Text="Productos que estan en matriz y no en la sucursal :" Font="Arial, 12pt, style=Bold"/>
+                <TextObject Name="Text13" Left="481.95" Top="9.45" Width="245.7" Height="18.9" Text="[NombreSucursal5]" Font="Arial, 12pt"/>
+              </ChildBand>
+            </ChildBand>
+          </ChildBand>
+        </ChildBand>
+      </ChildBand>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="468.15" Width="1047.06" Height="28.35" DataSource="Table3"/>
+    <PageFooterBand Name="PageFooter1" Top="500.5" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="566" Height="370" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="394" Top="311" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="477" Top="311" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <TextBoxControl Name="TextBox1" Left="56" Top="80" Width="216" Font="Tahoma, 8pt" TabIndex="2" Text="initial catalog=D:\temporalSE\colapso\extreme\xtreme.fdb;user id=sysdba;password=masterkey" ReportParameter="ConexionSucursal1"/>
+    <LabelControl Name="Label1" Left="56" Top="64" Width="98" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="ConexionSucursal1"/>
+    <TextBoxControl Name="TextBox2" Left="56" Top="128" Width="216" Font="Tahoma, 8pt" TabIndex="4" Text="initial catalog=D:\temporalSE\colapso\hidalgo\hidalgo.fdb;user id=sysdba;password=masterkey" ClickEvent="" ReportParameter="ConexionSucursal2"/>
+    <LabelControl Name="Label2" Left="56" Top="112" Width="98" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="ConexionSucursal2"/>
+    <TextBoxControl Name="TextBox3" Left="60" Top="176" Width="212" Font="Tahoma, 8pt" TabIndex="6" Text="initial catalog=D:\temporalSE\colapso\hidalgo\hidalgo.fdb;user id=sysdba;password=masterkey" ReportParameter="ConexionSucursal3"/>
+    <LabelControl Name="Label3" Left="60" Top="160" Width="98" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="ConexionSucursal3"/>
+    <TextBoxControl Name="TextBox4" Left="56" Top="224" Width="212" Font="Tahoma, 8pt" TabIndex="8" Text="initial catalog=D:\temporalSE\colapso\hidalgo\hidalgo.fdb;user id=sysdba;password=masterkey" ReportParameter="ConexionSucursal4"/>
+    <LabelControl Name="Label4" Left="56" Top="208" Width="98" Height="13" Font="Tahoma, 8pt" TabIndex="9" Text="ConexionSucursal4"/>
+    <TextBoxControl Name="TextBox5" Left="60" Top="272" Width="204" Font="Tahoma, 8pt" TabIndex="10" Text="initial catalog=D:\temporalSE\colapso\hidalgo\hidalgo.fdb;user id=sysdba;password=masterkey" ReportParameter="ConexionSucursal5"/>
+    <LabelControl Name="Label5" Left="60" Top="256" Width="98" Height="13" Font="Tahoma, 8pt" TabIndex="11" Text="ConexionSucursal5"/>
+    <TextBoxControl Name="TextBox6" Left="60" Top="28" Width="212" Font="Tahoma, 8pt" TabIndex="12" Text="initial catalog=D:\temporalSE\colapso\BODEGA\IPOSDB.FDB;user id=SYSDBA;password=masterkey" ReportParameter="ConexionMatriz"/>
+    <LabelControl Name="Label6" Left="60" Top="12" Width="81" Height="13" Font="Tahoma, 8pt" TabIndex="13" Text="ConexionMatriz"/>
+    <TextBoxControl Name="TextBox7" Left="304" Top="80" Font="Tahoma, 8pt" TabIndex="14" Text="Extreme" ReportParameter="NombreSucursal1"/>
+    <LabelControl Name="Label7" Left="304" Top="64" Width="90" Height="13" Font="Tahoma, 8pt" TabIndex="15" Text="NombreSucursal1"/>
+    <TextBoxControl Name="TextBox8" Left="304" Top="128" Font="Tahoma, 8pt" TabIndex="16" Text="Hidalgo" ReportParameter="NombreSucursal2"/>
+    <LabelControl Name="Label8" Left="304" Top="112" Width="90" Height="13" Font="Tahoma, 8pt" TabIndex="17" Text="NombreSucursal2"/>
+    <TextBoxControl Name="TextBox9" Left="304" Top="180" Font="Tahoma, 8pt" TabIndex="18" ReportParameter="NombreSucursal3"/>
+    <LabelControl Name="Label9" Left="304" Top="164" Width="90" Height="13" Font="Tahoma, 8pt" TabIndex="19" Text="NombreSucursal3"/>
+    <TextBoxControl Name="TextBox10" Left="304" Top="228" Font="Tahoma, 8pt" TabIndex="20" ReportParameter="NombreSucursal4"/>
+    <LabelControl Name="Label10" Left="304" Top="212" Width="90" Height="13" Font="Tahoma, 8pt" TabIndex="21" Text="NombreSucursal4"/>
+    <TextBoxControl Name="TextBox11" Left="304" Top="276" Font="Tahoma, 8pt" TabIndex="22" ReportParameter="NombreSucursal5"/>
+    <LabelControl Name="Label11" Left="304" Top="260" Width="90" Height="13" Font="Tahoma, 8pt" TabIndex="23" Text="NombreSucursal5"/>
+  </DialogPage>
+</Report>

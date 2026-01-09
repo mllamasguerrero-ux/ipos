@@ -1,0 +1,22 @@
+CREATE GENERATOR SEQ_SAT_UNIDADMEDIDA;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

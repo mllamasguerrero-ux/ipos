@@ -1,0 +1,1 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) VALUES (192, 155, 'Solicitar archivos remotos', 'Solicitar archivos remotos', 192, 2, 12);

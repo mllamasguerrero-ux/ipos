@@ -1,0 +1,1 @@
+insert into iposnomenu (ipostypeid,menuid) values (2,6);

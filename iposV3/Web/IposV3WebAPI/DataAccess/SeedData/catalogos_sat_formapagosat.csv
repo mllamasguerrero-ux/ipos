@@ -1,0 +1,22 @@
+﻿id;clave;nombre;formapagoid;sat_bancarizado;sat_numoperacion;sat_rfcemisorordenante;sat_cuentaordenante;sat_patronordenante;sat_rfcemisorbeneficiario;sat_cuentabeneficiario;sat_patronbeneficiario;sat_tipocadenapago;sat_bancoemisor
+1;01;Efectivo;1;No;Opcional;No;No;No;No;No;No;No;No
+2;02;Cheque nominativo;3;Sí;Opcional;Opcional;Opcional;[0-9]{11}|[0-9]{18};Opcional;Opcional;[0-9]{10,11}|[0-9]{15,16}|[0-9]{18}|[A-Z0-9_]{10,50};No;Si el RFC del emisor de la cuenta ordenante es XEXX010101000, este campo es obligatorio.
+3;03;Transferencia electrónica de fondos;15;Sí;Opcional;Opcional;Opcional;[0-9]{10}|[0-9]{16}|[0-9]{18};Opcional;Opcional;[0-9]{10}|[0-9]{18};Opcional;Si el RFC del emisor de la cuenta ordenante es XEXX010101000, este campo es obligatorio.
+4;04;Tarjeta de crédito;2;Sí;Opcional;Opcional;Opcional;[0-9]{16};Opcional;Opcional;[0-9]{10,11}|[0-9]{15,16}|[0-9]{18}|[A-Z0-9_]{10,50};No;Si el RFC del emisor de la cuenta ordenante es XEXX010101000, este campo es obligatorio.
+5;05;Monedero electrónico;14;Sí;Opcional;Opcional;Opcional;[0-9]{10,11}|[0-9]{15,16}|[0-9]{18}|[A-Z0-9_]{10,50};Opcional;Opcional;[0-9]{10,11}|[0-9]{15,16}|[0-9]{18}|[A-Z0-9_]{10,50};No;No
+6;06;Dinero electrónico;null;Sí;Opcional;Opcional;Opcional;[0-9]{10};No;No;No;No;No
+8;08;Vales de despensa;5;No;Opcional;No;No;No;No;No;No;No;No
+12;12;Dación en pago;null;No;Opcional;No;No;No;No;No;No;No;No
+13;13;Pago por subrogación;null;No;Opcional;No;No;No;No;No;No;No;No
+14;14;Pago por consignación;null;No;Opcional;No;No;No;No;No;No;No;No
+15;15;Condonación;null;No;Opcional;No;No;No;No;No;No;No;No
+17;17;Compensación;null;No;Opcional;No;No;No;No;No;No;No;No
+23;23;Novación;null;No;Opcional;No;No;No;No;No;No;No;No
+24;24;Confusión;null;No;Opcional;No;No;No;No;No;No;No;No
+25;25;Remisión de deuda;null;No;Opcional;No;No;No;No;No;No;No;No
+26;26;Prescripción o caducidad;null;No;Opcional;No;No;No;No;No;No;No;No
+27;27;A satisfacción del acreedor;null;No;Opcional;No;No;No;No;No;No;No;No
+28;28;Tarjeta de débito;2;Sí;Opcional;Opcional;Opcional;[0-9]{16};Opcional;Opcional;[0-9]{10,11}|[0-9]{15,16}|[0-9]{18}|[A-Z0-9_]{10,50};No;Si el RFC del emisor de la cuenta ordenante es XEXX010101000, este campo es obligatorio.
+29;29;Tarjeta de servicios;2;Sí;Opcional;Opcional;Opcional;[0-9]{15,16};Opcional;Opcional;[0-9]{10,11}|[0-9]{15,16}|[0-9]{18}|[A-Z0-9_]{10,50};No;Si el RFC del emisor de la cuenta ordenante es XEXX010101000, este campo es obligatorio.
+99;99;Por definir;16;Opcional;Opcional;Opcional;Opcional;Opcional;Opcional;Opcional;Opcional;Opcional;Opcional
+100;30;Aplicación de anticipos;null;No;Opcional;No;No;No;No;No;No;No;No

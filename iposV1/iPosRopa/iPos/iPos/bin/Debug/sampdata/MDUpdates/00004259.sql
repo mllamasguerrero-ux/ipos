@@ -1,0 +1,15 @@
+CREATE OR ALTER trigger movtogastosadic_bi0 for movtogastosadic
+active before insert position 0
+AS
+    DECLARE VARIABLE ULTPARTIDA INTEGER;
+BEGIN
+    IF (NOT ((NEW.DOCTOID IS NULL) OR (NEW.DOCTOID = 0))) THEN
+    BEGIN
+        SELECT COALESCE(MAX(PARTIDA), 0)
+        FROM MOVTOGASTOSADIC
+        WHERE DOCTOID = NEW.DOCTOID
+        INTO :ULTPARTIDA;
+
+        NEW.PARTIDA = :ULTPARTIDA + 1;
+    END
+END

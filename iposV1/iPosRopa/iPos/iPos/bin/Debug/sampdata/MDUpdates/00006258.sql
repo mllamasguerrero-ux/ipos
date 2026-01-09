@@ -1,0 +1,9 @@
+EXECUTE BLOCK
+AS
+BEGIN
+      insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10156, 'Autorizar referencias bancarias repetidas');
+
+
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10156);
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10156);
+end

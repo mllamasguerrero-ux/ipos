@@ -1,0 +1,802 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F8605CF6-91D5-4FD7-8147-AC7F13C7404A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataLayer</RootNamespace>
+    <AssemblyName>DataLayer</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET_3_5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET_3_5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET_3_5</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NET_3_5</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.1.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\FirebirdClient\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\iPos\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Entity">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.113.1\lib\net45\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.113.0\lib\net45\System.Data.SQLite.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.113.0\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bancomer\businessData\CBANCOMERPARAMD.cs" />
+    <Compile Include="Bancomer\businessData\CENCABEZADORESPONSEBANCOMERD.cs" />
+    <Compile Include="Bancomer\businessData\CREQUESTBANCOMERD.cs" />
+    <Compile Include="Bancomer\businessData\CRESPONSEBANCOMERD.cs" />
+    <Compile Include="Bancomer\businessData\CSTRMULTIPAGOSBANCOMERD.cs" />
+    <Compile Include="Bancomer\businessData\CSTRUCPTOSBANCOMERD.cs" />
+    <Compile Include="Bancomer\businessEntity\CBANCOMERPARAMBE.cs" />
+    <Compile Include="Bancomer\businessEntity\CENCABEZADORESPONSEBANCOMERBE.cs" />
+    <Compile Include="Bancomer\businessEntity\CREQUESTBANCOMERBE.cs" />
+    <Compile Include="Bancomer\businessEntity\CRESPONSEBANCOMERBE.cs" />
+    <Compile Include="Bancomer\businessEntity\CSTRMULTIPAGOSBANCOMERBE.cs" />
+    <Compile Include="Bancomer\businessEntity\CSTRUCPTOSBANCOMERBE.cs" />
+    <Compile Include="CatalogosSAT\businessData\CPAGODOCTOSATD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CPAGODOCTOSAT_IMPD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CPAGOSATD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_ADUANAD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_CLAVETRANSPORTED.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_CLAVEUNIDADPESOD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_CODIGOPOSTALD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_COLONIAD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_CONFIGAUTOTRANSPORTED.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_FIGURATRANSPORTED.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_FORMAPAGOD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_IMPUESTOD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_LOCALIDADD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_MATPELIGROSOD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_METODOPAGOD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_MONEDAD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_MUNICIPIOD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_PAISD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_PARTETRANSPORTED.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_PATENTEADUANALD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_PEDIMENTOSD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_PRODUCTOSERVICIOD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_PRODUCTOSERVICIO_LINEAD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_PRODUCTOSERVICIO_OPERD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_REGIMENFISCALD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_SUBTIPOREMD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_TASACUOTAD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_TIPOCOMPROBANTED.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_TIPOEMBALAJED.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_TIPOESTACIOND.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_TIPOFACTORD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_TIPOPERMISOD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_TIPORELACIOND.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_UNIDADMEDIDAD.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_USOCFDID.cs" />
+    <Compile Include="CatalogosSAT\businessData\CSAT_USOCFDI_OPERD.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CPAGODOCTOSATBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CPAGODOCTOSAT_IMPBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CPAGOSATBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_ADUANABE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_CLAVETRANSPORTEBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_CLAVEUNIDADPESOBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_CODIGOPOSTALBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_COLONIABE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_CONFIGAUTOTRANSPORTEBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_FIGURATRANSPORTEBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_FORMAPAGOBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_IMPUESTOBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_LOCALIDADBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_MATPELIGROSOBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_METODOPAGOBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_MONEDABE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_MUNICIPIOBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_PAISBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_PARTETRANSPORTEBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_PATENTEADUANALBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_PEDIMENTOSBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_PRODUCTOSERVICIOBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_PRODUCTOSERVICIO_LINEABE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_PRODUCTOSERVICIO_OPERBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_REGIMENFISCALBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_SUBTIPOREMBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_TASACUOTABE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_TIPOCOMPROBANTEBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_TIPOEMBALAJEBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_TIPOESTACIONBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_TIPOFACTORBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_TIPOPERMISOBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_TIPORELACIONBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_UNIDADMEDIDABE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_USOCFDIBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_USOCFDI_OPERBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_VERSIONCATALOGOBE.cs" />
+    <Compile Include="CatalogosSAT\businessEntity\CSAT_VERSIONCATALOGOD.cs" />
+    <Compile Include="CatalogosSAT\CatalogosSatHelper.cs" />
+    <Compile Include="CatalogosSAT\ConexionCatSat.cs" />
+    <Compile Include="Catalogos\businessData\CALMACEND.cs" />
+    <Compile Include="Catalogos\businessData\CANAQUELD.cs" />
+    <Compile Include="Catalogos\businessData\CBANCOSD.cs" />
+    <Compile Include="Catalogos\businessData\CCARRIERD.cs" />
+    <Compile Include="Catalogos\businessData\CCLASIFICAD.cs" />
+    <Compile Include="Catalogos\businessData\CCLERKPAGOSERVICIOD.cs" />
+    <Compile Include="Catalogos\businessData\CCLIENTED.cs" />
+    <Compile Include="Catalogos\businessData\CCOMISIONPORLISTAD.cs" />
+    <Compile Include="Catalogos\businessData\CCONTENIDOD.cs" />
+    <Compile Include="Catalogos\businessData\CCONTROLPRECIOSD.cs" />
+    <Compile Include="Catalogos\businessData\CCUENTAD.cs" />
+    <Compile Include="Catalogos\businessData\CCUPONESAPLICADOSD.cs" />
+    <Compile Include="Catalogos\businessData\CDESCLINEAPERSD.cs" />
+    <Compile Include="Catalogos\businessData\CDOMICILIOD.cs" />
+    <Compile Include="Catalogos\businessData\CEMIDACOMISIOND.cs" />
+    <Compile Include="Catalogos\businessData\CEMIDAPRODUCTD.cs" />
+    <Compile Include="Catalogos\businessData\CEMIDAREQUESTD.cs" />
+    <Compile Include="Catalogos\businessData\CENCARGADOCORTED.cs" />
+    <Compile Include="Catalogos\businessData\CENCARGADOGUIAD.cs" />
+    <Compile Include="Catalogos\businessData\CERRORCODED.cs" />
+    <Compile Include="Catalogos\businessData\CESTADOD.cs" />
+    <Compile Include="Catalogos\businessData\CFORMAPAGOSATD.cs" />
+    <Compile Include="Catalogos\businessData\CGASTOADICIONALD.cs" />
+    <Compile Include="Catalogos\businessData\CGASTOD.cs" />
+    <Compile Include="Catalogos\businessData\CGRUPOSUCURSALD.cs" />
+    <Compile Include="Catalogos\businessData\CKITDEFINICIOND.cs" />
+    <Compile Include="Catalogos\businessData\CKITDEFTEMPD.cs" />
+    <Compile Include="Catalogos\businessData\CLINEAD.cs" />
+    <Compile Include="Catalogos\businessData\CLISTAPRECIOD.cs" />
+    <Compile Include="Catalogos\businessData\CLISTAPRECIODETALLED.cs" />
+    <Compile Include="Catalogos\businessData\CLLAMADOEMIDAD.cs" />
+    <Compile Include="Catalogos\businessData\CMARCAD.cs" />
+    <Compile Include="Catalogos\businessData\CMAXFACTD.cs" />
+    <Compile Include="Catalogos\businessData\CMERCHANTPAGOSERVICIOD.cs" />
+    <Compile Include="Catalogos\businessData\CMONEDAD.cs" />
+    <Compile Include="Catalogos\businessData\CMONTOBILLETESLOGD.cs" />
+    <Compile Include="Catalogos\businessData\CMOTIVO_CAMFECD.cs" />
+    <Compile Include="Catalogos\businessData\CPERSONAAPARTADOD.cs" />
+    <Compile Include="Catalogos\businessData\CPERSONACUENTABANCOD.cs" />
+    <Compile Include="Catalogos\businessData\CPLAZOD.cs" />
+    <Compile Include="Catalogos\businessData\CPRECIOPERSONAD.cs" />
+    <Compile Include="Catalogos\businessData\CPRECIOSTEMPD.cs" />
+    <Compile Include="Catalogos\businessData\CPRODUCTOD.cs" />
+    <Compile Include="Catalogos\businessData\CPRODUCTOPROVEEDORD.cs" />
+    <Compile Include="Catalogos\businessData\CPRODUCTOSUCURSALD.cs" />
+    <Compile Include="Catalogos\businessData\CPROD_DEF_CARACTERISTICASD.cs" />
+    <Compile Include="Catalogos\businessData\CPROMOCIOND.cs" />
+    <Compile Include="Catalogos\businessData\CPROMOCIONSUCURSALD.cs" />
+    <Compile Include="Catalogos\businessData\CPROVEEDORD.cs" />
+    <Compile Include="Catalogos\businessData\CRUTAEMBARQUED.cs" />
+    <Compile Include="Catalogos\businessData\CSUBTIPOCLIENTED.cs" />
+    <Compile Include="Catalogos\businessData\CSUCURSALD.cs" />
+    <Compile Include="Catalogos\businessData\CTASAIVAD.cs" />
+    <Compile Include="Catalogos\businessData\CTERMINALPAGOSERVICIOD.cs" />
+    <Compile Include="Catalogos\businessData\CTIPODIFERENCIAINVENTARIOD.cs" />
+    <Compile Include="Catalogos\businessData\CTIPOTRANSACCIOND.cs" />
+    <Compile Include="Catalogos\businessData\CUNIDADD.cs" />
+    <Compile Include="Catalogos\businessData\CVEHICULOD.cs" />
+    <Compile Include="Catalogos\businessData\CVENDEDORD.cs" />
+    <Compile Include="Catalogos\businessEntity\CALMACENBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CANAQUELBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CBANCOSBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CCARRIERBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CCLASIFICABE.cs" />
+    <Compile Include="Catalogos\businessEntity\CCLERKPAGOSERVICIOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CCLIENTEBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CCOMISIONPORLISTABE.cs" />
+    <Compile Include="Catalogos\businessEntity\CCONTENIDOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CCONTROLPRECIOSBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CCUENTABE.cs" />
+    <Compile Include="Catalogos\businessEntity\CCUPONESAPLICADOSBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CDESCLINEAPERSBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CDOMICILIOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CEMIDACOMISIONBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CEMIDAPRODBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CEMIDAPRODEXTBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CEMIDAREQUESTBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CEMIDARESPCODEBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CENCARGADOCORTEBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CENCARGADOGUIABE.cs" />
+    <Compile Include="Catalogos\businessEntity\CERRORCODEBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CESTADOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CFORMAPAGOSATBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CGASTOADICIONALBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CGASTOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CGRUPOSUCURSALBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CKITDEFINICIONBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CKITDEFTEMPBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CLINEABE.cs" />
+    <Compile Include="Catalogos\businessEntity\CLISTAPRECIOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CLISTAPRECIODETALLEBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CLLAMADOEMIDABE.cs" />
+    <Compile Include="Catalogos\businessEntity\CMARCABE.cs" />
+    <Compile Include="Catalogos\businessEntity\CMAXFACTBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CMERCHANTPAGOSERVICIOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CMONEDABE.cs" />
+    <Compile Include="Catalogos\businessEntity\CMONTOBILLETESLOGBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CMOTIVO_CAMFECBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPERSONAAPARTADOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPERSONACUENTABANCOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPLAZOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPRECIOPERSONABE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPRECIOSTEMPBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPRODUCTOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPRODUCTOPROVEEDORBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPRODUCTOSUCURSALBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPROD_DEF_CARACTERISTICASBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPROMOCIONBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPROMOCIONSUCURSALBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CPROVEEDORBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CRUTAEMBARQUEBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CSUBTIPOCLIENTEBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CSUCURSALBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CTASAIVABE.cs" />
+    <Compile Include="Catalogos\businessEntity\CTERMINALPAGOSERVICIOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CTIPODIFERENCIAINVENTARIOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CTIPOTRANSACCIONBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CUNIDADBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CVEHICULOBE.cs" />
+    <Compile Include="Catalogos\businessEntity\CVENDEDORBE.cs" />
+    <Compile Include="Cobranza\businessData\CBITACOBRANZAD.cs" />
+    <Compile Include="Cobranza\businessData\CBITACOBRANZADETD.cs" />
+    <Compile Include="Cobranza\businessData\CCONTRARECIBODTLD.cs" />
+    <Compile Include="Cobranza\businessData\CCONTRARECIBOHDRD.cs" />
+    <Compile Include="Cobranza\businessData\CLOGEVENTOTABLAD.cs" />
+    <Compile Include="Cobranza\businessEntity\CBITACOBRANZABE.cs" />
+    <Compile Include="Cobranza\businessEntity\CBITACOBRANZADETBE.cs" />
+    <Compile Include="Cobranza\businessEntity\CCONTRARECIBODTLBE.cs" />
+    <Compile Include="Cobranza\businessEntity\CCONTRARECIBOHDRBE.cs" />
+    <Compile Include="Cobranza\businessEntity\CLOGEVENTOTABLABE.cs" />
+    <Compile Include="Compras\businessData\CPERSONAVISTACOMPRAD.cs" />
+    <Compile Include="Compras\businessEntity\CPERSONAVISTACOMPRABE.cs" />
+    <Compile Include="Compras\CComprasD.cs" />
+    <Compile Include="Compras\CFACTURAORIGINALCOMPRABE.cs" />
+    <Compile Include="Compras\CFACTURAORIGINALCOMPRAD.cs" />
+    <Compile Include="Compras\CMOVTOGASTOSADICBE.cs" />
+    <Compile Include="Compras\CMOVTOGASTOSADICD.cs" />
+    <Compile Include="Contabilidad\CCENTROCOSTOBE.cs" />
+    <Compile Include="Contabilidad\CCENTROCOSTOD.cs" />
+    <Compile Include="Contabilidad\CCORTERECOLECCIONBE.cs" />
+    <Compile Include="Contabilidad\CCORTERECOLECCIOND.cs" />
+    <Compile Include="Contabilidad\CCUENTABANCOBE.cs" />
+    <Compile Include="Contabilidad\CCUENTABANCOD.cs" />
+    <Compile Include="Contabilidad\CCUENTASPVCBE.cs" />
+    <Compile Include="Contabilidad\CCUENTASPVCD.cs" />
+    <Compile Include="Contabilidad\CGASTOCAJAD.cs" />
+    <Compile Include="Contabilidad\CRETIRODECAJAD.cs" />
+    <Compile Include="Contabilidad\CTIPOGASTOBE.cs" />
+    <Compile Include="Contabilidad\CTIPOGASTOD.cs" />
+    <Compile Include="CsvFile.cs" />
+    <Compile Include="CurrentUser.cs" />
+    <Compile Include="DBTN.cs" />
+    <Compile Include="DBValues.cs" />
+    <Compile Include="Facturacion\businessData\CDOCTOCOMPROBANTED.cs" />
+    <Compile Include="Facturacion\businessEntity\CCARTAPORTEAUTOTRANSPBE.cs" />
+    <Compile Include="Facturacion\businessEntity\CCARTAPORTEBE.cs" />
+    <Compile Include="Facturacion\businessEntity\CCARTAPORTECANTTRANSPBE.cs" />
+    <Compile Include="Facturacion\businessEntity\CCARTAPORTEMERCANCIABE.cs" />
+    <Compile Include="Facturacion\businessEntity\CCARTAPORTETOTALMERCANCIASBE.cs" />
+    <Compile Include="Facturacion\businessEntity\CCARTAPORTETRANSPTIPOFIGURABE.cs" />
+    <Compile Include="Facturacion\businessEntity\CCARTAPORTEUBICACIONBE.cs" />
+    <Compile Include="Facturacion\businessEntity\CDOCTOCOMPROBANTEBE.cs" />
+    <Compile Include="Facturacion\CCARTAPORTELINEABE.cs" />
+    <Compile Include="Facturacion\CCARTAPORTELINEAD.cs" />
+    <Compile Include="Facturacion\CCOMPROBANTEFISCALLINEABE.cs" />
+    <Compile Include="Facturacion\CCOMPROBANTEFISCALLINEAD.cs" />
+    <Compile Include="General\businessData\CINCREMENTABLESD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="General\businessData\CTEMP_FILTRO_REPOD.cs" />
+    <Compile Include="General\businessData\CTTLCONTROLD.cs" />
+    <Compile Include="General\businessEntity\CINCREMENTABLESBE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="General\businessEntity\CTEMP_FILTRO_REPOBE.cs" />
+    <Compile Include="Guia\businessData\CGUIAD.cs" />
+    <Compile Include="Guia\businessData\CGUIADETALLED.cs" />
+    <Compile Include="Guia\businessEntity\CGUIABE.cs" />
+    <Compile Include="Guia\businessEntity\CGUIADETALLEBE.cs" />
+    <Compile Include="Importaciones\businessData\CEXP_FILESD.cs" />
+    <Compile Include="Importaciones\businessData\Cexp_resistD.cs" />
+    <Compile Include="Importaciones\businessData\CIMP_FILESD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Importaciones\businessData\CINVENTARIOSUCURSALD.cs" />
+    <Compile Include="Importaciones\businessData\CMOTDD.cs" />
+    <Compile Include="Importaciones\businessData\CM_ARDRD.cs" />
+    <Compile Include="Importaciones\businessData\CM_AREAD.cs" />
+    <Compile Include="Importaciones\businessData\CM_BANKD.cs" />
+    <Compile Include="Importaciones\businessData\CM_CATSD.cs" />
+    <Compile Include="Importaciones\businessData\CM_CLERKD.cs" />
+    <Compile Include="Importaciones\businessData\CM_CTRLD.cs" />
+    <Compile Include="Importaciones\businessData\CM_DEFCD.cs" />
+    <Compile Include="Importaciones\businessData\CM_EDOSD.cs" />
+    <Compile Include="Importaciones\businessData\CM_ENCCD.cs" />
+    <Compile Include="Importaciones\businessData\CM_GASTOD.cs" />
+    <Compile Include="Importaciones\businessData\CM_GSUCD.cs" />
+    <Compile Include="Importaciones\businessData\CM_IECTD.cs" />
+    <Compile Include="Importaciones\businessData\CM_IEPRD.cs" />
+    <Compile Include="Importaciones\businessData\CM_KITSD.cs" />
+    <Compile Include="Importaciones\businessData\CM_KITSUCD.cs" />
+    <Compile Include="Importaciones\businessData\CM_LINED.cs" />
+    <Compile Include="Importaciones\businessData\CM_LPDTD.cs" />
+    <Compile Include="Importaciones\businessData\CM_LSPRD.cs" />
+    <Compile Include="Importaciones\businessData\CM_MARCD.cs" />
+    <Compile Include="Importaciones\businessData\CM_MERCHD.cs" />
+    <Compile Include="Importaciones\businessData\CM_MXFTD.cs" />
+    <Compile Include="Importaciones\businessData\CM_PRMD.cs" />
+    <Compile Include="Importaciones\businessData\CM_PLAZOD.cs" />
+    <Compile Include="Importaciones\businessData\CM_PROVD.cs" />
+    <Compile Include="Importaciones\businessData\CM_PRSCD.cs" />
+    <Compile Include="Importaciones\businessData\CM_TASAD.cs" />
+    <Compile Include="Importaciones\businessData\CM_TERMD.cs" />
+    <Compile Include="Importaciones\businessData\CM_TIPOD.cs" />
+    <Compile Include="Importaciones\businessData\CM_TRASD.cs" />
+    <Compile Include="Importaciones\businessData\CM_TRCLD.cs" />
+    <Compile Include="Importaciones\businessData\CM_UNID.cs" />
+    <Compile Include="Importaciones\businessData\CM_VEDSD.cs" />
+    <Compile Include="Importaciones\businessData\CM_VENSD.cs" />
+    <Compile Include="Importaciones\businessData\CPEDIDOENVIOD.cs" />
+    <Compile Include="Importaciones\businessData\CPRECTEMPD.cs" />
+    <Compile Include="Importaciones\businessData\CPRODD.cs" />
+    <Compile Include="Importaciones\businessData\CPRODUCTOLOCATIONSD.cs" />
+    <Compile Include="Importaciones\businessData\CRECEPCIOND.cs" />
+    <Compile Include="Importaciones\businessData\CVEDMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Importaciones\businessData\CVENMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Importaciones\businessData\INTERFACESEXPOD.cs" />
+    <Compile Include="Importaciones\businessEntity\CEXIST_SUCURSALBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CEXP_FILESBE.cs" />
+    <Compile Include="Importaciones\businessEntity\Cexp_resistBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CIMPORTAR_DBF_LINE_SPBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CIMPORTAR_DBF_LINE_SP_VENTABE.cs" />
+    <Compile Include="Importaciones\businessEntity\CIMP_FILESBE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Importaciones\businessEntity\CINVENTARIOSUCURSALBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_ARDRBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_AREABE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_BANKBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_CATSBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_CLERKBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_DEFCBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_DERBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_DER_UBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_EDOSBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_ENCCBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_GASTOBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_GSUCBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_IECTBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_IEPRBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_KITSBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_KITSUCBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_LINEBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_LPDTBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_LSPRBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_MARCBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_MERCHBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_MOTDBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_MXFTBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_PARMBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_PRMBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_PLAZOBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_PROVBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_PRSCBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_TASABE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_TERMBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_TIPOBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_TRASBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_TRCLBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_UNIBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_USERBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_VEDSBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CM_VENSBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CPEDIDOENVIOBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CPRECTEMPBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CPRODBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CPRODUCTOLOCATIONSBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CRECEPCIONBE.cs" />
+    <Compile Include="Importaciones\businessEntity\CVEDMBE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Importaciones\businessEntity\CVENMBE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Importaciones\Cubo\businessEntity\CQ_CATSBE.cs" />
+    <Compile Include="Importaciones\Cubo\businessEntity\CQ_CLIEBE.cs" />
+    <Compile Include="Importaciones\Cubo\businessEntity\CQ_KITSBE.cs" />
+    <Compile Include="Importaciones\Cubo\businessEntity\CQ_LINEBE.cs" />
+    <Compile Include="Importaciones\Cubo\businessEntity\CQ_MARCBE.cs" />
+    <Compile Include="Importaciones\Cubo\businessEntity\CQ_PRODBE.cs" />
+    <Compile Include="Importaciones\Cubo\businessEntity\CQ_PROVBE.cs" />
+    <Compile Include="Importaciones\Cubo\businessEntity\CQ_VEDMBE.cs" />
+    <Compile Include="Importaciones\Cubo\businessEntity\CQ_VENDBE.cs" />
+    <Compile Include="Importaciones\Cubo\businessLogic\CQ_CATSD.cs" />
+    <Compile Include="Importaciones\Cubo\businessLogic\CQ_CLIED.cs" />
+    <Compile Include="Importaciones\Cubo\businessLogic\CQ_KITSD.cs" />
+    <Compile Include="Importaciones\Cubo\businessLogic\CQ_LINED.cs" />
+    <Compile Include="Importaciones\Cubo\businessLogic\CQ_MARCD.cs" />
+    <Compile Include="Importaciones\Cubo\businessLogic\CQ_PRODD.cs" />
+    <Compile Include="Importaciones\Cubo\businessLogic\CQ_PROVD.cs" />
+    <Compile Include="Importaciones\Cubo\businessLogic\CQ_VEDMD.cs" />
+    <Compile Include="Importaciones\Cubo\businessLogic\CQ_VENDD.cs" />
+    <Compile Include="Importaciones\ImportarDBF.cs" />
+    <Compile Include="Importaciones\ImportFromExcel.cs" />
+    <Compile Include="Importaciones\PPC\businessEntity\PPCCompraAMatriz.cs" />
+    <Compile Include="Inventario\businessData\CSTOCKALMACEND.cs" />
+    <Compile Include="Inventario\BusinessEntity\CALMACENDATAINVBE.cs" />
+    <Compile Include="Inventario\BusinessEntity\CINVDATAINVBE.cs" />
+    <Compile Include="Inventario\BusinessEntity\CINVMOVALMACENSUCURSALBE.cs" />
+    <Compile Include="Inventario\BusinessEntity\CINVMOVINVENTARIOSSUCURSALBE.cs" />
+    <Compile Include="Inventario\BusinessEntity\CINVMOVPRODLOCATIONBE.cs" />
+    <Compile Include="Inventario\BusinessEntity\CINVMOVPRODUCTOSUCURSALBE.cs" />
+    <Compile Include="Inventario\BusinessEntity\CPRODDATAINVBE.cs" />
+    <Compile Include="Inventario\BusinessEntity\CSTOCKALMACENBE.cs" />
+    <Compile Include="Inventario\BusinessEntity\CSUCURSALINVBE.cs" />
+    <Compile Include="Inventario\BusinessEntity\EstatusInventario.cs" />
+    <Compile Include="Inventario\BusinessEntity\InventarioMovilMovto.cs" />
+    <Compile Include="Inventario\BusinessEntity\InvMovilContainerResponse.cs" />
+    <Compile Include="Inventario\BusinessEntity\InvMovilDocto.cs" />
+    <Compile Include="Inventario\BusinessEntity\Usuario.cs" />
+    <Compile Include="Inventario\CINVENTARIOD.cs" />
+    <Compile Include="Inventario\CINVENTARIOSYNCD.cs" />
+    <Compile Include="Login and Maintenance\ActualizacionesBD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CEMPRESAD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CGRUPOUSUARIOD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CHILOSISTEMAD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CLOOKUPD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CMENUITEMSD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CPARAMETROD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CPERFILESD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CPERFIL_DERD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CPERFIL_REPOD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CPERSONAD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CPERSONAFIGURAD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CREPORTESD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CUSUARIOSD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CUSUARIO_DERD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CUSUARIO_PERFILD.cs" />
+    <Compile Include="Login and Maintenance\businessData\CZEBRACONFIGD.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CEMPRESABE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CGRUPOUSUARIOBE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CHILOSISTEMABE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CLOOKUPBE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CMENUITEMSBE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CPARAMETROBE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CPERFILESBE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CPERFIL_DERBE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CPERFIL_REPOBE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CPERSONABE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CPERSONAFIGURABE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CREPORTESBE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CUSUARIOSBE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CUSUARIO_DERBE.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CUSUARIO_PERFILBE.cs" />
+    <Compile Include="ConexionBD.cs" />
+    <Compile Include="Login and Maintenance\BusinessEntity\CZEBRACONFIGBE.cs" />
+    <Compile Include="Login and Maintenance\EncDec.cs" />
+    <Compile Include="Mensajeria\businessData\CAREAD.cs" />
+    <Compile Include="Mensajeria\businessData\CAREADERECHOSD.cs" />
+    <Compile Include="Mensajeria\businessData\CMENSAJEADJUNTOSD.cs" />
+    <Compile Include="Mensajeria\businessData\CMENSAJEAREAD.cs" />
+    <Compile Include="Mensajeria\businessData\CMENSAJED.cs" />
+    <Compile Include="Mensajeria\businessData\CMENSAJEESTADOD.cs" />
+    <Compile Include="Mensajeria\businessData\CMENSAJENIVELURGENCIAD.cs" />
+    <Compile Include="Mensajeria\businessData\CMENSAJESUCD.cs" />
+    <Compile Include="Mensajeria\businessData\CMENSAJETIPOD.cs" />
+    <Compile Include="Mensajeria\businessData\CMENSAJEUSUARIOD.cs" />
+    <Compile Include="Mensajeria\businessEntity\CAREABE.cs" />
+    <Compile Include="Mensajeria\businessEntity\CAREADERECHOSBE.cs" />
+    <Compile Include="Mensajeria\businessEntity\CMENSAJEADJUNTOSBE.cs" />
+    <Compile Include="Mensajeria\businessEntity\CMENSAJEAREABE.cs" />
+    <Compile Include="Mensajeria\businessEntity\CMENSAJEBE.cs" />
+    <Compile Include="Mensajeria\businessEntity\CMENSAJEESTADOBE.cs" />
+    <Compile Include="Mensajeria\businessEntity\CMENSAJENIVELURGENCIABE.cs" />
+    <Compile Include="Mensajeria\businessEntity\CMENSAJESUCBE.cs" />
+    <Compile Include="Mensajeria\businessEntity\CMENSAJETIPOBE.cs" />
+    <Compile Include="Mensajeria\businessEntity\CMENSAJEUSUARIOBE.cs" />
+    <Compile Include="Movil\businessData\CCACHE_PRODMOVILD.cs" />
+    <Compile Include="Movil\businessData\CCOBRANZAMOVILD.cs" />
+    <Compile Include="Movil\businessData\CDOCTOPAGOMOVILD.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\CMBANKDROIDD.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\CMCLIPDROIDD.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\CMCREPDROIDD.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\CMEDOSDROIDD.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\CMKITSDROIDD.cs" />
+    <Compile Include="Movil\businessData\CMOVILSESIOND.cs" />
+    <Compile Include="Movil\businessData\CM_CLIPD.cs" />
+    <Compile Include="Movil\businessData\CM_CREPD.cs" />
+    <Compile Include="Movil\businessData\CM_VEDPD.cs" />
+    <Compile Include="Movil\businessData\CM_VENPD.cs" />
+    <Compile Include="Movil\businessData\CM_VISID.cs" />
+    <Compile Include="Movil\businessData\CPAGOMOVILD.cs" />
+    <Compile Include="Movil\businessData\CR_DOCTOPAGOMOVILD.cs" />
+    <Compile Include="Movil\businessData\CR_PAGOMOVILD.cs" />
+    <Compile Include="Movil\businessData\CVISITAD.cs" />
+    <Compile Include="Movil\businessData\FM_VEDPD.cs" />
+    <Compile Include="Movil\businessData\FM_VENPD.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\CPRODDROIDD.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CMBANK_SQLITE_D.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CMCLIP_SQLITE_D.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CMCREP_SQLITE_D.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CMDERU_SQLITE_D.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CMDER_SQLITE_D.cs.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CMEDOS_SQLITE_D.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CMKIT_SQLITE_D.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CMPARM_SQLITE_D.cs.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CMPROV_SQLITE_D.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CMUSER_SQLITE_D.cs" />
+    <Compile Include="Movil\businessData\MOVILANDROID\SQlite\CPROD_SQLITE_D.cs" />
+    <Compile Include="Movil\businessEntity\CCACHE_PRODMOVILBE.cs" />
+    <Compile Include="Movil\businessEntity\CCOBRANZAMOVILBE.cs" />
+    <Compile Include="Movil\businessEntity\CDOCTOPAGOMOVILBE.cs" />
+    <Compile Include="Movil\businessEntity\CF_CLIPBE.cs" />
+    <Compile Include="Movil\businessEntity\CMOVILSESIONBE.cs" />
+    <Compile Include="Movil\businessEntity\CMPRODBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_CATSYNCBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_CHDPBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_CHGPBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_CLIPBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_CREPBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_PROPBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_SYNCBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_UPDFBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_VEDPBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_VENPBE.cs" />
+    <Compile Include="Movil\businessEntity\CM_VISIBE.cs" />
+    <Compile Include="Movil\businessEntity\CPAGOMOVILBE.cs" />
+    <Compile Include="Movil\businessEntity\CR_DOCTOPAGOMOVILBE.cs" />
+    <Compile Include="Movil\businessEntity\CR_PAGOMOVILBE.cs" />
+    <Compile Include="Movil\businessEntity\CVISITABE.cs" />
+    <Compile Include="Movil\businessEntity\FM_CMDPBE.cs" />
+    <Compile Include="Movil\businessEntity\FM_CMNPBE.cs" />
+    <Compile Include="Movil\businessEntity\FM_VEDPBE.cs" />
+    <Compile Include="Movil\businessEntity\FM_VENPBE.cs" />
+    <Compile Include="Movil\businessEntity\MOVILANDROID\CBANKDROIDBE.cs" />
+    <Compile Include="Movil\businessEntity\MOVILANDROID\CCLIPDROIDBE.cs" />
+    <Compile Include="Movil\businessEntity\MOVILANDROID\CCREPDROIDBE.cs" />
+    <Compile Include="Movil\businessEntity\MOVILANDROID\CKITDROIDBE.cs" />
+    <Compile Include="Movil\businessEntity\MOVILANDROID\CPRODDROIDBE.cs" />
+    <Compile Include="Movil\businessEntity\MOVILANDROID\CEDOSDROIDBE.cs" />
+    <Compile Include="Movil\ExpoSqlite\ExportacionMovilSqlite.cs" />
+    <Compile Include="MultiEmpresa\businessData\CCONFIGURACIOND.cs" />
+    <Compile Include="MultiEmpresa\businessData\CEMPRESASD.cs" />
+    <Compile Include="MultiEmpresa\businessData\CSINCCONFIGD.cs" />
+    <Compile Include="MultiEmpresa\businessEntity\CCONFIGURACIONBE.cs" />
+    <Compile Include="MultiEmpresa\businessEntity\CEMPRESASBE.cs" />
+    <Compile Include="MultiEmpresa\businessEntity\CSINCCONFIGBE.cs" />
+    <Compile Include="MultiEmpresa\ConexionMEBD.cs" />
+    <Compile Include="OdbcHelper.cs" />
+    <Compile Include="OleDbHelper.cs" />
+    <Compile Include="OleDbSQLHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="PuntoDeVenta\businessData\CAJUSTESIVAD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CARCHIVOSADJUNTOSD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CCAJAD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CCONSOLIDADOD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CCORTED.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CDOCTOD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CDOCTOPAGOD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CDOCTOVISITAD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CINCIDENCIAD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CLOTESIMPORTADOSD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CMEDICOD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CMONEDEROD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CMONEDEROMOVTOD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CMONTOBILLETESD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CMOVTOD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CPAGOD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CRECETAD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CSURTIDOD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CTICKET_DETAILD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CTICKET_FOOTERD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CTICKET_HEADERD.cs" />
+    <Compile Include="PuntoDeVenta\businessData\CTICKET_PROMOCIONESD.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CAJUSTESIVABE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CARCHIVOSADJUNTOSBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CCAJABE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CCORTEBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CDOCTOBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CDOCTOPAGOBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CDOCTOVISITABE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CINCIDENCIABE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CLOTESIMPORTADOSBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CMEDICOBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CMONEDEROBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CMONEDEROMOVTOBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CMONTOBILLETESBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CMOVTOBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CPAGOBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CRECETABE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CTICKET_DETAILBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CTICKET_FOOTERBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CTICKET_HEADERBE.cs" />
+    <Compile Include="PuntoDeVenta\BusinessEntity\CTICKET_PROMOCIONESBE.cs" />
+    <Compile Include="PuntoDeVenta\CPuntoDeVentaD.cs" />
+    <Compile Include="Quotas\businessData\CQUOTAD.cs" />
+    <Compile Include="Quotas\businessEntity\CQUOTABE.cs" />
+    <Compile Include="SQLHelper.cs" />
+    <Compile Include="SQLiteHelper\SQLiteColumn.cs" />
+    <Compile Include="SQLiteHelper\SQLiteColumnList.cs" />
+    <Compile Include="SQLiteHelper\SQLiteHelper.cs" />
+    <Compile Include="SQLiteHelper\SQLiteTable.cs" />
+    <Compile Include="Utilerias\bussinesData\CSALDOCLIENTEBE.cs" />
+    <Compile Include="Utilerias\bussinesData\CSALDOPROVEEDORBE.cs" />
+    <Compile Include="Utilerias\bussinesData\CUTILERIASD.cs" />
+    <Compile Include="Utilerias\bussinesData\DAOGenerico.cs" />
+    <Compile Include="Utilerias\ExcelHelper.cs" />
+    <Compile Include="Utilerias\Movil\DatosMovilFb.cs" />
+    <Compile Include="Utilerias\Respuestas\CatalogoSat\CatalogoSatResponse.cs" />
+    <Compile Include="Utilerias\Respuestas\CatalogoSat\ColumnInfo.cs" />
+    <Compile Include="Utilerias\Respuestas\CatalogoSat\Field.cs" />
+    <Compile Include="Utilerias\Respuestas\CatalogoSat\SatCatalogueInfo.cs" />
+    <Compile Include="Utilerias\Respuestas\CatalogoSat\TableData.cs" />
+    <Compile Include="Utilerias\StringCompresor.cs" />
+    <Compile Include="Verifone\businessData\CVERIFONECAJACONFIGD.cs" />
+    <Compile Include="Verifone\businessData\CVERIFONECONFIGD.cs" />
+    <Compile Include="Verifone\businessData\CVERIFONEPAYMENTD.cs" />
+    <Compile Include="Verifone\businessEntity\CVERIFONECAJACONFIGBE.cs" />
+    <Compile Include="Verifone\businessEntity\CVERIFONECONFIGBE.cs" />
+    <Compile Include="Verifone\businessEntity\CVERIFONEPAYMENTBE.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utilerias\bussinesEntity\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.113.1\build\net45\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.113.1\build\net45\System.Data.SQLite.Core.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.113.1\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.113.1\build\net45\System.Data.SQLite.Core.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

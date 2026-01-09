@@ -1,0 +1,1 @@
+insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10044, 'Retiro de caja consultar de todos los cajeros');

@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/17/2013 17:36:14" ReportInfo.Modified="04/16/2014 13:20:39" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    
+
+   
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2X+MQsZuqBAkKGjeqO4HIQU=">
+      <TableDataSource Name="Table" Alias="REC_MASTER" DataType="System.Int32" Enabled="true" SelectCommand="SELECT R.* FROM &quot;RECIBO_MASTER&quot; R where r.doctoid = @doctoid&#13;&#10;">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="HEADERCANCELACION" DataType="System.String"/>
+        <Column Name="NOMBRESUCURSAL" DataType="System.String"/>
+        <Column Name="DESCRIPCIONSUCURSAL" DataType="System.String"/>
+        <Column Name="EMPRESA_RFC" DataType="System.String"/>
+        <Column Name="EMPRESA_COLONIA" DataType="System.String"/>
+        <Column Name="EMPRESA_DOMICICIO" DataType="System.String"/>
+        <Column Name="EMPRESA_NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="EMPRESA_NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="EMPRESA_CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="EMPRESA_RAZON_SOCIAL" DataType="System.String"/>
+        <Column Name="EMPRESA_TELEFONO" DataType="System.String"/>
+        <Column Name="EMPRESA_CIUDAD" DataType="System.String"/>
+        <Column Name="EMPRESA_ESTADO" DataType="System.String"/>
+        <Column Name="EMPRESA_MUNICIPIO" DataType="System.String"/>
+        <Column Name="LUGARDEEXPEDICION" DataType="System.String"/>
+        <Column Name="FECHADEEXPEDICION" DataType="System.DateTime"/>
+        <Column Name="CAJERO" DataType="System.String"/>
+        <Column Name="TICKET" DataType="System.Int32"/>
+        <Column Name="TITULO" DataType="System.String"/>
+        <Column Name="TITULO_PERSONA" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER1" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER2" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER3" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER4" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="PERSONADOMICILIO" DataType="System.String"/>
+        <Column Name="PERSONANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="PERSONANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="PERSONACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PERSONACOLONIA" DataType="System.String"/>
+        <Column Name="PERSONATELEFONO" DataType="System.String"/>
+        <Column Name="PERSONARAZONSOCIAL" DataType="System.String"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOVALE" DataType="System.Decimal"/>
+        <Column Name="TOTAL_CON_LETRA" DataType="System.String"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="CAMBIO" DataType="System.Decimal"/>
+        <Column Name="CAJA" DataType="System.String"/>
+        <Column Name="TURNO" DataType="System.String"/>
+        <Column Name="PAGOEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="PAGOTARJETA" DataType="System.Decimal"/>
+        <Column Name="PAGOCREDITO" DataType="System.Decimal"/>
+        <Column Name="PAGOCHEQUE" DataType="System.Decimal"/>
+        <Column Name="PAGOVALE" DataType="System.Decimal"/>
+        <Column Name="ABONO" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="PAGOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="ABONOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="SALDOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="VIGENCIAMONEDERO" DataType="System.DateTime"/>
+        <Column Name="MONEDEROID" DataType="System.Int64"/>
+        <Column Name="CUSTOMFOOTER" DataType="System.String"/>
+        <Column Name="APLICADO" DataType="System.Decimal"/>
+        <Column Name="PERSONARFC" DataType="System.String"/>
+        <Column Name="PERSONACIUDAD" DataType="System.String"/>
+        <Column Name="PERSONAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGACALLE" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGACOLONIA" DataType="System.String"/>
+        <Column Name="ENTREGAMUNICIPIO" DataType="System.String"/>
+        <Column Name="ENTREGAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PAGOTRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="PAGONOIDENTIFICADO" DataType="System.Decimal"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="REFERENCIAS" DataType="System.String"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[pdoctoid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="PAGO_DETAIL" DataType="System.Int32" Enabled="true" SelectCommand="select P.ID, p.fecha, f.nombre as formapago, coalesce((p.importe *&#13;&#10;          (CASE WHEN ((TIPOPAGOID = 1 AND FORMAPAGOID IN (1,2,3,4,5,6,14,15,16)) or (TIPOPAGOID = 2 AND FORMAPAGOID IN (7)))  THEN 1&#13;&#10;                when ((TIPOPAGOID = 1 AND FORMAPAGOID IN (7)) or (TIPOPAGOID = 2 AND FORMAPAGOID IN (6))) THEN -1&#13;&#10;                ELSE 0 END)&#13;&#10;          ),0) as monto,  p.referenciabancaria , coalesce(b.nombre,'') banco, p.formapagoid ,&#13;&#10;           (case when p.tipoabonoid in (3) then coalesce(a.nombre,'') || ' de #' || coalesce(cast(p.doctopagorefid as varchar(20)),'')&#13;&#10;           else  coalesce(a.nombre,'') end ) TIPOABONODESCRIPCION ,&#13;&#10;           coalesce(P.tipoabonoid,2) tipoabonoid , P.revertido  ,&#13;&#10;           doctoref.folio folioref ,&#13;&#10;           p.fechaelaboracion ,&#13;&#10;           p.fecharecepcion&#13;&#10;&#13;&#10;          from doctopago p&#13;&#10;          inner join formapago f on p.formapagoid = f.id&#13;&#10;          left join bancos b on b.id = p.banco&#13;&#10;          left join tipoabono a on a.id = p.tipoabonoid&#13;&#10;          left join docto doctoref on doctoref.id = p.doctosalidaid&#13;&#10;          where p.doctoid =@doctoid">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FORMAPAGOID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="FECHAELABORACION" DataType="System.DateTime"/>
+        <Column Name="FECHARECEPCION" DataType="System.DateTime"/>
+        <Column Name="TIPOABONOID" DataType="System.Int64"/>
+        <Column Name="REVERTIDO" DataType="System.String"/>
+        <Column Name="FORMAPAGO" DataType="System.String"/>
+        <Column Name="MONTO" DataType="System.Decimal"/>
+        <Column Name="TIPOABONODESCRIPCION" DataType="System.String"/>
+        <Column Name="FOLIOREF" DataType="System.Int32"/>
+        <Column Name="BANCO" DataType="System.String"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[pdoctoid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="pdoctoid" DataType="System.Int32"/>
+    <Parameter Name="usaDatosDeEntregaCuandoExista" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" RawPaperSize="119">
+    <ReportTitleBand Name="ReportTitle1" Width="740.5" Height="311.85">
+      <ShapeObject Name="Shape3" Left="18.9" Top="236.25" Width="689.85" Height="75.6" Shape="RoundRectangle"/>
+      <ShapeObject Name="Shape2" Left="415.8" Width="292.95" Height="132.3" Shape="RoundRectangle"/>
+      <ShapeObject Name="Shape1" Left="18.9" Width="387.45" Height="132.3" Shape="RoundRectangle"/>
+      <TextObject Name="Text1" Left="425.25" Top="9.45" Width="274.05" Height="18.9" Text="[REC_MASTER.HEADERCANCELACION]" Font="Arial, 12pt"/>
+      <TextObject Name="Text2" Left="28.35" Top="9.45" Width="368.55" Height="18.9" Text="[REC_MASTER.NOMBRESUCURSAL]" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="28.35" Top="28.35" Width="368.55" Height="18.9" Text="[REC_MASTER.DESCRIPCIONSUCURSAL]" Font="Arial, 9pt"/>
+      <TextObject Name="Text4" Left="28.35" Top="47.25" Width="368.55" Height="18.9" Text="[REC_MASTER.EMPRESA_RFC]" Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="28.35" Top="85.05" Width="217.35" Height="18.9" Text="[REC_MASTER.EMPRESA_COLONIA]" Font="Arial, 9pt"/>
+      <TextObject Name="Text6" Left="28.35" Top="66.15" Width="274.05" Height="18.9" Text="[REC_MASTER.EMPRESA_DOMICICIO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text22" Left="425.25" Top="75.6" Width="274.05" Height="47.25" Text="[REC_MASTER.TICKET]" Font="Arial, 14.25pt"/>
+      <TextObject Name="Text23" Left="311.85" Top="66.15" Width="47.25" Height="18.9" Text="[REC_MASTER.EMPRESA_NUMEROEXTERIOR]" Font="Arial, 9pt"/>
+      <TextObject Name="Text24" Left="359.1" Top="66.15" Width="37.8" Height="18.9" Text="[REC_MASTER.EMPRESA_NUMEROINTERIOR]" Font="Arial, 9pt"/>
+      <TextObject Name="Text25" Left="255.15" Top="85.05" Width="141.75" Height="18.9" Text="[REC_MASTER.EMPRESA_CODIGOPOSTAL]" Font="Arial, 9pt"/>
+      <TextObject Name="Text26" Left="28.35" Top="103.95" Width="368.55" Height="18.9" Text="[REC_MASTER.EMPRESA_TELEFONO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text27" Left="160.65" Top="160.65" Width="236.25" Height="18.9" Text="[REC_MASTER.LUGARDEEXPEDICION]" Font="Arial, 9pt"/>
+      <TextObject Name="Text28" Left="160.65" Top="179.55" Width="236.25" Height="18.9" Text="[REC_MASTER.FECHADEEXPEDICION]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text29" Left="453.6" Top="141.75" Width="245.7" Height="18.9" Text="[REC_MASTER.DOC_REF_HEADER1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text30" Left="453.6" Top="160.65" Width="245.7" Height="18.9" Text="[REC_MASTER.DOC_REF_HEADER2]" Font="Arial, 9pt"/>
+      <TextObject Name="Text31" Left="453.6" Top="179.55" Width="245.7" Height="18.9" Text="[REC_MASTER.DOC_REF_HEADER3]" Font="Arial, 9pt"/>
+      <TextObject Name="Text32" Left="453.6" Top="198.45" Width="245.7" Height="18.9" Text="[REC_MASTER.DOC_REF_HEADER4]" Font="Arial, 9pt"/>
+      <TextObject Name="Text33" Left="75.6" Top="245.7" Width="340.2" Height="18.9" Text="[REC_MASTER.PERSONANOMBRE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text34" Left="75.6" Top="264.6" Width="226.8" Height="18.9" Text="[REC_MASTER.PERSONADOMICILIO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text35" Left="302.4" Top="264.6" Width="56.7" Height="18.9" Text="[REC_MASTER.PERSONANUMEROEXTERIOR]" Font="Arial, 9pt"/>
+      <TextObject Name="Text36" Left="359.1" Top="264.6" Width="56.7" Height="18.9" Text="[REC_MASTER.PERSONANUMEROINTERIOR]" Font="Arial, 9pt"/>
+      <TextObject Name="Text37" Left="463.05" Top="264.6" Width="236.25" Height="18.9" Text="[REC_MASTER.PERSONACOLONIA]" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Left="75.6" Top="283.5" Width="103.95" Height="18.9" Text="[REC_MASTER.PERSONACODIGOPOSTAL]" Font="Arial, 9pt"/>
+      <TextObject Name="Text39" Left="236.25" Top="283.5" Width="122.85" Height="18.9" Text="[REC_MASTER.PERSONATELEFONO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text15" Left="28.35" Top="217.35" Width="292.95" Height="18.9" Text="[REC_MASTER.TITULO_PERSONA]" Font="Arial, 9.75pt, style=Bold"/>
+      <TextObject Name="Text16" Left="425.25" Top="37.8" Width="274.05" Height="18.9" Text="[REC_MASTER.TITULO]" Font="Arial, 12pt"/>
+      <TextObject Name="Text50" Left="28.35" Top="160.65" Width="47.25" Height="18.9" Text="Lugar" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text51" Left="28.35" Top="179.55" Width="122.85" Height="18.9" Text="Fecha documento:" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text52" Left="28.35" Top="141.75" Width="94.5" Height="18.9" Text="Expedición" Font="Arial, 9pt, style=Bold"/>
+      <LineObject Name="Line1" Left="425.25" Top="160.65" Width="283.5"/>
+      <LineObject Name="Line2" Left="425.25" Top="179.55" Width="283.5"/>
+      <LineObject Name="Line3" Left="425.25" Top="198.45" Width="283.5"/>
+      <LineObject Name="Line4" Left="425.25" Top="217.35" Width="283.5"/>
+      <LineObject Name="Line5" Left="18.9" Top="264.6" Width="689.85"/>
+      <LineObject Name="Line6" Left="18.9" Top="283.5" Width="689.85"/>
+      <TextObject Name="Text47" Left="463.05" Top="245.7" Width="236.25" Height="18.9" Text="[REC_MASTER.PERSONARFC]"/>
+      <TextObject Name="Text64" Left="18.9" Top="245.7" Width="56.7" Height="18.9" Text="Nombre:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text65" Left="415.8" Top="245.7" Width="47.25" Height="18.9" Text="R.F.C.:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text66" Left="18.9" Top="264.6" Width="56.7" Height="18.9" Text="Dom. :" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text67" Left="415.8" Top="264.6" Width="56.7" Height="18.9" Text="Colonia:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text68" Left="189" Top="283.5" Width="37.8" Height="18.9" Text="Tel:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text69" Left="18.9" Top="283.5" Width="56.7" Height="18.9" Text="C. P. :" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text70" Left="359.1" Top="283.5" Width="56.7" Height="18.9" Text="Ciudad:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text71" Left="538.65" Top="283.5" Width="56.7" Height="18.9" Text="Estado:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text60" Left="415.8" Top="283.5" Width="122.85" Height="18.9" Text="[REC_MASTER.PERSONACIUDAD]" Font="Arial, 9pt"/>
+      <TextObject Name="Text72" Left="604.8" Top="283.5" Width="94.5" Height="18.9" Text="[REC_MASTER.PERSONAESTADO]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="315.85" Width="740.5" Height="66.15">
+      <TextObject Name="Text7" Left="132.3" Top="9.45" Width="567" Height="18.9" Text="[REC_MASTER.REFERENCIAS]"/>
+      <TextObject Name="Text73" Left="18.9" Top="9.45" Width="94.5" Height="18.9" Text="Concepto :" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text12" Top="37.8" Width="85.05" Height="28.35" Text="Fecha Elaboración" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text74" Left="85.05" Top="37.8" Width="85.05" Height="28.35" Text="Fecha Recepción" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text75" Left="179.55" Top="37.8" Width="151.2" Height="28.35" Text="Forma de pago" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text76" Left="340.2" Top="37.8" Width="113.4" Height="28.35" Text="Banco" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text77" Left="463.05" Top="37.8" Width="113.4" Height="28.35" Text="Referencia bancaria" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text78" Left="585.9" Top="37.8" Width="113.4" Height="28.35" Text="Importe" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="386" Width="740.5" Height="18.9" DataSource="Table1">
+      <TextObject Name="Text8" Width="75.6" Height="18.9" Text="[PAGO_DETAIL.FECHAELABORACION]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="85.05" Width="85.05" Height="18.9" Text="[PAGO_DETAIL.FECHARECEPCION]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text10" Left="585.9" Width="113.4" Height="18.9" Text="[PAGO_DETAIL.MONTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="340.2" Width="113.4" Height="18.9" Text="[PAGO_DETAIL.BANCO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="463.05" Width="113.4" Height="18.9" Text="[PAGO_DETAIL.REFERENCIABANCARIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text14" Left="179.55" Width="151.2" Height="18.9" Text="[PAGO_DETAIL.FORMAPAGO]" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="408.9" Width="740.5" Height="207.9">
+      <ShapeObject Name="Shape6" Left="500.85" Width="207.9" Height="66.15" Shape="RoundRectangle"/>
+      <ShapeObject Name="Shape7" Left="141.75" Top="66.15" Width="567" Height="94.5" Shape="RoundRectangle"/>
+      <ShapeObject Name="Shape5" Left="28.35" Top="160.65" Width="670.95" Height="47.25" Shape="RoundRectangle"/>
+      <TextObject Name="Text19" Left="604.8" Width="94.5" Height="18.9" Text="[REC_MASTER.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="604.8" Top="18.9" Width="94.5" Height="18.9" Text="[REC_MASTER.IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="604.8" Top="37.8" Width="94.5" Height="18.9" Text="[REC_MASTER.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text44" Left="264.6" Top="94.5" Width="94.5" Height="18.9" Text="[REC_MASTER.PAGOTARJETA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text45" Left="378" Top="94.5" Width="94.5" Height="18.9" Text="[REC_MASTER.PAGOCREDITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text46" Left="491.4" Top="94.5" Width="94.5" Height="18.9" Text="[REC_MASTER.PAGOCHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text48" Left="604.8" Top="94.5" Width="94.5" Height="18.9" Text="[REC_MASTER.PAGOEFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text49" Left="604.8" Top="132.3" Width="94.5" Height="18.9" Text="[REC_MASTER.CAMBIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text43" Left="37.8" Top="170.1" Width="652.05" Height="28.35" Text="[REC_MASTER.CUSTOMFOOTER]" Font="Arial, 9pt"/>
+      <TextObject Name="Text53" Left="510.3" Width="75.6" Height="18.9" Text="SubTotal" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text55" Left="510.3" Top="18.9" Width="75.6" Height="18.9" Text="Iva" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text56" Left="510.3" Top="37.8" Width="75.6" Height="18.9" Text="Total" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text57" Left="264.6" Top="75.6" Width="94.5" Height="18.9" Text="Tarjeta" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text58" Left="378" Top="75.6" Width="75.6" Height="18.9" Text="Credito" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text59" Left="491.4" Top="75.6" Width="75.6" Height="18.9" Text="Cheque" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text61" Left="604.8" Top="75.6" Width="94.5" Height="18.9" Text="Efectivo" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text62" Left="151.2" Top="75.6" Width="94.5" Height="18.9" Text="Pagos:" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text63" Left="604.8" Top="113.4" Width="94.5" Height="18.9" Text="Cambio:" Font="Arial, 9pt, style=Bold"/>
+      <LineObject Name="Line12" Left="500.85" Top="18.9" Width="207.9"/>
+      <LineObject Name="Line13" Left="500.85" Top="37.8" Width="207.9"/>
+      <LineObject Name="Line15" Left="141.75" Top="94.5" Width="567"/>
+      <LineObject Name="Line16" Left="141.75" Top="113.4" Width="567"/>
+      <LineObject Name="Line17" Left="595.35" Top="132.3" Width="113.4"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

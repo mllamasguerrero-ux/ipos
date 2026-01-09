@@ -1,0 +1,1 @@
+update parametro set tamanoletraticket = 0

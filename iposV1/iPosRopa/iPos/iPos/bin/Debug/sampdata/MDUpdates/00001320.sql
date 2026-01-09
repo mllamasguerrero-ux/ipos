@@ -1,0 +1,1 @@
+update docto set monedaid = 1;

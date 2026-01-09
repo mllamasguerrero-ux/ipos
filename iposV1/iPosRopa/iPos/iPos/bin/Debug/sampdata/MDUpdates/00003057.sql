@@ -1,0 +1,1 @@
+insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10053, 'Gastos editar de todos los cajeros');

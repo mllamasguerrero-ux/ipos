@@ -1,0 +1,527 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" StartReportEvent="_StartReport" ReportInfo.Created="09/23/2016 12:06:05" ReportInfo.Modified="03/05/2018 15:43:20" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+using System.IO;
+
+namespace FastReport
+{
+  public class ReportScript
+  {                                                          
+    private Image waterMarkImage;
+
+    private void Picture1_BeforePrint(object sender, EventArgs e)
+    {
+      Picture1.ImageLocation =  ((String)Report.GetParameterValue(&quot;logoEmpresa&quot;)).Replace(&quot;{BaseDirectory}&quot;, System.IO.Path.GetDirectoryName(Report.FileName ) + &quot;\\..\\..&quot; ) ;  
+                                                                                     
+    }
+    
+    
+    private void Picture2_BeforePrint(object sender, EventArgs e)
+    {
+      Picture2.ImageLocation = ((String)Report.GetParameterValue(&quot;imagenBicode&quot;)).Replace(&quot;{BaseDirectory}&quot;, System.IO.Path.GetDirectoryName(Report.FileName) + &quot;\\..\\..&quot;);
+    }  
+        
+
+    private void ReportSummary1_BeforePrint(object sender, EventArgs e)
+    {
+      float topCurrent = TextSubtotal.Top;
+      
+      bool bHideIva16 = (((String)Report.GetParameterValue(&quot;hideIva16&quot;)).Equals(&quot;True&quot;));  
+      bool bHideIva0 = (((String)Report.GetParameterValue(&quot;hideIva0&quot;)).Equals(&quot;True&quot;)); 
+      
+      topCurrent +=  !bHideIva16 ? TextIva16.Height : 0;
+      TextIva16.Top = topCurrent;
+      TextLabelIva16.Top = topCurrent;
+      topCurrent +=  !bHideIva0 ? TextIva0.Height : 0;
+      TextIva0.Top = topCurrent;
+      TextLabelIva0.Top = topCurrent;
+      
+      TextIva16.Visible = !bHideIva16; 
+      TextLabelIva16.Visible = !bHideIva16;
+      
+      TextIva0.Visible = !bHideIva0; 
+      TextLabelIva0.Visible = !bHideIva0;
+      
+      bool hideIvaRetenido = ((String)Report.GetParameterValue(&quot;hideIvaRetenido&quot;)).Equals(&quot;True&quot;);
+      bool hideIsrRetenido = ((String)Report.GetParameterValue(&quot;hideIsrRetenido&quot;)).Equals(&quot;True&quot;);
+      
+      topCurrent +=  !hideIvaRetenido ? TextIva16.Height : 0;
+      TextIvaRetenido.Top = topCurrent;
+      TextLabelIvaRetenido.Top = topCurrent;
+      topCurrent +=  !hideIsrRetenido ? TextIva0.Height : 0;
+      TextIsrRetenido.Top = topCurrent;
+      TextLabelIsrRetenido.Top = topCurrent;
+      
+      TextIvaRetenido.Visible = !hideIvaRetenido;
+      TextLabelIvaRetenido.Visible = !hideIvaRetenido;
+      
+      TextIsrRetenido.Visible = !hideIsrRetenido;
+      TextLabelIsrRetenido.Visible = !hideIsrRetenido;
+      
+      List&lt;TextObject&gt; labelFields = new List&lt;TextObject&gt;();
+      labelFields.Add(TextLabelIeps1);
+      labelFields.Add(TextLabelIeps2);
+      labelFields.Add(TextLabelIeps3);
+      labelFields.Add(TextLabelIeps4);
+      labelFields.Add(TextLabelIeps5);
+      labelFields.Add(TextLabelIeps6);
+      
+      List&lt;TextObject&gt; textFields = new List&lt;TextObject&gt;();
+      textFields.Add(TextIeps1);
+      textFields.Add(TextIeps2);
+      textFields.Add(TextIeps3);
+      textFields.Add(TextIeps4);
+      textFields.Add(TextIeps5);
+      textFields.Add(TextIeps6);
+      
+      
+      for(int i = 0; i &lt; 6; i++)
+      {
+        string hideIepsStr= &quot;hideIEPS&quot; + (i+1).ToString();
+        bool hideField = ((String)Report.GetParameterValue(hideIepsStr)).Equals(&quot;True&quot;);
+        
+        topCurrent += !hideField ? textFields[i].Height : 0;
+        
+        labelFields[i].Top = topCurrent;
+        textFields[i].Top = topCurrent;
+        labelFields[i].Visible = !hideField;
+        textFields[i].Visible = !hideField; 
+      }
+        
+      TextTotal.Top = topCurrent + TextTotal.Height; 
+      TextLabelTotal.Top = topCurrent + TextTotal.Height;
+      
+    }
+
+    private void Text16_BeforePrint(object sender, EventArgs e)
+    {
+      if(((String)Report.GetParameterValue(&quot;hideReciboHonorarios&quot;)).Equals(&quot;True&quot;))
+      {
+        Text16.Visible = false;
+      }
+    }
+
+    private void Text55_BeforePrint(object sender, EventArgs e)
+    {
+      
+      if(((String)Report.GetParameterValue(&quot;hideReciboHonorarios&quot;)).Equals(&quot;True&quot;))
+      {
+        Text55.Visible = false;
+      }
+    }
+
+    private void Text58_BeforePrint(object sender, EventArgs e)
+    {
+      if(((String)Report.GetParameterValue(&quot;hidePagare&quot;)).Equals(&quot;True&quot;))
+      {
+        Text58.Visible = false;
+      }
+    }
+
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+      
+      try{
+        
+      
+        Data1.Visible =((String)Report.GetParameterValue(&quot;desgloseKits&quot;)).Equals(&quot;True&quot;) &amp;&amp; ((Int64)Report.GetColumnValue(&quot;Table.KITMOVTOID&quot;)) &gt; 0;
+      }
+      catch(Exception Exception)
+      {
+        Data1.Visible = false;
+      }  
+    }
+
+    private void TextOrdenCompra_BeforePrint(object sender, EventArgs e)
+    {
+       
+    }
+
+    private void _StartReport(object sender, EventArgs e)
+    {
+      //Convertir base64 imagen y fijar a marca de agua
+      
+      string bgImage = (string)Report.GetParameterValue(&quot;bgImage&quot;);
+      
+      if(bgImage != &quot;&quot; &amp;&amp; bgImage != null)
+      {
+        byte[] imageBytes = Convert.FromBase64String(bgImage);
+      
+        using(MemoryStream ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
+        {
+          waterMarkImage = Image.FromStream(ms, true);
+        }
+      
+        Watermark waterMark = new Watermark();
+        waterMark.Enabled = true;
+        waterMark.Image = waterMarkImage;
+      
+        Page1.Watermark = waterMark;
+  }
+}
+
+    private void Text51_BeforePrint(object sender, EventArgs e)
+    {
+      if(((String)Report.GetParameterValue(&quot;hideDescuento&quot;)) == &quot;True&quot;)
+      {
+        Text51.Visible = false;
+      }
+      
+    }
+
+    private void Text79_BeforePrint(object sender, EventArgs e)
+    {
+      if(((String)Report.GetParameterValue(&quot;hideDescuento&quot;)) == &quot;True&quot;)
+      {
+        Text79.Visible = false;
+      }
+      else
+      {
+        if(((Decimal)Report.GetColumnValue(&quot;Table.DESCUENTOPORCENTAJE&quot;)) &lt; 0)
+        {
+          Text79.Text = &quot;0&quot;;
+        }
+      }
+      
+    }
+
+    private void Text60_BeforePrint(object sender, EventArgs e)
+    {
+      Text60.Visible = ((String)Report.GetParameterValue(&quot;hidePzaCaja&quot;)) == &quot;False&quot;;  
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9uo2aEWuQ5ZDQW5eN8kY9p0Q=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select rd.*, p.descripcion2, CASE WHEN @hidepzacaja &lt;&gt; 'True' then rd.DESCPZACAJA else cast(RD.cantidad as varchar(100)) end as CANTIDADFACTURA,&#13;&#10;case when coalesce(plazo.comisionista,'N') = 'S' then coalesce(plazo.leyenda,'') else '' end leyendaplazo&#13;&#10;&#13;&#10;from REP_FACTURAELECTRONICA_DET(@doctoId, @desgloseKits) rd left join producto p on p.id = rd.productoid&#13;&#10;&#13;&#10;    left join MOVTO MKITREF ON MKITREF.ID = RD.KITMOVTOID&#13;&#10;        left JOIN PRODUCTO PKITREF ON MKITREF.productoid = PKITREF.ID&#13;&#10;  left JOIN PARAMETRO ON 1 = 1&#13;&#10;left join DOCTO on docto.id = @doctoId&#13;&#10;left join plazo on plazo.id = docto.plazoid">
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="PRECIOLISTA" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOPORCENTAJE" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="CAJAS" DataType="System.Decimal"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="ESKIT" DataType="System.String"/>
+        <Column Name="NUMERO" DataType="System.Int32"/>
+        <Column Name="TURNOCLAVE" DataType="System.String"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="SUCURSALT" DataType="System.String"/>
+        <Column Name="TIPODOC" DataType="System.String"/>
+        <Column Name="PORCENTAJEIVA" DataType="System.Decimal"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO1" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO2" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO3" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO4" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO5" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO6" DataType="System.String"/>
+        <Column Name="PRODUCTONUMERO1" DataType="System.Decimal"/>
+        <Column Name="PRODUCTONUMERO2" DataType="System.Decimal"/>
+        <Column Name="PRODUCTONUMERO3" DataType="System.Decimal"/>
+        <Column Name="PRODUCTONUMERO4" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOFECHA1" DataType="System.DateTime"/>
+        <Column Name="PRODUCTOFECHA2" DataType="System.DateTime"/>
+        <Column Name="CUENTAPREDIAL" DataType="System.String"/>
+        <Column Name="PIEZASSUELTAS" DataType="System.Decimal"/>
+        <Column Name="PORCENTAJEIEPS" DataType="System.Decimal"/>
+        <Column Name="ESPARTEKIT" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="MOVTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="DOCTOKITREFID" DataType="System.Int64"/>
+        <Column Name="MOVTOREFID" DataType="System.Int64"/>
+        <Column Name="KITMOVTOID" DataType="System.Int64"/>
+        <Column Name="KITPRODCLAVE" DataType="System.String"/>
+        <Column Name="KITPRODNOMBRE" DataType="System.String"/>
+        <Column Name="KITPRECIOLISTA" DataType="System.Decimal"/>
+        <Column Name="KITPRECIO" DataType="System.Decimal"/>
+        <Column Name="KITTASAIVA" DataType="System.Decimal"/>
+        <Column Name="KITTASAIEPS" DataType="System.Decimal"/>
+        <Column Name="KITIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="KITIVA" DataType="System.Decimal"/>
+        <Column Name="KITIEPS" DataType="System.Decimal"/>
+        <Column Name="KITSUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="KITTOTAL" DataType="System.Decimal"/>
+        <Column Name="KITCANTIDAD" DataType="System.Decimal"/>
+        <Column Name="KITDESCPZACAJA" DataType="System.String"/>
+        <Column Name="DESCPZACAJA" DataType="System.String"/>
+        <Column Name="STRPEDIMENTO" DataType="System.String"/>
+        <Column Name="KITPRODUCTOID" DataType="System.Int64"/>
+        <Column Name="KITPRODDESCRIPCION1" DataType="System.String"/>
+        <Column Name="KITTASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="SAT_CLAVEPRODSERV" DataType="System.String"/>
+        <Column Name="SAT_CLAVEUNIDAD" DataType="System.String"/>
+        <Column Name="SAT_DESCRIPCIONUNIDAD" DataType="System.String"/>
+        <Column Name="IVARETENIDO" DataType="System.Decimal"/>
+        <Column Name="ISRRETENIDO" DataType="System.Decimal"/>
+        <Column Name="SAT_NOMBRE_UNIDAD" DataType="System.String"/>
+        <Column Name="SAT_IVATRASLADADO_CONC" DataType="System.String"/>
+        <Column Name="SAT_IEPSTRASLADADO_CONC" DataType="System.String"/>
+        <Column Name="PLAZOCLAVE" DataType="System.String"/>
+        <Column Name="CANTIDADFACTURA" DataType="System.String"/>
+        <Column Name="LEYENDAPLAZO" DataType="System.String"/>
+        <CommandParameter Name="doctoId" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+        <CommandParameter Name="desgloseKits" DataType="16" Expression="[desgloseKits]" DefaultValue="N"/>
+        <CommandParameter Name="hidepzacaja" DataType="16" Expression="[hidePzaCaja]" DefaultValue="S"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Sumatorias" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 (CASE WHEN (docto.tipodoctoid in  (41)) THEN cast(movto.cantidadsurtida as numeric(18,3)) ELSE cast(movto.cantidad as numeric(18,3)) END )&#13;&#10;           &#13;&#10;            else&#13;&#10;                0.00&#13;&#10;&#13;&#10;        end)  KILOGRAMOS,&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 0.00&#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 0.00&#13;&#10;            else&#13;&#10;                trunc(coalesce(     (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END   )   ,0)/coalesce(producto.pzacaja,1))&#13;&#10;        end )  CAJAS ,&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 0.00&#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END )&#13;&#10;            else&#13;&#10;                mod(coalesce(    (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END )   ,0),coalesce(producto.pzacaja,1))&#13;&#10;        end ) PIEZAS&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;        FROM&#13;&#10;        docto&#13;&#10;        left join MOVTO on docto.id = movto.doctoid&#13;&#10;        left JOIN PRODUCTO ON MOVTO.productoid = PRODUCTO.ID&#13;&#10;        left join parametro on 1 = 1&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;where docto.id = @doctoid">
+        <Column Name="KILOGRAMOS" DataType="System.Decimal"/>
+        <Column Name="CAJAS" DataType="System.Decimal"/>
+        <Column Name="PIEZAS" DataType="System.Decimal"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="num_serie_cert_csd" DataType="System.String"/>
+    <Parameter Name="uuid" DataType="System.String"/>
+    <Parameter Name="FechaTimbrado" DataType="System.String"/>
+    <Parameter Name="noCertificadoSAT" DataType="System.String"/>
+    <Parameter Name="selloCFD" DataType="System.String"/>
+    <Parameter Name="selloSAT" DataType="System.String"/>
+    <Parameter Name="subTotal" DataType="System.String"/>
+    <Parameter Name="iva" DataType="System.String"/>
+    <Parameter Name="Total" DataType="System.String"/>
+    <Parameter Name="clienteClave" DataType="System.String"/>
+    <Parameter Name="sucursal" DataType="System.String"/>
+    <Parameter Name="fechaVencimiento" DataType="System.String"/>
+    <Parameter Name="serie" DataType="System.String"/>
+    <Parameter Name="ventaFolio" DataType="System.String"/>
+    <Parameter Name="metodoPago" DataType="System.String"/>
+    <Parameter Name="cuentaPago" DataType="System.String"/>
+    <Parameter Name="clienteNombre" DataType="System.String"/>
+    <Parameter Name="clienteDireccion" DataType="System.String"/>
+    <Parameter Name="clienteColonia" DataType="System.String"/>
+    <Parameter Name="clienteMunicipio" DataType="System.String"/>
+    <Parameter Name="clienteCodigoPostal" DataType="System.String"/>
+    <Parameter Name="clienteEstado" DataType="System.String"/>
+    <Parameter Name="clienteRFC" DataType="System.String"/>
+    <Parameter Name="expedicionDireccion" DataType="System.String"/>
+    <Parameter Name="expedicionColonia" DataType="System.String"/>
+    <Parameter Name="expedicionMunicipio" DataType="System.String"/>
+    <Parameter Name="expedicionCodigoPostal" DataType="System.String"/>
+    <Parameter Name="expedicionEstado" DataType="System.String"/>
+    <Parameter Name="fiscalDireccion" DataType="System.String"/>
+    <Parameter Name="fiscalColonia" DataType="System.String"/>
+    <Parameter Name="fiscalMunicipio" DataType="System.String"/>
+    <Parameter Name="fiscalCodigoPostal" DataType="System.String"/>
+    <Parameter Name="fiscalEstado" DataType="System.String"/>
+    <Parameter Name="totalEnLetras" DataType="System.String"/>
+    <Parameter Name="fiscalRFC" DataType="System.String"/>
+    <Parameter Name="expedicionRFC" DataType="System.String"/>
+    <Parameter Name="cadenaOriginalSAT" DataType="System.String"/>
+    <Parameter Name="imagenBicode" DataType="System.String"/>
+    <Parameter Name="nombreFiscal" DataType="System.String"/>
+    <Parameter Name="hidePagare" DataType="System.String"/>
+    <Parameter Name="hideIva0" DataType="System.String"/>
+    <Parameter Name="hideIva16" DataType="System.String"/>
+    <Parameter Name="folioFactElec" DataType="System.String"/>
+    <Parameter Name="logoEmpresa" DataType="System.String"/>
+    <Parameter Name="tipoDocumento" DataType="System.String"/>
+    <Parameter Name="entregaDireccion" DataType="System.String"/>
+    <Parameter Name="entregaColonia" DataType="System.String"/>
+    <Parameter Name="entregaMunicipio" DataType="System.String"/>
+    <Parameter Name="entregaCodigoPostal" DataType="System.String"/>
+    <Parameter Name="entregaEstado" DataType="System.String"/>
+    <Parameter Name="entregaRFC" DataType="System.String"/>
+    <Parameter Name="regimenFiscal" DataType="System.String"/>
+    <Parameter Name="ivaRetenido" DataType="System.String"/>
+    <Parameter Name="isrRetenido" DataType="System.String"/>
+    <Parameter Name="hideIvaRetenido" DataType="System.String"/>
+    <Parameter Name="hideIsrRetenido" DataType="System.String"/>
+    <Parameter Name="hideReciboHonorarios" DataType="System.String"/>
+    <Parameter Name="tipoRecibo" DataType="System.String"/>
+    <Parameter Name="hideDatosEntrega" DataType="System.String"/>
+    <Parameter Name="hideDescuento" DataType="System.String"/>
+    <Parameter Name="hideCtaPredial" DataType="System.String"/>
+    <Parameter Name="vendedorcliente" DataType="System.String"/>
+    <Parameter Name="hidePzaCaja" DataType="System.String"/>
+    <Parameter Name="moneda" DataType="System.String"/>
+    <Parameter Name="hideIEPSDetalle" DataType="System.String"/>
+    <Parameter Name="hideIEPS1" DataType="System.String"/>
+    <Parameter Name="porcIEPS1" DataType="System.String"/>
+    <Parameter Name="IEPS1" DataType="System.String"/>
+    <Parameter Name="porcIEPS2" DataType="System.String"/>
+    <Parameter Name="IEPS2" DataType="System.String"/>
+    <Parameter Name="hideIEPS3" DataType="System.String"/>
+    <Parameter Name="porcIEPS3" DataType="System.String"/>
+    <Parameter Name="IEPS3" DataType="System.String"/>
+    <Parameter Name="hideIEPS4" DataType="System.String"/>
+    <Parameter Name="porcIEPS4" DataType="System.String"/>
+    <Parameter Name="IEPS4" DataType="System.String"/>
+    <Parameter Name="hideIEPS5" DataType="System.String"/>
+    <Parameter Name="porcIEPS5" DataType="System.String"/>
+    <Parameter Name="IEPS5" DataType="System.String"/>
+    <Parameter Name="hideIEPS6" DataType="System.String"/>
+    <Parameter Name="porcIEPS6" DataType="System.String"/>
+    <Parameter Name="IEPS6" DataType="System.String"/>
+    <Parameter Name="clienteDesglosaIEPS" DataType="System.String"/>
+    <Parameter Name="empresaDesglosaIEPS" DataType="System.String"/>
+    <Parameter Name="notaPago" DataType="System.String"/>
+    <Parameter Name="tipoCambioTexto" DataType="System.String"/>
+    <Parameter Name="clientePais" DataType="System.String"/>
+    <Parameter Name="entregaPais" DataType="System.String"/>
+    <Parameter Name="foliopadre" DataType="System.String"/>
+    <Parameter Name="desgloseKits" DataType="System.String"/>
+    <Parameter Name="formaPago" DataType="System.String"/>
+    <Parameter Name="bgImage" DataType="System.String"/>
+    <Parameter Name="clienteLocalidad" DataType="System.String"/>
+    <Parameter Name="clienteReferenciaDom" DataType="System.String"/>
+    <Parameter Name="doctoId" DataType="System.Decimal"/>
+    <Parameter Name="hideIEPS2" DataType="System.String"/>
+    <Parameter Name="rutaEmbarque" DataType="System.String"/>
+    <Parameter Name="ordenCompra" DataType="System.String"/>
+    <Parameter Name="textoFooter" DataType="System.String"/>
+    <Parameter Name="cajas" DataType="System.String"/>
+    <Parameter Name="piezas" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" FirstPageSource="15" OtherPagesSource="15" Guides="737.1" Border.Lines="All">
+    <PageHeaderBand Name="PageHeader1" Width="740.5" Height="362.88">
+      <TextObject Name="Text44" Left="5.45" Top="347.65" Width="69.65" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="PRODUCTO" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text45" Left="75.15" Top="347.65" Width="64.69" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="CANTIDAD" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text46" Left="140.3" Top="347.65" Width="35" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="U.M." VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text47" Left="174.65" Top="347.65" Width="203.36" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="DESCRIPCION" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text48" Left="378" Top="347.65" Width="37.41" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="%IEPS" VertAlign="Center" Font="Arial, 6pt"/>
+      <TextObject Name="Text49" Left="414.8" Top="347.65" Width="37.41" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="%IVA" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text50" Left="451.6" Top="347.65" Width="61.43" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="PRECIO" HorzAlign="Center" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text51" Left="513.3" Top="347.65" Width="37.41" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" BeforePrintEvent="Text51_BeforePrint" Text="%DES" VertAlign="Center" Font="Arial, 5pt"/>
+      <TextObject Name="Text52" Left="551.1" Top="347.65" Width="52.24" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="PRE. D/I" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text53" Left="602.81" Top="347.65" Width="64.29" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="IMPORTE" HorzAlign="Center" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text54" Left="667.36" Top="347.65" Width="64.29" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="TOTAL" HorzAlign="Right" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text42" Left="5.45" Top="237.25" Width="359.1" Height="106.79" Border.Lines="All" Fill.Color="WhiteSmoke" Text="[clienteNombre]&#13;&#10;&#13;&#10;[clienteDireccion]&#13;&#10;[clienteColonia]&#13;&#10;[clienteMunicipio]&#13;&#10;[clienteCodigoPostal], [clienteEstado], [clientePais]&#13;&#10;[clienteRFC]&#13;&#10;[clienteLocalidad]  [clienteReferenciaDom]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text43" Left="368.88" Top="237.25" Width="364.39" Height="106.79" Border.Lines="All" Fill.Color="WhiteSmoke" Text="&#13;&#10;[entregaDireccion]&#13;&#10;[entregaColonia]&#13;&#10;[entregaMunicipio]&#13;&#10;[entregaCodigoPostal], [entregaEstado], [entregaPais]&#13;&#10;[entregaRFC]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text40" Left="5.45" Top="224.91" Width="359.1" Height="12.48" Border.Lines="All" Fill.Color="SkyBlue" Text="DATOS DEL CLIENTE:" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text41" Left="368.93" Top="224.91" Width="364.39" Height="12.48" Border.Lines="All" Fill.Color="SkyBlue" Text="LUGAR DE ENTREGA:" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text22" Left="5" Top="208.35" Width="93.13" Height="13.01" Border.Lines="All" Text="Cliente: [clienteClave]" Font="Arial, 7pt"/>
+      <TextObject Name="Text34" Left="102.95" Top="208.9" Width="262.52" Height="13.01" Border.Lines="All" Text="Vend: [vendedorcliente]" Font="Arial, 7pt"/>
+      <TextObject Name="Text35" Left="368.55" Top="208.9" Width="114.68" Height="13.01" Border.Lines="All" Text="Vence:[fechaVencimiento]" Font="Arial, 7pt"/>
+      <TextObject Name="Text36" Left="485.95" Top="208.9" Width="74.01" Height="13.01" Border.Lines="All" Text="Serie:[serie]" Font="Arial, 7pt"/>
+      <TextObject Name="Text37" Left="563" Top="208.9" Width="82.54" Height="13.01" Border.Lines="All" Text="Vta: [ventaFolio]" Font="Arial, 7pt"/>
+      <TextObject Name="Text39" Left="650.49" Top="207" Width="83.16" Height="12.96" Border.Lines="All" Text="[cuentaPago]" Font="Arial, 7pt"/>
+      <TextObject Name="Text38" Left="650.41" Top="194" Width="83.16" Height="12.96" Border.Lines="All" Text="CUENTA PAGO" Font="Arial, 7pt"/>
+      <TextObject Name="Text21" Left="5" Top="192.45" Width="93.13" Height="12.96" Border.Lines="All" Text="[moneda]" Font="Arial, 7pt"/>
+      <TextObject Name="Text24" Left="102.95" Top="192.45" Width="147.8" Height="12.96" Border.Lines="All" Text="[noCertificadoSAT]" VertAlign="Center" Font="Arial, 6pt"/>
+      <TextObject Name="Text26" Left="253.6" Top="192.45" Width="183.71" Height="12.96" Border.Lines="All" Text="[uuid]" VertAlign="Center" Font="Arial, 6pt"/>
+      <TextObject Name="Text28" Left="439.15" Top="192.45" Width="151.96" Height="12.96" Border.Lines="All" Text="[FechaTimbrado]" Font="Arial, 7pt"/>
+      <TextObject Name="Text30" Left="593.72" Top="192.45" Width="50.89" Height="12.96" Border.Lines="All" Text="[folioFactElec]" Font="Arial, 7pt"/>
+      <TextObject Name="Text20" Left="5" Top="180" Width="93.13" Height="12.48" Border.Lines="All" Text="MONEDA" Font="Arial, 7pt"/>
+      <TextObject Name="Text23" Left="102.95" Top="180" Width="147.71" Height="12.48" Border.Lines="All" Text="NO DE SERIE DEL CERTIFICADO DEL SAT" VertAlign="Center" WordWrap="false" Font="Arial, 5pt"/>
+      <TextObject Name="Text25" Left="253.6" Top="180" Width="183.84" Height="12.48" Border.Lines="All" Text="FOLIO FISCAL" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text27" Left="439.15" Top="180" Width="152" Height="12.48" Border.Lines="All" Text="FECHA Y HORA DE CERTIFICACION" VertAlign="Center" Font="Arial, 5pt"/>
+      <TextObject Name="Text29" Left="593.72" Top="180" Width="50.89" Height="12.48" Border.Lines="All" Text="[tipoDocumento]" Font="Arial, 7pt"/>
+      <TextObject Name="Text19" Left="104.4" Top="163.3" Width="283.48" Height="13.44" Border.Lines="All" Text="[num_serie_cert_csd]" HorzAlign="Center" VertAlign="Center" Font="Arial, 6pt"/>
+      <TextObject Name="Text18" Left="104.4" Top="156.11" Width="283.48" Height="7" Border.Lines="All" Text="# DE SERIE DEL CERTIFICADO DEL CSD" HorzAlign="Center" Font="Arial, 5pt"/>
+      <TextObject Name="Text31" Left="6" Top="151.65" Width="92.59" Height="19.99" Text="[tipoCambioTexto]" Font="Arial, 7pt"/>
+      <TextObject Name="Text33" Left="650.54" Top="151.96" Width="83.16" Height="37.8" Border.Lines="All" Text="[metodoPago]" Font="Arial, 5pt, style=Bold"/>
+      <TextObject Name="Text32" Left="650.54" Top="137.97" Width="83.16" Height="14.04" Border.Lines="All" Text="METODO DE PAGO" VertAlign="Center" Font="Arial, 6pt"/>
+      <PictureObject Name="Picture2" Left="612.28" Top="9.45" Width="124.82" Height="124.82" BeforePrintEvent="Picture2_BeforePrint"/>
+      <PictureObject Name="Picture1" Left="9.45" Top="9.45" Width="167.02" Height="107.73" BeforePrintEvent="Picture1_BeforePrint"/>
+      <TextObject Name="Text16" Left="179.55" Top="133.3" Width="138.26" Height="13.44" Border.Lines="All" BeforePrintEvent="Text16_BeforePrint" Text="[tipoRecibo]" Font="Arial, 7pt"/>
+      <TextObject Name="Text105" Left="387.45" Top="132.3" Width="207.9" Height="9.45" Text="[rutaEmbarque]" Font="Arial, 7pt"/>
+      <TextObject Name="Text8" Left="179.55" Top="116.85" Width="207.9" Height="9.45" Text="[fiscalRFC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text13" Left="387.45" Top="116.85" Width="207.9" Height="9.45" Text="[expedicionRFC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text6" Left="179.55" Top="85.05" Width="207.9" Height="9.45" Text="[fiscalMunicipio]" Font="Arial, 7pt"/>
+      <TextObject Name="Text7" Left="179.55" Top="99.95" Width="207.9" Height="9.45" Text="[fiscalCodigoPostal], [fiscalEstado], México" Font="Arial, 7pt"/>
+      <TextObject Name="Text11" Left="387.45" Top="85.05" Width="207.9" Height="9.45" Text="[expedicionMunicipio]" Font="Arial, 7pt"/>
+      <TextObject Name="Text12" Left="387.45" Top="99.05" Width="207.9" Height="9.45" Text="[fiscalCodigoPostal], [expedicionMunicipio]," Font="Arial, 7pt"/>
+      <TextObject Name="Text2" Left="179.55" Top="71.6" Width="207.9" Height="9.45" Text="[fiscalColonia]" Font="Arial, 7pt"/>
+      <TextObject Name="Text10" Left="387.45" Top="71.15" Width="207.9" Height="9.45" Text="[expedicionColonia]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="179.55" Top="56.7" Width="206.69" Height="9.45" Text="[fiscalDireccion]" Font="Arial, 7pt"/>
+      <TextObject Name="Text9" Left="387.45" Top="56.7" Width="206.69" Height="9.45" Text="[expedicionDireccion]" Font="Arial, 7pt"/>
+      <TextObject Name="Text3" Left="387.45" Top="37.8" Width="206.69" Height="18.9" Text="LUGAR DE EXPEDICION" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text4" Left="179.55" Top="37.8" Width="206.69" Height="18.9" Text="LUGAR DE EXPEDICION" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text1" Left="179.55" Top="9.45" Width="422.58" Height="19" Text="[nombreFiscal]" Font="Arial, 11pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="366.88" Width="740.5" Condition="[Table.DOCTOFOLIO]">
+      <GroupHeaderBand Name="GroupHeader2" Top="370.88" Width="740.5" Height="9.45" CanGrow="true" Condition="[Table.MOVTOID]">
+        <TextObject Name="Text68" Left="176.9" Width="199.96" Height="9.45" CanGrow="true" Text="[Table.PRODUCTODESCRIPCION]  [IIf([Table.CUENTAPREDIAL] != &quot;&quot;&amp;&amp; [hideCtaPredial] != &quot;True&quot; ,&quot;Cta. Predial: &quot; + [Table.CUENTAPREDIAL],&quot;&quot;)]  [IIf([Table.PRODUCTOTEXTO1] != &quot;&quot;,[Table.PRODUCTOTEXTO1],&quot;&quot;)]&#13;&#10;[Table.DESCRIPCION2] [Table.STRPEDIMENTO]" Font="Arial, 6pt"/>
+        <TextObject Name="Text69" Left="6.45" Width="68.8" Height="9.45" Text="[Table.PRODUCTOCLAVE]" Font="Arial, 6pt"/>
+        <TextObject Name="Text75" Left="378" Width="37.8" Height="9.45" Text="[Table.PORCENTAJEIEPS]" HorzAlign="Right" Font="Arial, 6pt"/>
+        <TextObject Name="Text77" Left="415.8" Width="37.8" Height="9.45" Text="[Table.PORCENTAJEIVA]" HorzAlign="Right" Font="Arial, 6pt"/>
+        <TextObject Name="Text79" Left="513.3" Width="37.8" Height="9.45" BeforePrintEvent="Text79_BeforePrint" Text="[Table.DESCUENTOPORCENTAJE]" HorzAlign="Right" Font="Arial, 6pt"/>
+        <TextObject Name="Text81" Left="667.05" Width="64.26" Height="9.45" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 6pt"/>
+        <TextObject Name="Text83" Left="453.6" Width="58.59" Height="9.45" Text="[IIf([clienteDesglosaIEPS] == &quot;True&quot; &amp;&amp; [empresaDesglosaIEPS] == &quot;True&quot;,IIf([hideDescuento] != &quot;True&quot;,[Table.PRECIOLISTA],[Table.PRECIO]),IIf([hideDescuento] != &quot;True&quot; &amp;&amp; [Table.DESCUENTOPORCENTAJE] &gt;= 0 ,[Table.PRECIOLISTA]*(1+([Table.PORCENTAJEIEPS]/100)),[Table.PRECIO]*(1+([Table.PORCENTAJEIEPS]/100))))]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text87" Left="604.8" Width="60.48" Height="9.45" Text="[IIf([clienteDesglosaIEPS] == &quot;True&quot; &amp;&amp; [empresaDesglosaIEPS] == &quot;True&quot;,[Table.SUBTOTAL],[Table.SUBTOTAL]+[Table.IEPS])]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text71" Left="75.6" Width="64.26" Height="9.45" Text="[Table.CANTIDADFACTURA]" Format="Number" Format.UseLocale="true" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text104" Left="139.86" Width="35.91" Height="9.45" Text="[Table.UNIDAD]" Font="Arial, 6pt"/>
+        <TextObject Name="Text106" Left="548.1" Width="58.59" Height="9.45" Text="[IIf([clienteDesglosaIEPS] == &quot;True&quot; &amp;&amp; [empresaDesglosaIEPS] == &quot;True&quot;,[Table.PRECIO],[Table.PRECIO]*(1+([Table.PORCENTAJEIEPS]/100)))]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+        <DataBand Name="Data1" Top="384.33" Width="740.5" Height="9.83" CanGrow="true" BeforePrintEvent="Data1_BeforePrint" DataSource="Table">
+          <TextObject Name="Text15" Left="75.6" Width="64.26" Height="9.45" Text="[Table.KITDESCPZACAJA]" Font="Arial, 6pt, style=Italic"/>
+          <TextObject Name="Text17" Left="6.43" Width="68.8" Height="9.45" Text="[Table.KITPRODCLAVE]" Font="Arial, 6pt, style=Italic"/>
+          <TextObject Name="Text59" Left="176.9" Width="199.96" Height="9.45" Text="[Table.KITPRODDESCRIPCION1]" Font="Arial, 6pt, style=Italic"/>
+        </DataBand>
+        <GroupFooterBand Name="GroupFooter2" Top="398.16" Width="740.5" Visible="false"/>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="402.16" Width="740.5" Height="141.81">
+        <TextObject Name="Text103" Left="18.9" Top="113.4" Width="718.2" Height="28.41" Border.Lines="All" Border.Style="Dash" Text="[selloCFD]" Font="Arial, 6pt"/>
+        <TextObject Name="Text102" Left="18.9" Top="94.5" Width="718.2" Height="18.96" Border.Lines="All" Border.Style="Dash" Text="SELLO DIGITAL DEL CFDI" Font="Arial, 6pt"/>
+        <TextObject Name="Text100" Left="18.9" Top="47.25" Width="718.2" Height="18.96" Border.Lines="All" Border.Style="Dash" Text="SELLO DEL SAT" Font="Arial, 6pt"/>
+        <TextObject Name="Text101" Left="18.9" Top="66.15" Width="718.2" Height="28.41" Border.Lines="All" Border.Style="Dash" Text="[selloSAT]" Font="Arial, 6pt"/>
+        <TextObject Name="Text99" Left="18.9" Top="18.9" Width="718.2" Height="28.41" Border.Lines="All" Border.Style="Dash" Text="[cadenaOriginalSAT]" Font="Arial, 6pt"/>
+        <TextObject Name="Text66" Left="18.9" Width="718.2" Height="18.96" Border.Lines="All" Border.Style="Dash" Text="CADENA ORIGINAL DEL COMPLEMENTO DE CERTIFICACIÓN DIGITAL DEL SAT" Font="Arial, 6pt"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="547.97" Width="740.5" Height="330.73" BeforePrintEvent="ReportSummary1_BeforePrint">
+      <ShapeObject Name="Shape2" Left="2" Top="18.9" Width="729.54" Height="13.44" Border.Color="Transparent"/>
+      <ShapeObject Name="Shape3" Left="1.33" Top="18.9" Width="733.32" Height="207.88"/>
+      <TextObject Name="TextLabelIeps6" Left="457.05" Top="152.65" Width="125.12" Height="13.44" Border.Lines="All" Text="I.E.P.S. [porcIEPS6]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIeps4" Left="456.6" Top="125.75" Width="125.12" Height="13.44" Border.Lines="All" Text="I.E.P.S. [porcIEPS4]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIeps3" Left="457.05" Top="112.3" Width="125.12" Height="13.44" Border.Lines="All" Text="I.E.P.S. [porcIEPS3]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIeps2" Left="457.05" Top="99.4" Width="125.12" Height="13.44" Border.Lines="All" Text="I.E.P.S. [porcIEPS2]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="Text55" Left="8.45" Top="26.8" Width="441.3" Height="26.88" Border.Lines="All" BeforePrintEvent="Text55_BeforePrint" Text="Impuesto retenido de conformidad con los artículos 1-A y 3, tercer párrafo de la ley del Impuesto al Valor Agregado" HorzAlign="Center" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text56" Left="8.45" Top="60.6" Width="441.3" Height="10.56" Border.Lines="All" Text="IMPORTE EN LETRAS" Font="Arial, 7pt"/>
+      <TextObject Name="Text57" Left="8.45" Top="71.05" Width="441.3" Height="24.3" Border.Lines="All" Text="[totalEnLetras]" Font="Arial, 7pt"/>
+      <TextObject Name="Text58" Left="8.45" Top="101.4" Width="441.3" Height="116.29" Border.Lines="All" Border.LeftLine.Style="Dash" Border.RightLine.Style="Dash" BeforePrintEvent="Text58_BeforePrint" Text="[expedicionMunicipio], [expedicionEstado]  DEBO Y PAGARE INCONDICIONALMENTE A LA ORDEN DE [nombreFiscal]&#13;&#10;&#13;&#10;                           ________________________________________&#13;&#10;EN [expedicionMunicipio], [expedicionEstado] O EN CUALQUIER PARTE REQUERIDA EL DIA [fechaVencimiento]&#13;&#10;LA CANTIDAD DE : $[Total] [totalEnLetras]&#13;&#10;ESTE PAGARE ES MERCANTIL Y ESTA REGUIDO POR LA LEY GENERAL DE TITULOS Y OPREACIONES DE CREDITO &#13;&#10;EN SU ARTICULO 173 PARTE FINAL Y CORRELATIVA, QUEDO CONVENIDO QUE SI NO ES PAGADA A SU VENCIMIENTO CAUSARA INTERESES MORATORIOS A RAZON DEL 7.5% MENSUAL" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIva16" Left="456.6" Top="32.25" Width="125.12" Height="13.44" Border.Lines="All" Text="I.V.A. 16 %" Font="Arial, 7pt"/>
+      <TextObject Name="TextIva16" Left="582.01" Top="32.25" Width="143.64" Height="13.44" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[iva]" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIva0" Left="456.6" Top="46.15" Width="125.12" Height="13.44" Border.Lines="All" Text="I.V.A. 0%" HideValue="0" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIvaRetenido" Left="456.6" Top="60.15" Width="125.12" Height="13.44" Border.Lines="All" Text="I.V.A. RETENIDO" HideValue="0" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIsrRetenido" Left="456.6" Top="73.5" Width="125.12" Height="13.44" Border.Lines="All" Text="I.S.R. RETENIDO" HideValue="0" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIeps1" Left="456.6" Top="86.5" Width="125.12" Height="13.44" Border.Lines="All" Text="I.E.P.S. [porcIEPS1]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelSubtotal" Left="457.05" Top="19.35" Width="124.82" Height="13.44" Border.Lines="All" Text="SUBTOTAL" Font="Arial, 7pt"/>
+      <TextObject Name="TextSubtotal" Left="581.9" Top="19.35" Width="143.64" Height="13.44" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[subTotal]" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIeps5" Left="457.05" Top="139.2" Width="125.12" Height="13.44" Border.Lines="All" Text="I.E.P.S. [porcIEPS5]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelTotal" Left="456.6" Top="166.1" Width="125.12" Height="13.44" Border.Lines="All" Text="TOTAL" Font="Arial, 7pt"/>
+      <TextObject Name="Text85" Left="3.45" Top="229.35" Width="443.27" Height="45.67" Border.Lines="All" Border.Style="Dash" Text="FORMA DE PAGO: [formaPago]&#13;&#10;REGIMEN TRIBUTARIO: [regimenFiscal]&#13;&#10;ESTE DOCUMENTO ES UNA REPRESENTACION IMPRESA DE UN CFDI" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text86" Left="451.6" Top="229.8" Width="285.5" Height="45.74" Border.Lines="All" Border.Style="Dash" Text="[notaPago]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextIva0" Left="582.11" Top="45.25" Width="143.64" Height="14.36" Border.Lines="All" Border.RightLine.Style="Dash" Text="$0.00" HideZeros="true" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIvaRetenido" Left="582.01" Top="59.7" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[ivaRetenido]" HideZeros="true" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIsrRetenido" Left="582.01" Top="73.6" Width="143.64" Height="13.44" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[isrRetenido]" HideZeros="true" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps1" Left="582.01" Top="87.05" Width="143.64" Height="12.85" Border.Lines="All" Border.RightLine.Style="Dash" BeforePrintEvent="Text92_BeforePrint" Text="$[IEPS1]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps2" Left="582.01" Top="99.95" Width="143.64" Height="12.85" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[IEPS2]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps3" Left="582.01" Top="112.4" Width="143.64" Height="12.85" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[IEPS3]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps4" Left="582.01" Top="125.85" Width="143.64" Height="12.85" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[IEPS4]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps5" Left="582.01" Top="138.75" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[IEPS5]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps6" Left="582.01" Top="153.2" Width="143.64" Height="12.85" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[IEPS6]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextTotal" Left="582.01" Top="165.65" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[Total]" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextOrdenCompra" Left="463.05" Top="198.45" Width="255.15" Height="18.9" BeforePrintEvent="TextOrdenCompra_BeforePrint" Text="[ordenCompra]" Font="Arial, 8pt"/>
+      <TextObject Name="Text107" Left="0.88" Top="274.05" Width="736.22" Height="55.12" Border.Lines="All" Border.Style="Dash" Text="[Table.LEYENDAPLAZO] [textoFooter]" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text60" Left="18.9" Width="255.15" Height="18.9" BeforePrintEvent="Text60_BeforePrint" Text="Cajas: [cajas] Piezas: [piezas] " Format="Currency" Format.UseLocale="true" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="882.7" Width="740.5" Height="18.9">
+      <TextObject Name="Text64" Left="567" Width="170.1" Height="18.9" Text="[Page#] DE [TotalPages#]"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

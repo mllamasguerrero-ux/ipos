@@ -1,0 +1,64 @@
+create or alter procedure DEVOLUCIONVENTA_POSTINICIO (
+    DOCTOID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable TIPODOCTOID D_FK;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable DOCTOREFID D_FK;
+declare variable SUBTIPODOCTOID D_FK;
+declare variable TIMBRADOFORMAPAGOSAT D_STDTEXT_SHORT;
+BEGIN
+
+   IF ((:DOCTOID IS NULL) OR (:DOCTOID = 0)) THEN
+   BEGIN
+      ERRORCODE = 1060;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Validar estatus.
+   SELECT TIPODOCTOID, ESTATUSDOCTOID , DOCTOREFID
+   FROM DOCTO
+   WHERE ID = :DOCTOID
+   INTO :TIPODOCTOID, :ESTATUSDOCTOID, :DOCTOREFID;
+
+
+   IF(COALESCE(:DOCTOREFID,0) <> 0) THEN
+   BEGIN
+        SELECT SUBTIPODOCTOID, TIMBRADOFORMAPAGOSAT
+         FROM DOCTO WHERE ID = :DOCTOREFID
+         INTO :SUBTIPODOCTOID, :TIMBRADOFORMAPAGOSAT;
+
+        IF(COALESCE(:SUBTIPODOCTOID,0) <> 0) THEN
+        BEGIN
+            UPDATE DOCTO
+            SET SUBTIPODOCTOID = :SUBTIPODOCTOID
+            WHERE ID = :DOCTOID;
+        END
+
+        
+        IF(COALESCE(:TIMBRADOFORMAPAGOSAT,'') <> '') THEN
+        BEGIN
+            UPDATE DOCTO
+            SET TIMBRADOFORMAPAGOSAT = :TIMBRADOFORMAPAGOSAT
+            WHERE ID = :DOCTOID;
+        END
+
+   END
+
+
+
+
+   
+    ERRORCODE = 0;
+   SUSPEND;
+   
+    WHEN ANY DO
+    BEGIN
+        ERRORCODE = 1065;
+        SUSPEND;
+    END
+
+   -- Marcar los faltantes como ya generados.
+ENd

@@ -1,0 +1,1 @@
+update tipodocto set sentidopago = 0 where id = 16

@@ -1,0 +1,247 @@
+create or alter procedure KIT_CREARALVUELOFALTANTE (
+    DOCTOIDPARALLENAR D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable DOCTOIDFORKIT D_FK;
+declare variable MOVTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable CAJAID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PRODUCTOID D_FK;
+declare variable LOTE D_LOTE;
+declare variable FECHAVENCE D_FECHAVENCE;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable CANTIDADSURTIDA D_CANTIDAD;
+declare variable CANTIDADFALTANTE D_CANTIDAD;
+declare variable CANTIDADDIFERENCIA D_CANTIDAD;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable FALTANTES integer;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable COSTO D_COSTO;
+declare variable SUCURSALTID D_FK;
+declare variable ALMACENTID D_FK;
+declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable PERSONAID D_FK;
+declare variable VENDEDORID D_FK;
+declare variable DESCRIPCION1 D_STDTEXT_64;
+declare variable DESCRIPCION2 D_STDTEXT_64;
+declare variable DESCRIPCION3 D_STDTEXT_64;
+declare variable TIPODOCTOIDFORKIT D_FK;
+declare variable ORIGENFISCALID D_FK;
+declare variable CUENTAKITS integer;
+declare variable SENTIDOINVENTARIO D_SENTIDO;
+BEGIN
+
+   ERRORCODE = 0;
+
+   
+   --insert into traza(valor) values('hito1');
+   
+
+   SELECT TIPODOCTOID, ESTATUSDOCTOID  , ALMACENID, SUCURSALID, CAJAID, PERSONAID  ,VENDEDORID, ORIGENFISCALID , SENTIDOINVENTARIO
+   FROM DOCTO LEFT JOIN TIPODOCTO ON DOCTO.TIPODOCTOID = TIPODOCTO.ID
+   WHERE DOCTO.ID = :DOCTOIDPARALLENAR
+   INTO :TIPODOCTOID, :ESTATUSDOCTOID ,:ALMACENID, :SUCURSALID, :CAJAID, :PERSONAID, :VENDEDORID, :ORIGENFISCALID, :SENTIDOINVENTARIO;
+
+   
+   IF ((:DOCTOIDPARALLENAR IS NULL) OR (:DOCTOIDPARALLENAR = 0)) THEN
+   BEGIN
+      ERRORCODE = 1073;
+      SUSPEND;
+      EXIT;
+   END
+
+   
+    --insert into traza(valor) values('hito1.1');
+   -- Interceptar docto no existente
+   IF ((:TIPODOCTOID IS NULL) OR (:ESTATUSDOCTOID IS NULL)) THEN
+   BEGIN
+      ERRORCODE = 10710;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Solo admitir TipoDocto = 50, captura de inventario fisico.
+   IF (COALESCE(:SENTIDOINVENTARIO ,0) <> -1  AND :TIPODOCTOID NOT IN (501,502,503,504)) THEN--(:TIPODOCTOID NOT IN (21,31)) THEN
+   BEGIN
+      ERRORCODE = 1071;
+      SUSPEND;
+      EXIT;
+   END
+   
+   --insert into traza(valor) values('hito1.2');
+
+   -- Solo admitir EstatusDocto = 0, Borrador.
+   IF (:ESTATUSDOCTOID != 0 ) THEN
+   BEGIN
+      ERRORCODE = 1072;
+      SUSPEND;
+      EXIT;
+   END
+
+                        
+     --insert into traza(valor) values('hito1.3');
+
+     -- CHECAR SI HAY KITS A CREAR AL VUELO
+     SELECT COUNT(*) FROM
+     (
+   SELECT m.id
+    FROM MOVTO M
+     LEFT JOIN DOCTO D
+       ON D.ID = M.DOCTOID
+       LEFT JOIN PRODUCTO ON PRODUCTO.id = M.PRODUCTOID
+       LEFT JOIN INVENTARIO I ON I.PRODUCTOID = M.PRODUCTOID AND I.almacenid = D.ALMACENID
+   WHERE M.DOCTOID = :DOCTOIDPARALLENAR  AND COALESCE(PRODUCTO.ESKIT, 'N') = 'S'
+      AND (M.CANTIDAD > 0)-- AND COALESCE(M.CANTIDAD,0) > COALESCE(PRODUCTO.EXISTENCIA,0)
+   GROUP BY M.ID, M.CANTIDAD
+   HAVING  COALESCE(M.CANTIDAD,0) > SUM(COALESCE(I.CANTIDAD,0)) ) TABLA
+    INTO :CUENTAKITS;
+
+    IF(COALESCE(:CUENTAKITS,0) <= 0) THEN
+    BEGIN
+      ERRORCODE = 0;
+      SUSPEND;
+      EXIT;
+    END
+
+                               
+   --insert into traza(valor) values('hito1.4');
+
+   -- Inicializara para primer registro de movto
+   DOCTOIDFORKIT = 0;
+   TIPODOCTOIDFORKIT = 501;
+                  
+
+               
+   --insert into traza(valor) values('hito2');
+
+    SELECT DOCTOID, ERRORCODE
+      FROM DOCTO_INSERT (
+         :VENDEDORID,
+         :ALMACENID,
+         :SUCURSALID,
+         :TIPODOCTOIDFORKIT,
+         0,
+         0,
+         :PERSONAID,
+         :VENDEDORID,
+         :CAJAID,
+         :REFERENCIA,
+         '',
+         0,
+         :ALMACENID,
+         CURRENT_DATE,
+         CURRENT_DATE,
+         :DOCTOIDPARALLENAR ,
+         'S' ,
+         :ORIGENFISCALID
+      ) INTO :DOCTOIDFORKIT, :ERRORCODE;
+
+      
+     IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+     BEGIN
+            --insert into traza(valor) values('kkl. ' || cast(:productoid as varchar(10)));
+
+               SUSPEND;
+               EXIT;
+     END
+
+     UPDATE DOCTO SET SUBTIPODOCTOID = 10 WHERE ID = :DOCTOIDFORKIT;
+
+   -- Agrega un MOVTO para cada registro con diferencia
+   -- entre CANTIDAD y CANTIDADSURTIDA
+   FOR SELECT
+      M.PRODUCTOID,
+      M.LOTE,
+      M.FECHAVENCE,
+      COALESCE(M.CANTIDAD,0) - SUM(COALESCE(I.CANTIDAD,0)) CANTIDADPARAKIT,
+      0,
+      0,
+      M.COSTO,
+      M.TIPODIFERENCIAINVENTARIOID,
+      D.PERSONAID  ,
+      D.VENDEDORID ,
+      M.DESCRIPCION1,
+      M.DESCRIPCION2,
+      M.DESCRIPCION3
+   FROM MOVTO M
+     LEFT JOIN DOCTO D
+       ON D.ID = M.DOCTOID
+       LEFT JOIN PRODUCTO ON PRODUCTO.id = M.PRODUCTOID
+        LEFT JOIN INVENTARIO I ON I.PRODUCTOID = M.PRODUCTOID AND I.almacenid = D.ALMACENID
+   WHERE M.DOCTOID = :DOCTOIDPARALLENAR  AND COALESCE(PRODUCTO.ESKIT, 'N') = 'S'
+      AND (M.CANTIDAD > 0)
+
+    GROUP BY
+      M.PRODUCTOID,
+      M.LOTE,
+      M.FECHAVENCE,
+      M.CANTIDAD ,
+      M.COSTO,
+      M.TIPODIFERENCIAINVENTARIOID,
+      D.PERSONAID  ,
+      D.VENDEDORID ,
+      M.DESCRIPCION1,
+      M.DESCRIPCION2,
+      M.DESCRIPCION3,
+      M.PARTIDA     
+      HAVING  COALESCE(M.CANTIDAD,0) > SUM(COALESCE(I.CANTIDAD,0))
+
+      ORDER BY M.partida
+   INTO
+      :PRODUCTOID, :LOTE, :FECHAVENCE,
+      :CANTIDAD, :CANTIDADSURTIDA, :CANTIDADFALTANTE,
+      :COSTO, :TIPODIFERENCIAINVENTARIOID, :PERSONAID , :VENDEDORID  , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3
+   DO
+   BEGIN
+      COSTO = 0;
+
+      SUCURSALTID = 0;
+      ALMACENTID = 0;
+
+
+
+
+            SELECT DOCTOID, MOVTOID, ERRORCODE
+            FROM MOVTO_INSERT(:DOCTOIDFORKIT, 0, :ALMACENID, :SUCURSALID, :TIPODOCTOIDFORKIT, 0, 0, :PERSONAID, :VENDEDORID, 1, 0,
+               :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, :CANTIDADSURTIDA, :CANTIDADFALTANTE, 0, 0, 0, 0,
+               :REFERENCIA, '', :COSTO, :SUCURSALTID, :ALMACENID, 'N', NULL, CURRENT_DATE, CURRENT_DATE, 0.00,:DOCTOIDPARALLENAR,NULL,NULL,NULL,NULL, :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3)
+            INTO :DOCTOIDFORKIT, :MOVTOID, :ERRORCODE;
+
+            IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+            BEGIN
+            --insert into traza(valor) values('kkl. ' || cast(:productoid as varchar(10)));
+                 ERRORCODE = :ERRORCODE ;
+               SUSPEND;
+               EXIT;
+            END
+   END
+
+    
+   IF(COALESCE(:DOCTOIDFORKIT,0) <> 0) THEN
+   BEGIN
+        SELECT ERRORCODE
+        FROM KIT_APLICAR(:DOCTOIDFORKIT)
+        INTO :ERRORCODE;
+   END
+
+   IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+
+       
+   --insert into traza(valor) values('hito3');
+
+   ERRORCODE = 0;
+   SUSPEND;
+   
+  /* WHEN ANY DO
+   BEGIN
+     ERRORCODE = 4006;
+     SUSPEND;
+   END    */
+END

@@ -1,0 +1,1 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) VALUES (159, 111, 'Corte de caja por cajero', 'Corte de caja por cajero', 159, 3, 2);

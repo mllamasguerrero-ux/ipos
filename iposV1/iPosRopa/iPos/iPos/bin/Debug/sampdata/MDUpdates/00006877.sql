@@ -1,0 +1,11 @@
+EXECUTE BLOCK
+AS
+BEGIN
+
+
+      insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10180, 'Filtrar listas por almacen');
+
+          INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10180);
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10180);
+
+  END

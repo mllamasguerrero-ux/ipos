@@ -1,0 +1,1 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) VALUES (172, 106, 'Resumen inventarios por fecha', 'Resumen inventarios por fecha', 172, 1, 13);

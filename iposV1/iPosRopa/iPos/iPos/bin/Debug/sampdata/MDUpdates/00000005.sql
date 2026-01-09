@@ -1,0 +1,1 @@
+update menuitems set mn_derecho = 3 where mn_id = 23; 

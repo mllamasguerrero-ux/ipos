@@ -1,0 +1,964 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="iPosString">
+      <rd:DataSourceID>5086ad1a-2f2f-4218-841b-df1dca4e481f</rd:DataSourceID>
+      <ConnectionProperties>
+        <DataProvider>
+        </DataProvider>
+        <ConnectString>
+        </ConnectString>
+      </ConnectionProperties>
+    </DataSource>
+  </DataSources>
+  <InteractiveHeight>11in</InteractiveHeight>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>8.5in</InteractiveWidth>
+  <rd:GridSpacing>0.25cm</rd:GridSpacing>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <RightMargin>2.5cm</RightMargin>
+  <LeftMargin>2.5cm</LeftMargin>
+  <BottomMargin>2.5cm</BottomMargin>
+  <rd:ReportID>bd56e6f4-e646-4de2-a594-295836d549fb</rd:ReportID>
+  <PageWidth>21cm</PageWidth>
+  <DataSets>
+    <DataSet Name="DSReportIpos_PRODUCTO">
+      <Fields>
+        <Field Name="ID">
+          <DataField>ID</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="ACTIVO">
+          <DataField>ACTIVO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CREADO">
+          <DataField>CREADO</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="CREADOPOR_USERID">
+          <DataField>CREADOPOR_USERID</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="MODIFICADO">
+          <DataField>MODIFICADO</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="MODIFICADOPOR_USERID">
+          <DataField>MODIFICADOPOR_USERID</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="CLAVE">
+          <DataField>CLAVE</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NOMBRE">
+          <DataField>NOMBRE</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DESCRIPCION">
+          <DataField>DESCRIPCION</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="EAN">
+          <DataField>EAN</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DESCRIPCION1">
+          <DataField>DESCRIPCION1</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DESCRIPCION2">
+          <DataField>DESCRIPCION2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DESCRIPCION3">
+          <DataField>DESCRIPCION3</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PROVEEDOR1ID">
+          <DataField>PROVEEDOR1ID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PROVEEDOR2ID">
+          <DataField>PROVEEDOR2ID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="LINEAID">
+          <DataField>LINEAID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MARCAID">
+          <DataField>MARCAID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PRECIO1">
+          <DataField>PRECIO1</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="PRECIO2">
+          <DataField>PRECIO2</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="PRECIO3">
+          <DataField>PRECIO3</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="PRECIO4">
+          <DataField>PRECIO4</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="PRECIO5">
+          <DataField>PRECIO5</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="TASAIVAID">
+          <DataField>TASAIVAID</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="TASAIVA">
+          <DataField>TASAIVA</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="MONEDAID">
+          <DataField>MONEDAID</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="COSTOREPOSICION">
+          <DataField>COSTOREPOSICION</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="COSTOULTIMO">
+          <DataField>COSTOULTIMO</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="COSTOPROMEDIO">
+          <DataField>COSTOPROMEDIO</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="PRODUCTOSUSTITUTOID">
+          <DataField>PRODUCTOSUSTITUTOID</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="MANEJALOTE">
+          <DataField>MANEJALOTE</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ESKIT">
+          <DataField>ESKIT</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="IMPRIMIR">
+          <DataField>IMPRIMIR</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="INVENTARIABLE">
+          <DataField>INVENTARIABLE</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NEGATIVOS">
+          <DataField>NEGATIVOS</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LIMITEPRECIO2">
+          <DataField>LIMITEPRECIO2</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="MARCA">
+          <DataField>MARCA</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LINEA">
+          <DataField>LINEA</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>iPosString</DataSourceName>
+        <CommandText>SELECT        PRODUCTO.ID, PRODUCTO.ACTIVO, PRODUCTO.CREADO, PRODUCTO.CREADOPOR_USERID, PRODUCTO.MODIFICADO, PRODUCTO.MODIFICADOPOR_USERID, 
+                         PRODUCTO.CLAVE, PRODUCTO.NOMBRE, PRODUCTO.DESCRIPCION, PRODUCTO.EAN, PRODUCTO.DESCRIPCION1, PRODUCTO.DESCRIPCION2, 
+                         PRODUCTO.DESCRIPCION3, PRODUCTO.PROVEEDOR1ID, PRODUCTO.PROVEEDOR2ID, PRODUCTO.LINEAID, PRODUCTO.MARCAID, PRODUCTO.PRECIO1, 
+                         PRODUCTO.PRECIO2, PRODUCTO.PRECIO3, PRODUCTO.PRECIO4, PRODUCTO.PRECIO5, PRODUCTO.TASAIVAID, PRODUCTO.TASAIVA, PRODUCTO.MONEDAID, 
+                         PRODUCTO.COSTOREPOSICION, PRODUCTO.COSTOULTIMO, PRODUCTO.COSTOPROMEDIO, PRODUCTO.PRODUCTOSUSTITUTOID, PRODUCTO.MANEJALOTE, 
+                         PRODUCTO.ESKIT, PRODUCTO.IMPRIMIR, PRODUCTO.INVENTARIABLE, PRODUCTO.NEGATIVOS, PRODUCTO.LIMITEPRECIO2, MARCA.NOMBRE AS MARCA, 
+                         LINEA.NOMBRE AS LINEA
+FROM            PRODUCTO LEFT OUTER JOIN
+                         MARCA ON MARCA.ID = PRODUCTO.MARCAID LEFT OUTER JOIN
+                         LINEA ON LINEA.ID = PRODUCTO.LINEAID
+WHERE        (PRODUCTO.ID = @PRODUCTOID)</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <rd:DataSetInfo>
+        <rd:DataSetName>DSReportIpos</rd:DataSetName>
+        <rd:TableName>PRODUCTO</rd:TableName>
+        <rd:TableAdapterName>PRODUCTOTableAdapter</rd:TableAdapterName>
+        <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
+        <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
+      </rd:DataSetInfo>
+    </DataSet>
+  </DataSets>
+  <Width>23.5cm</Width>
+  <Body>
+    <ColumnSpacing>1cm</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="textbox21">
+        <Top>8.25cm</Top>
+        <Width>3.75cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>42</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>14.25cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>LIMITE PRECIO 2</Value>
+      </Textbox>
+      <Textbox Name="textbox22">
+        <Top>6.5cm</Top>
+        <Width>2.5cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>41</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>10.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>PRECIO4</Value>
+      </Textbox>
+      <Textbox Name="textbox23">
+        <Top>1cm</Top>
+        <Width>9cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>40</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>12.25cm</Left>
+        <Height>0.5cm</Height>
+        <Value>DESCRIPCION</Value>
+      </Textbox>
+      <Textbox Name="textbox24">
+        <Top>8.25cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>39</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>6.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>COSTO ULTIMO</Value>
+      </Textbox>
+      <Textbox Name="textbox25">
+        <Top>8.25cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>38</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>TASA IVA</Value>
+      </Textbox>
+      <Textbox Name="textbox28">
+        <Top>8.25cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>37</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>10.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>COSTO PROMEDIO</Value>
+      </Textbox>
+      <Textbox Name="textbox29">
+        <Top>6.5cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>36</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>PRECIO1</Value>
+      </Textbox>
+      <Textbox Name="textbox30">
+        <Top>8.25cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>35</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>3.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>COSTO REPOSICION</Value>
+      </Textbox>
+      <Textbox Name="textbox31">
+        <Top>6.5cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>34</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>13.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>PRECIO5</Value>
+      </Textbox>
+      <Textbox Name="textbox32">
+        <Top>6.5cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>33</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>6.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>PRECIO3</Value>
+      </Textbox>
+      <Textbox Name="textbox33">
+        <Top>4.75cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>32</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>16.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>NEGATIVOS</Value>
+      </Textbox>
+      <Textbox Name="textbox34">
+        <Top>2.75cm</Top>
+        <Width>5.5cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>31</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>4.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>EAN</Value>
+      </Textbox>
+      <Textbox Name="textbox35">
+        <Top>2.75cm</Top>
+        <Width>8.75cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>30</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>12.25cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>DESCRIPCION 1</Value>
+      </Textbox>
+      <Textbox Name="textbox36">
+        <Top>6.5cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>29</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>3.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>PRECIO2</Value>
+      </Textbox>
+      <Textbox Name="textbox37">
+        <Top>4.75cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>28</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>10.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>ESKIT</Value>
+      </Textbox>
+      <Textbox Name="textbox38">
+        <Top>4.75cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>27</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>7cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>MANEJALOTE</Value>
+      </Textbox>
+      <Textbox Name="textbox39">
+        <Top>4.75cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>26</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>3.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>LINEA</Value>
+      </Textbox>
+      <Textbox Name="textbox40">
+        <Top>4.75cm</Top>
+        <Width>3cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>25</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>13.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>INVENTARIABLE</Value>
+      </Textbox>
+      <Textbox Name="textbox41">
+        <Top>4.75cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>24</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.5cm</Height>
+        <Value>MARCA</Value>
+      </Textbox>
+      <Textbox Name="textbox42">
+        <Top>1cm</Top>
+        <Width>7cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>23</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>4.75cm</Left>
+        <Height>0.5cm</Height>
+        <Value>NOMBRE</Value>
+      </Textbox>
+      <Textbox Name="textbox43">
+        <Top>1cm</Top>
+        <Width>2cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>White</Default>
+          </BorderColor>
+          <FontStyle>Italic</FontStyle>
+          <FontSize>9pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>22</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.5cm</Height>
+        <Value>CLAVE</Value>
+      </Textbox>
+      <Textbox Name="textbox2">
+        <Top>9cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>21</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>14.25cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!LIMITEPRECIO2.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox19">
+        <Top>7.25cm</Top>
+        <Width>2.5cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>20</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>10.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!PRECIO4.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox20">
+        <Top>1.75cm</Top>
+        <Width>9cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>19</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>12.25cm</Left>
+        <Height>0.5cm</Height>
+        <Value>=Fields!DESCRIPCION.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox15">
+        <Top>9cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>18</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>6.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!COSTOULTIMO.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox16">
+        <Top>9cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>17</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!TASAIVA.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox17">
+        <Top>9cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>16</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>10.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!COSTOPROMEDIO.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox18">
+        <Top>7.25cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>15</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!PRECIO1.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox11">
+        <Top>9cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>14</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>3.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!COSTOREPOSICION.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox12">
+        <Top>7.25cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>13</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>13.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!PRECIO5.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox13">
+        <Top>7.25cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>12</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>6.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!PRECIO3.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox14">
+        <Top>5.5cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>11</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>16.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!NEGATIVOS.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox7">
+        <Top>3.5cm</Top>
+        <Width>5.5cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>10</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>4.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!EAN.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox8">
+        <Top>3.5cm</Top>
+        <Width>8.75cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>9</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>12.25cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!DESCRIPCION1.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox9">
+        <Top>7.25cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>8</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>3.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!PRECIO2.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox10">
+        <Top>5.5cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>7</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>10.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!ESKIT.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox6">
+        <Top>5.5cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>6</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>7cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!MANEJALOTE.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox5">
+        <Top>5.5cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>5</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>3.75cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!LINEA.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox4">
+        <Top>5.5cm</Top>
+        <Width>2.75cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>4</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>13.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!INVENTARIABLE.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox3">
+        <Top>5.5cm</Top>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>3</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!MARCA.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox27">
+        <rd:DefaultName>textbox27</rd:DefaultName>
+        <Top>1.75cm</Top>
+        <Width>7cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>2</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>4.75cm</Left>
+        <Height>0.5cm</Height>
+        <Value>=Fields!NOMBRE.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox26">
+        <rd:DefaultName>textbox26</rd:DefaultName>
+        <Top>1.75cm</Top>
+        <Width>3.75cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>1</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.5cm</Height>
+        <Value>=Fields!CLAVE.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox1">
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Width>23.25cm</Width>
+        <Style>
+          <Color>SteelBlue</Color>
+          <FontFamily>Tahoma</FontFamily>
+          <FontSize>20pt</FontSize>
+          <FontWeight>700</FontWeight>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.91429cm</Height>
+        <Value>Producto</Value>
+      </Textbox>
+    </ReportItems>
+    <Height>10.25cm</Height>
+  </Body>
+  <Language>en-US</Language>
+  <TopMargin>2.5cm</TopMargin>
+  <PageHeight>29.7cm</PageHeight>
+</Report>

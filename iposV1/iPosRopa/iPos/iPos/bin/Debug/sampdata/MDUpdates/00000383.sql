@@ -1,0 +1,1 @@
+update parametro set HAB_SEL_CLIENTE = 'S'

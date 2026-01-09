@@ -1,0 +1,106 @@
+create or alter procedure GET_PRECIOS_PRODUCTO_LISTA (
+    PRODUCTOID D_FK,
+    PERSONAID D_FK,
+    CANTIDAD D_CANTIDAD,
+    SUCURSALTID D_FK)
+returns (
+    PRECIOLISTA D_PRECIO,
+    PRECIOTRASPASO D_PRECIO,
+    PRECIOMINIMO D_PRECIO,
+    COSTO D_COSTO,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRECIO1 D_PRECIO;
+declare variable PRECIO2 D_PRECIO;
+declare variable PRECIO3 D_PRECIO;
+declare variable PRECIO4 D_PRECIO;
+declare variable PRECIO5 D_PRECIO;
+declare variable LISTAPRECIO varchar(1);
+declare variable SUPERLISTAPRECIOID D_FK;
+declare variable MANEJASUPERLISTAPRECIO D_BOOLCN;
+BEGIN
+   IF ((:PRODUCTOID IS NULL) OR (:PRODUCTOID = 0)) THEN
+   BEGIN
+      ERRORCODE = 1048;
+      SUSPEND;
+      EXIT;
+   END
+
+
+   SELECT SUPERLISTAPRECIOID FROM PERSONA WHERE ID = :PERSONAID INTO :SUPERLISTAPRECIOID;
+    
+   SELECT MANEJASUPERLISTAPRECIO FROM PARAMETRO INTO :MANEJASUPERLISTAPRECIO;
+    IF(COALESCE(:MANEJASUPERLISTAPRECIO ,'N') = 'N') THEN
+    BEGIN
+        SUPERLISTAPRECIOID = 1;
+     END
+      --Costo 
+       
+   IF(COALESCE(:SUPERLISTAPRECIOID,1) = 2) THEN
+   BEGIN         
+      SELECT SPRECIO1, SPRECIO2, SPRECIO3, SPRECIO4, SPRECIO5,COSTOPROMEDIO
+      FROM PRODUCTO
+      WHERE ID = :PRODUCTOID
+      INTO :PRECIO1, :PRECIO2, :PRECIO3, :PRECIO4, :PRECIO5, :COSTO;
+   END
+   ELSE
+   BEGIN
+      SELECT PRECIO1, PRECIO2, PRECIO3, PRECIO4, PRECIO5,COSTOPROMEDIO
+      FROM PRODUCTO
+      WHERE ID = :PRODUCTOID
+      INTO :PRECIO1, :PRECIO2, :PRECIO3, :PRECIO4, :PRECIO5, :COSTO;
+   END
+
+
+
+
+
+      --precio lista
+      SELECT PRECIO FROM GET_PRODUCTO_PRECIO (:PRODUCTOID,
+                                         :personaid,
+                         :cantidad) 
+      into :PRECIOLISTA;   
+
+
+
+
+      --precio minimo
+      SELECT PRECIOMINIMO
+      FROM GET_PRECIOMINIMO(:PRODUCTOID,:PERSONAID)
+      INTO :PRECIOMINIMO;
+
+
+
+
+      --precio traspaso
+      if( :SUCURSALTID  is not NULL) then
+      begin
+        SELECT CAST(COALESCE(LISTA_PRECIO_TRASPASO, '4') AS CHAR(1))
+        FROM SUCURSAL
+        WHERE ID = :SUCURSALTID
+        INTO :LISTAPRECIO;
+
+
+        IF (:LISTAPRECIO = '1') THEN
+            precioTraspaso = :PRECIO1;
+        ELSE IF (:LISTAPRECIO = '2') THEN
+            precioTraspaso = PRECIO2;
+        ELSE IF (:LISTAPRECIO = '3') THEN
+            precioTraspaso = PRECIO3;
+        ELSE IF (:LISTAPRECIO = '4') THEN
+            precioTraspaso = PRECIO4;
+        ELSE IF (:LISTAPRECIO = '5') THEN
+            precioTraspaso = PRECIO5;
+        ELSE 
+            precioTraspaso = PRECIO4;
+       end
+       else
+        begin
+            precioTraspaso = NULL;
+        end
+
+      SUSPEND;
+
+
+
+END

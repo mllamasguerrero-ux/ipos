@@ -1,0 +1,2 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN)
+  VALUES (153, 22, 'Reasignacion de utilidades por vendedor', 'Reasignacion de utilidades por vendedor', 153, 1, 7);

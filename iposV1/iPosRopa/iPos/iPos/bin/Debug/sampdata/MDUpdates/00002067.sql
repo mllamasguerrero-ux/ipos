@@ -1,0 +1,1 @@
+INSERT INTO DERECHOS (DR_DERECHO, DR_DESCRIPCION) VALUES (174, 'Reporte de mejores productos');

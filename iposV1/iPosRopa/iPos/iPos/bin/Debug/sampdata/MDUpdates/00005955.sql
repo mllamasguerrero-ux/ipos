@@ -1,0 +1,314 @@
+create or alter procedure PAGO_REVERTIR (
+    PAGOID D_FK,
+    VENDEDORID D_FK,
+    CHECARREAPARTAMIENTO D_BOOLCS)
+returns (
+    PAGOREVERTIDOID D_FK,
+    ERRORCODE type of D_ERRORCODE)
+as
+declare variable DOCTOERRORCODE type of D_FK;
+declare variable CORTEID D_FK;
+declare variable HAYCORTEACTIVO D_BOOLCN;
+declare variable TOTAL D_IMPORTE;
+declare variable DOCTOFECHA D_FECHA;
+declare variable DOCTOFECHAHORA D_TIMESTAMP;
+declare variable DP_DOCTOID D_FK;
+declare variable DP_FORMAPAGOID D_FK;
+declare variable DP_FECHA D_FECHA;
+declare variable DP_FECHAHORA D_TIMESTAMP;
+declare variable DP_IMPORTE D_IMPORTE;
+declare variable DP_IMPORTERECIBIDO D_IMPORTE;
+declare variable DP_IMPORTECAMBIO D_IMPORTE;
+declare variable DP_TIPOPAGOID D_FK;
+declare variable DP_DOCTOSALIDAID D_FK;
+declare variable DP_ESAPARTADO D_BOOLCN;
+declare variable DP_TIPOAPLICACIONCREDITOID D_FK;
+declare variable DP_BANCO D_FK;
+declare variable DP_REFERENCIABANCARIA D_STDTEXT_LIGHT;
+declare variable DP_NOTAS D_STDTEXT_MEDIUM;
+declare variable DP_FECHAELABORACION D_FECHA;
+declare variable DP_FECHARECEPCION D_FECHA;
+declare variable DP_ESPAGOINICIAL D_BOOLCN;
+declare variable DP_TIPOABONOID D_FK;
+declare variable DP_DOCTOPAGOREFID D_FK;
+declare variable DP_FORMAPAGOSATID D_FK;
+declare variable DP_BANCOMERPARAMID D_FK;
+declare variable DP_COMISION D_IMPORTE;
+declare variable DP_CUENTAPAGOCREDITO D_STDTEXT_LIGHT;
+declare variable DP_CUENTABANCOEMPRESAID D_FK;
+declare variable DP_APLICADO D_BOOLCN_NULL;
+declare variable DP_FECHAAPLICADO D_FECHA;
+declare variable DP_DOCTOPAGOREVERTIDOID D_FK;
+declare variable REVERTIDO D_BOOLCN;
+declare variable FORMAPAGOID D_FK;
+declare variable DOCTOID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable PERSONAID D_FK;
+declare variable ESAPARTADO D_BOOLCN;
+declare variable PERSONAAPARTADOID D_FK;
+declare variable SALDO D_IMPORTE;
+declare variable DP_SUBTIPOPAGOID D_FK;
+declare variable DEVUELTO D_BOOLCN;
+BEGIN
+
+   ERRORCODE = 0;
+
+   
+   SELECT HAYCORTEACTIVO,CORTEID,ERRORCODE
+   FROM HAY_CORTE_ACTIVO(:VENDEDORID)
+   INTO :HAYCORTEACTIVO, :CORTEID, :ERRORCODE;
+
+   IF (:ERRORCODE > 0) THEN
+   BEGIN
+        SUSPEND;
+        EXIT;
+   END
+
+   SELECT PAGO.revertido, PAGO.formapagoid, PAGO.DEVUELTO
+   FROM PAGO
+   WHERE ID = :PAGOID
+   INTO :REVERTIDO, :FORMAPAGOID, :DEVUELTO;
+
+   IF(COALESCE(:REVERTIDO,'N') = 'S') THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+          
+   IF(COALESCE(:DEVUELTO,'N') = 'S') THEN
+   BEGIN
+     ERRORCODE = 5030;
+      SUSPEND;
+      EXIT;
+   END
+
+    INSERT INTO PAGO (
+      FORMAPAGOID,
+      FECHA,
+      FECHAHORA,
+      CORTEID,
+      IMPORTE,
+      IMPORTERECIBIDO,
+      IMPORTECAMBIO ,
+      TIPOPAGOID ,
+      ESAPARTADO ,
+      TIPOAPLICACIONCREDITOID ,
+      BANCO,
+      REFERENCIABANCARIA ,
+      NOTAS,
+      FECHAELABORACION,
+      FECHARECEPCION ,
+      ESPAGOINICIAL,
+      TIPOABONOID,
+      PAGOREFID,
+      FORMAPAGOSATID,
+      BANCOMERPARAMID ,
+      COMISION,
+      CUENTAPAGOCREDITO,
+      CUENTABANCOEMPRESAID,
+      PERSONAID ,
+      APLICADO,
+      FECHAAPLICADO,
+      SUBTIPOPAGOID
+   ) 
+  SELECT 
+      CASE WHEN FORMAPAGOID = 18 THEN 19 ELSE FORMAPAGOID END,
+      CURRENT_DATE,--FECHA
+      CURRENT_TIME,--FECHAHORA
+      :CORTEID,
+       CASE WHEN FORMAPAGOID = 18 THEN IMPORTE ELSE IMPORTE * -1 END ,
+      CASE WHEN FORMAPAGOID = 18 THEN IMPORTERECIBIDO ELSE IMPORTERECIBIDO * -1 END,
+      0,--IMPORTECAMBIO ,
+      TIPOPAGOID ,
+      ESAPARTADO ,
+      TIPOAPLICACIONCREDITOID ,
+      BANCO,
+      REFERENCIABANCARIA ,
+      NOTAS,
+      CURRENT_DATE, --FECHA ELABORACION,
+      CURRENT_DATE, --FECHARECEPCION ,
+      'N',
+      CASE WHEN FORMAPAGOID = 18 THEN 2 ELSE 3 END,    --TIPOABONOID
+      :PAGOID,
+      CASE WHEN FORMAPAGOID = 18 THEN 99 ELSE FORMAPAGOSATID END,
+      BANCOMERPARAMID ,
+      COMISION,
+      CUENTAPAGOCREDITO,
+      CUENTABANCOEMPRESAID,
+      PERSONAID ,
+      'S',--APLICADO,
+      CURRENT_DATE, --FECHAAPLICADO
+      SUBTIPOPAGOID
+      FROM PAGO
+      WHERE ID = :PAGOID
+      RETURNING ID INTO :PAGOREVERTIDOID;
+
+
+
+
+
+
+   FOR SELECT  DOCTOID,
+                CASE WHEN FORMAPAGOID = 18 THEN 19 ELSE FORMAPAGOID END FORMAPAGOID,
+                CURRENT_DATE FECHA,
+                CURRENT_TIME FECHAHORA,
+                CASE WHEN FORMAPAGOID = 18 THEN IMPORTE ELSE IMPORTE * -1 END IMPORTE,
+                CASE WHEN FORMAPAGOID = 18 THEN IMPORTERECIBIDO ELSE IMPORTERECIBIDO * -1 END IMPORTERECIBIDO,
+                0,--IMPORTECAMBIO,
+                TIPOPAGOID,
+                DOCTOSALIDAID,
+                ESAPARTADO,
+                TIPOAPLICACIONCREDITOID,
+                BANCO,
+                REFERENCIABANCARIA,
+                NOTAS,
+                CURRENT_DATE FECHAELABORACION,
+                CURRENT_DATE FECHARECEPCION,
+                'N',
+                CASE WHEN FORMAPAGOID = 18 THEN 2 ELSE 3 END TIPOABONOID,
+                ID,
+                CASE WHEN FORMAPAGOID = 18 THEN 99 ELSE FORMAPAGOSATID END FORMAPAGOSATID,
+                BANCOMERPARAMID,
+                COMISION,
+                CUENTAPAGOCREDITO,
+                CUENTABANCOEMPRESAID,
+                APLICADO,
+                CURRENT_DATE FECHAAPLICADO ,
+                SUBTIPOPAGOID
+               FROM DOCTOPAGO
+                WHERE DOCTOPAGO.pagoid = :PAGOID
+             INTO
+                :DP_DOCTOID,
+                :DP_FORMAPAGOID,
+                :DP_FECHA,
+                :DP_FECHAHORA,
+                :DP_IMPORTE,
+                :DP_IMPORTERECIBIDO,
+                :DP_IMPORTECAMBIO,
+                :DP_TIPOPAGOID,
+                :DP_DOCTOSALIDAID,
+                :DP_ESAPARTADO,
+                :DP_TIPOAPLICACIONCREDITOID,
+                :DP_BANCO,
+                :DP_REFERENCIABANCARIA,
+                :DP_NOTAS,
+                :DP_FECHAELABORACION,
+                :DP_FECHARECEPCION,
+                :DP_ESPAGOINICIAL,
+                :DP_TIPOABONOID,
+                :DP_DOCTOPAGOREFID,
+                :DP_FORMAPAGOSATID,
+                :DP_BANCOMERPARAMID,
+                :DP_COMISION,
+                :DP_CUENTAPAGOCREDITO,
+                :DP_CUENTABANCOEMPRESAID,
+                :DP_APLICADO,
+                :DP_FECHAAPLICADO ,
+                :DP_SUBTIPOPAGOID
+    DO
+   BEGIN
+
+     SELECT DOCTOPAGOID, ERRORCODE
+      FROM DOCTOPAGO_INSERT (
+                :DP_DOCTOID,
+                :DP_FORMAPAGOID,
+                :DP_FECHA,
+                :DP_FECHAHORA,
+                :CORTEID,
+                :DP_IMPORTE,
+                :DP_IMPORTERECIBIDO,
+                :DP_IMPORTECAMBIO,
+                :DP_TIPOPAGOID,
+                :DP_DOCTOSALIDAID,
+                :DP_ESAPARTADO,
+                :DP_TIPOAPLICACIONCREDITOID,
+                :DP_BANCO,
+                :DP_REFERENCIABANCARIA,
+                :DP_NOTAS,
+                :DP_FECHAELABORACION,
+                :DP_FECHARECEPCION,
+                :DP_ESPAGOINICIAL,
+                :DP_TIPOABONOID,
+                :DP_DOCTOPAGOREFID,
+                :DP_FORMAPAGOSATID,
+                :DP_BANCOMERPARAMID,
+                :DP_COMISION,
+                :DP_CUENTAPAGOCREDITO,
+                :DP_CUENTABANCOEMPRESAID,
+                :DP_APLICADO,
+                :DP_FECHAAPLICADO,
+                :PAGOREVERTIDOID ,
+                :DP_SUBTIPOPAGOID
+      ) INTO :DP_DOCTOPAGOREVERTIDOID, :ERRORCODE;
+               
+      IF (:ERRORCODE > 0) THEN
+      BEGIN
+            SUSPEND;
+            EXIT;
+      END
+
+      IF(COALESCE(:DP_FORMAPAGOID,1) = 19) THEN
+      BEGIN
+            UPDATE DOCTOPAGO SET REVERTIDO = 'S' WHERE ID IN (:DP_DOCTOPAGOREVERTIDOID, :DP_DOCTOPAGOREFID);
+      END
+
+      SELECT DOCTO.id,  DOCTO.TIPODOCTOID, DOCTO.PERSONAID , DOCTO.ESAPARTADO, DOCTO.PERSONAAPARTADOID, DOCTO.SALDO
+      FROM DOCTO
+      LEFT JOIN DOCTOPAGO ON (DOCTOPAGO.tipopagoid = 1 AND DOCTOPAGO.doctoid = DOCTO.ID) or (DOCTOPAGO.TIPOPAGOID = 2 AND DOCTOPAGO.doctosalidaid = DOCTO.ID)
+      WHERE DOCTOPAGO.ID = :DP_DOCTOPAGOREFID
+      INTO :DOCTOID, :TIPODOCTOID, :PERSONAID, :ESAPARTADO, :PERSONAAPARTADOID, :SALDO;
+
+      SELECT ERRORCODE FROM PERSONA_AJUSTAR_SALDOS(:PERSONAID) INTO :ERRORCODE;
+              
+      IF (:ERRORCODE > 0) THEN
+      BEGIN
+            SUSPEND;
+            EXIT;
+      END
+
+      IF(COALESCE(:ESAPARTADO, 'N') = 'S') THEN
+      BEGIN
+        SELECT ERRORCODE FROM PERSONAAPARTADO_AJUSTAR_SALDOS(:PERSONAAPARTADOID) INTO :ERRORCODE;
+            
+        IF (:ERRORCODE > 0) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+        
+         IF(COALESCE(:CHECARREAPARTAMIENTO,'N') = 'S'  AND COALESCE(:SALDO,0) >= 0) THEN
+         BEGIN
+                SELECT ERRORCODE FROM   DOCTO_RETORNARMERCANCIA(:DOCTOID)
+                INTO :ERRORCODE;
+
+                
+                IF (:ERRORCODE > 0) THEN
+                BEGIN
+                    SUSPEND;
+                    EXIT;
+                END
+         END
+
+      END
+
+
+    END
+
+     UPDATE PAGO SET REVERTIDO = 'S' WHERE ID = :PAGOID;
+
+
+
+
+
+
+    ERRORCODE = 0;
+   SUSPEND;
+
+  -- WHEN ANY DO
+  -- BEGIN
+  --    ERRORCODE = 1004;
+  --    SUSPEND;
+   --END
+
+END

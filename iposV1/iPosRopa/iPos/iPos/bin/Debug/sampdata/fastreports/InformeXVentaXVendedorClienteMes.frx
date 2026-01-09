@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/02/2014 11:45:37" ReportInfo.Modified="04/10/2020 12:54:33" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    int numReg = 1;
+    decimal sumaCantidad = 0;
+    
+    public string claveVendedor = &quot;TODOS&quot;;
+    
+  
+
+    private void CBVendedor_TextChanged(object sender, EventArgs e)
+    {
+      
+      string[] split = CBVendedor.Text.Split(new string[] { &quot;# Vend.: &quot; }, StringSplitOptions.None);
+      string strCveVendedor = &quot;TODOS&quot;;
+      if(split.Length &gt; 1)     
+        strCveVendedor = split[1];
+      
+      try
+      {
+        claveVendedor = strCveVendedor;
+        Report.SetParameterValue(&quot;itemClave&quot;, claveVendedor);
+      }
+      catch{
+      }
+    }
+
+ 
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
+         
+      AnioInicialNumericUpDown.Value = DateTime.Today.Year; 
+      AnioFinalNumericUpDown.Value = DateTime.Today.Year;
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQqip01/WZGXp5laXbPJNqSNA=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;       SUM((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END)) TOTAL ,&#13;&#10;     uc.id   VENDEDORCLIENTEID,&#13;&#10;      coalesce(uc.nombre,'') VENDEDORDELCLIENTENOMBRE ,&#13;&#10;      coalesce(uc.clave,'') VENDEDORDELCLIENTECLAVE  ,&#13;&#10;    p.id  CLIENTEID,&#13;&#10;      p.clave  CLIENTECLAVE,&#13;&#10;      p.nombres CLIENTENOMBRES,&#13;&#10;      p.apellidos CLIENTEAPELLIDOS,&#13;&#10;p.nombre CLIENTENOMBRE,&#13;&#10;&#13;&#10;      EXTRACT(YEAR FROM D.FECHA) ANIO ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 1 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) ENERO      ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 2 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) FEBRERO ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 3 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) MARZO      ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 4 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) ABRIL  ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 5 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) MAYO      ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 6 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) JUNIO ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 7 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) JULIO     ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 8 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) AGOSTO,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 9 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) SEPTIEMBRE      ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 10 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) OCTUBRE ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 11 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) NOVIEMBRE      ,&#13;&#10;&#13;&#10;      SUM(&#13;&#10;       CASE WHEN EXTRACT(MONTH FROM D.FECHA) = 12 THEN&#13;&#10;        ((D.TOTAL - COALESCE(D.MONTOREBAJA,0))  * (CASE WHEN D.TIPODOCTOID = 21 THEN 1 ELSE -1 END))&#13;&#10;        ELSE&#13;&#10;           0&#13;&#10;       END&#13;&#10;        ) DICIEMBRE&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;   FROM DOCTO D&#13;&#10;       left join SUCURSAL S&#13;&#10;         ON S.ID = D.SUCURSALTID&#13;&#10;        left join TIPODOCTO  TD&#13;&#10;         on  TD.id = d.tipodoctoid&#13;&#10;         left join PERSONA P&#13;&#10;          on P.id = D.personaid&#13;&#10;          left join ESTATUSDOCTO ED&#13;&#10;            on ED.id = d.estatusdoctoid&#13;&#10;            left join PERSONA U&#13;&#10;                on D.vendedorid = u.id  &#13;&#10;            left join PERSONA Uc&#13;&#10;                on P.vendedorid = uc.id   &#13;&#10;             left join ALMACEN a&#13;&#10;                on d.almacenid = a.id   &#13;&#10;             left join ALMACEN a_t&#13;&#10;                on d.almacentid = a_t.id&#13;&#10;   WHERE (TIPODOCTOID in (21,22))&#13;&#10;     AND EXTRACT(YEAR FROM D.FECHA) BETWEEN @anioinicial AND @aniofinal&#13;&#10;     AND D.ESTATUSDOCTOID = 1&#13;&#10;     AND  (coalesce(uc.clave,'') = @VENDEDORCLAVE OR  @VENDEDORCLAVE = 'TODOS')&#13;&#10;   GROUP BY  &#13;&#10;  uc.id,&#13;&#10;coalesce(uc.nombre,''),&#13;&#10;coalesce(uc.clave,'') ,&#13;&#10;   p.id,&#13;&#10;      p.clave,&#13;&#10;      p.nombres,&#13;&#10;      p.apellidos,&#13;&#10;      p.nombre, EXTRACT(YEAR FROM D.FECHA)&#13;&#10;&#13;&#10;order by coalesce(uc.nombre,''), EXTRACT(YEAR FROM D.FECHA),p.clave">
+        <Column Name="CLIENTECLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORCLIENTEID" DataType="System.Int64"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="VENDEDORDELCLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORDELCLIENTECLAVE" DataType="System.String"/>
+        <Column Name="CLIENTEID" DataType="System.Int64"/>
+        <Column Name="CLIENTENOMBRES" DataType="System.String"/>
+        <Column Name="CLIENTEAPELLIDOS" DataType="System.String"/>
+        <Column Name="ANIO" DataType="System.Int16"/>
+        <Column Name="ENERO" DataType="System.Decimal"/>
+        <Column Name="FEBRERO" DataType="System.Decimal"/>
+        <Column Name="MARZO" DataType="System.Decimal"/>
+        <Column Name="ABRIL" DataType="System.Decimal"/>
+        <Column Name="MAYO" DataType="System.Decimal"/>
+        <Column Name="JUNIO" DataType="System.Decimal"/>
+        <Column Name="JULIO" DataType="System.Decimal"/>
+        <Column Name="AGOSTO" DataType="System.Decimal"/>
+        <Column Name="SEPTIEMBRE" DataType="System.Decimal"/>
+        <Column Name="OCTUBRE" DataType="System.Decimal"/>
+        <Column Name="NOVIEMBRE" DataType="System.Decimal"/>
+        <Column Name="DICIEMBRE" DataType="System.Decimal"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <CommandParameter Name="anioInicial" DataType="10" Expression="[anioInicial]" DefaultValue="2000"/>
+        <CommandParameter Name="anioFinal" DataType="10" Expression="[anioFinal]" DefaultValue="2040"/>
+        <CommandParameter Name="VENDEDORCLAVE" DataType="16" Size="31" Expression="[itemClave]" DefaultValue="CAB"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Vendedores" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Vend.: TODOS' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Vend.: ' || clave nombre from persona where tipopersonaid = 22&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="itemClave" DataType="System.String"/>
+    <Parameter Name="anioInicial" DataType="System.Decimal"/>
+    <Parameter Name="anioFinal" DataType="System.Decimal"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="550" PaperHeight="210" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="2003.4" Height="122.85">
+      <TextObject Name="Text2" Left="368.55" Top="66.15" Width="378" Height="18.9" Text="[itemClave]" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="302.4" Top="66.15" Width="66.15" Height="18.9" Text="Vendedor:" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text4" Left="302.4" Top="85.05" Width="66.15" Height="18.9" Text="Año Ini" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text27" Left="302.4" Top="9.45" Width="444.15" Height="18.9" Text="Ventas por mes/año por vendedor-cliente" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text39" Left="368.55" Top="47.25" Width="378" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text38" Left="368.55" Top="28.35" Width="378" Height="18.9" Text="Datos de la empresa:" HorzAlign="Center" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text50" Left="302.4" Top="103.95" Width="66.15" Height="18.9" Text="Año Fin:" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text22" Left="368.55" Top="85.05" Width="378" Height="18.9" Text="[anioInicial]" Font="Arial, 9pt"/>
+      <TextObject Name="Text23" Left="368.55" Top="103.95" Width="378" Height="18.9" Text="[anioFinal]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <GroupHeaderBand Name="GroupHeader2" Top="126.85" Width="2003.4" Height="66.15" Condition="[Table.ANIO]">
+      <TextObject Name="Text1" Width="151.2" Height="28.35" Text="[[Table.ANIO]]" Font="Arial, 14pt"/>
+      <TextObject Name="Text24" Top="47.25" Width="189" Height="18.9" Text="Vendedor del cliente" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text25" Left="198.45" Top="47.25" Width="151.2" Height="18.9" Text="Cliente clave" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text28" Left="349.65" Top="47.25" Width="207.9" Height="18.9" Text="Cliente nombres" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text29" Left="557.55" Top="47.25" Width="198.45" Height="18.9" Text="Cliente Apellidos" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text30" Left="756" Top="47.25" Width="94.5" Height="18.9" Text="Enero" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text31" Left="850.5" Top="47.25" Width="94.5" Height="18.9" Text="Febrero" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text32" Left="945" Top="47.25" Width="94.5" Height="18.9" Text="Marzo" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text33" Left="1039.5" Top="47.25" Width="94.5" Height="18.9" Text="Abril" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text34" Left="1134" Top="47.25" Width="94.5" Height="18.9" Text="Mayo" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text35" Left="1228.5" Top="47.25" Width="94.5" Height="18.9" Text="Junio" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text36" Left="1323" Top="47.25" Width="94.5" Height="18.9" Text="Julio" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text37" Left="1417.5" Top="47.25" Width="94.5" Height="18.9" Text="Agosto" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text40" Left="1512" Top="47.25" Width="94.5" Height="18.9" Text="Septiembre" Font="Arial, 9pt"/>
+      <TextObject Name="Text41" Left="1606.5" Top="47.25" Width="94.5" Height="18.9" Text="Octubre" Font="Arial, 9pt"/>
+      <TextObject Name="Text42" Left="1701" Top="47.25" Width="94.5" Height="18.9" Text="Noviembre" Font="Arial, 9pt"/>
+      <TextObject Name="Text43" Left="1795.5" Top="47.25" Width="94.5" Height="18.9" Text="Diciembre" Font="Arial, 9pt"/>
+      <TextObject Name="Text44" Left="1890" Top="47.25" Width="94.5" Height="18.9" Text="Total" Font="Arial, 9pt"/>
+      <DataBand Name="Data1" Top="197" Width="2003.4" Height="18.9" DataSource="Table">
+        <TextObject Name="Text5" Width="189" Height="18.9" Text="[Table.VENDEDORDELCLIENTENOMBRE]"/>
+        <TextObject Name="Text6" Left="189" Width="160.65" Height="18.9" Text="[Table.CLIENTECLAVE]"/>
+        <TextObject Name="Text7" Left="349.65" Width="207.9" Height="18.9" Text="[Table.CLIENTENOMBRES]"/>
+        <TextObject Name="Text8" Left="557.55" Width="198.45" Height="18.9" Text="[Table.CLIENTEAPELLIDOS]"/>
+        <TextObject Name="Text9" Left="756" Width="94.5" Height="18.9" Text="[Table.ENERO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text10" Left="850.5" Width="94.5" Height="18.9" Text="[Table.FEBRERO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text11" Left="945" Width="94.5" Height="18.9" Text="[Table.MARZO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text12" Left="1039.5" Width="94.5" Height="18.9" Text="[Table.ABRIL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text13" Left="1134" Width="94.5" Height="18.9" Text="[Table.MAYO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text14" Left="1228.5" Width="94.5" Height="18.9" Text="[Table.JUNIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text15" Left="1323" Width="94.5" Height="18.9" Text="[Table.JULIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text16" Left="1417.5" Width="94.5" Height="18.9" Text="[Table.AGOSTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text17" Left="1512" Width="94.5" Height="18.9" Text="[Table.SEPTIEMBRE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text18" Left="1606.5" Width="94.5" Height="18.9" Text="[Table.OCTUBRE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text19" Left="1701" Width="94.5" Height="18.9" Text="[Table.NOVIEMBRE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text20" Left="1795.5" Width="94.5" Height="18.9" Text="[Table.DICIEMBRE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text21" Left="1890" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter2" Top="219.9" Width="2003.4"/>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="223.9" Width="2003.4"/>
+    <PageFooterBand Name="PageFooter1" Top="227.9" Width="2003.4" Height="28.35">
+      <TextObject Name="Text26" Left="1219.05" Top="9.45" Width="94.5" Height="18.9" Text="[Page]" Font="Arial, 9pt"/>
+    </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="334" Height="350" AcceptButton="btnOk" CancelButton="btnCancel" LoadEvent="Form1_Load">
+    <ButtonControl Name="btnOk" Left="66" Top="274" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="149" Top="274" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <LabelControl Name="Label1" Left="48" Top="20" Width="53" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Vendedor"/>
+    <ComboBoxControl Name="CBVendedor" Left="52" Top="40" Width="173" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Vend.: TODOS" TextChangedEvent="CBVendedor_TextChanged" DataColumn="Vendedores.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+    <NumericUpDownControl Name="AnioInicialNumericUpDown" Left="40" Top="108" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="anioInicial" FilterOperation="GreaterThanOrEqual" Maximum="10000"/>
+    <LabelControl Name="Label2" Left="40" Top="92" Width="56" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Año Inicial"/>
+    <NumericUpDownControl Name="AnioFinalNumericUpDown" Left="40" Top="164" Font="Tahoma, 8pt" TabIndex="6" ReportParameter="anioFinal" FilterOperation="LessThanOrEqual" Maximum="10000"/>
+    <LabelControl Name="Label3" Left="40" Top="148" Width="51" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="Año Final"/>
+  </DialogPage>
+</Report>

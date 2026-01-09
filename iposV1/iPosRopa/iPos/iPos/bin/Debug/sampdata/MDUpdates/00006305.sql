@@ -1,0 +1,10 @@
+EXECUTE BLOCK
+AS
+BEGIN
+      insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10159, 'Ver Notas de incidencia clientes');
+
+
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10159);
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10159);
+
+end

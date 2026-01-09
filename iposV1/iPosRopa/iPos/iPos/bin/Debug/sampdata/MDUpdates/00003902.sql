@@ -1,0 +1,20 @@
+create or alter procedure GUIA_INSERT (
+    ENCARGADOGUIAID D_FK,
+    ESTADOGUIAID D_FK,
+    CAJEROID D_FK,
+    CORTEID D_FK,
+    FECHA D_FECHA,
+    FECHAHORA D_TIMESTAMP,
+    NOTA D_DESCRIPCION)
+returns (
+    GUIAID type of D_FK,
+    ERRORCODE type of D_ERRORCODE)
+as
+BEGIN
+
+  -- FALTA COMPLETAR
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+END

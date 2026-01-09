@@ -1,0 +1,385 @@
+create or alter procedure CACHEPROD_IMPORTAR_MOVIL
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable CLAVE D_CLAVE;
+declare variable NOMBRE D_NOMBRE;
+declare variable DESCRIPCION D_DESCRIPCION;
+declare variable EAN D_CLAVE;
+declare variable DESCRIPCION1 D_STDTEXT_MEDIUM;
+declare variable DESCRIPCION2 D_STDTEXT_MEDIUM;
+declare variable DESCRIPCION3 varchar(40);
+declare variable PROVEEDOR1ID integer;
+declare variable PROVEEDOR2ID integer;
+declare variable CLAVE_LINEA D_CLAVE;
+declare variable CLAVE_MARCA D_CLAVE;
+declare variable PRECIO1 D_PRECIO;
+declare variable PRECIO2 D_PRECIO;
+declare variable PRECIO3 D_PRECIO;
+declare variable PRECIO4 D_PRECIO;
+declare variable PRECIO5 D_PRECIO;
+declare variable TASAIVAID D_FK;
+declare variable TASAIVA D_PORCENTAJE;
+declare variable CLAVE_MONEDA D_CLAVE;
+declare variable COSTOREPOSICION D_COSTO;
+declare variable COSTOULTIMO D_COSTO;
+declare variable COSTOPROMEDIO D_COSTO;
+declare variable CLAVE_SUSTITUTO D_CLAVE;
+declare variable MANEJALOTE D_BOOLCN;
+declare variable ESKIT D_BOOLCN;
+declare variable IMPRIMIR D_BOOLCS;
+declare variable INVENTARIABLE D_BOOLCS;
+declare variable NEGATIVOS D_BOOLCN;
+declare variable LIMITEPRECIO2 D_CANTIDAD;
+declare variable PRECIOMAXIMOPUBLICO D_PRECIO;
+declare variable CLAVE_PROVEEDOR1 D_CLAVE;
+declare variable CLAVE_PROVEEDOR2 D_CLAVE;
+declare variable CAMBIARPRECIO D_BOOLCN;
+declare variable SUBSTITUTO D_CLAVE_NULL;
+declare variable CBARRAS D_CLAVE_NULL;
+declare variable CEMPAQUE D_CLAVE_NULL;
+declare variable PZACAJA D_CANTIDAD;
+declare variable U_EMPAQUE D_CANTIDAD;
+declare variable UNIDAD varchar(10);
+declare variable INI_MAYO D_CANTIDAD;
+declare variable MAYOKGS D_BOOLCN;
+declare variable TIPOABC D_BOOLCN;
+declare variable CLAVE_TASAIVA D_CLAVE_NULL;
+declare variable TEXTO1 D_STDTEXT_LIGHT;
+declare variable TEXTO2 D_STDTEXT_LIGHT;
+declare variable TEXTO3 D_STDTEXT_LIGHT;
+declare variable TEXTO4 D_STDTEXT_LIGHT;
+declare variable TEXTO5 D_STDTEXT_MEDIUM;
+declare variable TEXTO6 D_STDTEXT_LARGE;
+declare variable NUMERO1 D_PRECIO;
+declare variable NUMERO2 D_PRECIO;
+declare variable NUMERO3 D_PRECIO;
+declare variable NUMERO4 D_PRECIO;
+declare variable FECHA1 D_FECHA;
+declare variable FECHA2 D_FECHA;
+declare variable CLAVE_PRODUCTOPADRE D_CLAVE_NULL;
+declare variable ESPRODUCTOPADRE D_BOOLCN;
+declare variable ESPRODUCTOFINAL D_BOOLCN;
+declare variable ESSUBPRODUCTO D_BOOLCN;
+declare variable TOMARPRECIOPADRE D_BOOLCN;
+declare variable TOMARCOMISIONPADRE D_BOOLCN;
+declare variable TOMAROFERTAPADRE D_BOOLCN;
+declare variable COMISION D_PRECIO;
+declare variable OFERTA D_PRECIO;
+declare variable PLUG D_CLAVE_NULL;
+declare variable TASAIEPS D_PORCENTAJE;
+declare variable MINUTILIDAD D_PORCENTAJE;
+declare variable AUTO_INSERT_FK D_BOOLCS;
+declare variable SPRECIO1 D_PRECIO;
+declare variable SPRECIO2 D_PRECIO;
+declare variable SPRECIO3 D_PRECIO;
+declare variable SPRECIO4 D_PRECIO;
+declare variable SPRECIO5 D_PRECIO;
+declare variable REQUIERERECETA D_BOOLCN;
+declare variable CLASIFICA D_PCLASIF;
+declare variable PROMOMOVIL D_BOOLCN;
+declare variable MARGENMOVIL D_PRECIO;
+declare variable MPRECIO4MOVIL D_PRECIO;
+declare variable CPRECIO4MOVIL D_PRECIO;
+declare variable TPRECIO4MOVIL D_PRECIO;
+declare variable APRECIO4MOVIL D_PRECIO;
+declare variable LOTE D_LOTE;
+declare variable FECHAVENCE D_FECHAVENCE;
+declare variable CANTIDAD D_CANTIDAD;
+BEGIN
+
+
+  FOR SELECT
+    CLAVE ,
+    NOMBRE ,
+    DESCRIPCION ,
+    EAN ,
+    DESCRIPCION1 ,
+    DESCRIPCION2 ,
+    DESCRIPCION3 ,
+    PROVEEDOR1ID ,
+    PROVEEDOR2ID ,
+    CLAVE_LINEA ,
+    CLAVE_MARCA ,
+    PRECIO1 ,
+    PRECIO2 ,
+    PRECIO3 ,
+    PRECIO4 ,
+    PRECIO5 ,
+    TASAIVAID ,
+    TASAIVA ,
+    CLAVE_MONEDA ,
+    COSTOREPOSICION ,
+    COSTOULTIMO ,
+    COSTOPROMEDIO ,
+    CLAVE_SUSTITUTO ,
+    MANEJALOTE ,
+    ESKIT ,
+    IMPRIMIR ,
+    INVENTARIABLE ,
+    NEGATIVOS ,
+    LIMITEPRECIO2 ,
+    PRECIOMAXIMOPUBLICO ,
+    CLAVE_PROVEEDOR1 ,
+    CLAVE_PROVEEDOR2 ,
+    CAMBIARPRECIO ,
+    SUBSTITUTO ,
+    CBARRAS ,
+    CEMPAQUE ,
+    PZACAJA ,
+    U_EMPAQUE ,
+    UNIDAD ,
+    INI_MAYO ,
+    MAYOKGS ,
+    TIPOABC ,
+    CLAVE_TASAIVA ,
+    TEXTO1 ,
+    TEXTO2 ,
+    TEXTO3 ,
+    TEXTO4 ,
+    TEXTO5 ,
+    TEXTO6 ,
+    NUMERO1 ,
+    NUMERO2 ,
+    NUMERO3 ,
+    NUMERO4 ,
+    FECHA1 ,
+    FECHA2 ,
+    CLAVE_PRODUCTOPADRE ,
+    ESPRODUCTOPADRE ,
+    ESPRODUCTOFINAL ,
+    ESSUBPRODUCTO ,
+    TOMARPRECIOPADRE ,
+    TOMARCOMISIONPADRE ,
+    TOMAROFERTAPADRE ,
+    COMISION ,
+    OFERTA ,
+    PLUG ,
+    TASAIEPS ,
+    MINUTILIDAD ,
+    AUTO_INSERT_FK ,
+    SPRECIO1 ,
+    SPRECIO2 ,
+    SPRECIO3 ,
+    SPRECIO4 ,
+    SPRECIO5 ,
+    REQUIERERECETA ,
+    CLASIFICA ,
+    PROMOMOVIL ,
+    MARGENMOVIL ,
+    MPRECIO4MOVIL ,
+    CPRECIO4MOVIL ,
+    TPRECIO4MOVIL ,
+    APRECIO4MOVIL 
+     FROM CACHE_PRODMOVIL
+   INTO  
+    :CLAVE ,
+    :NOMBRE ,
+    :DESCRIPCION ,
+    :EAN ,
+    :DESCRIPCION1 ,
+    :DESCRIPCION2 ,
+    :DESCRIPCION3 ,
+    :PROVEEDOR1ID ,
+    :PROVEEDOR2ID ,
+    :CLAVE_LINEA ,
+    :CLAVE_MARCA ,
+    :PRECIO1 ,
+    :PRECIO2 ,
+    :PRECIO3 ,
+    :PRECIO4 ,
+    :PRECIO5 ,
+    :TASAIVAID ,
+    :TASAIVA ,
+    :CLAVE_MONEDA ,
+    :COSTOREPOSICION ,
+    :COSTOULTIMO ,
+    :COSTOPROMEDIO ,
+    :CLAVE_SUSTITUTO ,
+    :MANEJALOTE ,
+    :ESKIT ,
+    :IMPRIMIR ,
+    :INVENTARIABLE ,
+    :NEGATIVOS ,
+    :LIMITEPRECIO2 ,
+    :PRECIOMAXIMOPUBLICO ,
+    :CLAVE_PROVEEDOR1 ,
+    :CLAVE_PROVEEDOR2 ,
+    :CAMBIARPRECIO ,
+    :SUBSTITUTO ,
+    :CBARRAS ,
+    :CEMPAQUE ,
+    :PZACAJA ,
+    :U_EMPAQUE ,
+    :UNIDAD ,
+    :INI_MAYO ,
+    :MAYOKGS ,
+    :TIPOABC ,
+    :CLAVE_TASAIVA ,
+    :TEXTO1 ,
+    :TEXTO2 ,
+    :TEXTO3 ,
+    :TEXTO4 ,
+    :TEXTO5 ,
+    :TEXTO6 ,
+    :NUMERO1 ,
+    :NUMERO2 ,
+    :NUMERO3 ,
+    :NUMERO4 ,
+    :FECHA1 ,
+    :FECHA2 ,
+    :CLAVE_PRODUCTOPADRE ,
+    :ESPRODUCTOPADRE ,
+    :ESPRODUCTOFINAL ,
+    :ESSUBPRODUCTO ,
+    :TOMARPRECIOPADRE ,
+    :TOMARCOMISIONPADRE ,
+    :TOMAROFERTAPADRE ,
+    :COMISION ,
+    :OFERTA ,
+    :PLUG ,
+    :TASAIEPS ,
+    :MINUTILIDAD ,
+    :AUTO_INSERT_FK ,
+    :SPRECIO1 ,
+    :SPRECIO2 ,
+    :SPRECIO3 ,
+    :SPRECIO4 ,
+    :SPRECIO5 ,
+    :REQUIERERECETA ,
+    :CLASIFICA ,
+    :PROMOMOVIL ,
+    :MARGENMOVIL ,
+    :MPRECIO4MOVIL ,
+    :CPRECIO4MOVIL ,
+    :TPRECIO4MOVIL ,
+    :APRECIO4MOVIL
+   DO
+   BEGIN
+        SELECT ERRORCODE FROM PRODUCTOS_IMPORTAR_MOVIL ( 
+    :CLAVE ,
+    :NOMBRE ,
+    :DESCRIPCION ,
+    :EAN ,
+    :DESCRIPCION1 ,
+    :DESCRIPCION2 ,
+    :DESCRIPCION3 ,
+    :PROVEEDOR1ID ,
+    :PROVEEDOR2ID ,
+    :CLAVE_LINEA ,
+    :CLAVE_MARCA ,
+    :PRECIO1 ,
+    :PRECIO2 ,
+    :PRECIO3 ,
+    :PRECIO4 ,
+    :PRECIO5 ,
+    :TASAIVAID ,
+    :TASAIVA ,
+    :CLAVE_MONEDA ,
+    :COSTOREPOSICION ,
+    :COSTOULTIMO ,
+    :COSTOPROMEDIO ,
+    :CLAVE_SUSTITUTO ,
+    :MANEJALOTE ,
+    :ESKIT ,
+    :IMPRIMIR ,
+    :INVENTARIABLE ,
+    :NEGATIVOS ,
+    :LIMITEPRECIO2 ,
+    :PRECIOMAXIMOPUBLICO ,
+    :CLAVE_PROVEEDOR1 ,
+    :CLAVE_PROVEEDOR2 ,
+    :CAMBIARPRECIO ,
+    :SUBSTITUTO ,
+    :CBARRAS ,
+    :CEMPAQUE ,
+    :PZACAJA ,
+    :U_EMPAQUE ,
+    :UNIDAD ,
+    :INI_MAYO ,
+    :MAYOKGS ,
+    :TIPOABC ,
+    :CLAVE_TASAIVA ,
+    :TEXTO1 ,
+    :TEXTO2 ,
+    :TEXTO3 ,
+    :TEXTO4 ,
+    :TEXTO5 ,
+    :TEXTO6 ,
+    :NUMERO1 ,
+    :NUMERO2 ,
+    :NUMERO3 ,
+    :NUMERO4 ,
+    :FECHA1 ,
+    :FECHA2 ,
+    :CLAVE_PRODUCTOPADRE ,
+    :ESPRODUCTOPADRE ,
+    :ESPRODUCTOFINAL ,
+    :ESSUBPRODUCTO ,
+    :TOMARPRECIOPADRE ,
+    :TOMARCOMISIONPADRE ,
+    :TOMAROFERTAPADRE ,
+    :COMISION ,
+    :OFERTA ,
+    :PLUG ,
+    :TASAIEPS ,
+    :MINUTILIDAD ,
+    :AUTO_INSERT_FK ,
+    :SPRECIO1 ,
+    :SPRECIO2 ,
+    :SPRECIO3 ,
+    :SPRECIO4 ,
+    :SPRECIO5 ,
+    :REQUIERERECETA ,
+    :CLASIFICA ,
+    :PROMOMOVIL ,
+    :MARGENMOVIL ,
+    :MPRECIO4MOVIL ,
+    :CPRECIO4MOVIL ,
+    :TPRECIO4MOVIL ,
+    :APRECIO4MOVIL
+    )
+    INTO :ERRORCODE;
+
+    IF(COALESCE(:ERRORCODE,0)<> 0) THEN
+    BEGIN
+        SUSPEND;
+        EXIT;
+    END
+
+    SELECT ERRORCODE FROM
+       INVENTARIO_INICIAL_AGREGAR(
+            1 ,
+            :CLAVE ,
+            :LOTE ,
+            :FECHAVENCE ,
+            :CANTIDAD ,
+            0 ,
+            0 ,
+            NULL ,
+            NULL ,
+           NULL,
+            NULL)
+           INTO :ERRORCODE;
+         
+    IF(COALESCE(:ERRORCODE,0)<> 0) THEN
+    BEGIN
+        SUSPEND;
+        EXIT;
+    END
+
+
+
+   END
+
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   /*WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1022;
+      SUSPEND;
+   END */
+END

@@ -1,0 +1,1 @@
+insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (228, 'Ventas por Dia Con Utilidad MultiSucursal');

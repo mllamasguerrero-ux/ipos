@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/24/2022 01:38:13" ReportInfo.Modified="11/24/2022 01:56:41" ReportInfo.CreatorVersion="2014.2.10.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqGXDUjVHoOo39U7VHz/cohboC87uIIffsgzROmdYrsozCzYReASD25r9j9cwlC1qdmtbTPKUmbzUPIpQpb6TjkUxyRAI0QrFo8DuLHH01xG1l4KNybfd2pYs2t5fyNCMW+qZSZXbsoRqMtUAjBeucTdHMxCkQgLbRcN0pozFsf4w=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT PRODUCTO.ID, PRODUCTO.clave, PRODUCTO.nombre, PRODUCTO.descripcion, PRODUCTO.descripcion1, SUM(MOVTO.cantidad) CANTIDAD&#13;&#10;FROM            DOCTO INNER JOIN&#13;&#10;                         MOVTO ON MOVTO.DOCTOID = DOCTO.ID    INNER JOIN&#13;&#10;                         PRODUCTO ON PRODUCTO.ID = MOVTO.PRODUCTOID&#13;&#10;WHERE        (DOCTO.TIPODOCTOID IN (21, 24)) AND (DOCTO.ESTATUSDOCTOID = 1) AND (DOCTO.ESTADOSURTIDOID = @ESTADOSURTIDOID) AND (DOCTO.FECHA &gt;= @FECHAMINIMA) OR&#13;&#10;                         (DOCTO.TIPODOCTOID = 31) AND (DOCTO.ESTATUSDOCTOID = 1) AND (DOCTO.ESTADOSURTIDOID = @ESTADOSURTIDOID) AND (DOCTO.FECHA &gt;= @FECHAMINIMA) AND (DOCTO.SUBTIPODOCTOID &lt;&gt; 8 OR&#13;&#10;                         DOCTO.SUBTIPODOCTOID IS NULL) OR&#13;&#10;                         (DOCTO.TIPODOCTOID = 81) AND (DOCTO.ESTATUSDOCTOID = 1) AND (DOCTO.ESTADOSURTIDOID = @ESTADOSURTIDOID) AND (DOCTO.FECHA &gt;= @FECHAMINIMA) AND (DOCTO.SUBTIPODOCTOID &lt;&gt; 7 OR&#13;&#10;                         DOCTO.SUBTIPODOCTOID IS NULL)  &#13;&#10;GROUP BY PRODUCTO.ID, PRODUCTO.clave, PRODUCTO.nombre, PRODUCTO.descripcion, PRODUCTO.descripcion1">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <CommandParameter Name="ESTADOSURTIDOID" DataType="1" Expression="2" DefaultValue="2"/>
+        <CommandParameter Name="FECHAMINIMA" DataType="5" Expression="[FechaMinima]" DefaultValue="01/01/2022"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="FechaMinima" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="103.95">
+      <TextObject Name="Text1" Left="264.6" Top="56.7" Width="122.85" Height="18.9" Text="[FechaMinima]"/>
+      <TextObject Name="Text2" Left="141.75" Top="18.9" Width="425.25" Height="28.35" Text="Sumarizado de productos por ser surtido" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text3" Left="141.75" Top="56.7" Width="103.95" Height="18.9" Text="Fecha minima"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="107.95" Width="718.2" Height="28.35">
+      <TextObject Name="Text5" Left="18.9" Width="94.5" Height="18.9" Text="CLAVE"/>
+      <TextObject Name="Text7" Left="113.4" Width="94.5" Height="18.9" Text="NOMBRE"/>
+      <TextObject Name="Text9" Left="207.9" Width="141.75" Height="18.9" Text="DESCRIPCION"/>
+      <TextObject Name="Text11" Left="359.1" Width="207.9" Height="18.9" Text="DESCRIPCION1"/>
+      <TextObject Name="Text13" Left="576.45" Width="94.5" Height="18.9" Text="CANTIDAD"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="140.3" Width="718.2" Height="28.35" DataSource="Table">
+      <TextObject Name="Text4" Left="18.9" Width="94.5" Height="18.9" Text="[Table.CLAVE]"/>
+      <TextObject Name="Text6" Left="113.4" Width="94.5" Height="18.9" Text="[Table.NOMBRE]"/>
+      <TextObject Name="Text8" Left="207.9" Width="141.75" Height="18.9" Text="[Table.DESCRIPCION]"/>
+      <TextObject Name="Text10" Left="359.1" Width="207.9" Height="18.9" Text="[Table.DESCRIPCION1]"/>
+      <TextObject Name="Text12" Left="576.45" Width="94.5" Height="18.9" Text="[Table.CANTIDAD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="172.65" Width="718.2" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="44" Top="100" Font="Tahoma, 8pt" TabIndex="2" Text="sábado, 1 de enero de 2022" ReportParameter="FechaMinima" Value="2022-01-01"/>
+    <LabelControl Name="Label1" Left="44" Top="84" Width="68" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="FechaMinima"/>
+  </DialogPage>
+</Report>

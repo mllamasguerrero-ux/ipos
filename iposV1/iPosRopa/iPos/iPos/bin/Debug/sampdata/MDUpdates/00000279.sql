@@ -1,0 +1,1 @@
+delete from iposnomenu where ipostypeid = 1 and menuid = 16;

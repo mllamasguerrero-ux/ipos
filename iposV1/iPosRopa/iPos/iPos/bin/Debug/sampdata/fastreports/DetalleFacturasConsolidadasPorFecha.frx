@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/01/2022 16:45:14" ReportInfo.Modified="09/02/2022 22:50:39" ReportInfo.CreatorVersion="2014.2.10.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls6VtLZk5X/HNHdlg37G4jlO9RdQMjiPUQ6UOz/SpXvlWE+WF20sXZkTqRZDKNDC7z860w0i3oRb4LC71/DrNS7oOZzEyqre0fSc6KGUByCPv">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select  FACTCONS.id FACTCONSID,&#13;&#10;        FACTCONS.folio FACTCONSFOLIO,&#13;&#10;        FACTCONS.fecha FACTCONSFECHA,&#13;&#10;        FACTCONS.REFERENCIA REFERENCIA,&#13;&#10;        FACTCONS.OMITIRVALES OMITIRVALES,&#13;&#10;        FACTCONS.FOLIOSAT FOLIOSAT,&#13;&#10;        FACTCONS.SERIESAT SERIESAT,&#13;&#10;        FACTCONS.subtotal FACTCONSSUBTOTAL,&#13;&#10;        FACTCONS.iva FACTCONSIVA,&#13;&#10;        FACTCONS.ieps FACTCONSIEPS,&#13;&#10;        FACTCONS.total FACTCONSTOTAL,&#13;&#10;        FACTCONS.FECHAINI FECHAINI,&#13;&#10;        FACTCONS.FECHAFIN FECHAFIN,&#13;&#10;&#13;&#10;        t.ID   ,&#13;&#10;        t.FOLIO ,&#13;&#10;        T.SERIE ,&#13;&#10;        T.IMPORTE ,&#13;&#10;        T.DESCUENTO ,&#13;&#10;        T.SUBTOTAL ,&#13;&#10;        T.IVA ,&#13;&#10;        T.IEPS ,&#13;&#10;        T.IMPUESTO ,&#13;&#10;        T.TOTAL,&#13;&#10;        T.SALDO ,&#13;&#10;        T.ABONO,&#13;&#10;        T.CARGO,&#13;&#10;        T.TIPODOCTONOMBRE,&#13;&#10;        T.FECHA,&#13;&#10;        T.FECHAHORA,&#13;&#10;        T.TIPODOCTOID,&#13;&#10;        T.TIPOAPLICACION,&#13;&#10;        T.DOCTOPAGOID,&#13;&#10;        T.NOMBRETIPOAPLICACION,&#13;&#10;        T.FACTCONSAPLICADO ,&#13;&#10;&#13;&#10;        P.CLAVE PRODUCTOCLAVE,&#13;&#10;        P.NOMBRE PRODUCTONOMBRE,&#13;&#10;        P.DESCRIPCION1 PRODUCTODESCRIPCION1,&#13;&#10;        M.ID MOVTOID,&#13;&#10;        M.CANTIDAD MOVTOCANTIDAD,&#13;&#10;        M.PRECIO MOVTOPRECIO,&#13;&#10;        M.SUBTOTAL MOVTOSUBTOTAL,&#13;&#10;        M.IEPS MOVTOIEPS,&#13;&#10;        M.iva MOVTOIVA,&#13;&#10;        M.TOTAL MOVTOTOTAL&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;     FROM docto FACTCONS&#13;&#10;     left join&#13;&#10;     (&#13;&#10;        SELECT        DOCTO.ID,&#13;&#10;            DOCTO.FOLIO,&#13;&#10;            DOCTO.SERIE,&#13;&#10;            COALESCE(DOCTO.IMPORTE,0) * (CASE WHEN DOCTO.TIPODOCTOID IN (21) THEN 1 ELSE - 1 END) AS IMPORTE,&#13;&#10;            COALESCE(DOCTO.DESCUENTO,0) * (CASE WHEN DOCTO.TIPODOCTOID IN (21) THEN 1 ELSE - 1 END) AS DESCUENTO,&#13;&#10;                         COALESCE(DOCTO.SUBTOTAL,0) * (CASE WHEN DOCTO.TIPODOCTOID IN (21) THEN 1 ELSE - 1 END) AS SUBTOTAL,&#13;&#10;                         COALESCE(DOCTO.IVA,0) * (CASE WHEN DOCTO.TIPODOCTOID IN (21) THEN 1 ELSE - 1 END) AS IVA,&#13;&#10;                         COALESCE(DOCTO.IEPS,0) * (CASE WHEN DOCTO.TIPODOCTOID IN (21) THEN 1 ELSE - 1 END) AS IEPS,&#13;&#10;                         COALESCE(DOCTO.IMPUESTO,0) * (CASE WHEN DOCTO.TIPODOCTOID IN (21) THEN 1 ELSE - 1 END) AS IMPUESTO,&#13;&#10;                         COALESCE(DOCTO.TOTAL,0) * (CASE WHEN DOCTO.TIPODOCTOID IN (21) THEN 1 ELSE - 1 END) AS TOTAL,&#13;&#10;                         COALESCE(DOCTO.SALDO,0) * (CASE WHEN DOCTO.TIPODOCTOID IN (21) THEN 1 ELSE - 1 END) AS SALDO, &#13;&#10;                         COALESCE(DOCTO.ABONO,0) * (CASE WHEN DOCTO.TIPODOCTOID IN (21) THEN 1 ELSE - 1 END) AS ABONO,&#13;&#10;                         COALESCE(DOCTO.CARGO,0) * (CASE WHEN DOCTO.TIPODOCTOID IN (21) THEN 1 ELSE - 1 END) AS CARGO,&#13;&#10;                         TIPODOCTO.NOMBRE AS TIPODOCTONOMBRE,&#13;&#10;                         DOCTO.FECHA,&#13;&#10;                         DOCTO.FECHAHORA ,&#13;&#10;                         DOCTO.TIPODOCTOID ,&#13;&#10;                          1 AS TIPOAPLICACION,&#13;&#10;                          0 AS DOCTOPAGOID ,&#13;&#10;                          'VENTA' NOMBRETIPOAPLICACION  ,&#13;&#10;                          COALESCE(DOCTO.FACTCONSAPLICADO,'N')  FACTCONSAPLICADO,&#13;&#10;                          DOCTO.FACTCONSID&#13;&#10;&#13;&#10;&#13;&#10;         FROM            DOCTO LEFT OUTER JOIN&#13;&#10;                         TIPODOCTO ON TIPODOCTO.ID = DOCTO.TIPODOCTOID&#13;&#10;         WHERE&#13;&#10;             DOCTO.esfacturaelectronica = 'N'&#13;&#10;            AND DOCTO.ESTATUSDOCTOID = 1&#13;&#10;            AND DOCTO.TIPODOCTOID IN (21)&#13;&#10;&#13;&#10;         UNION&#13;&#10;&#13;&#10;&#13;&#10;         SELECT&#13;&#10;            DOCTODEV.ID,&#13;&#10;            DOCTODEV.FOLIO,&#13;&#10;            DOCTODEV.SERIE,&#13;&#10;            DOCTODEV.IMPORTE ,&#13;&#10;            DOCTODEV.DESCUENTO ,&#13;&#10;            DOCTODEV.SUBTOTAL ,&#13;&#10;            DOCTODEV.IVA ,&#13;&#10;            DOCTODEV.IEPS ,&#13;&#10;            DOCTODEV.IMPUESTO ,&#13;&#10;            DOCTODEV.TOTAL ,&#13;&#10;            0.0 AS SALDO,&#13;&#10;            0.0 ABONO,&#13;&#10;            DOCTODEV.CARGO ,&#13;&#10;            TIPODOCTO.NOMBRE AS TIPODOCTONOMBRE,&#13;&#10;            DOCTODEV.FECHA,&#13;&#10;            DOCTODEV.FECHAHORA ,&#13;&#10;            DOCTODEV.TIPODOCTOID,&#13;&#10;            3 AS TIPOAPLICACION   ,&#13;&#10;            0 DOCTOPAGOID  ,&#13;&#10;            'EGRESOS DEVOLUCIONES' NOMBRETIPOAPLICACION ,&#13;&#10;            COALESCE(DOCTODEV.FACTCONSAPLICADO,'N')  FACTCONSAPLICADO ,&#13;&#10;            DOCTODEV.FACTCONSID&#13;&#10;&#13;&#10;        FROM    DOCTO DOCTODEV&#13;&#10;                LEFT JOIN&#13;&#10;                TIPODOCTO ON TIPODOCTO.ID = DOCTODEV.TIPODOCTOID&#13;&#10;&#13;&#10;&#13;&#10;        WHERE&#13;&#10;            (DOCTODEV.ESTATUSDOCTOID = 1) AND&#13;&#10;            ( DOCTODEV.TIPODOCTOID IN (22)) AND&#13;&#10;            DOCTODEV.ESTATUSDOCTOID = 1&#13;&#10;&#13;&#10;       ) t on T.FACTCONSID = FACTCONS.ID&#13;&#10;       LEFT join MOVTO M ON M.DOCTOID = T.ID &#13;&#10;       LEFT join PRODUCTO P ON P.ID = M.PRODUCTOID&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;    where  FACTCONS.tipodoctoid = 701 and FACTCONS.estatusdoctoid = 1 and&#13;&#10;                  FACTCONS.fechaini &gt;=@fechaini and FACTCONS.fechaini &lt;= @fechafin and&#13;&#10;                  (@soloaplicado &lt;&gt; 'S' or t.factconsaplicado = @soloaplicado)&#13;&#10;    order by FACTCONS.fecha, t.fecha&#13;&#10;">
+        <Column Name="FACTCONSID" DataType="System.Int64"/>
+        <Column Name="FACTCONSFOLIO" DataType="System.Int32"/>
+        <Column Name="FACTCONSFECHA" DataType="System.DateTime"/>
+        <Column Name="REFERENCIA" DataType="System.String"/>
+        <Column Name="OMITIRVALES" DataType="System.String"/>
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="SERIE" DataType="System.String"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="ABONO" DataType="System.Decimal"/>
+        <Column Name="CARGO" DataType="System.Decimal"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="TIPOAPLICACION" DataType="System.Int64"/>
+        <Column Name="DOCTOPAGOID" DataType="System.Int64"/>
+        <Column Name="NOMBRETIPOAPLICACION" DataType="System.String"/>
+        <Column Name="FACTCONSAPLICADO" DataType="System.String"/>
+        <Column Name="FOLIOSAT" DataType="System.Int32"/>
+        <Column Name="SERIESAT" DataType="System.String"/>
+        <Column Name="FACTCONSTOTAL" DataType="System.Decimal"/>
+        <Column Name="FACTCONSIVA" DataType="System.Decimal"/>
+        <Column Name="FACTCONSIEPS" DataType="System.Decimal"/>
+        <Column Name="FACTCONSSUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="FECHAINI" DataType="System.DateTime"/>
+        <Column Name="FECHAFIN" DataType="System.DateTime"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION1" DataType="System.String"/>
+        <Column Name="MOVTOCANTIDAD" DataType="System.Decimal"/>
+        <Column Name="MOVTOPRECIO" DataType="System.Decimal"/>
+        <Column Name="MOVTOSUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="MOVTOIEPS" DataType="System.Decimal"/>
+        <Column Name="MOVTOIVA" DataType="System.Decimal"/>
+        <Column Name="MOVTOTOTAL" DataType="System.Decimal"/>
+        <Column Name="MOVTOID" DataType="System.Int64"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2022"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2023"/>
+        <CommandParameter Name="soloaplicado" DataType="16" Size="1" Expression="IIf([soloaplicado],&quot;S&quot;,&quot;N&quot;)" DefaultValue="N"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="soloaplicado" DataType="System.Boolean"/>
+    <Total Name="Subtotal" Expression="[Table.SUBTOTAL]" Evaluator="Data1" PrintOn="GroupFooter2"/>
+    <Total Name="Iva" Expression="[Table.IVA]" Evaluator="Data1" PrintOn="GroupFooter2"/>
+    <Total Name="Ieps" Expression="[Table.IEPS]" Evaluator="Data1" PrintOn="GroupFooter2"/>
+    <Total Name="Total" Expression="[Table.TOTAL]" Evaluator="Data1" PrintOn="GroupFooter2"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" RawPaperSize="1">
+    <ReportTitleBand Name="ReportTitle1" Width="740.5" Height="75.6">
+      <TextObject Name="Text1" Left="18.9" Top="9.45" Width="614.25" Height="18.9" Text="DETALLE DE FACTURAS CONSOLIDADAS POR FECHA" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text2" Left="18.9" Top="56.7" Width="103.95" Height="18.9" Text="Fecha inicial:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text3" Left="245.7" Top="56.7" Width="94.5" Height="18.9" Text="Fecha final:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="444.15" Top="56.7" Width="122.85" Height="18.9" Text="Solo aplicados:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text5" Left="132.3" Top="56.7" Width="94.5" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text6" Left="349.65" Top="56.7" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text7" Left="576.45" Top="56.7" Width="113.4" Height="18.9" Text="[IIf([soloaplicado],&quot;S&quot;,&quot;N&quot;)]"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="79.6" Width="740.5" Height="18.9"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="102.5" Width="740.5" Height="37.8" Condition="[Table.FACTCONSID]">
+      <TextObject Name="Text8" Left="330.75" Top="18.9" Width="94.5" Height="18.9" Text="[Table.SERIESAT] [Table.FOLIOSAT]" Font="Arial, 11pt, style=Italic, Underline"/>
+      <TextObject Name="Text10" Left="132.3" Top="18.9" Width="122.85" Height="18.9" Text="[Table.FACTCONSFECHA]" Format="Date" Format.Format="d" Font="Arial, 11pt, style=Italic, Underline"/>
+      <TextObject Name="Text28" Left="9.45" Top="18.9" Width="122.85" Height="18.9" Text="Fact. cons. fecha:" Font="Arial, 11pt"/>
+      <TextObject Name="Text29" Left="264.6" Top="18.9" Width="47.25" Height="18.9" Text="Folio:" Font="Arial, 11pt"/>
+      <TextObject Name="Text30" Left="434.7" Top="18.9" Width="28.35" Height="18.9" Text="De:" Font="Arial, 11pt"/>
+      <TextObject Name="Text16" Left="472.5" Top="18.9" Width="94.5" Height="18.9" Text="[Table.FECHAINI]" Format="Date" Format.Format="d" Font="Arial, 10pt, style=Italic, Underline"/>
+      <TextObject Name="Text42" Left="623.7" Top="18.9" Width="94.5" Height="18.9" Text="[Table.FECHAFIN]" Format="Date" Format.Format="d" Font="Arial, 10pt, style=Italic, Underline"/>
+      <TextObject Name="Text43" Left="585.9" Top="18.9" Width="28.35" Height="18.9" Text="a:" Font="Arial, 11pt"/>
+      <GroupHeaderBand Name="GroupHeader2" Top="144.3" Width="740.5" Height="47.25" Condition="[Table.NOMBRETIPOAPLICACION]">
+        <TextObject Name="Text11" Left="132.3" Width="245.7" Height="18.9" Text="[[Table.NOMBRETIPOAPLICACION]]" Font="Arial, 10pt, style=Italic, Underline"/>
+        <TextObject Name="Text13" Left="160.65" Top="28.35" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 9pt"/>
+        <TextObject Name="Text15" Left="255.15" Top="28.35" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 9pt"/>
+        <TextObject Name="Text19" Left="349.65" Top="28.35" Width="94.5" Height="18.9" Text="SUBTOTAL" Font="Arial, 9pt"/>
+        <TextObject Name="Text21" Left="444.15" Top="28.35" Width="94.5" Height="18.9" Text="IVA" Font="Arial, 9pt"/>
+        <TextObject Name="Text23" Left="538.65" Top="28.35" Width="94.5" Height="18.9" Text="IEPS" Font="Arial, 9pt"/>
+        <TextObject Name="Text25" Left="633.15" Top="28.35" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 9pt"/>
+        <TextObject Name="Text27" Left="47.25" Top="28.35" Width="113.4" Height="18.9" Text="TIPO DOCTO" Font="Arial, 9pt"/>
+        <TextObject Name="Text31" Left="9.45" Width="113.4" Height="18.9" Text="Tipo aplicacion:"/>
+        <TextObject Name="Text17" Left="9.45" Top="28.35" Width="37.8" Height="18.9" Text="APL." Font="Arial, 9pt"/>
+        <GroupHeaderBand Name="GroupHeader3" Top="195.55" Width="740.5" Height="66.15" Condition="[Table.ID]">
+          <TextObject Name="Text9" Left="9.45" Top="18.9" Width="37.8" Height="18.9" Text="[Table.FACTCONSAPLICADO]" Font="Arial, 9pt"/>
+          <TextObject Name="Text12" Left="160.65" Top="18.9" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+          <TextObject Name="Text14" Left="255.15" Top="18.9" Width="94.5" Height="18.9" Text="[Table.SERIE] [Table.FOLIO]" Font="Arial, 9pt"/>
+          <TextObject Name="Text18" Left="349.65" Top="18.9" Width="94.5" Height="18.9" Text="[Table.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text20" Left="444.15" Top="18.9" Width="94.5" Height="18.9" Text="[Table.IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text22" Left="538.65" Top="18.9" Width="94.5" Height="18.9" Text="[Table.IEPS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text24" Left="633.15" Top="18.9" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text26" Left="47.25" Top="18.9" Width="113.4" Height="18.9" Text="[Table.TIPODOCTONOMBRE]" Font="Arial, 9pt"/>
+          <TextObject Name="Text45" Left="9.45" Top="47.25" Width="75.6" Height="18.9" Text="CLAVE" Font="Arial, 8pt, style=Italic, Underline"/>
+          <TextObject Name="Text47" Left="85.05" Top="47.25" Width="113.4" Height="18.9" Text="DESCRIPCION1" Font="Arial, 8pt, style=Italic, Underline"/>
+          <TextObject Name="Text49" Left="198.45" Top="47.25" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 8pt, style=Italic, Underline"/>
+          <TextObject Name="Text51" Left="292.95" Top="47.25" Width="94.5" Height="18.9" Text="PRECIO" Font="Arial, 8pt, style=Italic, Underline"/>
+          <TextObject Name="Text53" Left="387.45" Top="47.25" Width="94.5" Height="18.9" Text="SUBTOTAL" Font="Arial, 8pt, style=Italic, Underline"/>
+          <TextObject Name="Text55" Left="481.95" Top="47.25" Width="94.5" Height="18.9" Text="IEPS" Font="Arial, 8pt, style=Italic, Underline"/>
+          <TextObject Name="Text57" Left="576.45" Top="47.25" Width="85.05" Height="18.9" Text="IVA" Font="Arial, 8pt, style=Italic, Underline"/>
+          <TextObject Name="Text59" Left="661.5" Top="47.25" Width="85.05" Height="18.9" Text="TOTAL" Font="Arial, 8pt, style=Italic, Underline"/>
+          <DataBand Name="Data1" Top="265.7" Width="740.5" Height="18.9" DataSource="Table">
+            <TextObject Name="Text44" Left="9.45" Width="75.6" Height="18.9" Text="[Table.PRODUCTOCLAVE]" Font="Arial, 8pt"/>
+            <TextObject Name="Text48" Left="198.45" Width="94.5" Height="18.9" Text="[Table.MOVTOCANTIDAD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text50" Left="292.95" Width="94.5" Height="18.9" Text="[Table.MOVTOPRECIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text52" Left="387.45" Width="94.5" Height="18.9" Text="[Table.MOVTOSUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text54" Left="481.95" Width="94.5" Height="18.9" Text="[Table.MOVTOIEPS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text56" Left="576.45" Width="85.05" Height="18.9" Text="[Table.MOVTOIVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text58" Left="661.5" Width="94.5" Height="18.9" Text="[Table.MOVTOTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text46" Left="85.05" Width="113.4" Height="18.9" Text="[Table.PRODUCTODESCRIPCION1]" Font="Arial, 8pt"/>
+          </DataBand>
+          <GroupFooterBand Name="GroupFooter3" Top="288.6" Width="740.5" Height="28.35"/>
+        </GroupHeaderBand>
+        <GroupFooterBand Name="GroupFooter2" Top="320.95" Width="740.5" Height="37.8">
+          <TextObject Name="Text32" Left="359.1" Width="94.5" Height="18.9" Text="[Subtotal]" Font="Arial, 9pt, style=Underline"/>
+          <TextObject Name="Text33" Left="453.6" Width="94.5" Height="18.9" Text="[Iva]" Font="Arial, 9pt, style=Underline"/>
+          <TextObject Name="Text34" Left="548.1" Width="94.5" Height="18.9" Text="[Ieps]" Font="Arial, 9pt, style=Underline"/>
+          <TextObject Name="Text35" Left="642.6" Width="94.5" Height="18.9" Text="[Total]" Font="Arial, 9pt, style=Underline"/>
+          <TextObject Name="Text40" Left="151.2" Width="207.9" Height="18.9" Text="Totales por tipo aplicacion:"/>
+        </GroupFooterBand>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="362.75" Width="740.5" Height="37.8">
+        <TextObject Name="Text36" Left="642.6" Width="94.5" Height="18.9" Text="[Table.FACTCONSTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 10pt, style=Italic, Underline" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text37" Left="453.6" Width="94.5" Height="18.9" Text="[Table.FACTCONSIVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 10pt, style=Italic, Underline" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text38" Left="548.1" Width="94.5" Height="18.9" Text="[Table.FACTCONSIEPS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 10pt, style=Italic, Underline" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text39" Left="359.1" Width="94.5" Height="18.9" Text="[Table.FACTCONSSUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 10pt, style=Italic, Underline" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text41" Left="151.2" Width="207.9" Height="18.9" Text="Totales en factura consolidada"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="404.55" Width="740.5" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="52" Top="36" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fechaini" FilterOperation="GreaterThanOrEqual" Value="01/01/2022 17:09:00"/>
+    <LabelControl Name="Label1" Left="48" Top="20" Width="64" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Fecha inicial"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="48" Top="100" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="09/01/2023 17:09:00"/>
+    <LabelControl Name="Label2" Left="44" Top="84" Width="59" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha final"/>
+    <CheckBoxControl Name="CheckBox1" Left="52" Top="164" Width="88" Height="17" Font="Tahoma, 8pt" TabIndex="6" Text="Solo aplicado" ReportParameter="soloaplicado" Checked="true" CheckState="Checked"/>
+  </DialogPage>
+</Report>

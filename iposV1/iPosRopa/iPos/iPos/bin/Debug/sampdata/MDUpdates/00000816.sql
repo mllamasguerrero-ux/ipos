@@ -1,0 +1,8 @@
+UPDATE MENUITEMS
+SET MN_IDPARENT = -1,
+    MN_ETIQUETA = 'Perfiles',
+    MN_DESC = 'Perfiles',
+    MN_DERECHO = 24,
+    MN_LEVEL = 1,
+    MN_ORDEN = NULL
+WHERE (MN_ID = 24);

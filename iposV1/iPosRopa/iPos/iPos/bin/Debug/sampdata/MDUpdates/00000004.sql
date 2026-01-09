@@ -1,0 +1,1 @@
+update perfil_der set pd_derecho = 3 where pd_perfil = 11;

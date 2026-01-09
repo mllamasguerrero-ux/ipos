@@ -1,0 +1,3 @@
+INSERT INTO DERECHOS (DR_DERECHO, DR_DESCRIPCION)
+  VALUES (148, 'Anticipos de clientes');
+

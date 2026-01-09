@@ -1,0 +1,488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/24/2021 19:28:07" ReportInfo.Modified="01/27/2021 11:48:02" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <PostgresDataConnection Name="Connection" ConnectionString="rijcmlqx1T0cxaam7moPnKfk8dkZ//UtlLHjTy0OMpmCRUR0U+/r8szWvQEqyp/uoDrmMfYKebvvxhxeYG8KXKkUbzy70TI0yu6DPln0qkGwcoM0tn4SHk+PEfPXP1HFKTANJOCTcUc4sQqSo/5RybEnyKQLOvQOyUwLbqjGXk84boKRgtSefWLQib/eP3JVPMJrJsHhfIJ9+35BkLRw102yACKbVLrZ7dUWJUD4IoQMdR9HsF07F6E3SJzHJYtjh40mI7T">
+      <TableDataSource Name="Table" Alias="Docto" DataType="System.Int32" Enabled="true" SelectCommand="Select v.* from core.v_docto_impresion_vendeduria v&#13;&#10;where v.empresaid = @p_empresaid and v.sucursalid = @p_sucursalid&#13;&#10;and v.id = @p_doctoid">
+        <Column Name="empresaid" DataType="System.Int64"/>
+        <Column Name="sucursalid" DataType="System.Int64"/>
+        <Column Name="id" DataType="System.Int64"/>
+        <Column Name="activo" DataType="System.String"/>
+        <Column Name="creado" DataType="System.DateTime"/>
+        <Column Name="creadopor_userid" DataType="System.Int64"/>
+        <Column Name="modificado" DataType="System.DateTime"/>
+        <Column Name="modificadopor_userid" DataType="System.Int64"/>
+        <Column Name="estatusdoctoid" DataType="System.Int64"/>
+        <Column Name="estatusdoctoclave" DataType="System.String"/>
+        <Column Name="estatusdoctonombre" DataType="System.String"/>
+        <Column Name="usuarioid" DataType="System.Int64"/>
+        <Column Name="usuariousername" DataType="System.String"/>
+        <Column Name="usuarionombre" DataType="System.String"/>
+        <Column Name="corteid" DataType="System.Int64"/>
+        <Column Name="fechacorte" DataType="System.DateTime"/>
+        <Column Name="fecha" DataType="System.DateTime"/>
+        <Column Name="fechahora" DataType="System.DateTime"/>
+        <Column Name="serie" DataType="System.String"/>
+        <Column Name="folio" DataType="System.Int32"/>
+        <Column Name="importe" DataType="System.Decimal"/>
+        <Column Name="descuento" DataType="System.Decimal"/>
+        <Column Name="subtotal" DataType="System.Decimal"/>
+        <Column Name="iva" DataType="System.Decimal"/>
+        <Column Name="ieps" DataType="System.Decimal"/>
+        <Column Name="total" DataType="System.Decimal"/>
+        <Column Name="cargo" DataType="System.Decimal"/>
+        <Column Name="abono" DataType="System.Decimal"/>
+        <Column Name="saldo" DataType="System.Decimal"/>
+        <Column Name="cajaid" DataType="System.Int64"/>
+        <Column Name="cajaclave" DataType="System.String"/>
+        <Column Name="cajanombre" DataType="System.String"/>
+        <Column Name="almacenid" DataType="System.Int64"/>
+        <Column Name="almacenclave" DataType="System.String"/>
+        <Column Name="almacennombre" DataType="System.String"/>
+        <Column Name="origenfiscalid" DataType="System.Int64"/>
+        <Column Name="origenfiscalclave" DataType="System.String"/>
+        <Column Name="origenfiscalnombre" DataType="System.String"/>
+        <Column Name="esapartado" DataType="System.String"/>
+        <Column Name="doctoparentid" DataType="System.Int64"/>
+        <Column Name="doctoparentfolio" DataType="System.Int32"/>
+        <Column Name="doctoparentfechahora" DataType="System.DateTime"/>
+        <Column Name="clienteid" DataType="System.Int64"/>
+        <Column Name="clienteclave" DataType="System.String"/>
+        <Column Name="clientenombre" DataType="System.String"/>
+        <Column Name="tipodoctoid" DataType="System.Int64"/>
+        <Column Name="tipodoctoclave" DataType="System.String"/>
+        <Column Name="tipodoctonombre" DataType="System.String"/>
+        <Column Name="proveedorid" DataType="System.Int64"/>
+        <Column Name="proveedorclave" DataType="System.String"/>
+        <Column Name="proveedornombre" DataType="System.String"/>
+        <Column Name="sucursal_id" DataType="System.Int64"/>
+        <Column Name="sucursal_clave" DataType="System.String"/>
+        <Column Name="sucursal_nombre" DataType="System.String"/>
+        <Column Name="referencia" DataType="System.String"/>
+        <Column Name="referencias" DataType="System.String"/>
+        <Column Name="loteimportadodoctoid" DataType="System.Int64"/>
+        <Column Name="loteimportadopedimento" DataType="System.String"/>
+        <Column Name="loteimportadofechaimportacion" DataType="System.DateTime"/>
+        <Column Name="mercanciaentregada" DataType="System.String"/>
+        <Column Name="personaapartadoid" DataType="System.Int64"/>
+        <Column Name="personaapartadoclave" DataType="System.String"/>
+        <Column Name="personaapartadonombre" DataType="System.String"/>
+        <Column Name="folioorigenfacturado" DataType="System.Int32"/>
+        <Column Name="montoorigenfacturado" DataType="System.Decimal"/>
+        <Column Name="serieorigenfacturado" DataType="System.String"/>
+        <Column Name="docto_corte_fechacorte" DataType="System.DateTime"/>
+        <Column Name="montobilletesid" DataType="System.Int64"/>
+        <Column Name="montobilletessaldofinal" DataType="System.Decimal"/>
+        <Column Name="doctokitrefid" DataType="System.Int64"/>
+        <Column Name="doctokitreffolio" DataType="System.Int32"/>
+        <Column Name="doctokitreffechahora" DataType="System.DateTime"/>
+        <Column Name="prekitestatus" DataType="System.Int64"/>
+        <Column Name="prekitestatusclave" DataType="System.String"/>
+        <Column Name="prekitestatusnombre" DataType="System.String"/>
+        <Column Name="postkitestatus" DataType="System.Int64"/>
+        <Column Name="postkitestatusclave" DataType="System.String"/>
+        <Column Name="postkitestatusnombre" DataType="System.String"/>
+        <Column Name="versionkit" DataType="System.Int32"/>
+        <Column Name="kitdesglosado" DataType="System.String"/>
+        <Column Name="pagocontarjeta" DataType="System.String"/>
+        <Column Name="comisionpagotarjeta" DataType="System.Decimal"/>
+        <Column Name="comisiontarjetaempresa" DataType="System.Decimal"/>
+        <Column Name="ivacomisiontarjetaempresa" DataType="System.Decimal"/>
+        <Column Name="abonotarjeta" DataType="System.Decimal"/>
+        <Column Name="comisiondebtarjetaempresa" DataType="System.Decimal"/>
+        <Column Name="notapago" DataType="System.String"/>
+        <Column Name="hatenidocredito" DataType="System.String"/>
+        <Column Name="pagoacredito" DataType="System.String"/>
+        <Column Name="abononoaplicado" DataType="System.Decimal"/>
+        <Column Name="pagodevid" DataType="System.Int64"/>
+        <Column Name="pagodevimporte" DataType="System.Decimal"/>
+        <Column Name="pagodevfechahora" DataType="System.DateTime"/>
+        <Column Name="estatusanticipoid" DataType="System.Int64"/>
+        <Column Name="estatusanticipoclave" DataType="System.String"/>
+        <Column Name="estatusanticiponombre" DataType="System.String"/>
+        <Column Name="totalanticipo" DataType="System.Decimal"/>
+        <Column Name="tipomayoreoid" DataType="System.Int64"/>
+        <Column Name="tipomayoreoclave" DataType="System.String"/>
+        <Column Name="nombre" DataType="System.String"/>
+        <Column Name="tipodescuentovale" DataType="System.Int64"/>
+        <Column Name="tipodescuentovaleclave" DataType="System.String"/>
+        <Column Name="tipodescuentovalenombre" DataType="System.String"/>
+        <Column Name="timbradouuid" DataType="System.String"/>
+        <Column Name="timbradofecha" DataType="System.String"/>
+        <Column Name="timbradocertsat" DataType="System.String"/>
+        <Column Name="timbradosellosat" DataType="System.String"/>
+        <Column Name="timbradosellocfdi" DataType="System.String"/>
+        <Column Name="timbradocancelado" DataType="System.String"/>
+        <Column Name="timbradofechacancelacion" DataType="System.DateTime"/>
+        <Column Name="timbradouuidcancelacion" DataType="System.String"/>
+        <Column Name="timbradofechafactura" DataType="System.DateTime"/>
+        <Column Name="timbradoformapagosat" DataType="System.String"/>
+        <Column Name="foliosat" DataType="System.Int32"/>
+        <Column Name="seriesat" DataType="System.String"/>
+        <Column Name="esfacturaelectronica" DataType="System.String"/>
+        <Column Name="fechafactura" DataType="System.DateTime"/>
+        <Column Name="sat_usocfdiid" DataType="System.Int64"/>
+        <Column Name="sat_usocfdiclave" DataType="System.String"/>
+        <Column Name="sat_usocfdidescripcion" DataType="System.String"/>
+        <Column Name="cfdiid" DataType="System.Int64"/>
+        <Column Name="cfdifolio" DataType="System.String"/>
+        <Column Name="cfdifecha" DataType="System.DateTime"/>
+        <Column Name="doctosustitutoid" DataType="System.Int64"/>
+        <Column Name="doctosustitutofolio" DataType="System.Int32"/>
+        <Column Name="doctosustitutofechahora" DataType="System.DateTime"/>
+        <Column Name="doctoasustituirid" DataType="System.Int64"/>
+        <Column Name="doctoasustituirfolio" DataType="System.Int32"/>
+        <Column Name="doctoasustituirfechahora" DataType="System.DateTime"/>
+        <Column Name="factconsid" DataType="System.Int64"/>
+        <Column Name="factconsfolio" DataType="System.Int32"/>
+        <Column Name="factconsfechahora" DataType="System.DateTime"/>
+        <Column Name="devconsid" DataType="System.Int64"/>
+        <Column Name="devconsfolio" DataType="System.Int32"/>
+        <Column Name="devconsfechahora" DataType="System.DateTime"/>
+        <Column Name="doctorefid2" DataType="System.Int64"/>
+        <Column Name="doctoreffolio" DataType="System.Int32"/>
+        <Column Name="doctoreffechahora" DataType="System.DateTime"/>
+        <Column Name="factconsaplicado" DataType="System.String"/>
+        <Column Name="omitirvales" DataType="System.String"/>
+        <Column Name="sinvale_subtotal" DataType="System.Decimal"/>
+        <Column Name="sinvale_iva" DataType="System.Decimal"/>
+        <Column Name="sinvale_ieps" DataType="System.Decimal"/>
+        <Column Name="sinvale_total" DataType="System.Decimal"/>
+        <Column Name="sinvale_iva_ret" DataType="System.Decimal"/>
+        <Column Name="sinvale_isr_ret" DataType="System.Decimal"/>
+        <Column Name="doctopagosat" DataType="System.Int64"/>
+        <Column Name="doctopagosatiddocumento" DataType="System.String"/>
+        <Column Name="doctopagosatfolio" DataType="System.String"/>
+        <Column Name="pago_timbradoformapagosat" DataType="System.String"/>
+        <Column Name="pagosat" DataType="System.Int64"/>
+        <Column Name="pagosatnumoperacion" DataType="System.String"/>
+        <Column Name="pagosatmonto" DataType="System.Decimal"/>
+        <Column Name="fechaaprobacioncxc" DataType="System.DateTime"/>
+        <Column Name="personaidaprobacioncxc" DataType="System.Int64"/>
+        <Column Name="personaidaprobacioncxcusername" DataType="System.String"/>
+        <Column Name="personaidaprobacioncxcnombre" DataType="System.String"/>
+        <Column Name="pagobancomeraplicado" DataType="System.String"/>
+        <Column Name="vendedorfinal" DataType="System.Int64"/>
+        <Column Name="vendedorfinalusername" DataType="System.String"/>
+        <Column Name="vendedorfinalnombre" DataType="System.String"/>
+        <Column Name="vendedorejecutivoid" DataType="System.Int64"/>
+        <Column Name="vendedorejecutivousername" DataType="System.String"/>
+        <Column Name="vendedorejecutivonombre" DataType="System.String"/>
+        <Column Name="comision" DataType="System.Decimal"/>
+        <Column Name="utilidad" DataType="System.Decimal"/>
+        <Column Name="vendedorutilidadid" DataType="System.Int64"/>
+        <Column Name="vendedorutilidadusername" DataType="System.String"/>
+        <Column Name="vendedorutilidadnombre" DataType="System.String"/>
+        <Column Name="gastosadicaplicados" DataType="System.Decimal"/>
+        <Column Name="contrareciboid" DataType="System.Int64"/>
+        <Column Name="contrarecibofolio" DataType="System.Int32"/>
+        <Column Name="contrarecibofecha" DataType="System.DateTime"/>
+        <Column Name="usardatosentrega" DataType="System.String"/>
+        <Column Name="estadoguiaid" DataType="System.Int64"/>
+        <Column Name="estadoguiaclave" DataType="System.String"/>
+        <Column Name="estadoguianombre" DataType="System.String"/>
+        <Column Name="guiaid" DataType="System.Int64"/>
+        <Column Name="guiafolio" DataType="System.Int32"/>
+        <Column Name="guiafechahora" DataType="System.DateTime"/>
+        <Column Name="fechaguiaenviado" DataType="System.DateTime"/>
+        <Column Name="fechaguiarecibido" DataType="System.DateTime"/>
+        <Column Name="personaidguiarecibio" DataType="System.Int64"/>
+        <Column Name="personaguiausername" DataType="System.String"/>
+        <Column Name="personaguianombre" DataType="System.String"/>
+        <Column Name="doctoplazoorigenid" DataType="System.Int64"/>
+        <Column Name="doctoplazoorigenfolio" DataType="System.Int32"/>
+        <Column Name="doctoplazoorigenfechahora" DataType="System.DateTime"/>
+        <Column Name="plazoid" DataType="System.Int64"/>
+        <Column Name="plazoclave" DataType="System.String"/>
+        <Column Name="plazonombre" DataType="System.String"/>
+        <Column Name="promocion" DataType="System.String"/>
+        <Column Name="estadorevisadoid" DataType="System.Int64"/>
+        <Column Name="estadorevisadoclave" DataType="System.String"/>
+        <Column Name="estadorevisadonombre" DataType="System.String"/>
+        <Column Name="procesosurtido" DataType="System.String"/>
+        <Column Name="pendmaxfecha" DataType="System.DateTime"/>
+        <Column Name="estadosurtidoid" DataType="System.Int64"/>
+        <Column Name="estadosurtidoclave" DataType="System.String"/>
+        <Column Name="estadosurtidonombre" DataType="System.String"/>
+        <Column Name="notasurtido" DataType="System.String"/>
+        <Column Name="estatusdoctopedidoid" DataType="System.Int64"/>
+        <Column Name="estatusdoctopedidoclave" DataType="System.String"/>
+        <Column Name="estatusdoctopedidonombre" DataType="System.String"/>
+        <Column Name="fechasurtido" DataType="System.DateTime"/>
+        <Column Name="personaidsurtido" DataType="System.Int64"/>
+        <Column Name="personaidsurtidousername" DataType="System.String"/>
+        <Column Name="personaidsurtidonombre" DataType="System.String"/>
+        <Column Name="estadorebaja" DataType="System.Int64"/>
+        <Column Name="estadorebajaclave" DataType="System.String"/>
+        <Column Name="estadorebajanombre" DataType="System.String"/>
+        <Column Name="montorebaja" DataType="System.Decimal"/>
+        <Column Name="totalconrebaja" DataType="System.Decimal"/>
+        <Column Name="sucursaltid" DataType="System.Int64"/>
+        <Column Name="sucursaltclave" DataType="System.String"/>
+        <Column Name="sucursaltnombre" DataType="System.String"/>
+        <Column Name="almacentid" DataType="System.Int64"/>
+        <Column Name="almacentclave" DataType="System.String"/>
+        <Column Name="almacentnombre" DataType="System.String"/>
+        <Column Name="autorizoalertaid" DataType="System.Int64"/>
+        <Column Name="autorizoalertausername" DataType="System.String"/>
+        <Column Name="autorizoalertanombre" DataType="System.String"/>
+        <Column Name="manejoreceta" DataType="System.String"/>
+        <Column Name="monedero" DataType="System.Int64"/>
+        <Column Name="monederoclave" DataType="System.String"/>
+        <Column Name="monederonombre" DataType="System.String"/>
+        <Column Name="descmonedero" DataType="System.Decimal"/>
+        <Column Name="abonomonedero" DataType="System.Decimal"/>
+        <Column Name="rutaembarqueid" DataType="System.Int64"/>
+        <Column Name="rutaembarqueclave" DataType="System.String"/>
+        <Column Name="rutaembarquenombre" DataType="System.String"/>
+        <Column Name="ventafutuid" DataType="System.Int64"/>
+        <Column Name="ventafutufolio" DataType="System.Int32"/>
+        <Column Name="ventafutufechahora" DataType="System.DateTime"/>
+        <Column Name="ordencompra" DataType="System.String"/>
+        <Column Name="ordencomprarefid" DataType="System.Int64"/>
+        <Column Name="ordencomprareffolio" DataType="System.Int32"/>
+        <Column Name="ordencomprareffechahora" DataType="System.DateTime"/>
+        <Column Name="esservdomicilio" DataType="System.String"/>
+        <Column Name="domicilioentregaid" DataType="System.Int64"/>
+        <Column Name="domicilioentrega_calle" DataType="System.String"/>
+        <Column Name="domicilioentrega_numeroexterior" DataType="System.String"/>
+        <Column Name="domicilioentrega_numerointerior" DataType="System.String"/>
+        <Column Name="domicilioentrega_colonia" DataType="System.String"/>
+        <Column Name="domicilioentrega_ciudad" DataType="System.String"/>
+        <Column Name="domicilioentrega_municipio" DataType="System.String"/>
+        <Column Name="domicilioentrega_estado" DataType="System.String"/>
+        <Column Name="domicilioentrega_pais" DataType="System.String"/>
+        <Column Name="domicilioentrega_codigopostal" DataType="System.String"/>
+        <Column Name="devolucionrefid" DataType="System.Int64"/>
+        <Column Name="devolucionreffolio" DataType="System.Int32"/>
+        <Column Name="devolucionreffechahora" DataType="System.DateTime"/>
+        <Column Name="cancelacionrefid" DataType="System.Int64"/>
+        <Column Name="cancelacionfolio" DataType="System.Int32"/>
+        <Column Name="cancelacionfechahora" DataType="System.DateTime"/>
+        <CommandParameter Name="p_empresaid" DataType="1" Expression="[p_empresaid]" DefaultValue="0"/>
+        <CommandParameter Name="p_sucursalid" DataType="1" Expression="[p_sucursalid]" DefaultValue="0"/>
+        <CommandParameter Name="p_doctoid" DataType="1" Expression="[p_doctoid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="Select * from administracion.empresa&#13;&#10;where id = @p_empresaid">
+        <Column Name="empresaid" DataType="System.Int64"/>
+        <Column Name="sucursalid" DataType="System.Int64"/>
+        <Column Name="id" DataType="System.Int64"/>
+        <Column Name="activo" DataType="System.String"/>
+        <Column Name="creado" DataType="System.DateTime"/>
+        <Column Name="creadopor_userid" DataType="System.Int64"/>
+        <Column Name="modificado" DataType="System.DateTime"/>
+        <Column Name="modificadopor_userid" DataType="System.Int64"/>
+        <Column Name="clave" DataType="System.String"/>
+        <Column Name="nombre" DataType="System.String"/>
+        <Column Name="descripcion" DataType="System.String"/>
+        <Column Name="rfc" DataType="System.String"/>
+        <Column Name="telefono" DataType="System.String"/>
+        <Column Name="fax" DataType="System.String"/>
+        <Column Name="correoe" DataType="System.String"/>
+        <Column Name="paginaweb" DataType="System.String"/>
+        <CommandParameter Name="p_empresaid" DataType="1" Expression="[p_empresaid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Movto" DataType="System.Int32" Enabled="true" SelectCommand="select * from core.v_movto_impresion_vendeduria&#13;&#10;where empresaid = @p_empresaid and sucursalid = @p_sucursalid&#13;&#10;and doctoid = @p_doctoid">
+        <Column Name="empresaid" DataType="System.Int64"/>
+        <Column Name="sucursalid" DataType="System.Int64"/>
+        <Column Name="id" DataType="System.Int64"/>
+        <Column Name="activo" DataType="System.String"/>
+        <Column Name="creado" DataType="System.DateTime"/>
+        <Column Name="creadopor_userid" DataType="System.Int64"/>
+        <Column Name="modificado" DataType="System.DateTime"/>
+        <Column Name="modificadopor_userid" DataType="System.Int64"/>
+        <Column Name="partida" DataType="System.Int32"/>
+        <Column Name="estatusmovtoid" DataType="System.Int64"/>
+        <Column Name="estatusmovtoclave" DataType="System.String"/>
+        <Column Name="estatusmovtonombre" DataType="System.String"/>
+        <Column Name="fecha" DataType="System.DateTime"/>
+        <Column Name="fechahora" DataType="System.DateTime"/>
+        <Column Name="productoid" DataType="System.Int64"/>
+        <Column Name="productoclave" DataType="System.String"/>
+        <Column Name="productonombre" DataType="System.String"/>
+        <Column Name="cantidad" DataType="System.Decimal"/>
+        <Column Name="preciolista" DataType="System.Decimal"/>
+        <Column Name="descuentoporcentaje" DataType="System.Decimal"/>
+        <Column Name="descuento" DataType="System.Decimal"/>
+        <Column Name="precio" DataType="System.Decimal"/>
+        <Column Name="importe" DataType="System.Decimal"/>
+        <Column Name="subtotal" DataType="System.Decimal"/>
+        <Column Name="iva" DataType="System.Decimal"/>
+        <Column Name="ieps" DataType="System.Decimal"/>
+        <Column Name="tasaiva" DataType="System.Decimal"/>
+        <Column Name="tasaieps" DataType="System.Decimal"/>
+        <Column Name="total" DataType="System.Decimal"/>
+        <Column Name="lote" DataType="System.String"/>
+        <Column Name="fechavence" DataType="System.DateTime"/>
+        <Column Name="loteimportado" DataType="System.Int64"/>
+        <Column Name="loteimportadopedimento" DataType="System.String"/>
+        <Column Name="loteimportadofechaimportacion" DataType="System.DateTime"/>
+        <Column Name="movtoparentid" DataType="System.Int64"/>
+        <Column Name="movtoparentcantidad" DataType="System.Decimal"/>
+        <Column Name="movtoparentprecio" DataType="System.Decimal"/>
+        <Column Name="movtonivel" DataType="System.Int32"/>
+        <Column Name="afectainventario" DataType="System.String"/>
+        <Column Name="afectatotales" DataType="System.String"/>
+        <Column Name="eskit" DataType="System.String"/>
+        <Column Name="doctoid" DataType="System.Int64"/>
+        <Column Name="doctofolio" DataType="System.Int32"/>
+        <Column Name="doctofechahora" DataType="System.DateTime"/>
+        <Column Name="cargo" DataType="System.Decimal"/>
+        <Column Name="abono" DataType="System.Decimal"/>
+        <Column Name="saldo" DataType="System.Decimal"/>
+        <Column Name="preciomanual" DataType="System.Decimal"/>
+        <Column Name="preciomaximopublico" DataType="System.Decimal"/>
+        <Column Name="isrretenido" DataType="System.Decimal"/>
+        <Column Name="ivaretenido" DataType="System.Decimal"/>
+        <Column Name="orden" DataType="System.Int32"/>
+        <Column Name="tasaisrretenido" DataType="System.Decimal"/>
+        <Column Name="tasaivaretenido" DataType="System.Decimal"/>
+        <Column Name="movtoloteimportadorefid" DataType="System.Int64"/>
+        <Column Name="movtoloteimportadorefcantidad" DataType="System.Decimal"/>
+        <Column Name="movtoloteimportadorefprecio" DataType="System.Decimal"/>
+        <Column Name="origenfiscalcantidaddefactura" DataType="System.Decimal"/>
+        <Column Name="origenfiscalcantidadderemision" DataType="System.Decimal"/>
+        <Column Name="origenfiscalcantidaddeindefinido" DataType="System.Decimal"/>
+        <Column Name="origenfiscalcantdevueltadefactura" DataType="System.Decimal"/>
+        <Column Name="origenfiscalcantdevueltaderemision" DataType="System.Decimal"/>
+        <Column Name="origenfiscalcantdevueltadeindefinido" DataType="System.Decimal"/>
+        <Column Name="tipodiferenciainventarioid" DataType="System.Int64"/>
+        <Column Name="tipodiferenciainventarioclave" DataType="System.String"/>
+        <Column Name="tipodiferenciainventarionombre" DataType="System.String"/>
+        <Column Name="localidad" DataType="System.String"/>
+        <Column Name="anaquelid" DataType="System.Int64"/>
+        <Column Name="anaquelclave" DataType="System.String"/>
+        <Column Name="anaquelnombre" DataType="System.String"/>
+        <Column Name="registroprocesosalida" DataType="System.String"/>
+        <Column Name="cantidad_real" DataType="System.Decimal"/>
+        <Column Name="cantidad_teorica" DataType="System.Decimal"/>
+        <Column Name="cantidad_diferencia" DataType="System.Decimal"/>
+        <Column Name="enprocesopartes" DataType="System.Decimal"/>
+        <Column Name="tasaiepsparte" DataType="System.Decimal"/>
+        <Column Name="tasasubtotalparte" DataType="System.Decimal"/>
+        <Column Name="movto_kit_eskit" DataType="System.String"/>
+        <Column Name="tasaivaparte" DataType="System.Decimal"/>
+        <Column Name="razondescuentocajero" DataType="System.String"/>
+        <Column Name="preciomanualmasbajo" DataType="System.String"/>
+        <Column Name="descuentovale" DataType="System.Decimal"/>
+        <Column Name="descuentovaleporcentaje" DataType="System.Decimal"/>
+        <Column Name="ingresopreciomanual" DataType="System.String"/>
+        <Column Name="porcentajedescuentomanual" DataType="System.Decimal"/>
+        <Column Name="listaprecioid" DataType="System.Int64"/>
+        <Column Name="precioclasificacion" DataType="System.Int32"/>
+        <Column Name="sinvale_subtotal" DataType="System.Decimal"/>
+        <Column Name="sinvale_iva" DataType="System.Decimal"/>
+        <Column Name="sinvale_ieps" DataType="System.Decimal"/>
+        <Column Name="sinvale_total" DataType="System.Decimal"/>
+        <Column Name="sinvale_iva_ret" DataType="System.Decimal"/>
+        <Column Name="sinvale_isr_ret" DataType="System.Decimal"/>
+        <Column Name="emidarequestid" DataType="System.Int64"/>
+        <Column Name="emidarequesttransactionid" DataType="System.String"/>
+        <Column Name="emidarequesttransactiondatetime" DataType="System.String"/>
+        <Column Name="emidainvoiceno" DataType="System.String"/>
+        <Column Name="emidacomision" DataType="System.Decimal"/>
+        <Column Name="comisionxunidad" DataType="System.Decimal"/>
+        <Column Name="comision" DataType="System.Decimal"/>
+        <Column Name="comisionporc" DataType="System.Decimal"/>
+        <Column Name="utilidad" DataType="System.Decimal"/>
+        <Column Name="costoreposicion" DataType="System.Decimal"/>
+        <Column Name="costopromedio" DataType="System.Decimal"/>
+        <Column Name="costoimporte" DataType="System.Decimal"/>
+        <Column Name="nutil" DataType="System.Decimal"/>
+        <Column Name="nprec" DataType="System.Decimal"/>
+        <Column Name="cdescr" DataType="System.Decimal"/>
+        <Column Name="promocion" DataType="System.String"/>
+        <Column Name="promocionid" DataType="System.Int64"/>
+        <Column Name="promocionclave" DataType="System.String"/>
+        <Column Name="promocionnombre" DataType="System.String"/>
+        <Column Name="promociondesglose" DataType="System.String"/>
+        <Column Name="aplicopromoxmontomin" DataType="System.String"/>
+        <Column Name="cantidadrevisada" DataType="System.Decimal"/>
+        <Column Name="surtible" DataType="System.String"/>
+        <Column Name="maxsurtible" DataType="System.Decimal"/>
+        <Column Name="precioconrebaja" DataType="System.Decimal"/>
+        <Column Name="totalconrebaja" DataType="System.Decimal"/>
+        <Column Name="estadorebaja" DataType="System.Int64"/>
+        <Column Name="estadorebajaclave" DataType="System.String"/>
+        <Column Name="estadorebajanombre" DataType="System.String"/>
+        <Column Name="cantautrebaja" DataType="System.Decimal"/>
+        <Column Name="montorebaja" DataType="System.Decimal"/>
+        <Column Name="monederoabono" DataType="System.Decimal"/>
+        <Column Name="descripcion1" DataType="System.String"/>
+        <Column Name="descripcion2" DataType="System.String"/>
+        <Column Name="descripcion3" DataType="System.String"/>
+        <Column Name="claveprod" DataType="System.String"/>
+        <Column Name="preciovisibletraslado" DataType="System.Decimal"/>
+        <Column Name="cantidadsurtida" DataType="System.Decimal"/>
+        <Column Name="cantidadfaltante" DataType="System.Decimal"/>
+        <Column Name="cantidaddevuelta" DataType="System.Decimal"/>
+        <Column Name="cantidadsaldo" DataType="System.Decimal"/>
+        <Column Name="devolucionmovtorefid" DataType="System.Int64"/>
+        <Column Name="devolucionmovtorefcantidad" DataType="System.Decimal"/>
+        <Column Name="devolucionmovtorefprecio" DataType="System.Decimal"/>
+        <Column Name="cancelacionmovtorefid" DataType="System.Int64"/>
+        <Column Name="cancelacionmovtorefcantidad" DataType="System.Decimal"/>
+        <Column Name="cancelacionmovtorefprecio" DataType="System.Decimal"/>
+        <Column Name="ordencompramovtocantidadsurtida" DataType="System.Decimal"/>
+        <Column Name="ordencompramovtocantidadfaltante" DataType="System.Decimal"/>
+        <Column Name="ordencompramovtocantidaddevuelta" DataType="System.Decimal"/>
+        <Column Name="ordencompramovtocantidadsaldo" DataType="System.Decimal"/>
+        <Column Name="ordencompramovtorefid" DataType="System.Int64"/>
+        <Column Name="ordencompramovtorefcantidad" DataType="System.Decimal"/>
+        <Column Name="ordencompramovtorefprecio" DataType="System.Decimal"/>
+        <Column Name="ventafuturomovtocantidadsurtida" DataType="System.Decimal"/>
+        <Column Name="ventafuturomovtocantidadfaltante" DataType="System.Decimal"/>
+        <Column Name="ventafuturomovtocantidaddevuelta" DataType="System.Decimal"/>
+        <Column Name="ventafuturomovtocantidadsaldo" DataType="System.Decimal"/>
+        <Column Name="ventafuturomovtorefid" DataType="System.Int64"/>
+        <Column Name="ventafuturomovtorefcantidad" DataType="System.Decimal"/>
+        <Column Name="ventafuturomovtorefprecio" DataType="System.Decimal"/>
+        <Column Name="t_agrupaporparametro" DataType="System.String"/>
+        <Column Name="t_cargartarjetapreciomanual" DataType="System.String"/>
+        <Column Name="t_precioyavalidado" DataType="System.String"/>
+        <CommandParameter Name="p_empresaid" DataType="1" Expression="[p_empresaid]" DefaultValue="0"/>
+        <CommandParameter Name="p_sucursalid" DataType="1" Expression="[p_sucursalid]" DefaultValue="0"/>
+        <CommandParameter Name="p_doctoid" DataType="1" Expression="[p_doctoid]" DefaultValue="0"/>
+      </TableDataSource>
+    </PostgresDataConnection>
+    <Parameter Name="p_empresaid" DataType="System.Decimal"/>
+    <Parameter Name="p_sucursalid" DataType="System.Decimal"/>
+    <Parameter Name="p_doctoid" DataType="System.Decimal"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="9.45"/>
+    <PageHeaderBand Name="PageHeader1" Top="13.45" Width="718.2" Height="217.35">
+      <TextObject Name="Text1" Left="28.35" Top="9.45" Width="170.1" Height="18.9" Text="[Docto.tipodoctonombre]"/>
+      <TextObject Name="Text2" Left="292.95" Top="9.45" Width="94.5" Height="18.9" Text="[Docto.folio]"/>
+      <TextObject Name="Text3" Left="255.15" Top="9.45" Width="37.8" Height="18.9" Text="No." Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="28.35" Top="66.15" Width="255.15" Height="28.35" Text="[Empresa.nombre]"/>
+      <TextObject Name="Text5" Left="368.55" Top="66.15" Width="179.55" Height="18.9" Text="[Empresa.rfc]"/>
+      <TextObject Name="Text6" Left="28.35" Top="47.25" Width="94.5" Height="18.9" Text="Empresa:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text7" Left="368.55" Top="47.25" Width="37.8" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="28.35" Top="94.5" Width="94.5" Height="18.9" Text="Cliente:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text9" Left="28.35" Top="113.4" Width="255.15" Height="28.35" Text="[Docto.clientenombre]"/>
+      <TextObject Name="Text10" Left="28.35" Top="179.55" Width="481.95" Height="18.9" Text="Descripcion" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text11" Left="28.35" Top="151.2" Width="481.95" Height="18.9" Text="---------------------------------" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text12" Left="28.35" Top="198.45" Width="94.5" Height="18.9" Text="Cantidad" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text13" Left="160.65" Top="198.45" Width="94.5" Height="18.9" Text="Precio" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text14" Left="302.4" Top="198.45" Width="94.5" Height="18.9" Text="Iva" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text15" Left="444.15" Top="198.45" Width="94.5" Height="18.9" Text="Total" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="444.15" Width="94.5" Height="18.9" Text="total"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="234.8" Width="718.2" Height="18.9" DataSource="Table2">
+      <TextObject Name="Text16" Left="28.35" Width="94.5" Height="18.9" Text="[Movto.cantidad]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="160.65" Width="94.5" Height="18.9" Text="[Movto.precio]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text18" Left="302.4" Width="94.5" Height="18.9" Text="[Movto.iva]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="444.15" Width="94.5" Height="18.9" Text="[Movto.total]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="257.7" Width="718.2" Height="122.85">
+      <TextObject Name="Text21" Left="444.15" Top="9.45" Width="94.5" Height="18.9" Text="[Docto.subtotal]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text22" Left="444.15" Top="66.15" Width="94.5" Height="18.9" Text="[Docto.iva]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="444.15" Top="37.8" Width="94.5" Height="18.9" Text="[Docto.ieps]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text24" Left="444.15" Top="94.5" Width="94.5" Height="18.9" Text="[Docto.total]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="330.75" Top="9.45" Width="94.5" Height="18.9" Text="Subtotal" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text26" Left="330.75" Top="37.8" Width="94.5" Height="18.9" Text="Ieps" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text27" Left="330.75" Top="66.15" Width="94.5" Height="18.9" Text="Iva" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text28" Left="330.75" Top="94.5" Width="94.5" Height="18.9" Text="Total" Font="Arial, 10pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

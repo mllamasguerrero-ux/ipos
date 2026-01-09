@@ -1,0 +1,197 @@
+create or alter procedure REP_DOCTO (
+    FECHAINI D_FECHA,
+    FECHAFIN D_FECHA,
+    TIPODOCTOID D_FK,
+    PALMACENID D_FK)
+returns (
+    NUMERO integer,
+    FECHA D_FECHA,
+    FECHAHORA D_TIMESTAMP,
+    TURNOCLAVE D_CLAVE,
+    DOCTOFOLIO D_DOCTOFOLIO,
+    IMPORTE D_IMPORTE,
+    DESCUENTO D_IMPORTE,
+    SUBTOTAL D_IMPORTE,
+    IVA D_IMPORTE,
+    TOTAL D_IMPORTE,
+    SUCURSALT D_NOMBRE,
+    TIPODOC D_NOMBRE,
+    PERSONA D_NOMBRE,
+    SALDO D_PRECIO,
+    ESTATUSDOCTONOMBRE D_NOMBRE,
+    ESFACTURAELECTRONICA D_BOOLCN,
+    SERIEFOLIOSAT D_NOMBRE,
+    VENDEDOR D_NOMBRE,
+    VENDEDORDELCLIENTEID D_ID,
+    VENDEDORDELCLIENTENOMBRE D_NOMBRE,
+    VENDEDORDELCLIENTECLAVE D_CLAVE_NULL,
+    IEPS D_IMPORTE,
+    IMPUESTO D_IMPORTE,
+    PERSONACLAVE D_CLAVE_NULL,
+    PERSONANOMBRES D_STDTEXT_MEDIUM,
+    PERSONAAPELLIDOS D_STDTEXT_MEDIUM,
+    FECHAVENCE D_FECHAVENCE,
+    VENDEDORID D_FK,
+    ALMACENID D_FK,
+    ALMACENTID D_FK,
+    NOMBREALMACEN D_NOMBRE_NULL,
+    NOMBREALMACENTRASPASO D_NOMBRE_NULL,
+    PERSONARFC D_STDTEXT_SHORT,
+    MONTOREBAJA D_PRECIO)
+as
+BEGIN
+   NUMERO = 0;
+      turnoclave = 'N/D';
+
+   FOR SELECT
+      D.FECHA,
+      D.FECHAHORA,
+      COALESCE(T.CLAVE, ' '),
+      D.FOLIO,
+      D.IMPORTE,
+      D.DESCUENTO,
+      D.SUBTOTAL,
+      D.IVA,
+      D.TOTAL - COALESCE(D.MONTOREBAJA,0) TOTAL ,
+      coalesce(S.NOMBRE,' ') as SUCURSALT ,
+      coalesce(TD.nombre, ' ') AS TIPODOC,
+      coalesce(P.NOMBRE,'') as PERSONA ,
+      D.saldo, 
+      ed.nombre estatusdoctonombre ,
+      D.esfacturaelectronica ,
+      coalesce(D.seriesat,'') || coalesce(D.foliosat,'') SERIEFOLIOSAT ,
+      U.nombre VENDEDORNOMBRE ,
+      coalesce(P.vendedorid,0) VENDEDORDELCLIENTEID,
+      coalesce(uc.nombre,'') VENDEDORDELCLIENTENOMBRE ,
+      coalesce(uc.clave,'') VENDEDORDELCLIENTECLAVE,
+
+      D.IEPS,
+      D.IMPUESTO ,
+
+      p.clave,
+      p.nombres,
+      p.apellidos, 
+      dateadd (coalesce(p.dias, 0) day to d.fecha) fechavence ,
+      D.VENDEDORID  ,
+      D.ALMACENID,
+      D.ALMACENTID ,
+      a.nombre nombrealmacen,
+      a_t.nombre nombrealmacentraspaso   ,
+      P.RFC  ,
+      D.MONTOREBAJA
+
+
+
+   FROM DOCTO D
+      LEFT JOIN TURNO T
+         ON T.ID = D.TURNOID
+       left join SUCURSAL S
+         ON S.ID = D.SUCURSALTID
+        left join TIPODOCTO  TD
+         on  TD.id = d.tipodoctoid
+         left join PERSONA P
+          on P.id = D.personaid
+          left join ESTATUSDOCTO ED
+            on ED.id = d.estatusdoctoid
+            left join PERSONA U
+                on D.vendedorid = u.id  
+            left join PERSONA Uc
+                on P.vendedorid = uc.id   
+             left join ALMACEN a
+                on d.almacenid = a.id   
+             left join ALMACEN a_t
+                on d.almacentid = a_t.id
+   WHERE (TIPODOCTOID = :TIPODOCTOID  OR (:TIPODOCTOID = -21 AND TIPODOCTOID IN (21,31,23,81))
+          OR (:TIPODOCTOID = -31 AND TIPODOCTOID IN (31,81)) )
+     AND D.FECHA BETWEEN :FECHAINI AND :FECHAFIN
+     AND D.ESTATUSDOCTOID = 1  
+     AND (:PALMACENID = 0 or D.ALMACENID = :PALMACENID)
+   INTO
+      :FECHA ,
+      :FECHAHORA ,
+      :TURNOCLAVE,
+      :DOCTOFOLIO ,
+      :IMPORTE ,
+      :DESCUENTO,
+      :SUBTOTAL,
+      :IVA ,
+      :TOTAL ,
+      :SUCURSALT ,
+      :TIPODOC ,
+      :PERSONA,
+      :SALDO,
+      :ESTATUSDOCTONOMBRE ,
+      :ESFACTURAELECTRONICA  ,
+      :SERIEFOLIOSAT  ,
+      :VENDEDOR        ,
+      :VENDEDORDELCLIENTEID,
+      :VENDEDORDELCLIENTENOMBRE ,
+      :VENDEDORDELCLIENTECLAVE,
+    
+      :IEPS,
+      :IMPUESTO ,
+      :PERSONACLAVE ,
+      :PERSONANOMBRES ,
+      :PERSONAAPELLIDOS ,
+      :FECHAVENCE  ,
+      :VENDEDORID  ,
+
+      :ALMACENID,
+      :ALMACENTID,
+      :NOMBREALMACEN,
+      :NOMBREALMACENTRASPASO,
+      :PERSONARFC ,
+      :MONTOREBAJA
+   DO
+   BEGIN
+      NUMERO = :NUMERO + 1;
+      SUSPEND;
+   END
+
+   if (:numero = 0) then
+   begin
+      numero = 0;
+      fecha = current_date;
+      fechahora = current_date;
+      turnoclave = 'N/D';
+      doctofolio = 0;
+      IMPORTE = 0.00;
+      SUBTOTAL = 0.00;
+      IVA = 0.00;
+      TOTAL = 0.00;
+      SUCURSALT = ' ';
+      TIPODOC = ' ';
+       PERSONA = ' ';
+       
+      SALDO = 0.0;
+      ESTATUSDOCTONOMBRE = '';
+      ESFACTURAELECTRONICA = 'N';
+      SERIEFOLIOSAT = '';
+      VENDEDOR = '';
+
+      
+      VENDEDORDELCLIENTEID = 0;
+      VENDEDORDELCLIENTENOMBRE = '';
+
+      VENDEDORDELCLIENTECLAVE  = '';
+      -- sin suspend para no regresar renglon falso
+      IEPS = 0;
+      IMPUESTO = 0;
+
+      PERSONACLAVE = '';
+      PERSONANOMBRES = '';
+      PERSONAAPELLIDOS  = '';
+      FECHAVENCE  = current_date;
+      VENDEDORID = 0;
+              
+      ALMACENID = 0;
+      ALMACENTID = 0;
+      
+      NOMBREALMACEN = '';
+      NOMBREALMACENTRASPASO = '';
+      PERSONARFC = '';
+      MONTOREBAJA = 0;
+
+   end
+
+END

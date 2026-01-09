@@ -1,0 +1,19 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "017082301587.dkr.ecr.us-east-1.amazonaws.com/iposbackend:iposbackend-staging",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "80",
+      "HostPort": "80"
+    }
+  ],
+  "Volumes": [
+    {
+      "HostDirectory": "/etc/nginx/conf.d",
+      "ContainerDirectory": "/app/.platform/nginx/conf.d"
+    }
+  ]
+}

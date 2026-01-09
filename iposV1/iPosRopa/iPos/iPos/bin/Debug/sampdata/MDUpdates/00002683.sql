@@ -1,0 +1,1 @@
+INSERT INTO DERECHOS (DR_DERECHO, DR_DESCRIPCION) VALUES (10037, 'Ver ventas pendientes de todos los cajeros');

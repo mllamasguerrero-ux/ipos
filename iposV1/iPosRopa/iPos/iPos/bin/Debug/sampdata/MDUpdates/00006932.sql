@@ -1,0 +1,115 @@
+create or alter procedure FONDEO_INSERT (
+    ALMACENID type of D_FK,
+    SUCURSALID type of D_FK,
+    TIPODOCTOID type of D_FK,
+    VENDEDORID type of D_FK,
+    PERSONAID type of D_FK,
+    CAJAID type of D_FK,
+    REFERENCIA type of D_REFERENCIA,
+    REFERENCIAS varchar(255),
+    FECHA D_FECHA,
+    VENCE D_FECHA,
+    TOTAL D_PRECIO)
+returns (
+    DOCTOID type of D_PK,
+    ERRORCODE type of D_ERRORCODE)
+as
+declare variable DOCTOERRORCODE type of D_FK;
+declare variable CORTEID D_FK;
+BEGIN
+
+   ERRORCODE = 0;
+
+
+      SELECT CORTE.ID FROM CORTE WHERE CORTE.fechacorte = :FECHA AND CORTE.cajeroid = :VENDEDORID INTO :CORTEID;
+
+      IF(COALESCE(:CORTEID, 0) = 0) THEN
+      BEGIN
+        ERRORCODE = 1020;
+        SUSPEND;
+        EXIT;
+      END
+
+      
+   -- Agrega el DOCTO.
+   INSERT INTO DOCTO
+    (ALMACENID, SUCURSALID, TIPODOCTOID, ESTATUSDOCTOID, ESTATUSDOCTOPAGOID,
+    PERSONAID, CAJEROID, VENDEDORID, CORTEID, FECHA, FECHAHORA, SERIE, FOLIO,
+    VENCE, TOTAL, SUBTOTAL, CARGO, SALDO ,
+    CAJAID, REFERENCIA, REFERENCIAS,MERCANCIAENTREGADA,ORIGENFISCALID)
+   VALUES(
+    :ALMACENID, :SUCURSALID, :TIPODOCTOID, 0, 1,
+    :PERSONAID, :VENDEDORID, :VENDEDORID, :CORTEID, :FECHA, CURRENT_TIMESTAMP, NULL, NULL,
+     :VENCE, :TOTAL, :TOTAL,  :TOTAL,  :TOTAL,
+    :CAJAID, :REFERENCIA, :REFERENCIAS ,'S',1)
+   RETURNING ID INTO :DOCTOID;
+
+
+
+
+
+   SELECT CORTEID FROM DOCTO WHERE ID = :DOCTOID INTO :CORTEID;
+
+     SELECT ERRORCODE
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         1,
+         CURRENT_DATE,
+         CURRENT_TIMESTAMP,
+         :CORTEID,
+         :TOTAL,
+         0,
+         0 ,
+         1,
+         NULL,
+         'N' ,
+         1,
+         NULL,
+         NULL,
+         NULL,
+         CURRENT_DATE ,
+         CURRENT_DATE,
+         'S',
+         1,
+         NULL ,
+         1   ,
+         NULL ,
+         NULL,
+         NULL,
+         NULL,
+         'S',
+         current_date, 
+         NULL,
+         NULL,
+         NULL
+      ) INTO :ERRORCODE;
+
+           
+   IF (:ERRORCODE > 0) THEN
+   BEGIN
+      ERRORCODE = :ERRORCODE;
+      SUSPEND;
+      EXIT;
+   END
+
+   SELECT ERRORCODE FROM DOCTO_SAVE(:DOCTOID)
+   INTO :ERRORCODE;
+   
+   IF (:ERRORCODE > 0) THEN
+   BEGIN
+      ERRORCODE = :ERRORCODE;
+      SUSPEND;
+      EXIT;
+   END
+
+
+    ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1004;
+      SUSPEND;
+   END 
+
+END

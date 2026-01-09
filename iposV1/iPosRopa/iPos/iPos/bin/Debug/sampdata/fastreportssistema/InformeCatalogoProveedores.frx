@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/05/2014 15:11:01" ReportInfo.Modified="06/15/2016 14:03:02" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2c19SvejNTsSsAgMDCWfu1Q=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT P.ID, P.ACTIVO, P.CREADO, P.CREADOPOR_USERID, P.MODIFICADO, P.MODIFICADOPOR_USERID, P.TIPOPERSONAID, P.CLAVE, P.NOMBRE, P.DESCRIPCION, P.MEMO, P.SALUDOID, P.NOMBRES, P.APELLIDOS, P.RAZONSOCIAL, P.RFC, P.CONTACTO1, P.CONTACTO2, P.USERNAME, P.CLAVEACCESO, P.DOMICILIO, P.COLONIA, P.CIUDAD, P.MUNICIPIO, P.ESTADO, P.PAIS, P.CODIGOPOSTAL, P.TELEFONO1, P.TELEFONO2, P.TELEFONO3, P.CELULAR, P.NEXTEL, P.EMAIL1, P.EMAIL2, P.EMPRESAID, P.VENDEDORID, P.ESCLIENTE, P.ESCLIENTEGENERAL, P.ESPROVEEDOR, P.ESUSUARIO, P.LISTAPRECIOID, P.VIGENCIA, P.RESET_PASS, P.HAB_PAGOTARJETA, P.HAB_PAGOCREDITO, P.HAB_PAGOCHEQUE, P.CORTEID, P.SALDO, P.SALDOAPARTADO, P.SALDOSPOSITIVOS, P.SALDOSNEGATIVOS, P.SALDOAPARTADOPOSITIVO, P.SALDOAPARTADONEGATIVO, P.NUMEROINTERIOR, P.NUMEROEXTERIOR, P.GAFFETE, P.LIMITECREDITO, P.DIAS, P.REVISION, P.PAGOS, P.BLOQUEADO, P.TICKETLARGO, P.ENTREGACALLE, P.ENTREGANUMEROEXTERIOR, P.ENTREGANUMEROINTERIOR, P.ENTREGACOLONIA, P.ENTREGAMUNICIPIO, P.ENTREGAESTADO, P.ENTREGACODIGOPOSTAL, P.HAB_PAGOTRANSFERENCIA, P.CREDITOFORMAPAGOABONOS, P.CREDITOREFERENCIAABONOS, P.RETIENEISR, P.RETIENEIVA, P.MONEDAID, P.DESGLOSEIEPS, P.CUENTAIEPS, P.SUPERLISTAPRECIOID, P.ALMACENID, P.BLOQUEONOT, P.EMAIL3, P.EMAIL4, P.CAJASBOTELLAS, P.ESTATUSENVIOID, P.SALDOGLOBAL, P.REPLCREADO, P.REPLMODIFICADO, P.TICKETLARGOCREDITO, P.PENDMAXDIAS, P.PAGOPARCIALIDADES, P.SALDOVENCIDOMOVIL, P.SALDOMOVIL, P.SUBTIPOPERSONAID, P.GRUPOUSUARIOID&#13;&#10;FROM &quot;PERSONA&quot; P&#13;&#10;WHERE P.TIPOPERSONAID=40&#13;&#10;">
+        <Column Name="APELLIDOS" DataType="System.String"/>
+        <Column Name="RAZONSOCIAL" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CONTACTO1" DataType="System.String"/>
+        <Column Name="CONTACTO2" DataType="System.String"/>
+        <Column Name="USERNAME" DataType="System.String"/>
+        <Column Name="CLAVEACCESO" DataType="System.String"/>
+        <Column Name="DOMICILIO" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="CIUDAD" DataType="System.String"/>
+        <Column Name="MUNICIPIO" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="PAIS" DataType="System.String"/>
+        <Column Name="CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="TELEFONO1" DataType="System.String"/>
+        <Column Name="TELEFONO2" DataType="System.String"/>
+        <Column Name="TELEFONO3" DataType="System.String"/>
+        <Column Name="CELULAR" DataType="System.String"/>
+        <Column Name="NEXTEL" DataType="System.String"/>
+        <Column Name="EMAIL1" DataType="System.String"/>
+        <Column Name="EMAIL2" DataType="System.String"/>
+        <Column Name="EMPRESAID" DataType="System.Int64"/>
+        <Column Name="VENDEDORID" DataType="System.Int64"/>
+        <Column Name="ESCLIENTE" DataType="System.String"/>
+        <Column Name="ESCLIENTEGENERAL" DataType="System.String"/>
+        <Column Name="ESPROVEEDOR" DataType="System.String"/>
+        <Column Name="ESUSUARIO" DataType="System.String"/>
+        <Column Name="VIGENCIA" DataType="System.DateTime"/>
+        <Column Name="RESET_PASS" DataType="System.Int16"/>
+        <Column Name="HAB_PAGOTARJETA" DataType="System.String"/>
+        <Column Name="HAB_PAGOCREDITO" DataType="System.String"/>
+        <Column Name="HAB_PAGOCHEQUE" DataType="System.String"/>
+        <Column Name="CORTEID" DataType="System.Int64"/>
+        <Column Name="SALDOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="SALDOAPARTADOPOSITIVO" DataType="System.Decimal"/>
+        <Column Name="SALDOAPARTADONEGATIVO" DataType="System.Decimal"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="GAFFETE" DataType="System.String"/>
+        <Column Name="DIAS" DataType="System.Int32"/>
+        <Column Name="BLOQUEADO" DataType="System.String"/>
+        <Column Name="TICKETLARGO" DataType="System.String"/>
+        <Column Name="ENTREGACALLE" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGACOLONIA" DataType="System.String"/>
+        <Column Name="ENTREGAMUNICIPIO" DataType="System.String"/>
+        <Column Name="ENTREGAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="HAB_PAGOTRANSFERENCIA" DataType="System.String"/>
+        <Column Name="CREDITOFORMAPAGOABONOS" DataType="System.Int64"/>
+        <Column Name="CREDITOREFERENCIAABONOS" DataType="System.String"/>
+        <Column Name="RETIENEISR" DataType="System.String"/>
+        <Column Name="RETIENEIVA" DataType="System.String"/>
+        <Column Name="MONEDAID" DataType="System.Int64"/>
+        <Column Name="DESGLOSEIEPS" DataType="System.String"/>
+        <Column Name="CUENTAIEPS" DataType="System.String"/>
+        <Column Name="SUPERLISTAPRECIOID" DataType="System.Int64"/>
+        <Column Name="ALMACENID" DataType="System.Int64"/>
+        <Column Name="BLOQUEONOT" DataType="System.String"/>
+        <Column Name="EMAIL3" DataType="System.String"/>
+        <Column Name="EMAIL4" DataType="System.String"/>
+        <Column Name="CAJASBOTELLAS" DataType="System.String"/>
+        <Column Name="ESTATUSENVIOID" DataType="System.Int64"/>
+        <Column Name="SALDOGLOBAL" DataType="System.Decimal"/>
+        <Column Name="REPLCREADO" DataType="System.DateTime"/>
+        <Column Name="REPLMODIFICADO" DataType="System.DateTime"/>
+        <Column Name="TICKETLARGOCREDITO" DataType="System.String"/>
+        <Column Name="PENDMAXDIAS" DataType="System.Int32"/>
+        <Column Name="PAGOPARCIALIDADES" DataType="System.String"/>
+        <Column Name="SALDOVENCIDOMOVIL" DataType="System.Decimal"/>
+        <Column Name="SALDOMOVIL" DataType="System.Decimal"/>
+        <Column Name="SUBTIPOPERSONAID" DataType="System.Int64"/>
+        <Column Name="GRUPOUSUARIOID" DataType="System.Int64"/>
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="TIPOPERSONAID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="MEMO" DataType="System.String"/>
+        <Column Name="SALUDOID" DataType="System.Int64"/>
+        <Column Name="NOMBRES" DataType="System.String"/>
+        <Column Name="LISTAPRECIOID" DataType="System.Int64"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="SALDOSPOSITIVOS" DataType="System.Decimal"/>
+        <Column Name="SALDOSNEGATIVOS" DataType="System.Decimal"/>
+        <Column Name="LIMITECREDITO" DataType="System.Decimal"/>
+        <Column Name="REVISION" DataType="System.String"/>
+        <Column Name="PAGOS" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="cliente" DataType="System.Decimal"/>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="75.6">
+      <TextObject Name="Text19" Left="-9450" Top="-9450" Width="236.25" Height="18.9" Text="Catalogo de Proveedores:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text26" Left="37.8" Top="18.9" Width="236.25" Height="18.9" Text="Catalogo de Proveedores:" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="79.6" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Left="85.05" Width="132.3" Height="18.9" Text="Nombre(s):"/>
+      <TextObject Name="Text4" Left="226.8" Width="141.75" Height="18.9" Text="Apellido(s):"/>
+      <TextObject Name="Text8" Left="378" Width="94.5" Height="18.9" Text="RFC:"/>
+      <TextObject Name="Text10" Left="481.95" Width="56.7" Height="18.9" Text="Activo:"/>
+      <TextObject Name="Text12" Left="548.1" Width="122.85" Height="18.9" Text="Razón Social:"/>
+      <TextObject Name="Text14" Left="680.4" Width="94.5" Height="18.9" Text="Domicilio:"/>
+      <TextObject Name="Text18" Width="75.6" Height="18.9" Text="Clave:"/>
+      <TextObject Name="Text15" Left="859.95" Width="94.5" Height="18.9" Text="TELEFONO1"/>
+      <TextObject Name="Text17" Left="963.9" Width="85.05" Height="28.35" Text="LIMITE DE CREDITO"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="111.95" Width="1047.06" Height="37.8" BeforePrintEvent="Data1_BeforePrint" DataSource="Table">
+      <TextObject Name="Text1" Width="75.6" Height="37.8" Text="[Table.CLAVE]"/>
+      <TextObject Name="Text3" Left="85.05" Width="132.3" Height="37.8" Text="[Table.NOMBRE]"/>
+      <TextObject Name="Text5" Left="226.8" Width="141.75" Height="37.8" Text="[Table.APELLIDOS]"/>
+      <TextObject Name="Text6" Left="378" Width="94.5" Height="37.8" Text="[Table.RFC]"/>
+      <TextObject Name="Text7" Left="481.95" Width="56.7" Height="37.8" Text="[Table.ACTIVO]"/>
+      <TextObject Name="Text9" Left="548.1" Width="122.85" Height="37.8" Text="[Table.RAZONSOCIAL]"/>
+      <TextObject Name="Text11" Left="680.4" Width="94.5" Height="37.8" Text="[Table.DOMICILIO]"/>
+      <TextObject Name="Text13" Left="859.95" Width="94.5" Height="18.9" Text="[Table.TELEFONO1]"/>
+      <TextObject Name="Text16" Left="954.45" Width="66.15" Height="18.9" Text="[Table.LIMITECREDITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="774.9" Width="75.6" Height="18.9" Text="[Table.COLONIA]"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="153.75" Width="1047.06" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

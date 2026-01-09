@@ -1,0 +1,52 @@
+create or alter procedure MOVTOGASTOADIC_INSERT (
+    DOCTOID type of D_FK,
+    PARTIDA integer,
+    MOVTOGASTOSADICID type of D_FK,
+    MONTO D_PRECIO)
+returns (
+    MOVTOID type of D_PK,
+    ERRORCODE type of D_ERRORCODE)
+as
+declare variable MOVTOACTUALID type of D_FK;
+BEGIN
+
+
+
+   SELECT  ID FROM MOVTOGASTOSADIC WHERE DOCTOID = :DOCTOID AND MOVTOGASTOSADICID = :MOVTOGASTOSADICID INTO :MOVTOACTUALID;
+
+   IF ((:MOVTOACTUALID IS NULL) OR (:MOVTOACTUALID = 0)) THEN
+   BEGIN
+
+       INSERT INTO MOVTOGASTOSADIC(
+            DOCTOID,
+            MOVTOGASTOSADICID,
+            MONTO,
+            PARTIDA
+       )
+       VALUES(
+           :DOCTOID,
+           :MOVTOGASTOSADICID,
+           :MONTO,
+           :PARTIDA
+       ) RETURNING ID INTO :MOVTOID;
+
+
+   END
+   ELSE
+   BEGIN
+
+        MOVTOID = :MOVTOACTUALID;
+        UPDATE MOVTOGASTOSADIC SET
+           MONTO = MONTO + :MONTO
+           WHERE ID = :MOVTOID;
+
+
+
+   END
+
+
+   SUSPEND;
+   EXIT;
+
+
+END

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="03/04/2014 09:12:59" ReportInfo.Modified="06/02/2018 17:09:04" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+        
+      
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQqsG3xJjfWZPdvsKUOukOoMs=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;  main.precioclasificacion, main.clasificacionnombre,&#13;&#10;  main.total, main.utilidad  ,  &#13;&#10; case when coalesce(secundary.total,0) &lt;&gt; 0 then&#13;&#10;          coalesce(main.total,0)    /   coalesce(secundary.total,0)&#13;&#10;     else   &#13;&#10;        cast(0.00  as d_precio)&#13;&#10;   end   porctotal    ,&#13;&#10;&#13;&#10; case when coalesce(secundary.utilidad,0) &lt;&gt; 0 then&#13;&#10;         coalesce(main.utilidad,0)  /   coalesce(secundary.utilidad,0)&#13;&#10;     else   &#13;&#10;        cast(0.00  as d_precio)&#13;&#10;   end   porcutilidad&#13;&#10;&#13;&#10;  from&#13;&#10;&#13;&#10;&#13;&#10;(select&#13;&#10;coalesce(movto.listaprecioid,coalesce(persona.listaprecioid,0)) precioclasificacion,&#13;&#10;case when coalesce(movto.listaprecioid,coalesce(persona.listaprecioid,0)) = 1 then coalesce(lookup.LBL_CAMPO14,'Precio 1')&#13;&#10;      when coalesce(movto.listaprecioid,coalesce(persona.listaprecioid,0)) = 2 then coalesce(lookup.LBL_CAMPO17,'Precio 2')&#13;&#10;      when coalesce(movto.listaprecioid,coalesce(persona.listaprecioid,0)) = 3 then coalesce(lookup.LBL_CAMPO24,'Precio 3')&#13;&#10;      when coalesce(movto.listaprecioid,coalesce(persona.listaprecioid,0)) = 4 then coalesce(lookup.LBL_CAMPO25,'Precio 4')&#13;&#10;      when coalesce(movto.listaprecioid,coalesce(persona.listaprecioid,0)) = 5 then coalesce(lookup.LBL_CAMPO26,'Precio 5')&#13;&#10;      else 'Precio ' || cast(coalesce(movto.listaprecioid,coalesce(persona.listaprecioid,0)) as varchar(10))&#13;&#10; end clasificacionnombre,&#13;&#10;&#13;&#10;&#13;&#10; sum(  coalesce(movto.total,0)  )  total,&#13;&#10; sum(coalesce(movto.utilidad,0)) utilidad&#13;&#10;&#13;&#10;&#13;&#10; from&#13;&#10; movto&#13;&#10; left join docto on docto.id =movto.doctoid&#13;&#10; left join persona on persona.id = docto.personaid&#13;&#10; left join lookup on lookup.clave = 'PRODUCTO'&#13;&#10;&#13;&#10; where movto.cantidad &gt; 0 and  docto.tipodoctoid = 21  and docto.estatusdoctoid = 1&#13;&#10;and docto.fecha &gt;= @fechaini  and  docto.fecha &lt;= @fechafin&#13;&#10;&#13;&#10; group by&#13;&#10; coalesce(movto.listaprecioid,coalesce(persona.listaprecioid,0)),&#13;&#10; lookup.LBL_CAMPO14,lookup.LBL_CAMPO17,lookup.LBL_CAMPO24, lookup.LBL_CAMPO25, lookup.LBL_CAMPO26&#13;&#10; )   main&#13;&#10;&#13;&#10; left join (&#13;&#10;                select  sum(  coalesce(movto.total,0)  ) total,&#13;&#10;                         sum(coalesce(movto.utilidad,0)) utilidad&#13;&#10;                       from movto&#13;&#10;                       left join docto on docto.id =movto.doctoid&#13;&#10;                       where  movto.cantidad &gt; 0 and  docto.tipodoctoid = 21  and docto.estatusdoctoid = 1&#13;&#10;                            and docto.fecha &gt;= @fechaini  and  docto.fecha &lt;= @fechafin&#13;&#10;            ) secundary on 1 = 1&#13;&#10;">
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="UTILIDAD" DataType="System.Decimal"/>
+        <Column Name="PRECIOCLASIFICACION" DataType="System.Int32"/>
+        <Column Name="CLASIFICACIONNOMBRE" DataType="System.String"/>
+        <Column Name="PORCTOTAL" DataType="System.Decimal"/>
+        <Column Name="PORCUTILIDAD" DataType="System.Decimal"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2010"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" RawPaperSize="9" FirstPageSource="15" OtherPagesSource="15">
+    <PageHeaderBand Name="PageHeader1" Width="718.2" Height="85.05">
+      <TextObject Name="Text3" Top="66.15" Width="113.4" Height="18.9" Text="PRECIO " Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text5" Left="113.4" Top="66.15" Width="189" Height="18.9" Text="CLASIFICACION NOMBRE" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text6" Left="302.4" Top="66.15" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text10" Left="396.9" Top="66.15" Width="94.5" Height="18.9" Text="% TOTAL" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Top="37.8" Width="718.2" Height="18.9" CanShrink="true" CanBreak="false" Text="Fecha : [fechaini]" HorzAlign="Center" WordWrap="false" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text27" Top="18.9" Width="718.2" Height="18.9" CanShrink="true" CanBreak="false" Text="Ventas por clasificacion" HorzAlign="Center" WordWrap="false" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text39" Width="718.2" Height="18.9" CanShrink="true" CanBreak="false" Text="[Empresa.NOMBRE]" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="89.05" Width="718.2" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="113.4" Height="18.9" Text="[Table.PRECIOCLASIFICACION]"/>
+      <TextObject Name="Text4" Left="113.4" Width="189" Height="18.9" Text="[Table.CLASIFICACIONNOMBRE]"/>
+      <TextObject Name="Text1" Left="302.4" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="396.9" Width="94.5" Height="18.9" Text="[Table.PORCTOTAL]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="111.95" Width="718.2" Height="18.9">
+      <TextObject Name="Text7" Left="623.7" Width="94.5" Height="18.9" Text="[PageNofM]" HorzAlign="Center"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

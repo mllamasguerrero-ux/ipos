@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="12/14/2016 15:50:19" ReportInfo.Modified="01/10/2024 17:30:59" ReportInfo.CreatorVersion="2014.2.10.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+  
+
+    private void Label1_Click(object sender, EventArgs e)
+    {
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls6VtLZk5X/HNHdlg37G4jlO9RdQMjiPUQ6UOz/SpXvlWE+WF20sXZkTqRZDKNDC7z860w0i3oRb4LC71/DrNS7rvX6wc8hM5bi3QPogS1jTm">
+      <TableDataSource Name="Table" Alias="Guia" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;guia.id guiaid,&#13;&#10;guia.encargadoguiaid,&#13;&#10;guia.estadoguiaid,&#13;&#10;guia.cajeroid,&#13;&#10;guia.fecha,&#13;&#10;guia.fechahora,&#13;&#10;guia.nota,&#13;&#10;&#13;&#10;persona.nombre encargadonombre,&#13;&#10;estadoguia.nombre estadoguia,&#13;&#10;&#13;&#10;cajero.nombre cajeronombre&#13;&#10;&#13;&#10;from&#13;&#10;guia&#13;&#10;left join persona on persona.id = guia.encargadoguiaid&#13;&#10;left join persona cajero on cajero.id = guia.cajeroid&#13;&#10;left join estadoguia on estadoguia.id = guia.estadoguiaid&#13;&#10;&#13;&#10;where guia.id = @guiaid">
+        <Column Name="GUIAID" DataType="System.Int64"/>
+        <Column Name="ENCARGADOGUIAID" DataType="System.Int64"/>
+        <Column Name="ESTADOGUIAID" DataType="System.Int64"/>
+        <Column Name="CAJEROID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="NOTA" DataType="System.String"/>
+        <Column Name="ENCARGADONOMBRE" DataType="System.String"/>
+        <Column Name="ESTADOGUIA" DataType="System.String"/>
+        <Column Name="CAJERONOMBRE" DataType="System.String"/>
+        <CommandParameter Name="guiaid" DataType="1" Expression="[guiaid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Venta" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;docto.id,&#13;&#10;docto.folio,&#13;&#10;docto.serie,&#13;&#10;docto.foliosat,&#13;&#10;docto.seriesat,&#13;&#10;docto.personaid clienteid,&#13;&#10;docto.vendedorid,&#13;&#10;docto.total total,&#13;&#10;&#13;&#10;docto.fecha,&#13;&#10;&#13;&#10;persona.nombre clientenombre,&#13;&#10;persona.nombres clientenombres,&#13;&#10;persona.apellidos clienteapellidos,&#13;&#10;persona.domicilio clientedomicilio,&#13;&#10;persona.colonia clientecolonia,&#13;&#10;persona.ciudad clienteciudad,&#13;&#10;persona.numeroexterior clientenumeroexterior,&#13;&#10;persona.numerointerior  clientenumerointerior,&#13;&#10;persona.dias,&#13;&#10;&#13;&#10;&#13;&#10;vendedor.nombre vendedornombre,&#13;&#10;vendedor.clave,&#13;&#10;movto.id movtoid,&#13;&#10;movto.cantidad cantidad,&#13;&#10;movto.productoid,&#13;&#10;movto.precio,&#13;&#10;movto.total movtototal,&#13;&#10;&#13;&#10;producto.clave productoclave,&#13;&#10;producto.nombre productonombre,&#13;&#10;producto.descripcion productodescripcion,&#13;&#10;producto.descripcion2 productodescripcion2&#13;&#10;&#13;&#10;&#13;&#10;from guiadetalle &#13;&#10;left join docto on guiadetalle.doctoid = docto.id&#13;&#10;left join persona on persona.id = docto.personaid&#13;&#10;LEFT JOIN PERSONA VENDEDOR ON VENDEDOR.ID =  COALESCE(DOCTO.vendedorejecutivoid, coalesce(persona.vendedorid,0) )&#13;&#10;&#13;&#10;left join movto on movto.doctoid = docto.id&#13;&#10;left join producto on producto.id = movto.productoid&#13;&#10;&#13;&#10;where guiadetalle.guiaid = @guiaid">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="SERIE" DataType="System.String"/>
+        <Column Name="FOLIOSAT" DataType="System.Int32"/>
+        <Column Name="SERIESAT" DataType="System.String"/>
+        <Column Name="CLIENTEID" DataType="System.Int64"/>
+        <Column Name="VENDEDORID" DataType="System.Int64"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRES" DataType="System.String"/>
+        <Column Name="CLIENTEAPELLIDOS" DataType="System.String"/>
+        <Column Name="CLIENTEDOMICILIO" DataType="System.String"/>
+        <Column Name="CLIENTECOLONIA" DataType="System.String"/>
+        <Column Name="CLIENTECIUDAD" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRE" DataType="System.String"/>
+        <Column Name="MOVTOID" DataType="System.Int64"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="MOVTOTOTAL" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION2" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="CLIENTENUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="CLIENTENUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="DIAS" DataType="System.Int32"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <CommandParameter Name="guiaid" DataType="1" Expression="[guiaid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;parametro.nombre,&#13;&#10;parametro.calle,&#13;&#10;parametro.numeroexterior,&#13;&#10;parametro.numerointerior,&#13;&#10;parametro.colonia,&#13;&#10;parametro.localidad,&#13;&#10;parametro.estado,&#13;&#10;parametro.cp,&#13;&#10;parametro.telefono,&#13;&#10;parametro.rfc,&#13;&#10;parametro.correoe,&#13;&#10;sucursal.nombre nombresucursal,&#13;&#10;parametro.FACT_ELECT_FOLDER&#13;&#10;||  '\facturaelectronica\IMG\logofarmafree.png'  as logoimage&#13;&#10;&#13;&#10;from parametro&#13;&#10;left join sucursal on sucursal.id = parametro.sucursalid;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+        <Column Name="NOMBRESUCURSAL" DataType="System.String"/>
+        <Column Name="LOGOIMAGE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table3" Alias="Concentrado" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;  cast(@guia as bigint) as guiaid,&#13;&#10;    sum(coalesce(cantidad,0)) cantidad,&#13;&#10;    clave,&#13;&#10;    descripcion1,&#13;&#10;    unidad,&#13;&#10;    case&#13;&#10;        when  unidad = 'KG' then&#13;&#10;          cast(sum(cast(cantidad as numeric(18,3))) as varchar(20) )  || ' KG'&#13;&#10;        when unidad &lt;&gt; 'PZA' and unidad &lt;&gt; 'KG' then&#13;&#10;        cast(sum(cast(cantidad as numeric(18,2))) as varchar(20) )&#13;&#10;        when ( coalesce(pzacaja,0) = 0 or  coalesce(pzacaja,0) = 1 ) then&#13;&#10;         cast(sum(cast(cantidad as numeric(18,2))) as varchar(20) ) || ' PZAS'&#13;&#10;        else&#13;&#10;        cast(trunc( coalesce( sum(cast(cantidad as numeric(18,2))),0)/coalesce(pzacaja,1)) as varchar(20)) || ' cajas ' ||  cast(mod(coalesce(    sum(cast(cantidad as numeric(18,2)))   ,0),coalesce(pzacaja,1)) as varchar(10)) || ' piezas '&#13;&#10;    end   descpzacaja, &#13;&#10;     cast(peso as numeric(18,4)) as peso&#13;&#10;&#13;&#10;from&#13;&#10;(&#13;&#10;&#13;&#10;    select&#13;&#10;        cast(((case when d.tipodoctoid = 21 then 1 else -1 end) * COALESCE(movto.cantidad,0) * coalesce(kv.cantidadparte,1)) as numeric(18,4)) cantidad,&#13;&#10;        pkp.clave clave,&#13;&#10;        pkp.descripcion1 descripcion1,&#13;&#10;        pkp.unidad unidad   ,&#13;&#10;        pkp.pzacaja pzacaja,&#13;&#10;cast(pkp.peso as numeric(18,4)) peso&#13;&#10;&#13;&#10;&#13;&#10;    from &#13;&#10;        guiadetalle&#13;&#10;        inner join movto on movto.doctoid = guiadetalle.doctoid&#13;&#10;        join producto p on movto.productoid =p.id&#13;&#10;        left join docto d on movto.doctoid = d.id&#13;&#10;        left join KITSUNNIVEL_VIEW  kv  on kv.productokitid = p.id   &#13;&#10;        left join producto  pkp  on kv.PRODUCTOPARTEID = pkp.id&#13;&#10;        where  movto.cantidad &gt; 0 and d.tipodoctoid in (21,22) and d.estatusdoctoid = 1 and guiadetalle.guiaid = @guia&#13;&#10;            AND coalesce(p.eskit,'N') = 'S'&#13;&#10;&#13;&#10;&#13;&#10;     union all&#13;&#10;&#13;&#10;     select&#13;&#10;        cast(((case when d.tipodoctoid = 21 then 1 else -1 end) * COALESCE(movto.cantidad,0) ) as numeric(18,4)) cantidad,&#13;&#10;        p.clave clave,&#13;&#10;        p.descripcion1 descripcion1,&#13;&#10;        p.unidad unidad   ,&#13;&#10;        p.pzacaja pzacaja,&#13;&#10;cast(p.peso as numeric(18,4)) peso&#13;&#10;    from&#13;&#10;        guiadetalle&#13;&#10;        inner join movto on movto.doctoid = guiadetalle.doctoid&#13;&#10;        inner join producto p on movto.productoid =p.id&#13;&#10;        inner join docto d on movto.doctoid = d.id&#13;&#10;    where  movto.cantidad &gt; 0 and d.tipodoctoid in (21,22) and d.estatusdoctoid = 1 and guiadetalle.guiaid = @guia&#13;&#10;        AND coalesce(p.eskit,'N') = 'N'&#13;&#10;&#13;&#10;   ) q&#13;&#10;   &#13;&#10;  group by&#13;&#10;  q.clave, q.descripcion1, q.unidad,  q.pzacaja,peso">
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="DESCPZACAJA" DataType="System.String"/>
+        <Column Name="PESO" DataType="System.Decimal"/>
+        <Column Name="GUIAID" DataType="System.Int64"/>
+        <CommandParameter Name="@guia" DataType="1" Expression="[guiaid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table4" Alias="ConcentradoSum" DataType="System.Int32" Enabled="true" SelectCommand="select sum(r.peso*r.cantidad) peso&#13;&#10;from&#13;&#10;(&#13;&#10;&#13;&#10;select&#13;&#10;  cast(@guia as bigint) as guiaid,&#13;&#10;    sum(coalesce(cantidad,0)) cantidad,&#13;&#10;    clave,&#13;&#10;    descripcion1,&#13;&#10;    unidad,&#13;&#10;    case&#13;&#10;        when  unidad = 'KG' then&#13;&#10;          cast(sum(cast(cantidad as numeric(18,3))) as varchar(20) )  || ' KG'&#13;&#10;        when unidad &lt;&gt; 'PZA' and unidad &lt;&gt; 'KG' then&#13;&#10;        cast(sum(cast(cantidad as numeric(18,2))) as varchar(20) )&#13;&#10;        when ( coalesce(pzacaja,0) = 0 or  coalesce(pzacaja,0) = 1 ) then&#13;&#10;         cast(sum(cast(cantidad as numeric(18,2))) as varchar(20) ) || ' PZAS'&#13;&#10;        else&#13;&#10;        cast(trunc( coalesce( sum(cast(cantidad as numeric(18,2))),0)/coalesce(pzacaja,1)) as varchar(20)) || ' cajas ' ||  cast(mod(coalesce(    sum(cast(cantidad as numeric(18,2)))   ,0),coalesce(pzacaja,1)) as varchar(10)) || ' piezas '&#13;&#10;    end   descpzacaja, &#13;&#10;     peso&#13;&#10;&#13;&#10;from&#13;&#10;(&#13;&#10;&#13;&#10;    select&#13;&#10;        cast(((case when d.tipodoctoid = 21 then 1 else -1 end) * COALESCE(movto.cantidad,0) * coalesce(kv.cantidadparte,1)) as numeric(18,4)) cantidad,&#13;&#10;        pkp.clave clave,&#13;&#10;        pkp.descripcion1 descripcion1,&#13;&#10;        pkp.unidad unidad   ,&#13;&#10;        pkp.pzacaja pzacaja,&#13;&#10;        pkp.peso&#13;&#10;&#13;&#10;&#13;&#10;    from &#13;&#10;        guiadetalle&#13;&#10;        inner join movto on movto.doctoid = guiadetalle.doctoid&#13;&#10;        join producto p on movto.productoid =p.id&#13;&#10;        left join docto d on movto.doctoid = d.id&#13;&#10;        left join KITSUNNIVEL_VIEW  kv  on kv.productokitid = p.id   &#13;&#10;        left join producto  pkp  on kv.PRODUCTOPARTEID = pkp.id&#13;&#10;        where  movto.cantidad &gt; 0 and d.tipodoctoid in (21,22) and d.estatusdoctoid = 1 and guiadetalle.guiaid = @guia&#13;&#10;            AND coalesce(p.eskit,'N') = 'S'&#13;&#10;&#13;&#10;&#13;&#10;     union all&#13;&#10;&#13;&#10;     select&#13;&#10;        cast(((case when d.tipodoctoid = 21 then 1 else -1 end) * COALESCE(movto.cantidad,0) ) as numeric(18,4)) cantidad,&#13;&#10;        p.clave clave,&#13;&#10;        p.descripcion1 descripcion1,&#13;&#10;        p.unidad unidad   ,&#13;&#10;        p.pzacaja pzacaja,&#13;&#10;     p.peso&#13;&#10;    from &#13;&#10;        guiadetalle&#13;&#10;        inner join movto on movto.doctoid = guiadetalle.doctoid&#13;&#10;        join producto p on movto.productoid =p.id&#13;&#10;        left join docto d on movto.doctoid = d.id&#13;&#10;    where  movto.cantidad &gt; 0 and d.tipodoctoid in (21,22) and d.estatusdoctoid = 1 and guiadetalle.guiaid = @guia&#13;&#10;        AND coalesce(p.eskit,'N') = 'N'&#13;&#10;&#13;&#10;   ) q&#13;&#10;   &#13;&#10;  group by&#13;&#10;  q.clave, q.descripcion1, q.unidad,  q.pzacaja,peso&#13;&#10;) r">
+        <Column Name="PESO" DataType="System.Decimal"/>
+        <CommandParameter Name="@guia" DataType="1" Expression="[guiaid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="guiaid" DataType="System.Int32"/>
+    <Total Name="PesoCantidad" Expression="[Concentrado.PESO]*[Concentrado.CANTIDAD]" Evaluator="Data3" PrintOn="ReportSummary2"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="279.4" PaperHeight="215.9" RawPaperSize="1" FirstPageSource="261" OtherPagesSource="261">
+    <PageHeaderBand Name="PageHeader1" Width="980.53" Height="217.35">
+      <ShapeObject Name="Shape4" Top="179.55" Width="963.9" Height="37.8" Shape="RoundRectangle"/>
+      <ShapeObject Name="Shape3" Top="122.85" Width="963.9" Height="56.7" Shape="RoundRectangle"/>
+      <ShapeObject Name="Shape1" Left="548.1" Top="11.34" Width="387.45" Height="103.95" Shape="RoundRectangle"/>
+      <LineObject Name="Line7" Left="56.7" Top="217.35" Height="-37.8"/>
+      <LineObject Name="Line10" Left="491.4" Top="217.35" Height="-37.8"/>
+      <LineObject Name="Line18" Left="132.3" Top="217.35" Height="-37.8"/>
+      <LineObject Name="Line20" Left="396.9" Top="217.35" Height="-37.8"/>
+      <LineObject Name="Line21" Left="585.9" Top="217.35" Height="-37.8"/>
+      <TextObject Name="Text34" Left="94.5" Top="151.2" Width="595.35" Height="18.9" Text="[Guia.NOTA]" Font="Arial, 9pt"/>
+      <LineObject Name="Line5" Left="9.45" Top="151.2" Width="699.3"/>
+      <TextObject Name="Text66" Left="9.45" Top="151.2" Width="56.7" Height="18.9" Text="Nota :" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text33" Left="94.5" Top="132.3" Width="595.35" Height="18.9" Text="[Guia.ENCARGADONOMBRE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text64" Left="9.45" Top="132.3" Width="75.6" Height="18.9" Text="Encargado&#13;&#10;:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text90" Left="567" Top="85.05" Width="340.2" Height="18.9" Text="[&quot;Telefono: &quot;] [Empresa.TELEFONO] [&quot;Colonia: &quot;] [Empresa.CP]" HorzAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text92" Left="567" Top="66.15" Width="340.2" Height="18.9" Text="[Empresa.COLONIA]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text93" Left="567" Top="47.25" Width="340.2" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" HorzAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text99" Left="66.15" Top="56.7" Width="236.25" Height="18.9" Text="[Guia.CAJERONOMBRE]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text100" Left="9.45" Top="56.7" Width="47.25" Height="18.9" Text="Cajero" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text94" Left="567" Top="28.35" Width="340.2" Height="18.9" Text="[Empresa.RFC]" HorzAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text97" Left="66.15" Top="37.8" Width="236.25" Height="18.9" Text="[Guia.FECHAHORA]" Format="Time" Format.Format="t" Font="Arial, 9pt"/>
+      <TextObject Name="Text98" Left="9.45" Top="37.8" Width="47.25" Height="18.9" Text="Hora" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text95" Left="567" Top="9.45" Width="340.2" Height="18.9" Text="[Empresa.NOMBRESUCURSAL]" HorzAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text87" Left="66.15" Top="18.9" Width="236.25" Height="18.9" Text="[Guia.FECHA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text89" Left="9.45" Top="18.9" Width="47.25" Height="18.9" Text="Fecha" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text91" Left="9.45" Width="94.5" Height="18.9" Text="Expedición" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text7" Left="302.4" Top="9.45" Width="236.25" Height="37.8" Text="Guia x: [Guia.GUIAID]" Font="Arial, 16pt"/>
+      <TextObject Name="Text103" Left="756" Top="189" Width="207.9" Height="18.9" Text="Observaciones" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text102" Left="491.4" Top="189" Width="94.5" Height="18.9" Text="Vendedor" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text79" Left="396.9" Top="189" Width="94.5" Height="18.9" Text="Total" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text76" Left="132.3" Top="189" Width="264.6" Height="18.9" Text="Cliente" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text75" Left="56.7" Top="189" Width="75.6" Height="18.9" Text="Fecha" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text77" Top="189" Width="56.7" Height="18.9" Text="Venta" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text2" Left="585.9" Top="189" Width="85.05" Height="18.9" Text="CAJAS"/>
+      <LineObject Name="Line25" Left="670.95" Top="217.35" Height="-37.8"/>
+      <TextObject Name="Text107" Left="670.95" Top="189" Width="85.05" Height="18.9" Text="PESO"/>
+      <LineObject Name="Line26" Left="756" Top="217.35" Height="-37.8"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="221.35" Width="980.53" Height="18.9" CanGrow="true" Condition="[Venta.ID]" SortOrder="None">
+      <TextObject Name="Text11" Width="56.7" Height="18.9" Text="[Venta.FOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text19" Left="132.3" Width="264.6" Height="18.9" CanGrow="true" Text="[Venta.CLIENTENOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="396.9" Width="94.5" Height="18.9" Text="[Venta.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text1" Left="56.7" Width="75.6" Height="18.9" Text="[Venta.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <LineObject Name="Line23" Left="756" Top="18.9" Width="219.24"/>
+      <TextObject Name="Text3" Left="491.4" Width="94.5" Height="18.9" Text="[Venta.CLAVE]" Font="Arial, 8pt"/>
+      <DataBand Name="Data1" Top="244.25" Width="980.53" Height="18.9" Visible="false" CanGrow="true" DataSource="Table1">
+        <TextObject Name="Text29" Left="56.7" Width="85.05" Height="18.9" Text="[Venta.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text30" Left="141.75" Width="122.85" Height="18.9" Text="[Venta.PRODUCTONOMBRE]" Font="Arial, 7pt"/>
+        <TextObject Name="Text31" Left="264.6" Width="189" Height="18.9" Text="[Venta.PRODUCTODESCRIPCION]" Font="Arial, 7pt"/>
+        <TextObject Name="Text32" Left="453.6" Width="151.2" Height="18.9" Text="[Venta.PRODUCTODESCRIPCION2]" Font="Arial, 7pt"/>
+        <TextObject Name="Text49" Left="604.8" Width="94.5" Height="18.9" Text="[Venta.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="267.15" Width="980.53" Height="75.6">
+      <TextObject Name="Text6" Left="189" Top="56.7" Width="94.5" Height="18.9" Text="Firma del chofer" HorzAlign="Center" Font="Arial, 8pt"/>
+      <LineObject Name="Line1" Left="141.75" Top="56.7" Width="264.6"/>
+      <LineObject Name="Line24" Left="614.25" Top="56.7" Width="264.6"/>
+      <TextObject Name="Text104" Left="689.85" Top="56.7" Width="94.5" Height="18.9" Text="Firma entrega" HorzAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="141.75" Width="264.6" Height="18.9" Text="Peso Ruta:" HorzAlign="Right"/>
+      <TextObject Name="Text13" Left="406.35" Width="94.5" Height="18.9" Text="[ConcentradoSum.PESO]Kg" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="346.75" Width="980.53" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text5" Left="869.4" Width="94.5" Height="18.9" Text="[PageNofM]" HorzAlign="Center" Font="Arial, 8pt"/>
+    </PageFooterBand>
+  </ReportPage>
+  <ReportPage Name="Page3" PaperWidth="215.9" PaperHeight="279.4" RawPaperSize="1" FirstPageSource="258" OtherPagesSource="258">
+    <ReportTitleBand Name="ReportTitle1" Width="740.5" Height="37.8">
+      <TextObject Name="Text105" Left="-18.9" Width="151.2" Height="18.9" Text="Reporte de Guia" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="132.3" Width="75.6" Height="18.9" Text="[Concentrado.GUIAID]" Font="Arial, 8pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader2" Top="41.84" Width="740.5" Height="18.9">
+      <TextObject Name="Text20" Left="132.3" Width="453.6" Height="18.9" Text="DESCRIPCION1" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text21" Left="585.9" Width="113.4" Height="18.9" Text="DESCPZACAJA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Width="132.3" Height="18.9" Text="CLAVE" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data3" Top="64.78" Width="740.5" Height="18.9" DataSource="Table3">
+      <TextObject Name="Text17" Left="585.9" Width="113.4" Height="18.9" Text="[Concentrado.DESCPZACAJA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text24" Width="132.3" Height="18.9" Text="[Concentrado.CLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="132.3" Width="453.6" Height="18.9" Text="[Concentrado.DESCRIPCION1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text12" Left="699.3" Width="37.8" Height="18.9" Font="Arial, 8pt, style=Bold"/>
+      <Sort>
+        <Sort Expression="[Concentrado.DESCRIPCION1]"/>
+      </Sort>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary2" Top="87.72" Width="740.5" Height="18.9">
+      <TextObject Name="Text106" Left="453.6" Width="132.3" Height="18.9" Text="Peso Total:"/>
+      <TextObject Name="Text10" Left="585.9" Width="113.4" Height="18.9" Text="[PesoCantidad] Kg" Font="Arial, 8pt, style=Bold"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter2" Top="110.66" Width="740.5" Height="18.9">
+      <TextObject Name="Text9" Left="453.6" Width="132.3" Height="18.9" Text="[Page]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

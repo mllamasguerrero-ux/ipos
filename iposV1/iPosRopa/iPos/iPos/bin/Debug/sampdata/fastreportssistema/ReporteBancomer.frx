@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/20/2017 13:22:57" ReportInfo.Modified="01/21/2017 13:45:26" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9uv4k1HI0T+rhrq/papvwOAk=">
+      <TableDataSource Name="Table" Alias="BancomerData" DataType="System.Int32" Enabled="true" SelectCommand="select bancomerparam.*,&#13;&#10;doctopago.id doctopagoid,&#13;&#10;doctopago.fechahora fechahorapago,&#13;&#10;docto.id doctoid,&#13;&#10;docto.fecha doctofecha,&#13;&#10;docto.folio doctofolio,&#13;&#10;persona.nombre clientenombre,&#13;&#10;vendedor.nombre vendedornombre&#13;&#10;&#13;&#10;from&#13;&#10;bancomerparam&#13;&#10;left join doctopago on doctopago.id = bancomerparam.doctopagoid&#13;&#10;left join docto on docto.id = bancomerparam.doctoid&#13;&#10;left join persona on persona.id = docto.personaid&#13;&#10;left join persona vendedor on vendedor.id = docto.vendedorid&#13;&#10;&#13;&#10;where (bancomerparam.creado &gt;= @FECHAINICIAL) AND (bancomerparam.creado &lt;=  @FECHAFINAL)">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="AID" DataType="System.String"/>
+        <Column Name="AMEX" DataType="System.Int16"/>
+        <Column Name="BANCOMER" DataType="System.String"/>
+        <Column Name="BITCAMPANAS" DataType="System.String"/>
+        <Column Name="CAMPANAAUTORIZACION" DataType="System.String"/>
+        <Column Name="CAMPANAREFERENCIA" DataType="System.String"/>
+        <Column Name="CAMPANAREFERENCIANUM" DataType="System.Int64"/>
+        <Column Name="CARDREQUEST" DataType="System.String"/>
+        <Column Name="CARDTIPO" DataType="System.Int32"/>
+        <Column Name="PROMOCIONES" DataType="System.String"/>
+        <Column Name="CLIENTE_CMP_COMERCIO" DataType="System.String"/>
+        <Column Name="CLIENTE_TDC_STOCK" DataType="System.String"/>
+        <Column Name="CLSREQUESTID" DataType="System.Int64"/>
+        <Column Name="CLSRESPONSEID" DataType="System.Int64"/>
+        <Column Name="CODIGO_BENEFICIO1" DataType="System.String"/>
+        <Column Name="CODIGO_BENEFICIO2" DataType="System.String"/>
+        <Column Name="CODIGO_BENEFICIO3" DataType="System.String"/>
+        <Column Name="CODIGO_BENEFICIO4" DataType="System.String"/>
+        <Column Name="CODIGO_BENEFICIO5" DataType="System.String"/>
+        <Column Name="CODIGO_BENEFICIO6" DataType="System.String"/>
+        <Column Name="CODIGO_BENEFICIO7" DataType="System.String"/>
+        <Column Name="COMERCIO_CMP_COMERCIO" DataType="System.String"/>
+        <Column Name="COMERCIO_TDC_STOCK" DataType="System.String"/>
+        <Column Name="COMISION1" DataType="System.String"/>
+        <Column Name="COMISION2" DataType="System.String"/>
+        <Column Name="COMISION3" DataType="System.String"/>
+        <Column Name="COMISION4" DataType="System.String"/>
+        <Column Name="COMISION5" DataType="System.String"/>
+        <Column Name="COMISION6" DataType="System.String"/>
+        <Column Name="COMISION7" DataType="System.String"/>
+        <Column Name="CREDITODEBITO" DataType="System.String"/>
+        <Column Name="CRIPTOGRAMA" DataType="System.String"/>
+        <Column Name="ECOUPNUMBER" DataType="System.String"/>
+        <Column Name="FACTOREXP" DataType="System.String"/>
+        <Column Name="FIRMAAUTOGRAFA" DataType="System.String"/>
+        <Column Name="FIRMAELECTRONICA" DataType="System.String"/>
+        <Column Name="FIRMAQPS" DataType="System.String"/>
+        <Column Name="GUIA_CIE" DataType="System.String"/>
+        <Column Name="IDTOKEN12" DataType="System.String"/>
+        <Column Name="IDTOKEN13" DataType="System.String"/>
+        <Column Name="IDTOKEN16" DataType="System.String"/>
+        <Column Name="IDTOKENR7" DataType="System.String"/>
+        <Column Name="IDTOKENR8" DataType="System.String"/>
+        <Column Name="IMPORTE_BENEFICIO" DataType="System.String"/>
+        <Column Name="IMPORTE_UDIS" DataType="System.String"/>
+        <Column Name="INDICADOR_CAMBIO_PLAZO" DataType="System.String"/>
+        <Column Name="INDICADOR_DE_AVISO" DataType="System.String"/>
+        <Column Name="INDICAODR_DE_BENEFICIO" DataType="System.String"/>
+        <Column Name="ISFOLIO" DataType="System.String"/>
+        <Column Name="ISOFFLINE" DataType="System.String"/>
+        <Column Name="LEYENDA" DataType="System.String"/>
+        <Column Name="MACADDALTERNATIVA" DataType="System.String"/>
+        <Column Name="MENSAJE_BASE_CHEQUE" DataType="System.String"/>
+        <Column Name="MENSAJE_BASE_CONTINUOS" DataType="System.String"/>
+        <Column Name="MENSAJE_CLIENTE" DataType="System.String"/>
+        <Column Name="MENSAJE_CLIENTE_EMISRO" DataType="System.String"/>
+        <Column Name="MENSAJE_COMERCIO" DataType="System.String"/>
+        <Column Name="MODOINGRESO" DataType="System.String"/>
+        <Column Name="MONTO_BENEFICIO_MULTIPLE1" DataType="System.String"/>
+        <Column Name="MONTO_BENEFICIO_SIMPLE1" DataType="System.String"/>
+        <Column Name="MONTO_CHEQUE_ACTUAL" DataType="System.String"/>
+        <Column Name="MONTO_CHEQUE_ANTERIOR" DataType="System.String"/>
+        <Column Name="MONTO_CHEQUE_REDIMIDOS" DataType="System.String"/>
+        <Column Name="MONTO_CONTINUOS_ACTUAL" DataType="System.String"/>
+        <Column Name="MONTO_CONTINUOS_ANTERIOR" DataType="System.String"/>
+        <Column Name="MONTO_CONTINUOS_REDIMIDOS" DataType="System.String"/>
+        <Column Name="MONTO_MULTIPLE2" DataType="System.String"/>
+        <Column Name="MONTO_MULTIPLE3" DataType="System.String"/>
+        <Column Name="MONTO_MULTIPLE4" DataType="System.String"/>
+        <Column Name="MONTO_MULTIPLE5" DataType="System.String"/>
+        <Column Name="MONTO_MULTIPLE6" DataType="System.String"/>
+        <Column Name="MONTO_MULTIPLE7" DataType="System.String"/>
+        <Column Name="MONTO_SIMPLE2" DataType="System.String"/>
+        <Column Name="MONTO_SIMPLE3" DataType="System.String"/>
+        <Column Name="MONTO_SIMPLE4" DataType="System.String"/>
+        <Column Name="MONTO_SIMPLE5" DataType="System.String"/>
+        <Column Name="MONTO_SIMPLE6" DataType="System.String"/>
+        <Column Name="MONTO_SIMPLE7" DataType="System.String"/>
+        <Column Name="NOAUTORIZACION" DataType="System.String"/>
+        <Column Name="NOMBREAPLICACION" DataType="System.String"/>
+        <Column Name="NOMBRECLIENTE" DataType="System.String"/>
+        <Column Name="NUMERO_DE_BENEFICIOS" DataType="System.String"/>
+        <Column Name="NUMEROTARJETA" DataType="System.String"/>
+        <Column Name="NUMTARJETAII" DataType="System.String"/>
+        <Column Name="PAGOSMULTIPAGOSID" DataType="System.Int64"/>
+        <Column Name="PESOSREDIMIDOS" DataType="System.String"/>
+        <Column Name="PESOSSALDOANTERIOR" DataType="System.String"/>
+        <Column Name="PESOSSALDODISPONIBLE" DataType="System.String"/>
+        <Column Name="PESOSSALDODISPONINLEEXP" DataType="System.String"/>
+        <Column Name="PESOSSALDOREDIMIDOSEXP" DataType="System.String"/>
+        <Column Name="PINPAD_USO" DataType="System.String"/>
+        <Column Name="POOLADJUSTTYPE" DataType="System.String"/>
+        <Column Name="POOLID" DataType="System.String"/>
+        <Column Name="POOLNUMBER" DataType="System.String"/>
+        <Column Name="POOLUNITLABEL" DataType="System.String"/>
+        <Column Name="PUNTOSID" DataType="System.Int64"/>
+        <Column Name="PUNTOSREDIMIDOS" DataType="System.String"/>
+        <Column Name="PUNTOSSALDOANTERIOR" DataType="System.String"/>
+        <Column Name="PUNTOSSALDODISPONIBLE" DataType="System.String"/>
+        <Column Name="PUNTOSSALDODISPONIBLEEXP" DataType="System.String"/>
+        <Column Name="PUNTOSSALDOREDIMIDOSEXP" DataType="System.String"/>
+        <Column Name="R8_CODIGO_LEYENDA" DataType="System.String"/>
+        <Column Name="R8_LEYENDA" DataType="System.String"/>
+        <Column Name="RAZON_SOCIAL" DataType="System.String"/>
+        <Column Name="REFERENCIA_RESPUESTA" DataType="System.String"/>
+        <Column Name="REFERENCIAAFIN" DataType="System.String"/>
+        <Column Name="REQUEST" DataType="System.String"/>
+        <Column Name="RESPDLL" DataType="System.Int32"/>
+        <Column Name="RESPONSE" DataType="System.String"/>
+        <Column Name="SEGMENTNUMBER" DataType="System.String"/>
+        <Column Name="TBINES" DataType="System.String"/>
+        <Column Name="TIPO_BENEFICIO1" DataType="System.String"/>
+        <Column Name="TIPO_BENEFICIO2" DataType="System.String"/>
+        <Column Name="TIPO_BENEFICIO3" DataType="System.String"/>
+        <Column Name="TIPO_BENEFICIO4" DataType="System.String"/>
+        <Column Name="TIPO_BENEFICIO5" DataType="System.String"/>
+        <Column Name="TIPO_BENEFICIO6" DataType="System.String"/>
+        <Column Name="TIPO_BENEFICIO7" DataType="System.String"/>
+        <Column Name="TIPO_RESPUESTA1" DataType="System.String"/>
+        <Column Name="TIPO_RESPUESTA2" DataType="System.String"/>
+        <Column Name="TIPO_RESPUESTA3" DataType="System.String"/>
+        <Column Name="TIPO_RESPUESTA4" DataType="System.String"/>
+        <Column Name="TIPO_RESPUESTA5" DataType="System.String"/>
+        <Column Name="TIPO_RESPUESTA6" DataType="System.String"/>
+        <Column Name="TIPO_RESPUESTA7" DataType="System.String"/>
+        <Column Name="TIPOPOS" DataType="System.String"/>
+        <Column Name="TNXCONPUNTOS" DataType="System.String"/>
+        <Column Name="TOPERADOR" DataType="System.String"/>
+        <Column Name="VALTIPOCARD" DataType="System.String"/>
+        <Column Name="VIGENCIAPROMOCIONESEXP" DataType="System.String"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="DOCTOPAGOID" DataType="System.Int64"/>
+        <Column Name="TIPOTRANSACCION" DataType="System.String"/>
+        <Column Name="ESTADOTRANSACCIONID" DataType="System.Int64"/>
+        <Column Name="REFID" DataType="System.Int64"/>
+        <Column Name="DOCTOPAGOID1" DataType="System.Int64"/>
+        <Column Name="FECHAHORAPAGO" DataType="System.DateTime"/>
+        <Column Name="DOCTOID1" DataType="System.Int64"/>
+        <Column Name="DOCTOFECHA" DataType="System.DateTime"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRE" DataType="System.String"/>
+        <CommandParameter Name="FECHAINICIAL" DataType="5" Expression="[FECHAINICIAL]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="FECHAFINAL" DataType="5" Expression="[FECHAFINAL]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="FECHAINICIAL" DataType="System.DateTime"/>
+    <Parameter Name="FECHAFINAL" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="56.7">
+      <TextObject Name="Text213" Left="170.1" Top="18.9" Width="378" Height="18.9" Text="REPORTE TEST BANCOMERPARAM + DOCTO" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="60.7" Width="718.2" Height="9.45"/>
+    <DataBand Name="Data1" Top="74.15" Width="718.2" Height="2182.95" DataSource="Table">
+      <TextObject Name="Text1" Left="236.25" Top="500.85" Width="94.5" Height="18.9" Text="[BancomerData.ID]"/>
+      <TextObject Name="Text3" Left="236.25" Top="472.5" Width="94.5" Height="18.9" Text="[BancomerData.ACTIVO]"/>
+      <TextObject Name="Text5" Left="236.25" Top="444.15" Width="94.5" Height="18.9" Text="[BancomerData.CREADO]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text7" Left="236.25" Top="415.8" Width="94.5" Height="18.9" Text="[BancomerData.CREADOPOR_USERID]"/>
+      <TextObject Name="Text9" Left="236.25" Top="396.9" Width="94.5" Height="18.9" Text="[BancomerData.MODIFICADO]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text2" Left="9.45" Top="500.85" Width="189" Height="18.9" Text="ID"/>
+      <TextObject Name="Text4" Left="9.45" Top="472.5" Width="189" Height="18.9" Text="ACTIVO"/>
+      <TextObject Name="Text6" Left="9.45" Top="444.15" Width="189" Height="18.9" Text="CREADO "/>
+      <TextObject Name="Text8" Left="9.45" Top="415.8" Width="189" Height="18.9" Text="CREADOPOR_USERID"/>
+      <TextObject Name="Text10" Left="9.45" Top="396.9" Width="94.5" Height="18.9" Text="MODIFICADO"/>
+      <TextObject Name="Text11" Left="9.45" Top="519.75" Width="217.35" Height="18.9" Text="MODIFICADOPOR_USERID:"/>
+      <TextObject Name="Text12" Left="236.25" Top="519.75" Width="94.5" Height="18.9" Text="[BancomerData.MODIFICADOPOR_USERID]"/>
+      <TextObject Name="Text13" Left="9.45" Top="359.1" Width="151.2" Height="18.9" Text="BANCOMERDATA" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text14" Left="236.25" Top="538.65" Width="94.5" Height="18.9" Text="[BancomerData.AID]"/>
+      <TextObject Name="Text15" Left="9.45" Top="538.65" Width="94.5" Height="18.9" Text="AID"/>
+      <TextObject Name="Text16" Left="236.25" Top="557.55" Width="94.5" Height="18.9" Text="[BancomerData.AMEX]"/>
+      <TextObject Name="Text17" Left="9.45" Top="557.55" Width="94.5" Height="18.9" Text="AMEX"/>
+      <TextObject Name="Text18" Left="236.25" Top="576.45" Width="94.5" Height="18.9" Text="[BancomerData.BANCOMER]"/>
+      <TextObject Name="Text19" Left="9.45" Top="576.45" Width="94.5" Height="18.9" Text="BANCOMER"/>
+      <TextObject Name="Text20" Left="236.25" Top="595.35" Width="94.5" Height="18.9" Text="[BancomerData.BITCAMPANAS]"/>
+      <TextObject Name="Text21" Left="9.45" Top="595.35" Width="94.5" Height="18.9" Text="BITCAMPANAS"/>
+      <TextObject Name="Text22" Left="236.25" Top="614.25" Width="94.5" Height="18.9" Text="[BancomerData.CAMPANAAUTORIZACION]"/>
+      <TextObject Name="Text23" Left="9.45" Top="614.25" Width="189" Height="18.9" Text="CAMPANAAUTORIZACION"/>
+      <TextObject Name="Text24" Left="236.25" Top="633.15" Width="94.5" Height="18.9" Text="[BancomerData.CAMPANAREFERENCIA]"/>
+      <TextObject Name="Text25" Left="9.45" Top="633.15" Width="189" Height="18.9" Text="CAMPANAREFERENCIA"/>
+      <TextObject Name="Text26" Left="236.25" Top="652.05" Width="94.5" Height="18.9" Text="[BancomerData.CAMPANAREFERENCIANUM]"/>
+      <TextObject Name="Text27" Left="9.45" Top="652.05" Width="189" Height="18.9" Text="CAMPANAREFERENCIANUM"/>
+      <TextObject Name="Text28" Left="236.25" Top="670.95" Width="94.5" Height="18.9" Text="[BancomerData.CARDREQUEST]"/>
+      <TextObject Name="Text29" Left="9.45" Top="670.95" Width="189" Height="18.9" Text="CARDREQUEST"/>
+      <TextObject Name="Text30" Left="236.25" Top="689.85" Width="94.5" Height="18.9" Text="[BancomerData.CARDTIPO]"/>
+      <TextObject Name="Text31" Left="9.45" Top="689.85" Width="94.5" Height="18.9" Text="CARDTIPO"/>
+      <TextObject Name="Text32" Left="236.25" Top="708.75" Width="94.5" Height="18.9" Text="[BancomerData.PROMOCIONES]"/>
+      <TextObject Name="Text33" Left="9.45" Top="708.75" Width="189" Height="18.9" Text="PROMOCIONES"/>
+      <TextObject Name="Text34" Left="236.25" Top="727.65" Width="94.5" Height="18.9" Text="[BancomerData.CLIENTE_CMP_COMERCIO]"/>
+      <TextObject Name="Text35" Left="9.45" Top="727.65" Width="189" Height="18.9" Text="CLIENTE_CMP_COMERCIO"/>
+      <TextObject Name="Text36" Left="236.25" Top="746.55" Width="94.5" Height="18.9" Text="[BancomerData.CLIENTE_TDC_STOCK]"/>
+      <TextObject Name="Text37" Left="9.45" Top="746.55" Width="189" Height="18.9" Text="CLIENTE_TDC_STOCK"/>
+      <TextObject Name="Text38" Left="236.25" Top="765.45" Width="94.5" Height="18.9" Text="[BancomerData.CLSREQUESTID]"/>
+      <TextObject Name="Text39" Left="9.45" Top="765.45" Width="189" Height="18.9" Text="CLSREQUESTID"/>
+      <TextObject Name="Text40" Left="236.25" Top="784.35" Width="94.5" Height="18.9" Text="[BancomerData.CLSRESPONSEID]"/>
+      <TextObject Name="Text41" Left="9.45" Top="784.35" Width="189" Height="18.9" Text="CLSRESPONSEID"/>
+      <TextObject Name="Text56" Left="236.25" Top="803.25" Width="94.5" Height="18.9" Text="[BancomerData.COMERCIO_CMP_COMERCIO]"/>
+      <TextObject Name="Text57" Left="9.45" Top="803.25" Width="207.9" Height="18.9" Text="COMERCIO_CMP_COMERCIO"/>
+      <TextObject Name="Text58" Left="236.25" Top="822.15" Width="94.5" Height="18.9" Text="[BancomerData.COMERCIO_TDC_STOCK]"/>
+      <TextObject Name="Text59" Left="9.45" Top="822.15" Width="189" Height="18.9" Text="COMERCIO_TDC_STOCK"/>
+      <TextObject Name="Text74" Left="236.25" Top="841.05" Width="94.5" Height="18.9" Text="[BancomerData.CREDITODEBITO]"/>
+      <TextObject Name="Text75" Left="9.45" Top="841.05" Width="160.65" Height="18.9" Text="CREDITODEBITO"/>
+      <TextObject Name="Text76" Left="236.25" Top="859.95" Width="94.5" Height="18.9" Text="[BancomerData.CRIPTOGRAMA]"/>
+      <TextObject Name="Text77" Left="9.45" Top="859.95" Width="160.65" Height="18.9" Text="CRIPTOGRAMA"/>
+      <TextObject Name="Text78" Left="236.25" Top="878.85" Width="94.5" Height="18.9" Text="[BancomerData.ECOUPNUMBER]"/>
+      <TextObject Name="Text79" Left="9.45" Top="878.85" Width="160.65" Height="18.9" Text="ECOUPNUMBER"/>
+      <TextObject Name="Text80" Left="236.25" Top="897.75" Width="94.5" Height="18.9" Text="[BancomerData.FACTOREXP]"/>
+      <TextObject Name="Text81" Left="9.45" Top="897.75" Width="160.65" Height="18.9" Text="FACTOREXP"/>
+      <TextObject Name="Text82" Left="236.25" Top="916.65" Width="94.5" Height="18.9" Text="[BancomerData.FIRMAAUTOGRAFA]"/>
+      <TextObject Name="Text83" Left="9.45" Top="916.65" Width="160.65" Height="18.9" Text="FIRMAAUTOGRAFA"/>
+      <TextObject Name="Text84" Left="236.25" Top="935.55" Width="94.5" Height="18.9" Text="[BancomerData.FIRMAELECTRONICA]"/>
+      <TextObject Name="Text85" Left="9.45" Top="935.55" Width="160.65" Height="18.9" Text="FIRMAELECTRONICA"/>
+      <TextObject Name="Text86" Left="236.25" Top="954.45" Width="94.5" Height="18.9" Text="[BancomerData.FIRMAQPS]"/>
+      <TextObject Name="Text87" Left="9.45" Top="954.45" Width="160.65" Height="18.9" Text="FIRMAQPS"/>
+      <TextObject Name="Text88" Left="236.25" Top="973.35" Width="94.5" Height="18.9" Text="[BancomerData.GUIA_CIE]"/>
+      <TextObject Name="Text89" Left="9.45" Top="973.35" Width="160.65" Height="18.9" Text="GUIA_CIE"/>
+      <TextObject Name="Text90" Left="236.25" Top="992.25" Width="94.5" Height="18.9" Text="[BancomerData.IDTOKEN12]"/>
+      <TextObject Name="Text91" Left="9.45" Top="992.25" Width="94.5" Height="18.9" Text="IDTOKEN12"/>
+      <TextObject Name="Text92" Left="236.25" Top="1011.15" Width="94.5" Height="18.9" Text="[BancomerData.IDTOKEN13]"/>
+      <TextObject Name="Text93" Left="9.45" Top="1011.15" Width="94.5" Height="18.9" Text="IDTOKEN13"/>
+      <TextObject Name="Text94" Left="236.25" Top="1030.05" Width="94.5" Height="18.9" Text="[BancomerData.IDTOKEN16]"/>
+      <TextObject Name="Text95" Left="9.45" Top="1030.05" Width="94.5" Height="18.9" Text="IDTOKEN16"/>
+      <TextObject Name="Text96" Left="236.25" Top="1048.95" Width="94.5" Height="18.9" Text="[BancomerData.IDTOKENR7]"/>
+      <TextObject Name="Text97" Left="9.45" Top="1048.95" Width="94.5" Height="18.9" Text="IDTOKENR7"/>
+      <TextObject Name="Text98" Left="236.25" Top="1067.85" Width="94.5" Height="18.9" Text="[BancomerData.IDTOKENR8]"/>
+      <TextObject Name="Text99" Left="9.45" Top="1067.85" Width="94.5" Height="18.9" Text="IDTOKENR8"/>
+      <TextObject Name="Text100" Left="236.25" Top="1086.75" Width="94.5" Height="18.9" Text="[BancomerData.IMPORTE_BENEFICIO]"/>
+      <TextObject Name="Text101" Left="9.45" Top="1086.75" Width="160.65" Height="18.9" Text="IMPORTE_BENEFICIO"/>
+      <TextObject Name="Text102" Left="236.25" Top="1105.65" Width="94.5" Height="18.9" Text="[BancomerData.IMPORTE_UDIS]"/>
+      <TextObject Name="Text103" Left="9.45" Top="1105.65" Width="160.65" Height="18.9" Text="IMPORTE_UDIS"/>
+      <TextObject Name="Text104" Left="236.25" Top="1124.55" Width="94.5" Height="18.9" Text="[BancomerData.INDICADOR_CAMBIO_PLAZO]"/>
+      <TextObject Name="Text105" Left="9.45" Top="1124.55" Width="207.9" Height="18.9" Text="INDICADOR_CAMBIO_PLAZO"/>
+      <TextObject Name="Text106" Left="236.25" Top="1143.45" Width="94.5" Height="18.9" Text="[BancomerData.INDICADOR_DE_AVISO]"/>
+      <TextObject Name="Text107" Left="9.45" Top="1143.45" Width="207.9" Height="18.9" Text="INDICADOR_DE_AVISO"/>
+      <TextObject Name="Text108" Left="236.25" Top="1162.35" Width="94.5" Height="18.9" Text="[BancomerData.INDICAODR_DE_BENEFICIO]"/>
+      <TextObject Name="Text109" Left="9.45" Top="1162.35" Width="207.9" Height="18.9" Text="INDICAODR_DE_BENEFICIO"/>
+      <TextObject Name="Text110" Left="236.25" Top="1181.25" Width="94.5" Height="18.9" Text="[BancomerData.ISFOLIO]"/>
+      <TextObject Name="Text111" Left="9.45" Top="1181.25" Width="94.5" Height="18.9" Text="ISFOLIO"/>
+      <TextObject Name="Text112" Left="236.25" Top="1200.15" Width="94.5" Height="18.9" Text="[BancomerData.ISOFFLINE]"/>
+      <TextObject Name="Text113" Left="9.45" Top="1200.15" Width="94.5" Height="18.9" Text="ISOFFLINE"/>
+      <TextObject Name="Text114" Left="236.25" Top="1219.05" Width="94.5" Height="18.9" Text="[BancomerData.LEYENDA]"/>
+      <TextObject Name="Text115" Left="9.45" Top="1219.05" Width="94.5" Height="18.9" Text="LEYENDA"/>
+      <TextObject Name="Text116" Left="236.25" Top="1237.95" Width="94.5" Height="18.9" Text="[BancomerData.MACADDALTERNATIVA]"/>
+      <TextObject Name="Text117" Left="9.45" Top="1237.95" Width="189" Height="18.9" Text="MACADDALTERNATIVA"/>
+      <TextObject Name="Text118" Left="236.25" Top="1256.85" Width="94.5" Height="18.9" Text="[BancomerData.MENSAJE_BASE_CHEQUE]"/>
+      <TextObject Name="Text119" Left="9.45" Top="1256.85" Width="189" Height="18.9" Text="MENSAJE_BASE_CHEQUE"/>
+      <TextObject Name="Text120" Left="236.25" Top="1275.75" Width="94.5" Height="18.9" Text="[BancomerData.MENSAJE_BASE_CONTINUOS]"/>
+      <TextObject Name="Text121" Left="9.45" Top="1275.75" Width="207.9" Height="18.9" Text="MENSAJE_BASE_CONTINUOS"/>
+      <TextObject Name="Text122" Left="236.25" Top="1294.65" Width="94.5" Height="18.9" Text="[BancomerData.MENSAJE_CLIENTE]"/>
+      <TextObject Name="Text123" Left="9.45" Top="1294.65" Width="170.1" Height="18.9" Text="MENSAJE_CLIENTE"/>
+      <TextObject Name="Text124" Left="236.25" Top="1313.55" Width="94.5" Height="18.9" Text="[BancomerData.MENSAJE_CLIENTE_EMISRO]"/>
+      <TextObject Name="Text125" Left="9.45" Top="1313.55" Width="207.9" Height="18.9" Text="MENSAJE_CLIENTE_EMISRO"/>
+      <TextObject Name="Text126" Left="236.25" Top="1332.45" Width="94.5" Height="18.9" Text="[BancomerData.MENSAJE_COMERCIO]"/>
+      <TextObject Name="Text127" Left="9.45" Top="1332.45" Width="207.9" Height="18.9" Text="MENSAJE_COMERCIO"/>
+      <TextObject Name="Text128" Left="236.25" Top="1351.35" Width="94.5" Height="18.9" Text="[BancomerData.MODOINGRESO]"/>
+      <TextObject Name="Text129" Left="9.45" Top="1351.35" Width="207.9" Height="18.9" Text="MODOINGRESO"/>
+      <TextObject Name="Text130" Left="236.25" Top="1370.25" Width="94.5" Height="18.9" Text="[BancomerData.MONTO_BENEFICIO_MULTIPLE1]"/>
+      <TextObject Name="Text131" Left="9.45" Top="1370.25" Width="217.35" Height="18.9" Text="MONTO_BENEFICIO_MULTIPLE1"/>
+      <TextObject Name="Text132" Left="236.25" Top="1389.15" Width="94.5" Height="18.9" Text="[BancomerData.MONTO_BENEFICIO_SIMPLE1]"/>
+      <TextObject Name="Text133" Left="9.45" Top="1389.15" Width="217.35" Height="18.9" Text="MONTO_BENEFICIO_SIMPLE1"/>
+      <TextObject Name="Text134" Left="236.25" Top="1408.05" Width="94.5" Height="18.9" Text="[BancomerData.MONTO_CHEQUE_ACTUAL]"/>
+      <TextObject Name="Text135" Left="9.45" Top="1408.05" Width="217.35" Height="18.9" Text="MONTO_CHEQUE_ACTUAL"/>
+      <TextObject Name="Text136" Left="236.25" Top="1426.95" Width="94.5" Height="18.9" Text="[BancomerData.MONTO_CHEQUE_ANTERIOR]"/>
+      <TextObject Name="Text137" Left="9.45" Top="1426.95" Width="217.35" Height="18.9" Text="MONTO_CHEQUE_ANTERIOR"/>
+      <TextObject Name="Text138" Left="236.25" Top="1445.85" Width="94.5" Height="18.9" Text="[BancomerData.MONTO_CHEQUE_REDIMIDOS]"/>
+      <TextObject Name="Text139" Left="9.45" Top="1445.85" Width="217.35" Height="18.9" Text="MONTO_CHEQUE_REDIMIDOS"/>
+      <TextObject Name="Text140" Left="236.25" Top="1464.75" Width="94.5" Height="18.9" Text="[BancomerData.MONTO_CONTINUOS_ACTUAL]"/>
+      <TextObject Name="Text141" Left="9.45" Top="1464.75" Width="217.35" Height="18.9" Text="MONTO_CONTINUOS_ACTUAL"/>
+      <TextObject Name="Text142" Left="236.25" Top="1483.65" Width="94.5" Height="18.9" Text="[BancomerData.MONTO_CONTINUOS_ANTERIOR]"/>
+      <TextObject Name="Text143" Left="9.45" Top="1483.65" Width="217.35" Height="18.9" Text="MONTO_CONTINUOS_ANTERIOR"/>
+      <TextObject Name="Text144" Left="236.25" Top="1502.55" Width="94.5" Height="18.9" Text="[BancomerData.MONTO_CONTINUOS_REDIMIDOS]"/>
+      <TextObject Name="Text145" Left="9.45" Top="1502.55" Width="217.35" Height="18.9" Text="MONTO_CONTINUOS_REDIMIDOS"/>
+      <TextObject Name="Text146" Left="236.25" Top="1521.45" Width="94.5" Height="18.9" Text="[BancomerData.MONTO_MULTIPLE2]"/>
+      <TextObject Name="Text147" Left="9.45" Top="1521.45" Width="217.35" Height="18.9" Text="MONTO_MULTIPLE2"/>
+      <TextObject Name="Text148" Left="236.25" Top="1540.35" Width="94.5" Height="18.9" Text="[BancomerData.NOAUTORIZACION]"/>
+      <TextObject Name="Text150" Left="9.45" Top="1540.35" Width="217.35" Height="18.9" Text="NOAUTORIZACION"/>
+      <TextObject Name="Text149" Left="236.25" Top="1559.25" Width="94.5" Height="18.9" Text="[BancomerData.NOMBREAPLICACION]"/>
+      <TextObject Name="Text151" Left="9.45" Top="1559.25" Width="217.35" Height="18.9" Text="NOMBREAPLICACION"/>
+      <TextObject Name="Text42" Left="236.25" Top="1578.15" Width="94.5" Height="18.9" Text="[BancomerData.NOMBRECLIENTE]"/>
+      <TextObject Name="Text43" Left="9.45" Top="1578.15" Width="217.35" Height="18.9" Text="NOMBRECLIENTE"/>
+      <TextObject Name="Text44" Left="236.25" Top="1597.05" Width="94.5" Height="18.9" Text="[BancomerData.NUMEROTARJETA]"/>
+      <TextObject Name="Text45" Left="9.45" Top="1597.05" Width="217.35" Height="18.9" Text="NUMEROTARJETA"/>
+      <TextObject Name="Text46" Left="236.25" Top="1615.95" Width="94.5" Height="18.9" Text="[BancomerData.NUMTARJETAII]"/>
+      <TextObject Name="Text47" Left="9.45" Top="1615.95" Width="217.35" Height="18.9" Text="NUMTARJETAII"/>
+      <TextObject Name="Text48" Left="236.25" Top="1634.85" Width="94.5" Height="18.9" Text="[BancomerData.PAGOSMULTIPAGOSID]"/>
+      <TextObject Name="Text49" Left="9.45" Top="1634.85" Width="198.45" Height="18.9" Text="PAGOSMULTIPAGOSID"/>
+      <TextObject Name="Text50" Left="236.25" Top="1653.75" Width="94.5" Height="18.9" Text="[BancomerData.PESOSREDIMIDOS]"/>
+      <TextObject Name="Text51" Left="9.45" Top="1653.75" Width="198.45" Height="18.9" Text="PESOSREDIMIDOS"/>
+      <TextObject Name="Text52" Left="236.25" Top="1672.65" Width="94.5" Height="18.9" Text="[BancomerData.PESOSSALDOANTERIOR]"/>
+      <TextObject Name="Text53" Left="9.45" Top="1672.65" Width="198.45" Height="18.9" Text="PESOSSALDOANTERIOR"/>
+      <TextObject Name="Text54" Left="236.25" Top="1691.55" Width="94.5" Height="18.9" Text="[BancomerData.PESOSSALDODISPONIBLE]"/>
+      <TextObject Name="Text55" Left="9.45" Top="1691.55" Width="198.45" Height="18.9" Text="PESOSSALDODISPONIBLE"/>
+      <TextObject Name="Text60" Left="236.25" Top="1710.45" Width="94.5" Height="18.9" Text="[BancomerData.PESOSSALDODISPONINLEEXP]"/>
+      <TextObject Name="Text61" Left="9.45" Top="1710.45" Width="217.35" Height="18.9" Text="PESOSSALDODISPONINLEEXP"/>
+      <TextObject Name="Text62" Left="236.25" Top="1729.35" Width="94.5" Height="18.9" Text="[BancomerData.PESOSSALDOREDIMIDOSEXP]"/>
+      <TextObject Name="Text63" Left="9.45" Top="1729.35" Width="226.8" Height="18.9" Text="PESOSSALDOREDIMIDOSEXP"/>
+      <TextObject Name="Text64" Left="236.25" Top="1748.25" Width="94.5" Height="18.9" Text="[BancomerData.PINPAD_USO]"/>
+      <TextObject Name="Text65" Left="9.45" Top="1748.25" Width="179.55" Height="18.9" Text="PINPAD_USO"/>
+      <TextObject Name="Text66" Left="236.25" Top="1767.15" Width="94.5" Height="18.9" Text="[BancomerData.POOLADJUSTTYPE]"/>
+      <TextObject Name="Text67" Left="9.45" Top="1767.15" Width="179.55" Height="18.9" Text="POOLADJUSTTYPE"/>
+      <TextObject Name="Text68" Left="236.25" Top="1786.05" Width="94.5" Height="18.9" Text="[BancomerData.POOLID]"/>
+      <TextObject Name="Text69" Left="9.45" Top="1786.05" Width="179.55" Height="18.9" Text="POOLID"/>
+      <TextObject Name="Text70" Left="236.25" Top="1804.95" Width="94.5" Height="18.9" Text="[BancomerData.POOLNUMBER]"/>
+      <TextObject Name="Text71" Left="9.45" Top="1804.95" Width="179.55" Height="18.9" Text="POOLNUMBER"/>
+      <TextObject Name="Text72" Left="236.25" Top="1823.85" Width="94.5" Height="18.9" Text="[BancomerData.POOLUNITLABEL]"/>
+      <TextObject Name="Text73" Left="9.45" Top="1823.85" Width="179.55" Height="18.9" Text="POOLUNITLABEL"/>
+      <TextObject Name="Text152" Left="236.25" Top="1842.75" Width="94.5" Height="18.9" Text="[BancomerData.PUNTOSID]"/>
+      <TextObject Name="Text153" Left="9.45" Top="1842.75" Width="94.5" Height="18.9" Text="PUNTOSID"/>
+      <TextObject Name="Text154" Left="236.25" Top="1861.65" Width="94.5" Height="18.9" Text="[BancomerData.PUNTOSREDIMIDOS]"/>
+      <TextObject Name="Text155" Left="9.45" Top="1861.65" Width="170.1" Height="18.9" Text="PUNTOSREDIMIDOS"/>
+      <TextObject Name="Text156" Left="236.25" Top="1880.55" Width="94.5" Height="18.9" Text="[BancomerData.PUNTOSSALDOANTERIOR]"/>
+      <TextObject Name="Text157" Left="9.45" Top="1880.55" Width="189" Height="18.9" Text="PUNTOSSALDOANTERIOR"/>
+      <TextObject Name="Text158" Left="236.25" Top="1899.45" Width="94.5" Height="18.9" Text="[BancomerData.PUNTOSSALDODISPONIBLE]"/>
+      <TextObject Name="Text159" Left="9.45" Top="1899.45" Width="198.45" Height="18.9" Text="PUNTOSSALDODISPONIBLE"/>
+      <TextObject Name="Text160" Left="236.25" Top="1918.35" Width="94.5" Height="18.9" Text="[BancomerData.PUNTOSSALDODISPONIBLEEXP]"/>
+      <TextObject Name="Text161" Left="9.45" Top="1918.35" Width="226.8" Height="18.9" Text="PUNTOSSALDODISPONIBLEEXP"/>
+      <TextObject Name="Text162" Left="236.25" Top="1937.25" Width="94.5" Height="18.9" Text="[BancomerData.R8_CODIGO_LEYENDA]"/>
+      <TextObject Name="Text163" Left="9.45" Top="1937.25" Width="198.45" Height="18.9" Text="R8_CODIGO_LEYENDA"/>
+      <TextObject Name="Text164" Left="236.25" Top="1956.15" Width="94.5" Height="18.9" Text="[BancomerData.R8_LEYENDA]"/>
+      <TextObject Name="Text165" Left="9.45" Top="1956.15" Width="179.55" Height="18.9" Text="R8_LEYENDA"/>
+      <TextObject Name="Text166" Left="236.25" Top="1975.05" Width="94.5" Height="18.9" Text="[BancomerData.RAZON_SOCIAL]"/>
+      <TextObject Name="Text167" Left="9.45" Top="1975.05" Width="179.55" Height="18.9" Text="RAZON_SOCIAL"/>
+      <TextObject Name="Text168" Left="236.25" Top="1993.95" Width="94.5" Height="18.9" Text="[BancomerData.REFERENCIA_RESPUESTA]"/>
+      <TextObject Name="Text169" Left="9.45" Top="1993.95" Width="198.45" Height="18.9" Text="REFERENCIA_RESPUESTA"/>
+      <TextObject Name="Text170" Left="236.25" Top="2012.85" Width="94.5" Height="18.9" Text="[BancomerData.REFERENCIAAFIN]"/>
+      <TextObject Name="Text171" Left="9.45" Top="2012.85" Width="179.55" Height="18.9" Text="REFERENCIAAFIN"/>
+      <TextObject Name="Text172" Left="236.25" Top="2031.75" Width="94.5" Height="18.9" Text="[BancomerData.REQUEST]"/>
+      <TextObject Name="Text173" Left="9.45" Top="2031.75" Width="94.5" Height="18.9" Text="REQUEST"/>
+      <TextObject Name="Text174" Left="236.25" Top="2050.65" Width="94.5" Height="18.9" Text="[BancomerData.RESPDLL]"/>
+      <TextObject Name="Text175" Left="9.45" Top="2050.65" Width="94.5" Height="18.9" Text="RESPDLL"/>
+      <TextObject Name="Text176" Left="236.25" Top="2069.55" Width="94.5" Height="18.9" Text="[BancomerData.RESPONSE]"/>
+      <TextObject Name="Text177" Left="9.45" Top="2069.55" Width="94.5" Height="18.9" Text="RESPONSE"/>
+      <TextObject Name="Text178" Left="236.25" Top="2088.45" Width="94.5" Height="18.9" Text="[BancomerData.SEGMENTNUMBER]"/>
+      <TextObject Name="Text179" Left="9.45" Top="2088.45" Width="170.1" Height="18.9" Text="SEGMENTNUMBER"/>
+      <TextObject Name="Text180" Left="236.25" Top="2107.35" Width="94.5" Height="18.9" Text="[BancomerData.TBINES]"/>
+      <TextObject Name="Text181" Left="9.45" Top="2107.35" Width="94.5" Height="18.9" Text="TBINES"/>
+      <TextObject Name="Text182" Left="236.25" Top="2126.25" Width="94.5" Height="18.9" Text="[BancomerData.TNXCONPUNTOS]"/>
+      <TextObject Name="Text183" Left="9.45" Top="2126.25" Width="170.1" Height="18.9" Text="TNXCONPUNTOS"/>
+      <TextObject Name="Text184" Left="236.25" Top="2135.7" Width="94.5" Height="18.9" Text="[BancomerData.TOPERADOR]"/>
+      <TextObject Name="Text185" Left="9.45" Top="2135.7" Width="160.65" Height="18.9" Text="TOPERADOR"/>
+      <TextObject Name="Text186" Left="236.25" Top="2154.6" Width="94.5" Height="18.9" Text="[BancomerData.VALTIPOCARD]"/>
+      <TextObject Name="Text187" Left="9.45" Top="2154.6" Width="170.1" Height="18.9" Text="VALTIPOCARD"/>
+      <TextObject Name="Text188" Left="236.25" Top="75.6" Width="94.5" Height="18.9" Text="[BancomerData.DOCTOID]"/>
+      <TextObject Name="Text189" Left="9.45" Top="75.6" Width="94.5" Height="18.9" Text="DOCTOID"/>
+      <TextObject Name="Text190" Left="236.25" Top="94.5" Width="94.5" Height="18.9" Text="[BancomerData.DOCTOPAGOID]"/>
+      <TextObject Name="Text191" Left="9.45" Top="94.5" Width="170.1" Height="18.9" Text="DOCTOPAGOID"/>
+      <TextObject Name="Text192" Left="236.25" Top="113.4" Width="94.5" Height="18.9" Text="[BancomerData.TIPOTRANSACCION]"/>
+      <TextObject Name="Text193" Left="9.45" Top="113.4" Width="170.1" Height="18.9" Text="TIPOTRANSACCION"/>
+      <TextObject Name="Text194" Left="236.25" Top="132.3" Width="94.5" Height="18.9" Text="[BancomerData.ESTADOTRANSACCIONID]"/>
+      <TextObject Name="Text195" Left="9.45" Top="132.3" Width="179.55" Height="18.9" Text="ESTADOTRANSACCIONID"/>
+      <TextObject Name="Text196" Left="236.25" Top="151.2" Width="94.5" Height="18.9" Text="[BancomerData.REFID]"/>
+      <TextObject Name="Text197" Left="9.45" Top="151.2" Width="170.1" Height="18.9" Text="REFID"/>
+      <TextObject Name="Text198" Left="236.25" Top="170.1" Width="94.5" Height="18.9" Text="[BancomerData.DOCTOPAGOID1]"/>
+      <TextObject Name="Text199" Left="9.45" Top="170.1" Width="170.1" Height="18.9" Text="DOCTOPAGOID1"/>
+      <TextObject Name="Text200" Left="236.25" Top="189" Width="94.5" Height="18.9" Text="[BancomerData.FECHAHORAPAGO]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text201" Left="9.45" Top="189" Width="160.65" Height="18.9" Text="FECHAHORAPAGO"/>
+      <TextObject Name="Text202" Left="236.25" Top="207.9" Width="94.5" Height="18.9" Text="[BancomerData.DOCTOID1]"/>
+      <TextObject Name="Text203" Left="9.45" Top="207.9" Width="94.5" Height="18.9" Text="DOCTOID1"/>
+      <TextObject Name="Text204" Left="236.25" Top="226.8" Width="94.5" Height="18.9" Text="[BancomerData.DOCTOFECHA]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text205" Left="9.45" Top="226.8" Width="160.65" Height="18.9" Text="DOCTOFECHA"/>
+      <TextObject Name="Text206" Left="236.25" Top="245.7" Width="94.5" Height="18.9" Text="[BancomerData.DOCTOFOLIO]"/>
+      <TextObject Name="Text207" Left="9.45" Top="245.7" Width="160.65" Height="18.9" Text="DOCTOFOLIO"/>
+      <TextObject Name="Text208" Left="236.25" Top="264.6" Width="94.5" Height="18.9" Text="[BancomerData.CLIENTENOMBRE]"/>
+      <TextObject Name="Text209" Left="9.45" Top="264.6" Width="179.55" Height="18.9" Text="CLIENTENOMBRE"/>
+      <TextObject Name="Text210" Left="236.25" Top="283.5" Width="94.5" Height="18.9" Text="[BancomerData.VENDEDORNOMBRE]"/>
+      <TextObject Name="Text211" Left="9.45" Top="283.5" Width="179.55" Height="18.9" Text="VENDEDORNOMBRE"/>
+      <TextObject Name="Text212" Left="9.45" Top="37.8" Width="151.2" Height="18.9" Text="DOCTO" Font="Arial, 10pt, style=Bold"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="2261.1" Width="718.2" Height="47.25"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="50" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="149" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="36" Top="24" Font="Tahoma, 8pt" TabIndex="2" Text="sábado, 21 de enero de 2017" ReportParameter="FECHAINICIAL" FilterOperation="GreaterThanOrEqual" Value="01/21/2017 13:45:10"/>
+    <LabelControl Name="Label1" Left="36" Top="8" Width="78" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="FECHAINICIAL"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="36" Top="96" Font="Tahoma, 8pt" TabIndex="4" Text="sábado, 21 de enero de 2017" ReportParameter="FECHAFINAL" FilterOperation="LessThanOrEqual" Value="01/21/2017 13:45:17"/>
+    <LabelControl Name="Label2" Left="36" Top="80" Width="69" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="FECHAFINAL"/>
+  </DialogPage>
+</Report>

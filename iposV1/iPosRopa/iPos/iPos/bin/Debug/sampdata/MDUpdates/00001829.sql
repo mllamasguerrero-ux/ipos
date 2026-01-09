@@ -1,0 +1,90 @@
+create or alter procedure GET_DOCTO_PARAMS (
+    DOCTOID D_FK)
+returns (
+    OK D_BOOLCN,
+    ERRORCODE D_ERRORCODE,
+    SUCURSALID D_FK,
+    ALMACENID D_FK,
+    TIPODOCTOID D_FK,
+    SENTIDOINVENTARIO D_SENTIDO,
+    FECHA D_FECHA,
+    FECHAHORA D_TIMESTAMP,
+    FECHACORTE D_FECHA,
+    HORA D_HORA,
+    SENTIDOINVENTARIOAPARTADOS D_SENTIDO)
+as
+BEGIN
+   OK = 'N';
+
+  IF(:DOCTOID = -51) THEN
+  BEGIN   
+      OK = 'S';
+      SENTIDOINVENTARIO = 1;
+      ALMACENID = 1;
+      SENTIDOINVENTARIOAPARTADOS = 0;
+      ERRORCODE = 0;
+      SUSPEND;
+      EXIT;
+  END
+
+    IF(:DOCTOID = -52) THEN
+  BEGIN   
+      OK = 'S';
+      SENTIDOINVENTARIO = -1;
+      ALMACENID = 1;
+      SENTIDOINVENTARIOAPARTADOS = 0;
+      ERRORCODE = 0;
+      SUSPEND;
+      EXIT;
+  END
+
+   IF ((:DOCTOID IS NULL) OR (:DOCTOID = 0)) THEN
+   BEGIN
+      OK = 'N';
+      ERRORCODE = 1036;
+      SUSPEND;
+      EXIT;
+   END
+
+   SELECT 
+      D.SUCURSALID,
+      D.ALMACENID,
+      D.TIPODOCTOID,
+      D.FECHA,
+      D.FECHAHORA,
+      TD.SENTIDOINVENTARIO ,
+      TD.sentidoinventarioapartados
+   FROM
+      DOCTO D
+      LEFT JOIN TIPODOCTO TD
+        ON TD.ID = D.TIPODOCTOID
+   WHERE
+      D.ID = :DOCTOID
+   INTO
+      :SUCURSALID,
+      :ALMACENID,
+      :TIPODOCTOID,
+      :FECHA,
+      :FECHAHORA,
+      :SENTIDOINVENTARIO,
+      :SENTIDOINVENTARIOAPARTADOS;
+
+   IF ((:SUCURSALID IS NULL) OR (:SUCURSALID = 0)) THEN
+   BEGIN
+      OK = 'N';
+      ERRORCODE = 1037;
+      SUSPEND;
+   END
+   ELSE
+   BEGIN
+      OK = 'S';
+      ERRORCODE = 0;
+      SUSPEND;
+   END
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1038;
+      SUSPEND;
+   END 
+END

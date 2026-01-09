@@ -1,0 +1,22 @@
+ALTER TABLE SAT_USOCFDI ADD CONSTRAINT PK_SAT_USOCFDI PRIMARY KEY (ID);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

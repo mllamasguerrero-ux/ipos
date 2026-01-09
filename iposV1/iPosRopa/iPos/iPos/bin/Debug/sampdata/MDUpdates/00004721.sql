@@ -1,0 +1,35 @@
+EXECUTE BLOCK
+AS
+BEGIN
+
+
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (304, 'Ajuste Catálogos SAT');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (305, 'Traslado a productos promocion');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (306, 'Traslado de promocion a producto base');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (307, 'Existencias por proveedor por sucursal');
+  	
+  	
+	INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+	VALUES (304, 263, 'Ajuste Catálogos SAT', 'Ajuste Catálogos SAT', 304, 2, 1);
+	INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+	VALUES (305, 304, 'Catalogo de productos SAT operativos', 'Catalogo de productos SAT operativos', 305, 2, 1);
+	INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+	VALUES (306, 304, 'Catalogo de Productos SAT Operativos por Linea', 'Catalogo de Productos SAT Operativos por Linea', 306, 2, 2);
+	INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+	VALUES (307, 304, 'Ajuste aduanas SAT', 'Ajuste aduanas SAT', 307, 2, 3);
+
+	
+	
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 304);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 304);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 305);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 305);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 306);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 306);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 307);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 307);
+
+  
+
+END

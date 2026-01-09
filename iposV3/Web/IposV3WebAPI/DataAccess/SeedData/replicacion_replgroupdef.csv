@@ -1,0 +1,13 @@
+﻿Id;Clave;Nombre
+1;control;control
+2;parametros;parametros
+3;catalogos;catalogos
+4;catalogos_sat;catalogos_sat
+5;core;core
+6;existencia;existencia
+7;movimientos;movimientos
+8;inventario;inventario
+9;kit;kit
+10;cortes;cortes
+11;fact_elect;fact_elect
+12;pagos;pagos

@@ -1,0 +1,104 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using IposV3.Model;
+using MvvmFramework;
+using System.Xml.Serialization;
+
+namespace BindingModels
+{
+    [XmlRoot]
+    public class LineaBindingModelGenerated : Validatable, IBaseBindingModel
+    {
+
+        protected Linea? item;
+
+        public LineaBindingModelGenerated()
+        {
+            item = new Linea();
+        }
+        public LineaBindingModelGenerated(Linea item)
+        {
+            this.item = item;
+        }
+
+        public Linea? Item { get => item; set => item = value; }
+
+        [XmlAttribute]
+        public long? CreadoPorId { get => item?.CreadoPorId; set { if (item != null && RaiseAcceptPendingChange(value, item.CreadoPorId)) { item.CreadoPorId = value; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        public long? ModificadoPorId { get => item?.ModificadoPorId; set { if (item != null && RaiseAcceptPendingChange(value, item.ModificadoPorId)) { item.ModificadoPorId = value; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public long? EmpresaId { get => item?.EmpresaId ?? 0; set { if (item != null && RaiseAcceptPendingChange(value, item.EmpresaId)) { item.EmpresaId = value ?? 0; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public long? SucursalId { get => item?.SucursalId ?? 0; set { if (item != null && RaiseAcceptPendingChange(value, item.SucursalId)) { item.SucursalId = value ?? 0; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public long? Id { get => item?.Id ?? 0; set { if (item != null && RaiseAcceptPendingChange(value, item.Id)) { item.Id = value ?? 0; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public BoolCS? Activo { get => item?.Activo ?? BoolCS.S; set { if (item != null && RaiseAcceptPendingChange(value, item.Activo)) { item.Activo = value ?? BoolCS.S; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public DateTimeOffset? Creado { get => item?.Creado ?? DateTime.UtcNow; set { if (item != null && RaiseAcceptPendingChange(value, item.Creado)) { item.Creado = value ?? DateTime.UtcNow; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public DateTimeOffset? Modificado { get => item?.Modificado ?? DateTime.UtcNow; set { if (item != null && RaiseAcceptPendingChange(value, item.Modificado)) { item.Modificado = value ?? DateTime.UtcNow; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public string? Clave { get => item?.Clave ?? ""; set { if (item != null && RaiseAcceptPendingChange(value, item.Clave)) { item.Clave = value ?? ""; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public string? Nombre { get => item?.Nombre ?? ""; set { if (item != null && RaiseAcceptPendingChange(value, item.Nombre)) { item.Nombre = value ?? ""; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public BoolCN? Acumulapromocion { get => item?.Acumulapromocion ?? BoolCN.N; set { if (item != null && RaiseAcceptPendingChange(value, item.Acumulapromocion)) { item.Acumulapromocion = value ?? BoolCN.N; OnPropertyChanged(); } } }
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public BoolCS? Aplicamayoreoxlinea { get => item?.Aplicamayoreoxlinea ?? BoolCS.S; set { if (item != null && RaiseAcceptPendingChange(value, item.Aplicamayoreoxlinea)) { item.Aplicamayoreoxlinea = value ?? BoolCS.S; OnPropertyChanged(); } } }
+
+
+        [XmlAttribute]
+        public string? Tiporecarga { get => item?.Tiporecarga; set { if (item != null && RaiseAcceptPendingChange(value, item.Tiporecarga)) { item.Tiporecarga = value; OnPropertyChanged(); } } }
+
+
+        [XmlAttribute]
+        public string? Gpoimp { get => item?.Gpoimp; set { if (item != null && RaiseAcceptPendingChange(value, item.Gpoimp)) { item.Gpoimp = value; OnPropertyChanged(); } } }
+
+
+        [XmlAttribute]
+        [Required(ErrorMessage = "Es requerido")]
+        public decimal? Descuentovale { get => item?.Descuentovale ?? 0; set { if (item != null && RaiseAcceptPendingChange(value, item.Descuentovale)) { item.Descuentovale = value ?? 0; OnPropertyChanged(); } } }
+
+        public static string GetBaseQuery()
+        {
+            return $@"SELECT * FROM ""Linea"" Where ""EmpresaId"" = @1 and ""SucursalId"" = @2 ";
+        }
+
+
+        public static string GetFieldsForGeneralSearch()
+        {
+            return @"""Clave""|""Nombre""|""Gpoimp""";
+        }
+
+
+    }
+}
+

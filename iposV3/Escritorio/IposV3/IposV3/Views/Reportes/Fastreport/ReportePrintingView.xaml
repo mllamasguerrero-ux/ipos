@@ -1,0 +1,24 @@
+﻿<UserControl
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cal="http://www.caliburnproject.org"
+        xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="IposV3.Views.ReportePrintingView"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:cbind="clr-namespace:CalcBinding;assembly=CalcBinding"
+        xmlns:local="clr-namespace:IposV3"
+        xmlns:localCommon="clr-namespace:UICommon;assembly=UICommon"
+        xmlns:localCont="clr-namespace:Controls;assembly=UICommon"
+        xmlns:localConv="clr-namespace:Converters;assembly=UICommon"
+        xmlns:ac="clr-namespace:AdornedControl;assembly=AdornedControl"
+        mc:Ignorable="d"  
+        Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.75'}" 
+        Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.75'}" 
+       
+        cal:Message.Attach="[Event Loaded]=[Action ViewLoaded($eventArgs)]" Unloaded="UserControl_Unloaded"
+        >
+    <Grid x:Name="HomeGrid">
+    </Grid>
+</UserControl>

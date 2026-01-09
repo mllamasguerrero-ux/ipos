@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/18/2016 10:17:50" ReportInfo.Modified="05/18/2016 10:56:41" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9upSulZs4YLuRAm0mAtsXbjk=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;select&#13;&#10;   id,clave, descripcion1, descripcion2, anio,&#13;&#10;&#13;&#10;&#13;&#10;   sum(case when mes = 1 then cantidad else 0 end) enero, &#13;&#10;   sum(case when mes = 2 then cantidad else 0 end) febrero,&#13;&#10;   sum(case when mes = 3 then cantidad else 0 end) marzo,&#13;&#10;   sum(case when mes = 4 then cantidad else 0 end) abril,&#13;&#10;   sum(case when mes = 5 then cantidad else 0 end) mayo,&#13;&#10;   sum(case when mes = 6 then cantidad else 0 end) junio,&#13;&#10;   sum(case when mes = 7 then cantidad else 0 end) julio,&#13;&#10;   sum(case when mes = 8 then cantidad else 0 end) agosto,&#13;&#10;   sum(case when mes = 9 then cantidad else 0 end) septiembre,&#13;&#10;   sum(case when mes = 10 then cantidad else 0 end) octubre,&#13;&#10;   sum(case when mes = 11 then cantidad else 0 end) noviembre,&#13;&#10;   sum(case when mes = 12 then cantidad else 0 end) diciembre ,&#13;&#10;   &#13;&#10;   sum(case when mes = 1 then ingreso else 0 end) eneroingreso,&#13;&#10;   sum(case when mes = 2 then ingreso else 0 end) febreroingreso,&#13;&#10;   sum(case when mes = 3 then ingreso else 0 end) marzoingreso,&#13;&#10;   sum(case when mes = 4 then ingreso else 0 end) abrilingreso,&#13;&#10;   sum(case when mes = 5 then ingreso else 0 end) mayoingreso,&#13;&#10;   sum(case when mes = 6 then ingreso else 0 end) junioingreso,&#13;&#10;   sum(case when mes = 7 then ingreso else 0 end) julioingreso,&#13;&#10;   sum(case when mes = 8 then ingreso else 0 end) agostoingreso,&#13;&#10;   sum(case when mes = 9 then ingreso else 0 end) septiembreingreso,&#13;&#10;   sum(case when mes = 10 then ingreso else 0 end) octubreingreso,&#13;&#10;   sum(case when mes = 11 then ingreso else 0 end) noviembreingreso,&#13;&#10;   sum(case when mes = 12 then ingreso else 0 end) diciembreingreso  ,&#13;&#10;   &#13;&#10;   sum(case when mes = 1 then utilidad else 0 end) eneroutilidad,&#13;&#10;   sum(case when mes = 2 then utilidad else 0 end) febreroutilidad,&#13;&#10;   sum(case when mes = 3 then utilidad else 0 end) marzoutilidad,&#13;&#10;   sum(case when mes = 4 then utilidad else 0 end) abrilutilidad,&#13;&#10;   sum(case when mes = 5 then utilidad else 0 end) mayoutilidad,&#13;&#10;   sum(case when mes = 6 then utilidad else 0 end) junioutilidad,&#13;&#10;   sum(case when mes = 7 then utilidad else 0 end) julioutilidad,&#13;&#10;   sum(case when mes = 8 then utilidad else 0 end) agostoutilidad,&#13;&#10;   sum(case when mes = 9 then utilidad else 0 end) septiembreutilidad,&#13;&#10;   sum(case when mes = 10 then utilidad else 0 end) octubreutilidad,&#13;&#10;   sum(case when mes = 11 then utilidad else 0 end) noviembreutilidad,&#13;&#10;   sum(case when mes = 12 then utilidad else 0 end) diciembreutilidad&#13;&#10;&#13;&#10;   from&#13;&#10;   (&#13;&#10;&#13;&#10;select&#13;&#10;producto.id id,&#13;&#10;producto.clave clave,&#13;&#10;producto.descripcion1, &#13;&#10;producto.descripcion2, &#13;&#10;extract(year from docto.fecha) anio,&#13;&#10;extract(month from docto.fecha) mes ,&#13;&#10;sum(case when docto.tipodoctoid in (21,31,81) then movto.cantidad else movto.cantidad * -1 end) cantidad ,&#13;&#10;sum(case when docto.tipodoctoid in (21,31,81) then movto.total else movto.total * -1 end) ingreso ,&#13;&#10;sum(case when docto.tipodoctoid in (21,31,81) then movto.utilidad else movto.utilidad * -1 end) utilidad&#13;&#10;&#13;&#10;&#13;&#10;from docto left join&#13;&#10;movto on movto.doctoid = docto.id&#13;&#10;left join producto on producto.id = movto.productoid&#13;&#10;&#13;&#10;where (docto.tipodoctoid in (21,22) or (@INCLUIRTRASL = 'S' and docto.tipodoctoid in ( 31,81,32)))&#13;&#10;and docto.estatusdoctoid = 1&#13;&#10;and docto.fecha &gt;= @FECHAINICIAL and docto.fecha &lt;= @FECHAFIN&#13;&#10;&#13;&#10;group by producto.id,  producto.clave,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2,&#13;&#10;extract(year from docto.fecha) ,&#13;&#10;extract(month from docto.fecha)&#13;&#10;&#13;&#10;) data&#13;&#10;group by data.id, data.clave, data.descripcion1, data.descripcion2, data.anio&#13;&#10;ORDER BY data.anio, data.id">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="ANIO" DataType="System.Int16"/>
+        <Column Name="ENERO" DataType="System.Decimal"/>
+        <Column Name="FEBRERO" DataType="System.Decimal"/>
+        <Column Name="MARZO" DataType="System.Decimal"/>
+        <Column Name="ABRIL" DataType="System.Decimal"/>
+        <Column Name="MAYO" DataType="System.Decimal"/>
+        <Column Name="JUNIO" DataType="System.Decimal"/>
+        <Column Name="JULIO" DataType="System.Decimal"/>
+        <Column Name="AGOSTO" DataType="System.Decimal"/>
+        <Column Name="SEPTIEMBRE" DataType="System.Decimal"/>
+        <Column Name="OCTUBRE" DataType="System.Decimal"/>
+        <Column Name="NOVIEMBRE" DataType="System.Decimal"/>
+        <Column Name="DICIEMBRE" DataType="System.Decimal"/>
+        <Column Name="ENEROINGRESO" DataType="System.Decimal"/>
+        <Column Name="FEBREROINGRESO" DataType="System.Decimal"/>
+        <Column Name="MARZOINGRESO" DataType="System.Decimal"/>
+        <Column Name="ABRILINGRESO" DataType="System.Decimal"/>
+        <Column Name="MAYOINGRESO" DataType="System.Decimal"/>
+        <Column Name="JUNIOINGRESO" DataType="System.Decimal"/>
+        <Column Name="JULIOINGRESO" DataType="System.Decimal"/>
+        <Column Name="AGOSTOINGRESO" DataType="System.Decimal"/>
+        <Column Name="SEPTIEMBREINGRESO" DataType="System.Decimal"/>
+        <Column Name="OCTUBREINGRESO" DataType="System.Decimal"/>
+        <Column Name="NOVIEMBREINGRESO" DataType="System.Decimal"/>
+        <Column Name="DICIEMBREINGRESO" DataType="System.Decimal"/>
+        <Column Name="ENEROUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="FEBREROUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="MARZOUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="ABRILUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="MAYOUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="JUNIOUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="JULIOUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="AGOSTOUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="SEPTIEMBREUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="OCTUBREUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="NOVIEMBREUTILIDAD" DataType="System.Decimal"/>
+        <Column Name="DICIEMBREUTILIDAD" DataType="System.Decimal"/>
+        <CommandParameter Name="INCLUIRTRASL" DataType="16" Expression="[INCLUIRTRASL]" DefaultValue="N"/>
+        <CommandParameter Name="FECHAINICIAL" DataType="5" Expression="[FECHAINICIAL]" DefaultValue="01/01/2015"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[FECHAFIN]" DefaultValue="01/01/2017"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="FECHAINICIAL" DataType="System.DateTime"/>
+    <Parameter Name="FECHAFIN" DataType="System.DateTime"/>
+    <Parameter Name="INCLUIRTRASL" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="500" PaperHeight="210" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1814.4" Height="141.75">
+      <TextObject Name="Text33" Left="122.85" Top="18.9" Width="708.75" Height="37.8" Text="REPORTE DE PRODUCTOS POR AÑO Y MES (CANTIDAD)" Font="Arial, 18pt"/>
+      <TextObject Name="Text34" Left="122.85" Top="66.15" Width="113.4" Height="18.9" Text="Fecha inicial" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text35" Left="491.4" Top="66.15" Width="94.5" Height="18.9" Text="Fecha final" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text36" Left="122.85" Top="94.5" Width="113.4" Height="18.9" Text="Incluir traslados?" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text37" Left="264.6" Top="66.15" Width="141.75" Height="18.9" Text="[FECHAINICIAL]" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Left="604.8" Top="66.15" Width="94.5" Height="18.9" Text="[FECHAFIN]" Font="Arial, 9pt"/>
+      <TextObject Name="Text39" Left="264.6" Top="94.5" Width="141.75" Height="18.9" Text="[INCLUIRTRASL]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="145.75" Width="1814.4" Height="28.35">
+      <TextObject Name="Text2" Width="75.6" Height="18.9" Text="CLAVE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text4" Left="75.6" Width="151.2" Height="18.9" Text="DESCRIPCION1" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text6" Left="226.8" Width="141.75" Height="18.9" Text="DESCRIPCION2" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text8" Left="368.55" Width="56.7" Height="18.9" Text="ANIO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text10" Left="425.25" Width="94.5" Height="18.9" Text="ENERO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text12" Left="519.75" Width="94.5" Height="18.9" Text="FEBRERO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text14" Left="614.25" Width="94.5" Height="18.9" Text="MARZO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text16" Left="708.75" Width="94.5" Height="18.9" Text="ABRIL" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text18" Left="803.25" Width="94.5" Height="18.9" Text="MAYO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text20" Left="897.75" Width="94.5" Height="18.9" Text="JUNIO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text22" Left="992.25" Width="94.5" Height="18.9" Text="JULIO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text24" Left="1086.75" Width="94.5" Height="18.9" Text="AGOSTO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text26" Left="1181.25" Width="94.5" Height="18.9" Text="SEPTIEMBRE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text28" Left="1275.75" Width="94.5" Height="18.9" Text="OCTUBRE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text30" Left="1370.25" Width="94.5" Height="18.9" Text="NOVIEMBRE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text32" Left="1464.75" Width="94.5" Height="18.9" Text="DICIEMBRE" Font="Arial, 7pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="178.1" Width="1814.4" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="75.6" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text3" Left="75.6" Width="151.2" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="226.8" Width="141.75" Height="18.9" Text="[Table.DESCRIPCION2]" Font="Arial, 7pt"/>
+      <TextObject Name="Text7" Left="368.55" Width="56.7" Height="18.9" Text="[Table.ANIO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text9" Left="425.25" Width="94.5" Height="18.9" Text="[Table.ENERO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="519.75" Width="94.5" Height="18.9" Text="[Table.FEBRERO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="614.25" Width="94.5" Height="18.9" Text="[Table.MARZO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="708.75" Width="94.5" Height="18.9" Text="[Table.ABRIL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="803.25" Width="94.5" Height="18.9" Text="[Table.MAYO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="897.75" Width="94.5" Height="18.9" Text="[Table.JUNIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="992.25" Width="94.5" Height="18.9" Text="[Table.JULIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="1086.75" Width="94.5" Height="18.9" Text="[Table.AGOSTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="1181.25" Width="94.5" Height="18.9" Text="[Table.SEPTIEMBRE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="1275.75" Width="94.5" Height="18.9" Text="[Table.OCTUBRE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text29" Left="1370.25" Width="94.5" Height="18.9" Text="[Table.NOVIEMBRE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text31" Left="1464.75" Width="94.5" Height="18.9" Text="[Table.DICIEMBRE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="201" Width="1814.4" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="402" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="230" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="313" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="44" Top="48" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="FECHAINICIAL" FilterOperation="GreaterThanOrEqual" Value="2014-01-01"/>
+    <LabelControl Name="Label1" Left="44" Top="32" Width="78" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="FECHAINICIAL"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="48" Top="104" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="FECHAFIN" FilterOperation="LessThanOrEqual" Value="2017-01-01"/>
+    <LabelControl Name="Label2" Left="48" Top="88" Width="57" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="FECHAFIN"/>
+    <TextBoxControl Name="TextBox1" Left="48" Top="160" Font="Tahoma, 8pt" TabIndex="6" Text="N" ReportParameter="INCLUIRTRASL"/>
+    <LabelControl Name="Label3" Left="52" Top="144" Width="310" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="INCLUIR TRASLADOS Y SURTIMIENTO DE SUCURSALES (S o N)"/>
+  </DialogPage>
+</Report>

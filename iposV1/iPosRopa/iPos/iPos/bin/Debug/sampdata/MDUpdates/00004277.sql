@@ -1,0 +1,133 @@
+CREATE OR ALTER PROCEDURE DOCTO_PROMOCION (
+    DOCTOID D_FK)
+RETURNS (
+    ERRORCODE D_ERRORCODE)
+AS
+declare variable PROMOCION D_BOOLCN;
+declare variable DOCTOPROMOCION D_BOOLCN;
+declare variable TIPODOCTOID D_FK;
+declare variable PRODUCTOID D_FK;
+declare variable MOVTOID D_FK;
+declare variable MOVTOBORRARID D_FK;
+declare variable COSTO D_COSTO;
+declare variable IMPORTETOTALPROMOCION D_IMPORTE;
+declare variable CAJEROID D_FK;
+declare variable ALMACENID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable ESTATUSDOCTOPAGOID D_FK;
+declare variable PERSONAID D_FK;
+declare variable VENDEDORID D_FK;
+declare variable CAJAID D_FK;
+BEGIN
+   SELECT PROMOCION, TIPODOCTOID, SUCURSALID
+   FROM DOCTO
+   WHERE ID = :DOCTOID
+   INTO :DOCTOPROMOCION, :TIPODOCTOID, :SUCURSALID;
+
+      --INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 1');
+   -- Si no es una venta, no aplica calcular promociones.
+   IF (:TIPODOCTOID NOT IN (21)) THEN
+   BEGIN
+      EXIT;
+   END
+
+      --INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 2');
+   -- Calcular el subtotal aplicable dependiendo de la linea.
+   SELECT SUM(M.TOTAL)
+   FROM MOVTO M
+      LEFT JOIN PRODUCTO P
+         ON P.ID = M.PRODUCTOID
+      LEFT JOIN LINEA L
+         ON L.ID = P.LINEAID
+   WHERE M.DOCTOID = :DOCTOID
+      AND L.ACUMULAPROMOCION = 'S'
+      AND M.PROMOCION = 'N'
+   INTO :IMPORTETOTALPROMOCION;
+   
+      --INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 3');
+   -- Calcular si aplica promocion y para que producto.
+   -- Toma en cuenta si hubo una reduccion de productos
+   -- y la promocion ya no es aplicable.
+   SELECT PROMOCION, PRODUCTOID
+   FROM GET_APLICA_PROMOCION(:IMPORTETOTALPROMOCION, :SUCURSALID)
+   INTO :PROMOCION, :PRODUCTOID;
+
+      --INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 4');
+   -- Tomar el costo promedio. Para insertarlo en el movto.
+   /*
+   SELECT COSTOPROMEDIO
+   FROM PRODUCTO
+   WHERE ID = :PRODUCTOID
+   INTO :COSTO;
+   */
+   COSTO = 0;
+
+   IF ((:DOCTOPROMOCION = 'S') AND (:PROMOCION = 'N')) THEN
+   BEGIN
+      --INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 4 DENTRO');
+
+      SELECT X.ID
+      FROM MOVTO X
+      WHERE X.DOCTOID = :DOCTOID
+        AND X.PROMOCION = 'S'
+      INTO :MOVTOBORRARID;
+
+      -- INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 4 MOVTOID = ' || CAST(:MOVTOBORRARID AS VARCHAR(10)));
+
+      SELECT ERRORCODE
+      FROM MOVTO_DELETE(:MOVTOBORRARID, 'S')
+      INTO :ERRORCODE;
+   END
+
+
+      --INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 5');
+
+   -- Si no hay promocion aplicada aun y si aplica, Proceder a insertarla.
+   IF ((:DOCTOPROMOCION = 'N') AND (:PROMOCION = 'S')) THEN
+   BEGIN
+      --INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 5 IN');
+      SELECT
+         CAJEROID, ALMACENID, SUCURSALID,
+         ESTATUSDOCTOID, ESTATUSDOCTOPAGOID,
+         PERSONAID, VENDEDORID, CAJAID
+      FROM DOCTO
+      WHERE ID = :DOCTOID
+      INTO
+         :CAJEROID, :ALMACENID, :SUCURSALID,
+         :ESTATUSDOCTOID, :ESTATUSDOCTOPAGOID,
+         :PERSONAID, :VENDEDORID, :CAJAID;
+
+      -- INSERTAR NUEVA PROMOCION
+
+      --INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 6');
+      SELECT DOCTOID, MOVTOID, ERRORCODE
+      FROM MOVTO_INSERT(
+         :DOCTOID, :CAJEROID, :ALMACENID, :SUCURSALID,
+         :TIPODOCTOID, :ESTATUSDOCTOID, :ESTATUSDOCTOPAGOID,
+         :PERSONAID, :VENDEDORID, :CAJAID, 0,
+         :PRODUCTOID, NULL, NULL, 1, 1, 0, 0, 0, 0.0000, 0, 'PROMOCION', '',
+         :COSTO, 0, 0, :PROMOCION, 0, CURRENT_DATE, CURRENT_DATE, 0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, NULL, NULL)
+      INTO :DOCTOID, :MOVTOID, :ERRORCODE;
+
+      --INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 7');
+      IF (:ERRORCODE > 0) THEN
+      BEGIN
+         EXIT;
+      END
+      --INSERT INTO TRAZA VALUES ('DOCTO AIU 30 - 0 8');
+   END
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      --INSERT INTO TRAZA VALUES ('ERRORZAZO ' || :ERRORCODE);
+
+      ERRORCODE = 8888;
+      SUSPEND;
+   END
+END
+
+

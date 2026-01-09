@@ -1,0 +1,536 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/16/2014 10:38:48" ReportInfo.Modified="09/18/2014 20:44:12" ReportInfo.CreatorVersion="2013.2.2.0">
+  <Dictionary>
+    <BusinessObjectDataSource Name="comprobante" ReferenceName="comprobante" DataType="System.Collections.Generic.List`1[[Comprobante, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]" Enabled="true">
+      <Column Name="Emisor" DataType="ComprobanteEmisor, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Column Name="DomicilioFiscal" DataType="t_UbicacionFiscal, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="calle" DataType="System.String"/>
+          <Column Name="noExterior" DataType="System.String"/>
+          <Column Name="noInterior" DataType="System.String"/>
+          <Column Name="colonia" DataType="System.String"/>
+          <Column Name="localidad" DataType="System.String"/>
+          <Column Name="referencia" DataType="System.String"/>
+          <Column Name="municipio" DataType="System.String"/>
+          <Column Name="estado" DataType="System.String"/>
+          <Column Name="pais" DataType="System.String"/>
+          <Column Name="codigoPostal" DataType="System.String"/>
+        </Column>
+        <Column Name="ExpedidoEn" DataType="t_Ubicacion, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="calle" DataType="System.String"/>
+          <Column Name="noExterior" DataType="System.String"/>
+          <Column Name="noInterior" DataType="System.String"/>
+          <Column Name="colonia" DataType="System.String"/>
+          <Column Name="localidad" DataType="System.String"/>
+          <Column Name="referencia" DataType="System.String"/>
+          <Column Name="municipio" DataType="System.String"/>
+          <Column Name="estado" DataType="System.String"/>
+          <Column Name="pais" DataType="System.String"/>
+          <Column Name="codigoPostal" DataType="System.String"/>
+        </Column>
+        <BusinessObjectDataSource Name="RegimenFiscal" DataType="ComprobanteEmisorRegimenFiscal[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Enabled="true">
+          <Column Name="Regimen" DataType="System.String"/>
+        </BusinessObjectDataSource>
+        <Column Name="rfc" DataType="System.String"/>
+        <Column Name="nombre" DataType="System.String"/>
+      </Column>
+      <Column Name="Receptor" DataType="ComprobanteReceptor, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Column Name="Domicilio" DataType="t_Ubicacion, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="calle" DataType="System.String"/>
+          <Column Name="noExterior" DataType="System.String"/>
+          <Column Name="noInterior" DataType="System.String"/>
+          <Column Name="colonia" DataType="System.String"/>
+          <Column Name="localidad" DataType="System.String"/>
+          <Column Name="referencia" DataType="System.String"/>
+          <Column Name="municipio" DataType="System.String"/>
+          <Column Name="estado" DataType="System.String"/>
+          <Column Name="pais" DataType="System.String"/>
+          <Column Name="codigoPostal" DataType="System.String"/>
+        </Column>
+        <Column Name="rfc" DataType="System.String"/>
+        <Column Name="nombre" DataType="System.String"/>
+      </Column>
+      <BusinessObjectDataSource Name="Conceptos" DataType="ComprobanteConcepto[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Enabled="true">
+        <BusinessObjectDataSource Name="InformacionAduanera" DataType="t_InformacionAduanera[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Enabled="true">
+          <Column Name="numero" DataType="System.String"/>
+          <Column Name="fecha" DataType="System.DateTime"/>
+          <Column Name="aduana" DataType="System.String"/>
+        </BusinessObjectDataSource>
+        <Column Name="CuentaPredial" DataType="ComprobanteConceptoCuentaPredial, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="numero" DataType="System.String"/>
+        </Column>
+        <Column Name="ComplementoConcepto" DataType="ComprobanteConceptoComplementoConcepto, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="instEducativas" DataType="instEducativas, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="version" DataType="System.String"/>
+            <Column Name="nombreAlumno" DataType="System.String"/>
+            <Column Name="CURP" DataType="System.String"/>
+            <Column Name="nivelEducativo" DataType="instEducativasNivelEducativo, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+            <Column Name="autRVOE" DataType="System.String"/>
+            <Column Name="rfcPago" DataType="System.String"/>
+          </Column>
+          <Column Name="VentaVehiculos" DataType="VentaVehiculos, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="version" DataType="System.String"/>
+            <Column Name="ClaveVehicular" DataType="System.String"/>
+            <Column Name="Niv" DataType="System.String"/>
+            <BusinessObjectDataSource Name="BusinessObjectDataSource13" Alias="Items" Enabled="false" DataType="System.Object[]" PropName="Items"/>
+          </Column>
+          <Column Name="PorCuentadeTerceros" DataType="PorCuentadeTerceros, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="InformacionFiscalTercero" DataType="PorCuentadeTercerosInformacionFiscalTercero, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+              <Column Name="calle" DataType="System.String"/>
+              <Column Name="noExterior" DataType="System.String"/>
+              <Column Name="noInterior" DataType="System.String"/>
+              <Column Name="colonia" DataType="System.String"/>
+              <Column Name="localidad" DataType="System.String"/>
+              <Column Name="referencia" DataType="System.String"/>
+              <Column Name="municipio" DataType="System.String"/>
+              <Column Name="estado" DataType="System.String"/>
+              <Column Name="pais" DataType="System.String"/>
+              <Column Name="codigoPostal" DataType="System.String"/>
+            </Column>
+            <Column Name="Impuestos" DataType="PorCuentadeTercerosImpuestos, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+              <BusinessObjectDataSource Name="BusinessObjectDataSource15" Alias="Retenciones" Enabled="false" DataType="PorCuentadeTercerosImpuestosRetencion[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Retenciones"/>
+              <BusinessObjectDataSource Name="BusinessObjectDataSource16" Alias="Traslados" Enabled="false" DataType="PorCuentadeTercerosImpuestosTraslado[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Traslados"/>
+            </Column>
+            <Column Name="version" DataType="System.String"/>
+            <Column Name="rfc" DataType="System.String"/>
+            <Column Name="nombre" DataType="System.String"/>
+            <BusinessObjectDataSource Name="BusinessObjectDataSource14" Alias="Items" Enabled="false" DataType="System.Object[]" PropName="Items"/>
+          </Column>
+        </Column>
+        <Column Name="cantidad" DataType="System.Decimal"/>
+        <Column Name="unidad" DataType="System.String"/>
+        <Column Name="noIdentificacion" DataType="System.String"/>
+        <Column Name="descripcion" DataType="System.String"/>
+        <Column Name="valorUnitario" DataType="System.Decimal"/>
+        <Column Name="importe" DataType="System.Decimal"/>
+        <BusinessObjectDataSource Name="BusinessObjectDataSource17" Alias="Parte" Enabled="false" DataType="ComprobanteConceptoParte[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Parte"/>
+      </BusinessObjectDataSource>
+      <Column Name="Impuestos" DataType="ComprobanteImpuestos, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BusinessObjectDataSource Name="BusinessObjectDataSource6" Alias="Retenciones" DataType="ComprobanteImpuestosRetencion[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Retenciones" Enabled="true">
+          <Column Name="impuesto" DataType="ComprobanteImpuestosRetencionImpuesto, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+          <Column Name="importe" DataType="System.Decimal"/>
+        </BusinessObjectDataSource>
+        <BusinessObjectDataSource Name="BusinessObjectDataSource7" Alias="Traslados" DataType="ComprobanteImpuestosTraslado[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Traslados" Enabled="true">
+          <Column Name="impuesto" DataType="ComprobanteImpuestosTrasladoImpuesto, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+          <Column Name="tasa" DataType="System.Decimal"/>
+          <Column Name="importe" DataType="System.Decimal"/>
+        </BusinessObjectDataSource>
+        <Column Name="totalImpuestosRetenidos" DataType="System.Decimal"/>
+        <Column Name="totalImpuestosRetenidosSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+        <Column Name="totalImpuestosTrasladados" DataType="System.Decimal"/>
+        <Column Name="totalImpuestosTrasladadosSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+      </Column>
+      <Column Name="Complemento" DataType="ComprobanteComplemento, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Column Name="TimbreFiscalDigital" DataType="TimbreFiscalDigital, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="version" DataType="System.String"/>
+          <Column Name="UUID" DataType="System.String"/>
+          <Column Name="FechaTimbrado" DataType="System.DateTime"/>
+          <Column Name="selloCFD" DataType="System.String"/>
+          <Column Name="noCertificadoSAT" DataType="System.String"/>
+          <Column Name="selloSAT" DataType="System.String"/>
+        </Column>
+        <Column Name="EstadoDeCuentaCombustible" DataType="EstadoDeCuentaCombustible, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="tipoOperacion" DataType="System.String"/>
+          <Column Name="numeroDeCuenta" DataType="System.String"/>
+          <Column Name="subTotal" DataType="System.Decimal"/>
+          <Column Name="subTotalSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+          <Column Name="total" DataType="System.Decimal"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource18" Alias="Conceptos" Enabled="false" DataType="EstadoDeCuentaCombustibleConceptoEstadoDeCuentaCombustible[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Conceptos"/>
+        </Column>
+        <Column Name="Donatarias" DataType="Donatarias, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="version" DataType="System.String"/>
+          <Column Name="noAutorizacion" DataType="System.String"/>
+          <Column Name="fechaAutorizacion" DataType="System.DateTime"/>
+          <Column Name="leyenda" DataType="System.String"/>
+        </Column>
+        <Column Name="Divisas" DataType="Divisas, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="version" DataType="System.String"/>
+          <Column Name="tipoOperacion" DataType="DivisasTipoOperacion, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+        </Column>
+        <Column Name="ImpuestosLocales" DataType="ImpuestosLocales, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <BusinessObjectDataSource Name="BusinessObjectDataSource9" Alias="RetencionesLocales" DataType="ImpuestosLocalesRetencionesLocales[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="RetencionesLocales" Enabled="true">
+            <Column Name="ImpLocRetenido" DataType="System.String"/>
+            <Column Name="TasadeRetencion" DataType="System.Decimal"/>
+            <Column Name="Importe" DataType="System.Decimal"/>
+          </BusinessObjectDataSource>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource10" Alias="TrasladosLocales" DataType="ImpuestosLocalesTrasladosLocales[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="TrasladosLocales" Enabled="true">
+            <Column Name="ImpLocTrasladado" DataType="System.String"/>
+            <Column Name="TasadeTraslado" DataType="System.Decimal"/>
+            <Column Name="Importe" DataType="System.Decimal"/>
+          </BusinessObjectDataSource>
+          <Column Name="version" DataType="System.String"/>
+          <Column Name="TotaldeRetenciones" DataType="System.Decimal"/>
+          <Column Name="TotaldeTraslados" DataType="System.Decimal"/>
+        </Column>
+        <Column Name="LeyendasFiscales" DataType="LeyendasFiscales, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="version" DataType="System.String"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource19" Alias="Leyenda" Enabled="false" DataType="LeyendasFiscalesLeyenda[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Leyenda"/>
+        </Column>
+        <Column Name="PFintegranteCoordinado" DataType="PFintegranteCoordinado, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="version" DataType="System.String"/>
+          <Column Name="ClaveVehicular" DataType="System.String"/>
+          <Column Name="Placa" DataType="System.String"/>
+          <Column Name="RFCPF" DataType="System.String"/>
+        </Column>
+        <Column Name="TuristaPasajeroExtranjero" DataType="TuristaPasajeroExtranjero, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="datosTransito" DataType="TuristaPasajeroExtranjeroDatosTransito, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="Via" DataType="TuristaPasajeroExtranjeroDatosTransitoVia, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+            <Column Name="TipoId" DataType="System.String"/>
+            <Column Name="NumeroId" DataType="System.String"/>
+            <Column Name="Nacionalidad" DataType="System.String"/>
+            <Column Name="EmpresaTransporte" DataType="System.String"/>
+            <Column Name="IdTransporte" DataType="System.String"/>
+          </Column>
+          <Column Name="version" DataType="System.String"/>
+          <Column Name="fechadeTransito" DataType="System.DateTime"/>
+          <Column Name="tipoTransito" DataType="TuristaPasajeroExtranjeroTipoTransito, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+        </Column>
+        <BusinessObjectDataSource Name="BusinessObjectDataSource12" Alias="Complemento_SPEI" DataType="Complemento_SPEISPEI_Tercero[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Complemento_SPEI" Enabled="true">
+          <Column Name="Ordenante" DataType="Complemento_SPEISPEI_TerceroOrdenante, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="BancoEmisor" DataType="System.String"/>
+            <Column Name="Nombre" DataType="System.String"/>
+            <Column Name="TipoCuenta" DataType="System.Decimal"/>
+            <Column Name="Cuenta" DataType="System.Decimal"/>
+            <Column Name="RFC" DataType="System.String"/>
+          </Column>
+          <Column Name="Beneficiario" DataType="Complemento_SPEISPEI_TerceroBeneficiario, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="BancoReceptor" DataType="System.String"/>
+            <Column Name="Nombre" DataType="System.String"/>
+            <Column Name="TipoCuenta" DataType="System.Decimal"/>
+            <Column Name="Cuenta" DataType="System.Decimal"/>
+            <Column Name="RFC" DataType="System.String"/>
+            <Column Name="Concepto" DataType="System.String"/>
+            <Column Name="IVA" DataType="System.Decimal"/>
+            <Column Name="IVASpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+            <Column Name="MontoPago" DataType="System.Decimal"/>
+          </Column>
+          <Column Name="FechaOperacion" DataType="System.DateTime"/>
+          <Column Name="Hora" DataType="System.DateTime"/>
+          <Column Name="ClaveSPEI" DataType="System.String"/>
+          <Column Name="sello" DataType="System.String"/>
+          <Column Name="numeroCertificado" DataType="System.String"/>
+          <Column Name="cadenaCDA" DataType="System.String"/>
+        </BusinessObjectDataSource>
+        <Column Name="detallista" DataType="detallista, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="requestForPaymentIdentification" DataType="detallistaRequestForPaymentIdentification, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="entityType" DataType="detallistaRequestForPaymentIdentificationEntityType, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+          </Column>
+          <Column Name="orderIdentification" DataType="detallistaOrderIdentification, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="ReferenceDate" DataType="System.DateTime"/>
+            <Column Name="ReferenceDateSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+            <BusinessObjectDataSource Name="BusinessObjectDataSource21" Alias="referenceIdentification" Enabled="false" DataType="detallistaOrderIdentificationReferenceIdentification[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="referenceIdentification"/>
+          </Column>
+          <Column Name="DeliveryNote" DataType="detallistaDeliveryNote, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="ReferenceDate" DataType="System.DateTime"/>
+            <Column Name="ReferenceDateSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+            <BusinessObjectDataSource Name="BusinessObjectDataSource23" Alias="referenceIdentification" Enabled="false" DataType="System.String[]" PropName="referenceIdentification"/>
+          </Column>
+          <Column Name="buyer" DataType="detallistaBuyer, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="gln" DataType="System.String"/>
+            <Column Name="contactInformation" DataType="detallistaBuyerContactInformation, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+              <Column Name="personOrDepartmentName" DataType="detallistaBuyerContactInformationPersonOrDepartmentName, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                <Column Name="text" DataType="System.String"/>
+              </Column>
+            </Column>
+          </Column>
+          <Column Name="seller" DataType="detallistaSeller, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="gln" DataType="System.String"/>
+            <Column Name="alternatePartyIdentification" DataType="detallistaSellerAlternatePartyIdentification, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+              <Column Name="type" DataType="detallistaSellerAlternatePartyIdentificationType, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+              <Column Name="Value" DataType="System.String"/>
+            </Column>
+          </Column>
+          <Column Name="shipTo" DataType="detallistaShipTo, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="gln" DataType="System.String"/>
+            <Column Name="nameAndAddress" DataType="detallistaShipToNameAndAddress, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+              <BusinessObjectDataSource Name="BusinessObjectDataSource24" Alias="name" Enabled="false" DataType="System.String[]" PropName="name"/>
+              <BusinessObjectDataSource Name="BusinessObjectDataSource25" Alias="streetAddressOne" Enabled="false" DataType="System.String[]" PropName="streetAddressOne"/>
+              <BusinessObjectDataSource Name="BusinessObjectDataSource26" Alias="city" Enabled="false" DataType="System.String[]" PropName="city"/>
+              <BusinessObjectDataSource Name="BusinessObjectDataSource27" Alias="postalCode" Enabled="false" DataType="System.String[]" PropName="postalCode"/>
+            </Column>
+          </Column>
+          <Column Name="InvoiceCreator" DataType="detallistaInvoiceCreator, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="gln" DataType="System.String"/>
+            <Column Name="alternatePartyIdentification" DataType="detallistaInvoiceCreatorAlternatePartyIdentification, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+              <Column Name="type" DataType="detallistaInvoiceCreatorAlternatePartyIdentificationType, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+              <Column Name="Value" DataType="System.String"/>
+            </Column>
+            <Column Name="nameAndAddress" DataType="detallistaInvoiceCreatorNameAndAddress, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+              <Column Name="name" DataType="System.String"/>
+              <Column Name="streetAddressOne" DataType="System.String"/>
+              <Column Name="city" DataType="System.String"/>
+              <Column Name="postalCode" DataType="System.String"/>
+            </Column>
+          </Column>
+          <Column Name="paymentTerms" DataType="detallistaPaymentTerms, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="netPayment" DataType="detallistaPaymentTermsNetPayment, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+              <Column Name="paymentTimePeriod" DataType="detallistaPaymentTermsNetPaymentPaymentTimePeriod, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                <Column Name="timePeriodDue" DataType="detallistaPaymentTermsNetPaymentPaymentTimePeriodTimePeriodDue, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                  <Column Name="value" DataType="System.String"/>
+                  <Column Name="timePeriod" DataType="detallistaPaymentTermsNetPaymentPaymentTimePeriodTimePeriodDueTimePeriod, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+                </Column>
+              </Column>
+              <Column Name="netPaymentTermsType" DataType="detallistaPaymentTermsNetPaymentNetPaymentTermsType, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+            </Column>
+            <Column Name="discountPayment" DataType="detallistaPaymentTermsDiscountPayment, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+              <Column Name="percentage" DataType="System.String"/>
+              <Column Name="discountType" DataType="detallistaPaymentTermsDiscountPaymentDiscountType, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+            </Column>
+            <Column Name="paymentTermsEvent" DataType="detallistaPaymentTermsPaymentTermsEvent, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+            <Column Name="paymentTermsEventSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+            <Column Name="PaymentTermsRelationTime" DataType="detallistaPaymentTermsPaymentTermsRelationTime, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+            <Column Name="PaymentTermsRelationTimeSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+          </Column>
+          <Column Name="shipmentDetail" DataType="detallistaShipmentDetail, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+          <Column Name="totalAmount" DataType="detallistaTotalAmount, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="Amount" DataType="System.Decimal"/>
+          </Column>
+          <Column Name="type" DataType="System.String"/>
+          <Column Name="contentVersion" DataType="System.String"/>
+          <Column Name="documentStructureVersion" DataType="System.String"/>
+          <Column Name="documentStatus" DataType="detallistaDocumentStatus, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource20" Alias="specialInstruction" Enabled="false" DataType="detallistaSpecialInstruction[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="specialInstruction"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource22" Alias="AdditionalInformation" Enabled="false" DataType="detallistaReferenceIdentification[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="AdditionalInformation"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource28" Alias="Customs" Enabled="false" DataType="detallistaCustoms[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Customs"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource29" Alias="currency" Enabled="false" DataType="detallistaCurrency[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="currency"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource30" Alias="allowanceCharge" Enabled="false" DataType="detallistaAllowanceCharge[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="allowanceCharge"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource31" Alias="lineItem" Enabled="false" DataType="detallistaLineItem[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="lineItem"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource32" Alias="TotalAllowanceCharge" Enabled="false" DataType="detallistaTotalAllowanceCharge[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="TotalAllowanceCharge"/>
+        </Column>
+        <Column Name="CFDIRegistroFiscal" DataType="CFDIRegistroFiscal, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="Version" DataType="System.String"/>
+          <Column Name="Folio" DataType="System.String"/>
+        </Column>
+        <Column Name="Nomina" DataType="Nomina, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="Percepciones" DataType="NominaPercepciones, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="TotalGravado" DataType="System.Decimal"/>
+            <Column Name="TotalExento" DataType="System.Decimal"/>
+            <BusinessObjectDataSource Name="BusinessObjectDataSource33" Alias="Percepcion" Enabled="false" DataType="NominaPercepcionesPercepcion[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Percepcion"/>
+          </Column>
+          <Column Name="Deducciones" DataType="NominaDeducciones, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="TotalGravado" DataType="System.Decimal"/>
+            <Column Name="TotalExento" DataType="System.Decimal"/>
+            <BusinessObjectDataSource Name="BusinessObjectDataSource34" Alias="Deduccion" Enabled="false" DataType="NominaDeduccionesDeduccion[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Deduccion"/>
+          </Column>
+          <Column Name="Version" DataType="System.String"/>
+          <Column Name="RegistroPatronal" DataType="System.String"/>
+          <Column Name="NumEmpleado" DataType="System.String"/>
+          <Column Name="CURP" DataType="System.String"/>
+          <Column Name="TipoRegimen" DataType="System.Int32"/>
+          <Column Name="NumSeguridadSocial" DataType="System.String"/>
+          <Column Name="FechaPago" DataType="System.DateTime"/>
+          <Column Name="FechaInicialPago" DataType="System.DateTime"/>
+          <Column Name="FechaFinalPago" DataType="System.DateTime"/>
+          <Column Name="NumDiasPagados" DataType="System.Decimal"/>
+          <Column Name="Departamento" DataType="System.String"/>
+          <Column Name="CLABE" DataType="System.String"/>
+          <Column Name="Banco" DataType="System.Int32"/>
+          <Column Name="BancoSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+          <Column Name="FechaInicioRelLaboral" DataType="System.DateTime"/>
+          <Column Name="FechaInicioRelLaboralSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+          <Column Name="Antiguedad" DataType="System.Int32"/>
+          <Column Name="AntiguedadSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+          <Column Name="Puesto" DataType="System.String"/>
+          <Column Name="TipoContrato" DataType="System.String"/>
+          <Column Name="TipoJornada" DataType="System.String"/>
+          <Column Name="PeriodicidadPago" DataType="System.String"/>
+          <Column Name="SalarioBaseCotApor" DataType="System.Decimal"/>
+          <Column Name="SalarioBaseCotAporSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+          <Column Name="RiesgoPuesto" DataType="System.Int32"/>
+          <Column Name="RiesgoPuestoSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+          <Column Name="SalarioDiarioIntegrado" DataType="System.Decimal"/>
+          <Column Name="SalarioDiarioIntegradoSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource35" Alias="Incapacidades" Enabled="false" DataType="NominaIncapacidad[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Incapacidades"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource36" Alias="HorasExtras" Enabled="false" DataType="NominaHorasExtra[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="HorasExtras"/>
+        </Column>
+        <Column Name="PagoEnEspecie" DataType="PagoEnEspecie, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="Version" DataType="System.String"/>
+          <Column Name="CvePIC" DataType="System.String"/>
+          <Column Name="FolioSolDon" DataType="System.String"/>
+          <Column Name="PzaArtNombre" DataType="System.String"/>
+          <Column Name="PzaArtTecn" DataType="System.String"/>
+          <Column Name="PzaArtAProd" DataType="System.String"/>
+          <Column Name="PzaArtDim" DataType="System.String"/>
+        </Column>
+        <Column Name="ValesDeDespensa" DataType="ValesDeDespensa, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="version" DataType="System.String"/>
+          <Column Name="tipoOperacion" DataType="System.String"/>
+          <Column Name="registroPatronal" DataType="System.String"/>
+          <Column Name="numeroDeCuenta" DataType="System.String"/>
+          <Column Name="total" DataType="System.Decimal"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource37" Alias="Conceptos" Enabled="false" DataType="ValesDeDespensaConcepto[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Conceptos"/>
+        </Column>
+        <Column Name="ConsumoDeCombustibles" DataType="ConsumoDeCombustibles, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="version" DataType="System.String"/>
+          <Column Name="tipoOperacion" DataType="System.String"/>
+          <Column Name="numeroDeCuenta" DataType="System.String"/>
+          <Column Name="subTotal" DataType="System.Decimal"/>
+          <Column Name="subTotalSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+          <Column Name="total" DataType="System.Decimal"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource38" Alias="Conceptos" Enabled="false" DataType="ConsumoDeCombustiblesConceptoConsumoDeCombustibles[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Conceptos"/>
+        </Column>
+        <Column Name="Aerolineas" DataType="Aerolineas, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="OtrosCargos" DataType="AerolineasOtrosCargos, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="TotalCargos" DataType="System.Decimal"/>
+            <BusinessObjectDataSource Name="BusinessObjectDataSource39" Alias="Cargo" Enabled="false" DataType="AerolineasOtrosCargosCargo[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="Cargo"/>
+          </Column>
+          <Column Name="Version" DataType="System.String"/>
+          <Column Name="TUA" DataType="System.Decimal"/>
+        </Column>
+        <Column Name="NotariosPublicos" DataType="NotariosPublicos, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Column Name="DatosOperacion" DataType="NotariosPublicosDatosOperacion, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="NumInstrumentoNotarial" DataType="System.Int32"/>
+            <Column Name="FechaInstNotarial" DataType="System.DateTime"/>
+            <Column Name="MontoOperacion" DataType="System.Decimal"/>
+            <Column Name="Subtotal" DataType="System.Decimal"/>
+            <Column Name="IVA" DataType="System.Decimal"/>
+          </Column>
+          <Column Name="DatosNotario" DataType="NotariosPublicosDatosNotario, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="CURP" DataType="System.String"/>
+            <Column Name="NumNotaria" DataType="System.Int32"/>
+            <Column Name="EntidadFederativa" DataType="t_EntidadFederativa, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+            <Column Name="Adscripcion" DataType="System.String"/>
+          </Column>
+          <Column Name="DatosEnajenante" DataType="NotariosPublicosDatosEnajenante, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="Item" DataType="System.Object"/>
+            <Column Name="CoproSocConyugalE" DataType="NotariosPublicosDatosEnajenanteCoproSocConyugalE, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+          </Column>
+          <Column Name="DatosAdquiriente" DataType="NotariosPublicosDatosAdquiriente, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <Column Name="Item" DataType="System.Object"/>
+            <Column Name="CoproSocConyugalE" DataType="NotariosPublicosDatosAdquirienteCoproSocConyugalE, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+          </Column>
+          <Column Name="Version" DataType="System.String"/>
+          <BusinessObjectDataSource Name="BusinessObjectDataSource40" Alias="DescInmuebles" Enabled="false" DataType="NotariosPublicosDescInmueble[], LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" PropName="DescInmuebles"/>
+        </Column>
+      </Column>
+      <Column Name="Addenda" DataType="ComprobanteAddenda, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BusinessObjectDataSource Name="BusinessObjectDataSource41" Alias="Any" Enabled="false" DataType="System.Xml.XmlElement[], System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" PropName="Any"/>
+      </Column>
+      <Column Name="version" DataType="System.String"/>
+      <Column Name="serie" DataType="System.String"/>
+      <Column Name="folio" DataType="System.String"/>
+      <Column Name="fecha" DataType="System.String"/>
+      <Column Name="sello" DataType="System.String"/>
+      <Column Name="formaDePago" DataType="System.String"/>
+      <Column Name="noCertificado" DataType="System.String"/>
+      <Column Name="certificado" DataType="System.String"/>
+      <Column Name="condicionesDePago" DataType="System.String"/>
+      <Column Name="subTotal" DataType="System.Decimal"/>
+      <Column Name="descuento" DataType="System.Decimal"/>
+      <Column Name="descuentoSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+      <Column Name="motivoDescuento" DataType="System.String"/>
+      <Column Name="TipoCambio" DataType="System.String"/>
+      <Column Name="Moneda" DataType="System.String"/>
+      <Column Name="total" DataType="System.Decimal"/>
+      <Column Name="tipoDeComprobante" DataType="ComprobanteTipoDeComprobante, LeeSAT2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+      <Column Name="metodoDePago" DataType="System.String"/>
+      <Column Name="LugarExpedicion" DataType="System.String"/>
+      <Column Name="NumCtaPago" DataType="System.String"/>
+      <Column Name="FolioFiscalOrig" DataType="System.String"/>
+      <Column Name="SerieFolioFiscalOrig" DataType="System.String"/>
+      <Column Name="FechaFolioFiscalOrig" DataType="System.DateTime"/>
+      <Column Name="FechaFolioFiscalOrigSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+      <Column Name="MontoFolioFiscalOrig" DataType="System.Decimal"/>
+      <Column Name="MontoFolioFiscalOrigSpecified" DataType="System.Boolean" BindableControl="CheckBox"/>
+      <Column Name="CadenaComplemento" DataType="System.String"/>
+      <Column Name="QrCode" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="ConLetras" DataType="System.String"/>
+      <Column Name="validacion" DataType="System.String"/>
+    </BusinessObjectDataSource>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" RawPaperSize="1" LeftMargin="2.5" TopMargin="2.5" RightMargin="2.5" BottomMargin="2.5">
+    <ReportTitleBand Name="ReportTitle1" Width="797.2" Height="37.8" CanGrow="true" CanShrink="true">
+      <TextObject Name="Text38" Width="793.8" Height="37.8" Fill.Color="Red" CanGrow="true" CanShrink="true" Text="[comprobante.validacion]" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="797.2" Height="217.35">
+      <TextObject Name="Text1" Left="491.4" Top="18.9" Width="302.4" Height="18.9" Text="[comprobante.Complemento.TimbreFiscalDigital.UUID]" HorzAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text2" Left="491.4" Width="302.4" Height="18.9" Fill.Color="PeachPuff" Text="Folio Fiscal:" HorzAlign="Right" Font="Arial, 10pt, style=Bold" TextFill.Color="Brown"/>
+      <TextObject Name="Text3" Width="491.4" Height="18.9" Fill.Color="Brown" Text="Factura Electronica (CFDI)" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text4" Left="491.4" Top="56.7" Width="302.4" Height="18.9" Text="[comprobante.noCertificado]" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="491.4" Top="37.8" Width="302.4" Height="18.9" Fill.Color="PeachPuff" Text="No de Serie del Certificado del CSD:" HorzAlign="Right" Font="Arial, 10pt, style=Bold" TextFill.Color="Brown"/>
+      <TextObject Name="Text8" Left="491.4" Top="94.5" Width="302.4" Height="28.35" Text="[comprobante.LugarExpedicion], [comprobante.fecha]" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="491.4" Top="75.6" Width="302.4" Height="18.9" Fill.Color="PeachPuff" Text="Lugar, fecha y hora de emision:" HorzAlign="Right" Font="Arial, 10pt, style=Bold" TextFill.Color="Brown"/>
+      <TextObject Name="Text10" Top="94.5" Width="491.4" Height="28.35" Text="[comprobante.Emisor.RegimenFiscal.Regimen]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Top="75.6" Width="491.4" Height="18.9" Fill.Color="PeachPuff" Text="Regimen Fiscal:" Font="Arial, 10pt, style=Bold" TextFill.Color="Brown"/>
+      <RichObject Name="Rich1" Top="18.9" Width="491.4" Height="56.7" Text="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang2058{\fonttbl{\f0\fnil\fcharset0 Arial;}{\f1\fnil Tahoma;}}&#13;&#10;{\*\generator Riched20 6.2.9200}\viewkind4\uc1 &#13;&#10;\pard\fs16 Emisor: \b [comprobante.Emisor.rfc] - [comprobante.Emisor.nombre]\fs14\par&#13;&#10;\b0 [comprobante.Emisor.DomicilioFiscal.calle] [comprobante.Emisor.DomicilioFiscal.noExterior] [comprobante.Emisor.DomicilioFiscal.noInterior]\par&#13;&#10;[comprobante.Emisor.DomicilioFiscal.colonia], [comprobante.Emisor.DomicilioFiscal.localidad]\par&#13;&#10;[comprobante.Emisor.DomicilioFiscal.municipio], [comprobante.Emisor.DomicilioFiscal.estado], [comprobante.Emisor.DomicilioFiscal.pais], CP.[comprobante.Emisor.DomicilioFiscal.codigoPostal]\f1\par&#13;&#10;}&#13;&#10;"/>
+      <TextObject Name="Text6" Top="122.85" Width="793.8" Height="9.45" Fill.Color="Brown"/>
+      <TextObject Name="Text7" Top="132.3" Width="793.8" Height="18.9" Fill.Color="PeachPuff" Text="Receptor:"/>
+      <TextObject Name="Text12" Top="151.2" Width="793.8" Height="56.7" Text="[comprobante.Receptor.rfc] - [comprobante.Receptor.nombre]&#13;&#10;[comprobante.Receptor.Domicilio.calle] [comprobante.Receptor.Domicilio.noExterior] [comprobante.Receptor.Domicilio.noInterior]&#13;&#10;[comprobante.Receptor.Domicilio.colonia], [comprobante.Receptor.Domicilio.localidad]&#13;&#10;[comprobante.Receptor.Domicilio.municipio], [comprobante.Receptor.Domicilio.estado], [comprobante.Receptor.Domicilio.pais], CP. [comprobante.Receptor.Domicilio.codigoPostal]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Top="207.9" Width="793.8" Height="9.45" Fill.Color="Brown"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="286.05" Width="797.2" Height="18.9" DataSource="Conceptos">
+      <TextObject Name="Text14" Width="94.5" Height="18.9" Border.Lines="All" Text="[FormatNumber([comprobante.Conceptos.cantidad])]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text16" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.Conceptos.unidad]" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="189" Width="415.8" Height="18.9" Border.Lines="All" Text="[comprobante.Conceptos.descripcion]" Font="Arial, 8pt"/>
+      <TextObject Name="Text20" Left="699.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.Conceptos.importe]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text22" Left="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.Conceptos.valorUnitario]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <DataHeaderBand Name="DataHeader1" Top="263.15" Width="797.2" Height="18.9">
+        <TextObject Name="Text15" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="PeachPuff" Text="cantidad" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt"/>
+        <TextObject Name="Text17" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="PeachPuff" Text="unidad" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt"/>
+        <TextObject Name="Text19" Left="189" Width="415.8" Height="18.9" Border.Lines="All" Fill.Color="PeachPuff" Text="descripcion" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt"/>
+        <TextObject Name="Text21" Left="699.3" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="PeachPuff" Text="importe" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt"/>
+        <TextObject Name="Text23" Left="604.8" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="PeachPuff" Text="valorUnitario" Font="Arial, 8pt"/>
+      </DataHeaderBand>
+      <DataFooterBand Name="DataFooter1" Top="308.95" Width="797.2" Height="283.5">
+        <RichObject Name="Rich2" Top="9.45" Width="604.8" Height="141.75" Text="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang2058{\fonttbl{\f0\fnil\fcharset0 Arial;}{\f1\fnil Tahoma;}}&#13;&#10;{\*\generator Riched20 6.2.9200}\viewkind4\uc1 &#13;&#10;\pard\fs20 Total con Letra: ([comprobante.ConLetras])\par&#13;&#10;Forma de Pago:[comprobante.formaDePago]\par&#13;&#10;Metodo de Pago:[comprobante.metodoDePago]\par&#13;&#10;Numero Cta Pago:[comprobante.NumCtaPago]\par&#13;&#10;Moneda: [comprobante.Moneda], T.C. [comprobante.TipoCambio]\par&#13;&#10;No. de Serie del Certificado del SAT: [comprobante.Complemento.TimbreFiscalDigital.noCertificadoSAT]\par&#13;&#10;Fecha y Hora de Certificacion: [comprobante.Complemento.TimbreFiscalDigital.FechaTimbrado]\f1\fs17\par&#13;&#10;}&#13;&#10;"/>
+        <PictureObject Name="Picture1" Top="151.2" Width="132.3" Height="132.3" DataColumn="comprobante.QrCode"/>
+        <RichObject Name="Rich4" Left="132.3" Top="151.2" Width="472.5" Height="132.3" Text="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang2058{\fonttbl{\f0\fnil\fcharset0 Arial;}{\f1\fnil Tahoma;}}&#13;&#10;{\*\generator Riched20 6.2.9200}\viewkind4\uc1 &#13;&#10;\pard\b\fs14 Sello Digital del CFDI:\par&#13;&#10;\b0 [comprobante.sello]\par&#13;&#10;\b Sello del SAT:\par&#13;&#10;\b0 [comprobante.Complemento.TimbreFiscalDigital.selloSAT]\par&#13;&#10;\b Cadena Original del complemento de certificacion del SAT:\par&#13;&#10;\b0 [comprobante.CadenaComplemento]\f1\par&#13;&#10;}&#13;&#10;"/>
+        <SubreportObject Name="Subreport1" Left="604.8" Width="189" Height="283.5" ReportPage="Impuestos" PrintOnParent="true"/>
+      </DataFooterBand>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="596.45" Width="797.2" Height="47.25">
+      <RichObject Name="Rich3" Top="9.45" Width="604.8" Height="37.8" Text="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang2058{\fonttbl{\f0\fnil\fcharset0 Arial;}{\f1\fnil Tahoma;}}&#13;&#10;{\*\generator Riched20 6.2.9200}\viewkind4\uc1 &#13;&#10;\pard\qc\fs20 Este documento es una representacion Impresa de un CFDI\par&#13;&#10;Documento Generado por VGestiona CFDI\f1\fs17\par&#13;&#10;}&#13;&#10;"/>
+      <TextObject Name="Text39" Width="793.8" Height="9.45" Fill.Color="Brown"/>
+      <TextObject Name="Text40" Left="604.8" Top="9.45" Width="189" Height="37.8" Text="Pagina [Page#] de [TotalPages#]" HorzAlign="Right"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <ReportPage Name="Impuestos">
+    <DataBand Name="Data2" Top="41.8" Width="718.2" DataSource="comprobante">
+      <ChildBand Name="Child1" Top="45.8" Width="718.2" Height="18.9">
+        <SubreportObject Name="Subreport2" Width="189" Height="18.9" ReportPage="Page3"/>
+        <ChildBand Name="Child2" Top="68.7" Width="718.2" Height="18.9">
+          <SubreportObject Name="Subreport3" Width="189" Height="18.9" ReportPage="Page4"/>
+          <ChildBand Name="Child3" Top="91.6" Width="718.2" Height="18.9">
+            <SubreportObject Name="Subreport4" Width="189" Height="18.9" ReportPage="Page2"/>
+            <ChildBand Name="Child4" Top="114.5" Width="718.2" Height="18.9">
+              <SubreportObject Name="Subreport5" Width="189" Height="18.9" ReportPage="Page5"/>
+            </ChildBand>
+          </ChildBand>
+        </ChildBand>
+      </ChildBand>
+      <DataHeaderBand Name="DataHeader2" Width="718.2" Height="37.8">
+        <TextObject Name="Text24" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.subTotal]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text25" Width="94.5" Height="18.9" Border.Lines="All" Text="Subtotal:" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text26" Left="94.5" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.descuento]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text27" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="Descuento:" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+      </DataHeaderBand>
+      <DataFooterBand Name="DataFooter2" Top="137.4" Width="718.2" Height="18.9">
+        <TextObject Name="Text28" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.total]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text29" Width="94.5" Height="18.9" Border.Lines="All" Text="Total:" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+      </DataFooterBand>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page3">
+    <DataBand Name="Data3" Width="718.2" Height="18.9" DataSource="BusinessObjectDataSource7">
+      <TextObject Name="Text30" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.Impuestos.Traslados.impuesto] [comprobante.Impuestos.Traslados.tasa]" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text31" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.Impuestos.Traslados.importe]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page4">
+    <DataBand Name="Data4" Width="718.2" Height="18.9" DataSource="BusinessObjectDataSource6">
+      <TextObject Name="Text32" Width="94.5" Height="18.9" Border.Lines="All" Text="- Ret [comprobante.Impuestos.Retenciones.impuesto]" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text33" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.Impuestos.Retenciones.importe]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page2">
+    <DataBand Name="Data5" Width="718.2" Height="18.9" Guides="18.9" DataSource="BusinessObjectDataSource10">
+      <TextObject Name="Text34" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.Complemento.ImpuestosLocales.TrasladosLocales.ImpLocTrasladado] [comprobante.Complemento.ImpuestosLocales.TrasladosLocales.TasadeTraslado]" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text35" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.Complemento.ImpuestosLocales.TrasladosLocales.Importe]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page5">
+    <DataBand Name="Data6" Width="718.2" Height="18.9" DataSource="BusinessObjectDataSource9">
+      <TextObject Name="Text36" Width="94.5" Height="18.9" Border.Lines="All" Text="- Ret [comprobante.Complemento.ImpuestosLocales.RetencionesLocales.ImpLocRetenido] [comprobante.Complemento.ImpuestosLocales.RetencionesLocales.TasadeRetencion]" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text37" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[comprobante.Complemento.ImpuestosLocales.RetencionesLocales.Importe]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+</Report>

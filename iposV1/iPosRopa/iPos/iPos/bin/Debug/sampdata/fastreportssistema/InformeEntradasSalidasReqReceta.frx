@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/24/2016 10:57:00" ReportInfo.Modified="06/11/2016 16:07:17" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls38CxK5rM2JUqm3ogTrw0Jju0eUBINQr9jMQwBo8+7jP05WmCOeSQwvu02JciycDTA3rjh7gsFEh9n0CKCT6p1g=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;producto.clave,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2,&#13;&#10;movto.cantidad,&#13;&#10;docto.fecha,&#13;&#10;docto.fechahora,&#13;&#10;v.nombre vendedor,&#13;&#10;tipodocto.sentidoinventario ,&#13;&#10;case when tipodocto.sentidoinventario = 1 then 'ENTRADA'&#13;&#10;     when tipodocto.sentidoinventario = -1 then 'SALIDA'&#13;&#10;     else 'NINGUNO' end SENTIDO,&#13;&#10;&#13;&#10;TIPODOCTO.nombre NOMBRETIPODOCTO ,&#13;&#10;&#13;&#10;MOVTO.lote, &#13;&#10;MOVTO.FECHAVENCE,&#13;&#10;&#13;&#10;docto.folio,&#13;&#10;docto.referencia,&#13;&#10;pers.clave clavepersona,&#13;&#10;pers.nombre nombrepersona&#13;&#10;&#13;&#10;&#13;&#10;from docto&#13;&#10;left join movto on movto.doctoid = docto.id&#13;&#10;left join producto  on producto.id = movto.productoid&#13;&#10;left join persona v on v.id = docto.vendedorid&#13;&#10;left join tipodocto on tipodocto.id = docto.tipodoctoid&#13;&#10;left join persona pers on pers.id = docto.personaid&#13;&#10;&#13;&#10;where docto.estatusdoctoid = 1&#13;&#10;and docto.tipodoctoid in (11,12,21,22, 31,32,41,42)&#13;&#10;and producto.requierereceta = 'S'&#13;&#10;and docto.fecha &gt;= @fechainicial and docto.fecha &lt;= @fechafinal">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="VENDEDOR" DataType="System.String"/>
+        <Column Name="SENTIDOINVENTARIO" DataType="System.Int16"/>
+        <Column Name="SENTIDO" DataType="System.String"/>
+        <Column Name="NOMBRETIPODOCTO" DataType="System.String"/>
+        <Column Name="LOTE" DataType="System.String"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="REFERENCIA" DataType="System.String"/>
+        <Column Name="CLAVEPERSONA" DataType="System.String"/>
+        <Column Name="NOMBREPERSONA" DataType="System.String"/>
+        <CommandParameter Name="fechainicial" DataType="5" Expression="[fechainicial]" DefaultValue="01/01/2016"/>
+        <CommandParameter Name="fechafinal" DataType="5" Expression="[fechafinal]" DefaultValue="01/01/2017"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechainicial" DataType="System.DateTime"/>
+    <Parameter Name="fechafinal" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="94.5">
+      <TextObject Name="Text22" Left="236.25" Top="56.7" Width="94.5" Height="18.9" Text="[fechainicial]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text23" Left="491.4" Top="56.7" Width="94.5" Height="18.9" Text="[fechafinal]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text24" Left="85.05" Top="9.45" Width="661.5" Height="28.35" Text="Entradas/Salidas de productos que requieren receta" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text25" Left="784.35" Top="18.9" Width="236.25" Height="18.9" Text="[Date]"/>
+      <TextObject Name="Text26" Left="94.5" Top="56.7" Width="113.4" Height="18.9" Text="Fecha inicial:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text27" Left="368.55" Top="56.7" Width="113.4" Height="18.9" Text="Fecha final:" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="98.5" Width="1047.06" Height="9.45"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="111.95" Width="1047.06" Height="18.9" Condition="[Table.CLAVE]">
+      <TextObject Name="Text1" Width="245.7" Height="18.9" Text="[[Table.CLAVE]]" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text6" Left="264.6" Width="330.75" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text8" Left="623.7" Width="415.8" Height="18.9" Text="[Table.DESCRIPCION2]" Font="Arial, 12pt, style=Bold"/>
+      <GroupHeaderBand Name="GroupHeader2" Top="134.85" Width="1047.06" Height="18.9" Condition="[Table.SENTIDO]">
+        <TextObject Name="Text2" Left="9.45" Width="255.15" Height="18.9" Text="[[Table.SENTIDO]]" Font="Arial, 11pt, style=Italic"/>
+        <GroupHeaderBand Name="GroupHeader3" Top="157.75" Width="1047.06" Height="47.25" Condition="[Table.NOMBRETIPODOCTO]">
+          <TextObject Name="Text3" Left="18.9" Width="255.15" Height="18.9" Text="[[Table.NOMBRETIPODOCTO]]" Font="Arial, 10pt, style=Underline"/>
+          <TextObject Name="Text11" Left="321.3" Top="18.9" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 9pt, style=Bold"/>
+          <TextObject Name="Text13" Left="415.8" Top="18.9" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 9pt, style=Bold"/>
+          <TextObject Name="Text15" Left="510.3" Top="18.9" Width="94.5" Height="18.9" Text="HORA" Font="Arial, 9pt, style=Bold"/>
+          <TextObject Name="Text17" Left="604.8" Top="18.9" Width="94.5" Height="18.9" Text="VENDEDOR" Font="Arial, 9pt, style=Bold"/>
+          <TextObject Name="Text19" Left="699.3" Top="18.9" Width="94.5" Height="18.9" Text="LOTE" Font="Arial, 9pt, style=Bold"/>
+          <TextObject Name="Text21" Left="793.8" Top="18.9" Width="94.5" Height="28.35" Text="FECHA VENCE" Font="Arial, 9pt, style=Bold"/>
+          <TextObject Name="Text5" Left="28.35" Top="18.9" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 9pt, style=Bold"/>
+          <TextObject Name="Text9" Left="122.85" Top="18.9" Width="198.45" Height="18.9" Text="CLIENTE/PROVEEDOR" Font="Arial, 9pt, style=Bold"/>
+          <TextObject Name="Text29" Left="888.3" Top="18.9" Width="94.5" Height="18.9" Text="REFERENCIA" Font="Arial, 9pt, style=Bold"/>
+          <DataBand Name="Data1" Top="209" Width="1047.06" Height="28.35" DataSource="Table">
+            <TextObject Name="Text10" Left="321.3" Width="94.5" Height="18.9" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text12" Left="415.8" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+            <TextObject Name="Text14" Left="510.3" Width="94.5" Height="18.9" Text="[Table.FECHAHORA]" Format="Time" Format.Format="t" Font="Arial, 8pt"/>
+            <TextObject Name="Text16" Left="604.8" Width="94.5" Height="18.9" Text="[Table.VENDEDOR]" Font="Arial, 8pt"/>
+            <TextObject Name="Text18" Left="699.3" Width="94.5" Height="18.9" Text="[Table.LOTE]" Font="Arial, 8pt"/>
+            <TextObject Name="Text20" Left="793.8" Width="94.5" Height="18.9" Text="[Table.FECHAVENCE]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+            <TextObject Name="Text4" Left="28.35" Width="94.5" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 8pt"/>
+            <TextObject Name="Text7" Left="122.85" Width="198.45" Height="18.9" Text="[Table.NOMBREPERSONA]" Font="Arial, 8pt"/>
+            <TextObject Name="Text28" Left="888.3" Width="94.5" Height="18.9" Text="[Table.REFERENCIA]" Font="Arial, 7pt"/>
+          </DataBand>
+          <GroupFooterBand Name="GroupFooter3" Top="241.35" Width="1047.06" Height="9.45"/>
+        </GroupHeaderBand>
+        <GroupFooterBand Name="GroupFooter2" Top="254.8" Width="1047.06" Height="9.45"/>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="268.25" Width="1047.06" Height="9.45"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="281.7" Width="1047.06" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="530" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="358" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="441" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="36" Top="80" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fechainicial" FilterOperation="GreaterThanOrEqual" Value="03/24/2016 11:07:56"/>
+    <LabelControl Name="Label1" Left="36" Top="64" Width="91" Height="16" Font="Tahoma, 9.75pt" TabIndex="3" Text="FECHA INICIAL"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="36" Top="144" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechafinal" FilterOperation="LessThanOrEqual" Value="03/24/2016 11:07:58"/>
+    <LabelControl Name="Label2" Left="36" Top="128" Width="82" Height="16" Font="Tahoma, 9.75pt" TabIndex="5" Text="FECHA FINAL"/>
+    <LabelControl Name="Label3" Left="32" Top="20" Width="463" Height="19" Font="Tahoma, 12pt" TabIndex="6" Text="Reporte de entradas y salidas de productos que requieren receta"/>
+  </DialogPage>
+</Report>

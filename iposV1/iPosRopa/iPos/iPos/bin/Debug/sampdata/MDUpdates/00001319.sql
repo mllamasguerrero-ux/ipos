@@ -1,0 +1,1 @@
+update persona set monedaid = 1;

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PlatformTarget>x86</PlatformTarget>
+    <Platforms>AnyCPU;x86</Platforms>
+    <DefineConstants>PROYECTO_ESCRITORIO</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="107.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\ApiBindingModel\Global\" />
+    <Folder Include="Controllers\BindingModel\FacturaElectronica\Consolidacion\" />
+    <Folder Include="Controllers\BindingModel\Traslados\PedidoEntrada\" />
+    <Folder Include="Controllers\BindingModel\Traslados\SolicitudMercancia\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KendoNET.DynamicLinq\KendoNET.DynamicLinq.csproj" />
+  </ItemGroup>
+
+</Project>

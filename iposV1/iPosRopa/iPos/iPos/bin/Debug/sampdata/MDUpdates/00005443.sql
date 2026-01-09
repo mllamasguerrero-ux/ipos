@@ -1,0 +1,121 @@
+create or alter procedure DOCTO_SAVE (
+    DOCTOID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable MOVTOID D_FK;
+declare variable ESTATUSMOVTOID D_FK;
+declare variable PERSONAID D_FK;
+declare variable PERSONAAPARTADOID D_FK;
+declare variable ESTADOSURTIDOID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable EMPRESAMANEJARLOTEIMPORTACION D_BOOLCN;
+declare variable SUBTIPODOCTOID D_FK;
+declare variable SENTIDOINVENTARIO D_SENTIDO;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable AGRUPACIONVENTAID D_FK;
+BEGIN
+
+
+
+   SELECT DOCTO.ESTADOSURTIDOID, DOCTO.TIPODOCTOID, DOCTO.SUBTIPODOCTOID, TIPODOCTO.SENTIDOINVENTARIO, DOCTO.ESTATUSDOCTOID FROM DOCTO
+   LEFT JOIN TIPODOCTO ON DOCTO.TIPODOCTOID = TIPODOCTO.ID
+   WHERE DOCTO.ID = :DOCTOID INTO :ESTADOSURTIDOID, :TIPODOCTOID, :SUBTIPODOCTOID, :SENTIDOINVENTARIO, :ESTATUSDOCTOID;
+
+   IF(COALESCE(:ESTATUSDOCTOID,0) = 1) THEN
+   BEGIN
+      ERRORCODE = 0;
+      SUSPEND;
+      EXIT;
+   END
+
+   
+    SELECT FIRST 1 COALESCE(AGRUPACIONVENTAID,1) FROM PARAMETRO  INTO :AGRUPACIONVENTAID;
+
+    IF (:TIPODOCTOID  in (21,25, 321,821)  AND COALESCE(:AGRUPACIONVENTAID,1) = 2) THEN
+    BEGIN
+
+        SELECT ERRORCODE FROM DOCTO_REAGRUPAR_DETALLES(:DOCTOID) INTO :ERRORCODE;
+        
+         IF(COALESCE(:ERRORCODE,0) <> 0) THEN
+         BEGIN
+                SUSPEND;
+                EXIT;
+
+         END
+
+    END
+
+
+
+    UPDATE DOCTO SET DOCTO.prekitestatus = 1 WHERE ID = :DOCTOID;
+
+
+     -- asigna los pedimentos de importacion si se requiere
+    --IF(  :SENTIDOINVENTARIO = -1 AND
+    --    NOT (:TIPODOCTOID IN (31,81) AND :subtipodoctoid  IN (7,8))  -- no es un traslado o surtimiento asignado a venta
+   --     ) THEN
+   --BEGIN
+     SELECT MANEJARLOTEIMPORTACION FROM PARAMETRO INTO :EMPRESAMANEJARLOTEIMPORTACION;
+
+     IF(COALESCE(:EMPRESAMANEJARLOTEIMPORTACION,'N') = 'S') THEN
+     BEGIN
+
+         -- asegurarse de desasignar el pedimento ( por si se quedo uno)
+         SELECT errorcode FROM DESASIGNARPEDIMENTOTEMP_DOCTO(:DOCTOID) INTO :ERRORCODE;
+
+         SELECT errorcode FROM ASIGNARPEDIMENTO_DOCTO(:DOCTOID, 'S') INTO :ERRORCODE;
+
+         IF(COALESCE(:ERRORCODE,0) <> 0) THEN
+         BEGIN
+                SUSPEND;
+                EXIT;
+
+         END
+
+     END
+   --END
+
+
+   update movto set estatusmovtoid = 1
+   where doctoid = :DOCTOID AND ESTATUSMOVTOID = 0;
+
+
+  -- si es gasto hay que actualizar los movtogasto
+   IF(:TIPODOCTOID = 63) THEN
+   BEGIN
+      UPDATE MOVTOGASTO SET ESTATUSMOVTOID = 1 WHERE DOCTOID = :DOCTOID AND ESTATUSMOVTOID = 0;
+   END
+
+
+   -- Generar el pago del documento
+   UPDATE DOCTO
+   SET ESTATUSDOCTOID = 1
+   WHERE ID = :DOCTOID;
+
+   UPDATE DOCTO SET DOCTO.postkitestatus = 1 WHERE ID = :DOCTOID;
+
+   SELECT PERSONAID, PERSONAAPARTADOID FROM DOCTO WHERE ID = :DOCTOID INTO :PERSONAID, :PERSONAAPARTADOID;
+
+   if(:personaid <> 1) then
+   begin
+        SELECT ERRORCODE FROM PERSONA_AJUSTAR_SALDOS(:PERSONAID) INTO :ERRORCODE;
+   end
+        
+   if(:personaapartadoid is not null) then
+   begin
+        SELECT ERRORCODE FROM PERSONAAPARTADO_AJUSTAR_SALDOS(:PERSONAAPARTADOID) INTO :ERRORCODE;
+   end
+
+
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+         /*
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1004;
+      SUSPEND;
+   END */
+END

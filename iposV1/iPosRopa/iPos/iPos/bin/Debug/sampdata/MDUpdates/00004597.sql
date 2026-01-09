@@ -1,0 +1,20 @@
+CREATE GENERATOR SEQ_SAT_CODIGOPOSTAL;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

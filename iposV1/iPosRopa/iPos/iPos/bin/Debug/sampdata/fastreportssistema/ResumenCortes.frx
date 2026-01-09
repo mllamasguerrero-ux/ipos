@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/15/2014 14:58:59" ReportInfo.Modified="10/15/2014 16:07:10" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlswnOjJ7QXfJ631YFsF1WQzOpoLeMXVpvvASDwuuCBm1+12fmZdja0d9zgDLKAvvNHiWcRB/InMjJ0YSNwPyD1BDrstcr5zBjDQI9h/40kk+BjhzT20A/hzsO3zrPZclKpw==">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT        corte.id AS folio, sucursal.clave AS sucursal, caja.clave AS caja, turno.nombre AS turno, persona.nombre AS cajero, corte.numerotickets AS num_tickets, &#13;&#10;                         corte.numerodevoluciones AS num_devoluciones, corte.saldoinicial, corte.ingreso, corte.egreso, corte.devolucion, corte.aportacion, corte.retiro, corte.saldofinal, &#13;&#10;                         corte.saldoreal, corte.diferencia, corte.fechacorte, corte.inicia, corte.termina, corte.ingresoefectivo, corte.ingresotarjeta, corte.ingresocredito, corte.ingresocheque, &#13;&#10;                         corte.ingresovale, corte.cambiocheque, corte.pagoproveedores, corte.saldorealcredito&#13;&#10;    , corte.subtotalsiniva, corte.subtotalconiva&#13;&#10;&#13;&#10;&#13;&#10; ,&#13;&#10;&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_01_porc then coalesce(m.monto ,0) else 0 end) IEPS_01_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_02_porc then coalesce(m.monto ,0) else 0 end) IEPS_02_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_03_porc then coalesce(m.monto ,0) else 0 end) IEPS_03_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_04_porc then coalesce(m.monto ,0) else 0 end) IEPS_04_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_05_porc then coalesce(m.monto ,0) else 0 end) IEPS_05_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_06_porc then coalesce(m.monto ,0) else 0 end) IEPS_06_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_07_porc then coalesce(m.monto ,0) else 0 end) IEPS_07_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_08_porc then coalesce(m.monto ,0) else 0 end) IEPS_08_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_09_porc then coalesce(m.monto ,0) else 0 end) IEPS_09_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_10_porc then coalesce(m.monto ,0) else 0 end) IEPS_10_IMPORTE,&#13;&#10;&#13;&#10;         T.ieps_01_porc IEPS_01_PORC,&#13;&#10;         T.ieps_02_porc IEPS_02_PORC,&#13;&#10;         T.ieps_03_porc IEPS_03_PORC,&#13;&#10;         T.ieps_04_porc IEPS_04_PORC,&#13;&#10;         T.ieps_05_porc IEPS_05_PORC,&#13;&#10;         T.ieps_06_porc IEPS_06_PORC,&#13;&#10;         T.ieps_07_porc IEPS_07_PORC,&#13;&#10;         T.ieps_08_porc IEPS_08_PORC,&#13;&#10;         T.ieps_09_porc IEPS_09_PORC,&#13;&#10;         T.ieps_10_porc IEPS_10_PORC,&#13;&#10;CORTE.MONTOIVA, CORTE.MONTOIEPS&#13;&#10;&#13;&#10;&#13;&#10;FROM            corte LEFT OUTER JOIN&#13;&#10;                         sucursal ON sucursal.id = corte.sucursalid LEFT OUTER JOIN&#13;&#10;                         caja ON caja.id = corte.cajaid LEFT OUTER JOIN&#13;&#10;                         turno ON turno.id = corte.turnoid LEFT OUTER JOIN&#13;&#10;                         persona ON corte.cajeroid = persona.id&#13;&#10;                         INNER JOIN REP_CORTE_CONIEPS_TASAS T ON 1 = 1&#13;&#10;                         left join corteieps m on m.corteid = corte.id&#13;&#10;&#13;&#10;WHERE        (corte.fechacorte &gt;= @fechainicial and corte.fechacorte &lt;= @fechafinal) AND (corte.sucursalid =&#13;&#10;                             (SELECT        sucursalid&#13;&#10;                               FROM            parametro))&#13;&#10;&#13;&#10;group by corte.id , sucursal.clave , caja.clave , turno.nombre , persona.nombre , corte.numerotickets , &#13;&#10;                         corte.numerodevoluciones , corte.saldoinicial, corte.ingreso, corte.egreso, corte.devolucion, corte.aportacion, corte.retiro, corte.saldofinal, &#13;&#10;                         corte.saldoreal, corte.diferencia, corte.fechacorte, corte.inicia, corte.termina, corte.ingresoefectivo, corte.ingresotarjeta, corte.ingresocredito, corte.ingresocheque, &#13;&#10;                         corte.ingresovale, corte.cambiocheque, corte.pagoproveedores, corte.saldorealcredito&#13;&#10;    , corte.subtotalsiniva, corte.subtotalconiva ,&#13;&#10;         T.ieps_01_porc,&#13;&#10;         T.ieps_02_porc,&#13;&#10;         T.ieps_03_porc,&#13;&#10;         T.ieps_04_porc,&#13;&#10;         T.ieps_05_porc,&#13;&#10;         T.ieps_06_porc,&#13;&#10;         T.ieps_07_porc,&#13;&#10;         T.ieps_08_porc,&#13;&#10;         T.ieps_09_porc,&#13;&#10;         T.ieps_10_porc,&#13;&#10;CORTE.MONTOIVA, CORTE.MONTOIEPS">
+        <Column Name="FOLIO" DataType="System.Int64"/>
+        <Column Name="SUCURSAL" DataType="System.String"/>
+        <Column Name="CAJA" DataType="System.String"/>
+        <Column Name="TURNO" DataType="System.String"/>
+        <Column Name="CAJERO" DataType="System.String"/>
+        <Column Name="NUM_TICKETS" DataType="System.Int32"/>
+        <Column Name="NUM_DEVOLUCIONES" DataType="System.Int32"/>
+        <Column Name="SALDOINICIAL" DataType="System.Decimal"/>
+        <Column Name="INGRESO" DataType="System.Decimal"/>
+        <Column Name="EGRESO" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCION" DataType="System.Decimal"/>
+        <Column Name="APORTACION" DataType="System.Decimal"/>
+        <Column Name="RETIRO" DataType="System.Decimal"/>
+        <Column Name="SALDOFINAL" DataType="System.Decimal"/>
+        <Column Name="SALDOREAL" DataType="System.Decimal"/>
+        <Column Name="DIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="FECHACORTE" DataType="System.DateTime"/>
+        <Column Name="INICIA" DataType="System.DateTime"/>
+        <Column Name="TERMINA" DataType="System.DateTime"/>
+        <Column Name="INGRESOEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="INGRESOTARJETA" DataType="System.Decimal"/>
+        <Column Name="INGRESOCREDITO" DataType="System.Decimal"/>
+        <Column Name="INGRESOCHEQUE" DataType="System.Decimal"/>
+        <Column Name="INGRESOVALE" DataType="System.Decimal"/>
+        <Column Name="CAMBIOCHEQUE" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORES" DataType="System.Decimal"/>
+        <Column Name="SALDOREALCREDITO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTALSINIVA" DataType="System.Decimal"/>
+        <Column Name="SUBTOTALCONIVA" DataType="System.Decimal"/>
+        <Column Name="IEPS_01_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_02_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_03_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_04_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_05_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_06_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_07_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_08_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_09_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_10_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_01_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_02_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_03_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_04_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_05_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_06_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_07_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_08_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_09_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_10_PORC" DataType="System.Decimal"/>
+        <Column Name="MONTOIVA" DataType="System.Decimal"/>
+        <Column Name="MONTOIEPS" DataType="System.Decimal"/>
+        <CommandParameter Name="fechainicial" DataType="5" Expression="[fechainicial]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="fechafinal" DataType="5" Expression="[fechafinal]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechainicial" DataType="System.DateTime"/>
+    <Parameter Name="fechafinal" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="94.5">
+      <TextObject Name="Text45" Left="463.05" Top="28.35" Width="141.75" Height="18.9" Text="[fechainicial]"/>
+      <TextObject Name="Text46" Left="463.05" Top="56.7" Width="141.75" Height="18.9" Text="[fechafinal]"/>
+      <TextObject Name="Text47" Left="359.1" Top="28.35" Width="94.5" Height="18.9" Text="Fecha inicial" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text48" Left="359.1" Top="56.7" Width="94.5" Height="18.9" Text="Fecha final" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="98.5" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Width="37.8" Height="18.9" Text="FOLIO" Font="Arial, 7pt"/>
+      <TextObject Name="Text4" Left="37.8" Width="47.25" Height="18.9" Text="SUCURSAL" Font="Arial, 7pt"/>
+      <TextObject Name="Text6" Left="85.05" Width="47.25" Height="18.9" Text="CAJA" Font="Arial, 7pt"/>
+      <TextObject Name="Text8" Left="132.3" Width="47.25" Height="18.9" Text="CAJERO" Font="Arial, 7pt"/>
+      <TextObject Name="Text10" Left="179.55" Width="47.25" Height="18.9" Text="FECHACORTE" Font="Arial, 7pt"/>
+      <TextObject Name="Text12" Left="226.8" Width="56.7" Height="18.9" Text="SALDOINICIAL" Font="Arial, 7pt"/>
+      <TextObject Name="Text18" Left="406.35" Width="47.25" Height="18.9" Text="SALDOREALCREDITO" Font="Arial, 7pt"/>
+      <TextObject Name="Text20" Left="453.6" Width="37.8" Height="18.9" Text="DIFERENCIA" Font="Arial, 7pt"/>
+      <TextObject Name="Text14" Left="283.5" Width="56.7" Height="18.9" Text="SALDOFINAL" Font="Arial, 7pt"/>
+      <TextObject Name="Text16" Left="349.65" Width="56.7" Height="18.9" Text="SALDOREAL" Font="Arial, 7pt"/>
+      <TextObject Name="Text22" Left="491.4" Width="28.35" Height="18.9" Text="NUM_TICKETS" Font="Arial, 7pt"/>
+      <TextObject Name="Text24" Left="642.6" Width="28.35" Height="18.9" Text="NUM_DEVOLUCIONES" Font="Arial, 7pt"/>
+      <TextObject Name="Text26" Left="670.95" Width="37.8" Height="18.9" Text="IEPS_01_IMPORTE [Table.IEPS_01_PORC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text28" Left="708.75" Width="37.8" Height="18.9" Text="IEPS_02_IMPORTE  [Table.IEPS_02_PORC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text30" Left="746.55" Width="28.35" Height="18.9" Text="IEPS_03_IMPORTE [Table.IEPS_03_PORC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text32" Left="774.9" Width="37.8" Height="18.9" Text="IEPS_04_IMPORTE [Table.IEPS_04_PORC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text34" Left="812.7" Width="37.8" Height="18.9" Text="IEPS_05_IMPORTE  [Table.IEPS_05_PORC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text36" Left="850.5" Width="28.35" Height="18.9" Text="IEPS_06_IMPORTE  [Table.IEPS_06_PORC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text38" Left="878.85" Width="37.8" Height="18.9" Text="IEPS_07_IMPORTE  [Table.IEPS_07_PORC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text40" Left="916.65" Width="37.8" Height="18.9" Text="IEPS_08_IMPORTE  [Table.IEPS_08_PORC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text42" Left="954.45" Width="37.8" Height="18.9" Text="IEPS_09_IMPORTE  [Table.IEPS_09_PORC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text44" Left="992.25" Width="47.25" Height="18.9" Text="IEPS_10_IMPORTE [Table.IEPS_10_PORC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text50" Left="519.75" Width="47.25" Height="18.9" Text="MONTOIVA" Font="Arial, 8pt"/>
+      <TextObject Name="Text52" Left="567" Width="75.6" Height="18.9" Text="MONTOIEPS" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="130.85" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="37.8" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text3" Left="37.8" Width="47.25" Height="18.9" Text="[Table.SUCURSAL]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="85.05" Width="47.25" Height="18.9" Text="[Table.CAJA]" Font="Arial, 7pt"/>
+      <TextObject Name="Text7" Left="132.3" Width="47.25" Height="18.9" Text="[Table.CAJERO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text9" Left="179.55" Width="47.25" Height="18.9" Text="[Table.FECHACORTE]" Format="Date" Format.Format="d" Font="Arial, 7pt"/>
+      <TextObject Name="Text11" Left="226.8" Width="56.7" Height="18.9" Text="[Table.SALDOINICIAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="406.35" Width="47.25" Height="18.9" Text="[Table.SALDOREALCREDITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="453.6" Width="37.8" Height="18.9" Text="[Table.DIFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="283.5" Width="56.7" Height="18.9" Text="[Table.SALDOFINAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="349.65" Width="56.7" Height="18.9" Text="[Table.SALDOREAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="491.4" Width="28.35" Height="18.9" Text="[Table.NUM_TICKETS]" Font="Arial, 7pt"/>
+      <TextObject Name="Text23" Left="642.6" Width="28.35" Height="18.9" Text="[Table.NUM_DEVOLUCIONES]" Font="Arial, 7pt"/>
+      <TextObject Name="Text25" Left="670.95" Width="37.8" Height="18.9" Text="[Table.IEPS_01_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="708.75" Width="37.8" Height="18.9" Text="[Table.IEPS_02_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text29" Left="746.55" Width="28.35" Height="18.9" Text="[Table.IEPS_03_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text31" Left="774.9" Width="37.8" Height="18.9" Text="[Table.IEPS_04_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text33" Left="812.7" Width="37.8" Height="18.9" Text="[Table.IEPS_05_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text35" Left="850.5" Width="28.35" Height="18.9" Text="[Table.IEPS_06_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text37" Left="878.85" Width="37.8" Height="18.9" Text="[Table.IEPS_07_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text39" Left="916.65" Width="37.8" Height="18.9" Text="[Table.IEPS_08_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text41" Left="954.45" Width="37.8" Height="18.9" Text="[Table.IEPS_09_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text43" Left="992.25" Width="47.25" Height="18.9" Text="[Table.IEPS_10_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text49" Left="519.75" Width="47.25" Height="18.9" Text="[Table.MONTOIVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text51" Left="567" Width="75.6" Height="18.9" Text="[Table.MONTOIEPS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="153.75" Width="1047.06" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="56" Top="48" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fechainicial" FilterOperation="GreaterThanOrEqual" Value="10/15/2014 15:16:28"/>
+    <LabelControl Name="Label1" Left="56" Top="32" Width="59" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="fechainicial"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="60" Top="104" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechafinal" FilterOperation="LessThanOrEqual" Value="10/15/2014 15:16:31"/>
+    <LabelControl Name="Label2" Left="60" Top="88" Width="54" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="fechafinal"/>
+  </DialogPage>
+</Report>

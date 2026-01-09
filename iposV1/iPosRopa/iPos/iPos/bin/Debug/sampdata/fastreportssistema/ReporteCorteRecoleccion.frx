@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/11/2017 14:27:40" ReportInfo.Modified="03/31/2019 18:29:26" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    
+    
+    public long cajeroId = 0;
+    
+    public long encargadoId = 0;
+    
+
+    private void ComboBox1_TextChanged(object sender, EventArgs e)
+    {
+      
+      string[] split = CBVendedor.Text.Split(new string[] { &quot;# Vendedor: &quot; }, StringSplitOptions.None);
+      string strNumCliente = &quot;0&quot;;
+      if(split.Length &gt; 1)     
+        strNumCliente = split[1];
+      
+      try
+      {
+        cajeroId = long.Parse(strNumCliente);   
+        TBCajero.Text =   CBVendedor.Text;
+      }
+      catch{
+      }
+    }
+
+    private void CBEncargado_TextChanged(object sender, EventArgs e)
+    {
+      
+      string[] split = CBEncargado.Text.Split(new string[] { &quot;# Encargado: &quot; }, StringSplitOptions.None);
+      string strNumCliente = &quot;0&quot;;
+      if(split.Length &gt; 1)     
+        strNumCliente = split[1];
+      
+      try
+      {
+        encargadoId = long.Parse(strNumCliente);    
+        TBEncargado.Text =   CBEncargado.Text;
+      }
+      catch{
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2VjjuZR/zIQHjQsXHTux9S4=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;select&#13;&#10;persona.clave usuario_perfil, &#13;&#10;corte.fechacorte,&#13;&#10;corte.id,&#13;&#10;corte.inicia,&#13;&#10;corte.termina,&#13;&#10;corte.saldofinal,&#13;&#10;corte.saldoreal,&#13;&#10;corte.diferencia,&#13;&#10;corte.CORTERECOLECCIONID,&#13;&#10;encargado.clave encargadoclave,&#13;&#10;encargado.nombre encargadonombre,&#13;&#10;persona.nombre cajeronombre,&#13;&#10; corterecoleccion.fechahora fechahorarecoleccion&#13;&#10;&#13;&#10;&#13;&#10;  from corte&#13;&#10;  left join persona on persona.id = corte.cajeroid&#13;&#10;  left join corterecoleccion on corterecoleccion.id = corte.corterecoleccionid&#13;&#10;  left join persona encargado on encargado.id = corterecoleccion.encargadoid&#13;&#10;  where corte.fechacorte &gt;= @fechaini and corte.fechacorte &lt;= @fechafin&#13;&#10;  and (@cajeroid = 0 or  corte.cajeroid = @cajeroid)&#13;&#10; and (@encargadoid = 0 or coalesce(corterecoleccion.encargadoid,0) = @encargadoid)  &#13;&#10;and (@norecolectados &lt;&gt; 'N' or coalesce(corterecoleccion.encargadoid,0) = 0)">
+        <Column Name="USUARIO_PERFIL" DataType="System.String"/>
+        <Column Name="FECHACORTE" DataType="System.DateTime"/>
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="INICIA" DataType="System.DateTime"/>
+        <Column Name="TERMINA" DataType="System.DateTime"/>
+        <Column Name="SALDOFINAL" DataType="System.Decimal"/>
+        <Column Name="SALDOREAL" DataType="System.Decimal"/>
+        <Column Name="DIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="CORTERECOLECCIONID" DataType="System.Int64"/>
+        <Column Name="ENCARGADOCLAVE" DataType="System.String"/>
+        <Column Name="ENCARGADONOMBRE" DataType="System.String"/>
+        <Column Name="CAJERONOMBRE" DataType="System.String"/>
+        <Column Name="FECHAHORARECOLECCION" DataType="System.DateTime"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01.01.2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01.01.2001"/>
+        <CommandParameter Name="cajeroid" DataType="6" Expression="cajeroId" DefaultValue="0"/>
+        <CommandParameter Name="encargadoid" DataType="1" Expression="encargadoId" DefaultValue="0"/>
+        <CommandParameter Name="norecolectados" DataType="16" DefaultValue="'N'"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="vendedor" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Vendedor: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Vendedor: ' || cast(id as varchar(13)) nombre from persona where tipopersonaid  in (22)&#13;&#10; ">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="encargado" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Encargado: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Encargado: ' || cast(id as varchar(13)) nombre from persona where tipopersonaid  in (70)&#13;&#10; ">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="norecolectados" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="160.65">
+      <TextObject Name="Text19" Left="207.9" Top="75.6" Width="94.5" Height="18.9" Text="[fechaini]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="623.7" Top="75.6" Width="94.5" Height="18.9" Text="[fechafin]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text21" Left="207.9" Top="132.3" Width="94.5" Height="18.9" Text="[norecolectados]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="TBCajero" Left="207.9" Top="103.95" Width="170.1" Height="18.9" Text="Todos" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="TBEncargado" Left="623.7" Top="103.95" Width="170.1" Height="18.9" Text="Todos" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text24" Left="18.9" Top="75.6" Width="151.2" Height="18.9" Text="Fecha inicial corte:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text25" Left="453.6" Top="75.6" Width="151.2" Height="18.9" Text="Fecha final corte:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text26" Left="18.9" Top="103.95" Width="151.2" Height="18.9" Text="Cajero corte:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text27" Left="453.6" Top="103.95" Width="151.2" Height="18.9" Text="Encargado recoleccion:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text28" Left="18.9" Top="132.3" Width="160.65" Height="18.9" Text="Solo no recolectados:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text22" Left="28.35" Top="9.45" Width="642.6" Height="37.8" Text="REPORTE DE CORTES Y RECOLECCION" Font="Arial, 22pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="164.65" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Left="9.45" Width="113.4" Height="28.35" Text="USUARIO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="122.85" Width="103.95" Height="28.35" Text="FECHACORTE" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text6" Left="226.8" Width="94.5" Height="18.9" Text="INICIA" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="321.3" Width="94.5" Height="18.9" Text="TERMINA" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text10" Left="425.25" Width="94.5" Height="18.9" Text="SALDOFINAL" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text12" Left="519.75" Width="94.5" Height="18.9" Text="SALDOREAL" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text14" Left="614.25" Width="94.5" Height="18.9" Text="DIFERENCIA" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text16" Left="708.75" Width="189" Height="18.9" Text="ENCARGADO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text18" Left="907.2" Width="122.85" Height="28.35" Text="FECHA RECOLECCION" Font="Arial, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="197" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Left="9.45" Width="113.4" Height="18.9" Text="[Table.USUARIO_PERFIL]" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="122.85" Width="103.95" Height="18.9" Text="[Table.FECHACORTE]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="226.8" Width="94.5" Height="18.9" Text="[Table.INICIA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text7" Left="321.3" Width="94.5" Height="18.9" Text="[Table.TERMINA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="425.25" Width="94.5" Height="18.9" Text="[Table.SALDOFINAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="519.75" Width="94.5" Height="18.9" Text="[Table.SALDOREAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="614.25" Width="94.5" Height="18.9" Text="[Table.DIFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="708.75" Width="189" Height="18.9" Text="[Table.ENCARGADOCLAVE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text17" Left="907.2" Width="122.85" Height="18.9" Text="[Table.FECHAHORARECOLECCION]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="219.9" Width="1047.06" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="534" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="362" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="445" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <ComboBoxControl Name="CBEncargado" Left="148" Top="144" Width="165" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Encargado: 0" TextChangedEvent="CBEncargado_TextChanged" DataColumn="encargado.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+    <LabelControl Name="Label2" Left="36" Top="144" Width="58" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Encargado"/>
+    <ComboBoxControl Name="CBSoloPorRecolectar" Left="148" Top="180" Font="Tahoma, 8pt" TabIndex="4" Text="N" ReportParameter="norecolectados" ItemHeight="13" ItemsText="N&#13;&#10;S"/>
+    <LabelControl Name="Label3" Left="28" Top="184" Width="97" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Solo por recolectar"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="144" Top="24" Font="Tahoma, 8pt" TabIndex="5" ReportParameter="fechaini" FilterOperation="GreaterThanOrEqual" Value="03/31/2019 18:18:01"/>
+    <LabelControl Name="Label4" Left="36" Top="28" Width="62" Height="13" Font="Tahoma, 8pt" TabIndex="6" Text="Fecha inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="144" Top="64" Font="Tahoma, 8pt" TabIndex="7" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="03/31/2019 18:18:11"/>
+    <LabelControl Name="Label5" Left="32" Top="68" Width="51" Height="13" Font="Tahoma, 8pt" TabIndex="8" Text="Fecha fin"/>
+    <ComboBoxControl Name="CBVendedor" Left="144" Top="104" Width="165" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Encargado: 0" TextChangedEvent="ComboBox1_TextChanged" DataColumn="encargado.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+    <LabelControl Name="Label6" Left="32" Top="104" Width="53" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Vendedor"/>
+  </DialogPage>
+</Report>

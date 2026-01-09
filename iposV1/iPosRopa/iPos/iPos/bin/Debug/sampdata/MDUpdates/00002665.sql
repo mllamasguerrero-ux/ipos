@@ -1,0 +1,1 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) VALUES (198, 8, 'Surtido de ventas pendientes', 'Surtido de ventas pendientes', 198, 3, 15);

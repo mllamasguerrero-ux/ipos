@@ -1,0 +1,1 @@
+delete from sucursal where clave not in ('0009','TM10');

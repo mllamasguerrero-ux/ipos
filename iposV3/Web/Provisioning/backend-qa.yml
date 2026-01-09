@@ -1,0 +1,35 @@
+version: 0.2
+env:
+    variables:
+        APP_NAME: "API"
+        BUILD_ENV : "qa"
+        IMAGE_TAG : "qa"
+        AWS_DEFAULT_REGION : "us-west-2" 
+        AWS_ACCOUNT_ID : "059705814331"
+        IMAGE_REPO_NAME : "momus-analytics"
+phases:
+    install:
+        runtime-versions:
+            docker: 18
+        commands:
+            - echo Logging in to Amazon ECR...
+            - $(aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION})
+    build:
+        commands:
+        # Builds Docker imagage
+        - echo Build started on `date`
+        - echo Building the Docker image...
+        - cd API
+        - echo ${IMAGE_REPO_NAME}:${IMAGE_TAG}
+        - docker build -f Dockerfile.${IMAGE_TAG}  . -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} 
+        - docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}      
+
+    post_build:
+        commands:
+        - echo Build completed on `date`
+        - echo Pushing the Docker image...
+        - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
+artifacts:
+    files:
+    - 'Provisioning/${BUILD_ENV}/Dockerrun.aws.json'
+    discard-paths: yes

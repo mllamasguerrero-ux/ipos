@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="42be11c9-84ee-46bc-aea9-44eb8e327e62" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="mex.xsd" MetadataType="Schema" ID="05cdbefa-5b56-4e78-a6a8-5cca8b546da3" SourceId="1" SourceUrl="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?xsd=xsd1" />
+    <MetadataFile FileName="mex1.xsd" MetadataType="Schema" ID="0ac677b5-f4db-4f91-b283-ecacd2cae6eb" SourceId="1" SourceUrl="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?xsd=xsd0" />
+    <MetadataFile FileName="TransferService.wsdl" MetadataType="Wsdl" ID="ba446e50-cda4-4413-9296-b4dd193b6827" SourceId="1" SourceUrl="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?wsdl" />
+    <MetadataFile FileName="mex2.xsd" MetadataType="Schema" ID="61a6f7e2-1f03-4d65-a0c6-dd5eab0214ac" SourceId="1" SourceUrl="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?xsd=xsd2" />
+    <MetadataFile FileName="mex3.xsd" MetadataType="Schema" ID="dc7a9ed7-320a-410b-bdcb-eb4bca9ddbe9" SourceId="1" SourceUrl="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

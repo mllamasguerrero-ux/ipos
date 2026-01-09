@@ -1,0 +1,929 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:Syncfusion="http://schemas.syncfusion.com/wpf">
+    
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    
+    <ControlTemplate x:Key="btnStyle1" TargetType="{x:Type Button}"/>
+	<ControlTemplate x:Key="btnStyle2" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF13A1C7"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0F82A0"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF303638"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" Width="Auto" RadiusY="4" RadiusX="4" Fill="#FF34BBDF"/>
+			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Text="{TemplateBinding Content}" FontSize="16" Foreground="White" FontFamily="Segoe UI Light"/>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="MenuDinamicoStyle1" TargetType="{x:Type Menu}">
+		<Grid Background="#FF255F7A"/>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenuStyle1" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+				<Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/client-icon.png" Margin="-0.25,0,0.25,0"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="16.133,3.625,15.846,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" VerticalAlignment="Stretch" FontSize="14.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenuStyleProvider" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+				<Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/a11.ico" Margin="-0.25,0,0.25,0"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="13.598,3.625,13.311,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" VerticalAlignment="Stretch" FontSize="14.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenuStyleProduct" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+                <Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/product icon.png" Margin="-0.25,-0.5,0.25,-3"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Stretch" Margin="7.75,3.875,6.75,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" VerticalAlignment="Stretch" FontSize="14.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenyStyleSale" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+                <Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/Online-Shopping-icon.png" Margin="-0.25,-0.5,0.25,-3"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="7.75,3.875,6.75,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" VerticalAlignment="Stretch" FontSize="14.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenuStyleCorteAdm" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+                <Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/cashier_icon-icons.com_53629.png" Margin="-0.25,-0.5,0.25,-3"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Stretch" Margin="4.46,3.875,4.293,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" VerticalAlignment="Stretch" FontSize="14.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenuStyleInventario" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+                <Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/Icono__Facturacion.png" Margin="-0.25,-1.332,0,-3.669"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="4.46,3.875,4.293,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" FontSize="14.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenuStyleExport" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+                <Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/export-flat.png" Margin="-0.25,-1.332,0,-3.669"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="4.46,3.875,4.293,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" FontSize="14.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenuStyleImport" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+                <Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/Save-icon.png" Margin="-0.25,-1.332,0,-3.669"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="4.46,3.875,4.293,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" FontSize="14.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenuStyleDayC" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+                <Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/Cash-register-icon.png" Margin="-0.25,-1.332,0,-3.669"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="4.46,3.875,4.293,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" FontSize="14.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenuStyleRetire" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+                <Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/retiro.png" Margin="-0.25,-1.332,0,-3.669"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="4.46,3.875,4.293,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" FontSize="14.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonMenuStyleChangeCompany" TargetType="{x:Type Button}">
+		<Grid>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF144257"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF0A3242"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF9C9C9C"/>
+							</ColorAnimationUsingKeyFrames>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
+								<EasingColorKeyFrame KeyTime="0" Value="#FF817777"/>
+							</ColorAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="image">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<SolidColorBrush Color="#FF896161"/>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" RadiusY="5.333" RadiusX="5.333" Fill="#FF1E6E93"/>
+			<Grid x:Name="imageGrid" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="10,2.333,10,18">
+                <Image x:Name="image" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="../Resources/icon-import-export.png" Margin="-0.25,-2.997,0,-14.004"/>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,32,0,0">
+				<TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="17.333,-11.667,10,0" TextWrapping="Wrap" Text="{TemplateBinding Content}" Foreground="LightGray" FontSize="13.333" Width="55.667"/>
+			</Grid>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="txtStyle1" TargetType="{x:Type TextBox}">
+		<Grid Background="{x:Null}">
+			<Rectangle Fill="White" HorizontalAlignment="Stretch" Height="Auto" RadiusY="6" RadiusX="6" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" Margin="0,0,3,1.154"/>
+			<TextBox HorizontalAlignment="Stretch" Height="Auto" TextWrapping="Wrap" Text="" VerticalAlignment="Stretch" Width="Auto" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" FontSize="16" Margin="0,0,3,0"/>
+		</Grid>
+	</ControlTemplate>
+	<ControlTemplate x:Key="buttonStyleNormal" TargetType="{x:Type Button}">
+		<Grid/>
+	</ControlTemplate>
+    <ControlTemplate x:Key="buttonPicNormal1" TargetType="{x:Type Button}">
+        <Grid Background="{x:Null}" Margin="3,0,7,-0.077" Width="Auto" Height="30">
+    		<VisualStateManager.VisualStateGroups>
+    			<VisualStateGroup x:Name="CommonStates">
+    				<VisualState x:Name="Normal"/>
+    				<VisualState x:Name="MouseOver">
+    					<Storyboard>
+    						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+    							<DiscreteObjectKeyFrame KeyTime="0">
+    								<DiscreteObjectKeyFrame.Value>
+    									<SolidColorBrush Color="#FF5E8B95"/>
+    								</DiscreteObjectKeyFrame.Value>
+    							</DiscreteObjectKeyFrame>
+    						</ObjectAnimationUsingKeyFrames>
+    					</Storyboard>
+    				</VisualState>
+    				<VisualState x:Name="Pressed">
+    					<Storyboard>
+    						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+    							<DiscreteObjectKeyFrame KeyTime="0">
+    								<DiscreteObjectKeyFrame.Value>
+    									<SolidColorBrush Color="#FF093742"/>
+    								</DiscreteObjectKeyFrame.Value>
+    							</DiscreteObjectKeyFrame>
+    						</ObjectAnimationUsingKeyFrames>
+    					</Storyboard>
+    				</VisualState>
+    				<VisualState x:Name="Disabled"/>
+    			</VisualStateGroup>
+    		</VisualStateManager.VisualStateGroups>
+    		<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="40" Margin="0"/>
+    		<Image Height="Auto" Width="Auto" OpacityMask="{x:Null}" Source="/iPos 2.0;component/Resources/document_search.png" HorizontalAlignment="Left"/>
+    	</Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="buttonStyleNormal2" TargetType="{x:Type Button}">
+    	<Grid Margin="0">
+    		<Rectangle Height="29.923" Stroke="{x:Null}" VerticalAlignment="Top" Width="30" HorizontalAlignment="Left"/>
+    		<Image HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Source="/iPos 2.0;component/Resources/document_add.png"/>
+    	</Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="buttonStylePicNormal1" TargetType="{x:Type Button}">
+    	<Grid>
+    		<VisualStateManager.VisualStateGroups>
+    			<VisualStateGroup x:Name="CommonStates">
+    				<VisualState x:Name="Normal"/>
+    				<VisualState x:Name="MouseOver">
+    					<Storyboard>
+    						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="rectangle">
+    							<DiscreteObjectKeyFrame KeyTime="0">
+    								<DiscreteObjectKeyFrame.Value>
+    									<SolidColorBrush Color="#FF2A68B2"/>
+    								</DiscreteObjectKeyFrame.Value>
+    							</DiscreteObjectKeyFrame>
+    						</ObjectAnimationUsingKeyFrames>
+    						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+    							<DiscreteObjectKeyFrame KeyTime="0">
+    								<DiscreteObjectKeyFrame.Value>
+    									<SolidColorBrush Color="#FF144257"/>
+    								</DiscreteObjectKeyFrame.Value>
+    							</DiscreteObjectKeyFrame>
+    						</ObjectAnimationUsingKeyFrames>
+    					</Storyboard>
+    				</VisualState>
+    				<VisualState x:Name="Pressed">
+    					<Storyboard>
+    						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+    							<DiscreteObjectKeyFrame KeyTime="0">
+    								<DiscreteObjectKeyFrame.Value>
+    									<SolidColorBrush Color="#FF0A3242"/>
+    								</DiscreteObjectKeyFrame.Value>
+    							</DiscreteObjectKeyFrame>
+    						</ObjectAnimationUsingKeyFrames>
+    					</Storyboard>
+    				</VisualState>
+    				<VisualState x:Name="Disabled"/>
+    			</VisualStateGroup>
+    		</VisualStateManager.VisualStateGroups>
+    		<Rectangle x:Name="rectangle" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto"/>
+    		<Image Height="Auto" VerticalAlignment="Stretch" Width="Auto" Source="/Resources/document_search.png" Stretch="Fill"/>
+    	</Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="buttonStylePicNormal2" TargetType="{x:Type Button}">
+    	<Grid>
+    		<VisualStateManager.VisualStateGroups>
+    			<VisualStateGroup x:Name="CommonStates">
+    				<VisualState x:Name="Normal"/>
+    				<VisualState x:Name="MouseOver">
+    					<Storyboard>
+    						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask)" Storyboard.TargetName="rectangle">
+    							<DiscreteObjectKeyFrame KeyTime="0">
+    								<DiscreteObjectKeyFrame.Value>
+    									<SolidColorBrush Color="#FF2A68B2"/>
+    								</DiscreteObjectKeyFrame.Value>
+    							</DiscreteObjectKeyFrame>
+    						</ObjectAnimationUsingKeyFrames>
+    						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+    							<DiscreteObjectKeyFrame KeyTime="0">
+    								<DiscreteObjectKeyFrame.Value>
+    									<SolidColorBrush Color="#FF144257"/>
+    								</DiscreteObjectKeyFrame.Value>
+    							</DiscreteObjectKeyFrame>
+    						</ObjectAnimationUsingKeyFrames>
+    					</Storyboard>
+    				</VisualState>
+    				<VisualState x:Name="Pressed">
+    					<Storyboard>
+    						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+    							<DiscreteObjectKeyFrame KeyTime="0">
+    								<DiscreteObjectKeyFrame.Value>
+    									<SolidColorBrush Color="#FF0A3242"/>
+    								</DiscreteObjectKeyFrame.Value>
+    							</DiscreteObjectKeyFrame>
+    						</ObjectAnimationUsingKeyFrames>
+    					</Storyboard>
+    				</VisualState>
+    				<VisualState x:Name="Disabled"/>
+    			</VisualStateGroup>
+    		</VisualStateManager.VisualStateGroups>
+    		<Rectangle x:Name="rectangle" Height="Auto" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto"/>
+    		<Image Height="Auto" VerticalAlignment="Stretch" Width="Auto" Source="/Resources/document_add.png" Stretch="Fill"/>
+    	</Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="buttonStyleHorizontalPic1" TargetType="{x:Type Button}">
+    	<Grid>
+    		<Rectangle Height="Auto" RadiusY="8" RadiusX="8" VerticalAlignment="Stretch" Width="Auto" Fill="#FFF16E00"/>
+    		<Image Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="-1,2.02,107,2" Source="/iPos 2.0;component/Resources - Copy/Save-icon.png"/>
+    		<TextBox HorizontalAlignment="Stretch" Height="Auto" TextWrapping="Wrap" Text="{TemplateBinding Content}" Width="101" Margin="44,5.02,0,5.02" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
+    	</Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="buttonStyleHorizontalPic2" TargetType="{x:Type Button}">
+    	<Grid>
+    		<VisualStateManager.VisualStateGroups>
+    			<VisualStateGroup x:Name="CommonStates">
+    				<VisualState x:Name="Normal"/>
+    				<VisualState x:Name="MouseOver">
+    					<Storyboard>
+    						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+    							<EasingColorKeyFrame KeyTime="0" Value="#FF13A1C7"/>
+    						</ColorAnimationUsingKeyFrames>
+    					</Storyboard>
+    				</VisualState>
+    				<VisualState x:Name="Pressed">
+    					<Storyboard>
+    						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+    							<EasingColorKeyFrame KeyTime="0" Value="#FF0F82A0"/>
+    						</ColorAnimationUsingKeyFrames>
+    					</Storyboard>
+    				</VisualState>
+    				<VisualState x:Name="Disabled">
+    					<Storyboard>
+    						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+    							<EasingColorKeyFrame KeyTime="0" Value="#FF303638"/>
+    						</ColorAnimationUsingKeyFrames>
+    					</Storyboard>
+    				</VisualState>
+    			</VisualStateGroup>
+    		</VisualStateManager.VisualStateGroups>
+    		<Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" Width="Auto" RadiusY="4" RadiusX="4" Fill="#FF3489A0"/>
+    		<TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch" Text="{TemplateBinding Content}" FontSize="16" Foreground="White" FontFamily="Segoe UI Light" Margin="35.823,0,0,0"/>
+    		<Image HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Stretch" Width="20" Margin="0,1,96,-1" Source="/iPos 2.0;component/Resources - Copy/Save-icon.png"/>
+    	</Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="buttonStyleHorizontalPic3" TargetType="{x:Type Button}">
+        <Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal"/>
+                    <VisualState x:Name="MouseOver">
+                        <Storyboard>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+                                <EasingColorKeyFrame KeyTime="0" Value="#FF13A1C7"/>
+                            </ColorAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <Storyboard>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+                                <EasingColorKeyFrame KeyTime="0" Value="#FF0F82A0"/>
+                            </ColorAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <Storyboard>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
+                                <EasingColorKeyFrame KeyTime="0" Value="#FF303638"/>
+                            </ColorAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Rectangle x:Name="rectangle" HorizontalAlignment="Stretch" Height="Auto" Stroke="{x:Null}" Width="Auto" RadiusY="4" RadiusX="4" Fill="#FF3489A0"/>
+            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch" Text="{TemplateBinding Content}" FontSize="16" Foreground="White" FontFamily="Segoe UI Light" Margin="35.823,0,0,0"/>
+            <Image HorizontalAlignment="Right" Height="18" VerticalAlignment="Stretch" Width="20" Margin="0,1,96,0" Source="/iPos 2.0;component/Resources/document_delete.png"/>
+        </Grid>
+    </ControlTemplate>
+
+
+
+    <ControlTemplate x:Key="TabControlControlTemplate1" TargetType="{x:Type TabControl}">
+        <Grid x:Name="Grid" KeyboardNavigation.TabNavigation="Local">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="ColumnDefinition0"/>
+                <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                <RowDefinition x:Name="RowDefinition1" Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="1" Grid.Column="0" x:Name="ContentPanel" BorderBrush="#FFD0CEBF" BorderThickness="0,0,1,1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.DirectionalNavigation="Contained">
+                <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border Background="{TemplateBinding Background}" x:Name="Border1">
+                        <ContentPresenter DataContext="{x:Null}" Margin="{TemplateBinding Padding}" x:Name="PART_SelectedContentHost" Content="{TemplateBinding SelectedContent}" ContentTemplate="{TemplateBinding SelectedContentTemplate}" ContentTemplateSelector="{TemplateBinding SelectedContentTemplateSelector}" ContentSource="SelectedContent"/>
+                    </Border>
+                </Border>
+            </Border>
+            <ScrollViewer x:Name="HeaderPanel" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                <ScrollViewer.Style>
+                    <Style TargetType="{x:Type ScrollViewer}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Grid Margin="0,0,0,0" Grid.Row="0" Grid.Column="0" x:Name="HeaderPanel">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="25"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <RepeatButton Grid.Column="0" Content="&lt;" Command="ScrollBar.LineLeftCommand" Style="{DynamicResource TabScrollerRepeatButtonStyle}"/>
+                                        <ScrollContentPresenter Grid.Column="1" Content="{TemplateBinding ScrollViewer.Content}" />
+                                        <RepeatButton Grid.Column="2" Content="&gt;" Command="ScrollBar.LineRightCommand" Style="{DynamicResource TabScrollerRepeatButtonStyle}"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ScrollViewer.Style>
+                <StackPanel IsItemsHost="true" Orientation="Horizontal" Background="{x:Null}" KeyboardNavigation.TabIndex="1" />
+            </ScrollViewer>
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="LabelPanelHeaderTemplate" TargetType="{x:Type Label}">
+        <!--<Setter Property="Foreground" Value="WhiteSmoke" />
+        <Setter Property="FontSize" Value="16" />-->
+    </Style>
+
+    <Style x:Key="LabelFieldFormTemplate" TargetType="{x:Type Label}">
+        <!--<Setter Property="Foreground" Value="WhiteSmoke" />-->
+        <Setter Property="Padding" Value="0,0,0,0" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style x:Key="LabelValueFormTemplate" TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="DimGray" />
+    </Style>
+
+    <Style x:Key="LabelGroupFormTemplate" TargetType="{x:Type Label}">
+        <!--<Setter Property="Foreground" Value="WhiteSmoke" />
+        <Setter Property="Background" Value="#FF2B9BCF" />
+        <Setter Property="FontWeight" Value="Bold" />-->
+    </Style>
+
+
+    <Style x:Key="TextErrorStyleTemplate" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="Red" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+
+    <Style x:Key="TextBoxFieldFormTemplate" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+        <Setter Property="Padding" Value="0,0,0,0" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+
+    <Style x:Key="NumericTextBoxFieldFormTemplate" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxFieldFormTemplate}">
+        <Setter Property="TextAlignment" Value="Right" />
+    </Style>
+
+
+    <Style x:Key="ComboBoxFieldFormTemplate" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MaterialDesignComboBox}">
+        <Setter Property="Padding" Value="0,0,0,0" />
+        <Setter Property="Margin" Value="10,0,10,0" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+
+
+
+
+    <Style x:Key="CheckBoxFieldFormTemplate" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MaterialDesignCheckBox}">
+        <Setter Property="Padding" Value="0,0,0,0" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+
+
+    <Style x:Key="TitlePanelHeaderTemplate" TargetType="{x:Type Label}">
+        <!--<Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="WhiteSmoke" />
+        <Setter Property="FontSize" Value="16" />-->
+    </Style>
+
+
+    <Style x:Key="MaterialDesignHeadlineGroupBlock" TargetType="{x:Type TextBlock}">
+        <Style.Resources>
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadline6TextBlock}" />
+        </Style.Resources>
+        <Setter Property="TextBlock.FontSize" Value="12" />
+        <Setter Property="TextBlock.FontWeight" Value="Medium" />
+    </Style>
+
+
+</ResourceDictionary>

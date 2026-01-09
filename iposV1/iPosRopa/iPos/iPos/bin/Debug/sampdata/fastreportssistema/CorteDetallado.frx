@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/08/2014 19:23:29" ReportInfo.Modified="07/10/2018 15:37:14" ReportInfo.CreatorVersion="2018.3.5.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    public long vendedorId = 0;               
+
+   
+
+    private void CBVendedor_TextChanged(object sender, EventArgs e)
+    {
+      string[] split = CBVendedor.Text.Split(new string[] { &quot;# Vendedor: &quot; }, StringSplitOptions.None);
+      string strNumCliente = &quot;0&quot;;
+      if(split.Length &gt; 1)     
+        strNumCliente = split[1];
+      
+      try
+      {
+        vendedorId = long.Parse(strNumCliente);
+      }
+      catch{
+      }
+    }
+        
+  
+
+    private void Form1_Load(object sender, EventArgs e)
+    {     
+      
+      DateTimePicker1.Value = DateTime.Today;  
+      DateTimePicker2.Value = DateTime.Today;
+      
+    }
+                     
+     
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29iylxlz281QHEmEGuYLY19gtpAFwwXrDVuSZpfKeuv4EoCBGEsrkPaF6tmOghC/R6h0=">
+      <TableDataSource Name="Table1" Alias="vendedor" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Vendedor: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Vendedor: ' || cast(id as varchar(13)) nombre from persona where tipopersonaid  in (20)&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Main" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;&#13;&#10;&#13;&#10;    base.CORTEID,&#13;&#10;    base.TIPODOCTOID,&#13;&#10;    base.TIPOABONOID,&#13;&#10;    base.MISMOCORTE,&#13;&#10;    base.EFECTIVO ,&#13;&#10;    base.TARJETA,&#13;&#10;    base.CHEQUE,&#13;&#10;    base.CAMBIOCHEQUE,&#13;&#10;    base.CREDITO,&#13;&#10;    base.VALE,&#13;&#10;    base.MONEDERO,&#13;&#10;    base.SUBTOTALSINIVA,&#13;&#10;    base.SUBTOTALCONIVA,&#13;&#10;    base.MONTOIVA,&#13;&#10;    base.TRANSFERENCIA,&#13;&#10;    base.INDEFINIDO,&#13;&#10;    base.MONTOIEPS,&#13;&#10;    base.MONTOIMPUESTO,&#13;&#10;    base.SUBTIPODOCTOID,&#13;&#10;    base.ABONOOTROCORTE,&#13;&#10;    base.ABONOREFERENCIAOTROCORTE,&#13;&#10;    base.INTERCAMBIOMERCANCIA,&#13;&#10;    base.DEPOSITO,&#13;&#10;    base.DEPOSITOTERCERO,&#13;&#10;    base.DOCTOID,&#13;&#10;    base.PAGOID ,&#13;&#10;    docto.folio doctofolio,&#13;&#10;    docto.esfacturaelectronica,&#13;&#10;    docto.foliosat ,&#13;&#10;    docto.seriesat,&#13;&#10;    doctopago.fechahora, &#13;&#10;    doctopago.fechaelaboracion,&#13;&#10;    doctopago.fecharecepcion,&#13;&#10;    doctopago.referenciabancaria,&#13;&#10;    bancos.nombre nombrebanco,&#13;&#10;    tipodocto.nombre tipodoctonombre,&#13;&#10;    estatusdocto.nombre estatusdoctonombre ,&#13;&#10;    docto.personaid personaid,&#13;&#10;    corte.cajeroid cajeroid,&#13;&#10;    persona.clave personaclave,&#13;&#10;    persona.nombre personanombre,&#13;&#10;    vendedor.clave vendedorclave,&#13;&#10;    vendedor.nombre vendedornombre,&#13;&#10;    docto.estatusdoctoid     ,&#13;&#10;    corte.fechacorte ,&#13;&#10;    tipoabono.clave tipoabonoclave,&#13;&#10;    tipoabono.nombre tipoabononombre  ,&#13;&#10;&#13;&#10;&#13;&#10;    &#13;&#10;    base.EFECTIVO * CORTECALCULO.sentidoefectivo EFECTIVOCONSENTIDO,&#13;&#10;    base.TARJETA * CORTECALCULO.sentidotarjeta TARJETACONSENTIDO,&#13;&#10;    base.CHEQUE *  CORTECALCULO.sentidocheque CHEQUECONSENTIDO,&#13;&#10;    base.CAMBIOCHEQUE * CORTECALCULO.sentidocambiocheque CAMBIOCHEQUECONSENTIDO,&#13;&#10;    base.CREDITO * CORTECALCULO.sentidocredito CREDITOCONSENTIDO,&#13;&#10;    base.VALE * CORTECALCULO.sentidovale VALECONSENTIDO,&#13;&#10;    base.MONEDERO * CORTECALCULO.sentidomonedero MONEDEROCONSENTIDO,&#13;&#10;    base.TRANSFERENCIA * CORTECALCULO.sentidotransferencia TRANSFERENCIACONSENTIDO,&#13;&#10;    base.INDEFINIDO * CORTECALCULO.sentidoindefinido INDEFINICOCONSENTIDO,&#13;&#10;    base.INTERCAMBIOMERCANCIA * CORTECALCULO.sentidoefectivo INTERCAMBIOCONSENTIDO,&#13;&#10;    base.DEPOSITO * CORTECALCULO.sentidoefectivo DEPOSITOCONSENTIDO,&#13;&#10;    base.DEPOSITOTERCERO * CORTECALCULO.sentidoefectivo DEPOSITOTERCONSENTIDO&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;from corte&#13;&#10;inner join CORTE_BASE_DOCTO_Y_PAGO base on corte.id = base.corteid&#13;&#10;left join docto on docto.id = base.doctoid&#13;&#10;left join persona on persona.id = docto.personaid&#13;&#10;left join persona vendedor on vendedor.id = docto.vendedorid&#13;&#10;left join doctopago on doctopago.id = base.pagoid&#13;&#10;left join bancos on bancos.id = doctopago.banco&#13;&#10;left join tipodocto on tipodocto.id = docto.tipodoctoid&#13;&#10;left join estatusdocto on estatusdocto.id = docto.estatusdoctoid&#13;&#10;left join tipoabono on tipoabono.id = base.tipoabonoid&#13;&#10;left join cortecalculo on cortecalculo.tipodoctoid = base.tipodoctoid and&#13;&#10;cortecalculo.tipoabonoid = base.tipoabonoid and cortecalculo.mismocorte  =  base.mismocorte&#13;&#10;&#13;&#10;&#13;&#10;where (corte.cajeroid = @usuarioid or @usuarioid = 0) and&#13;&#10;   corte.fechacorte &gt;= @fechainicio and corte.fechacorte &lt;= @fechafin&#13;&#10;">
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="FECHAELABORACION" DataType="System.DateTime"/>
+        <Column Name="FECHARECEPCION" DataType="System.DateTime"/>
+        <Column Name="CORTEID" DataType="System.Int64"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="TIPOABONOID" DataType="System.Int64"/>
+        <Column Name="MISMOCORTE" DataType="System.String"/>
+        <Column Name="EFECTIVO" DataType="System.Decimal"/>
+        <Column Name="TARJETA" DataType="System.Decimal"/>
+        <Column Name="CHEQUE" DataType="System.Decimal"/>
+        <Column Name="CAMBIOCHEQUE" DataType="System.Decimal"/>
+        <Column Name="CREDITO" DataType="System.Decimal"/>
+        <Column Name="VALE" DataType="System.Decimal"/>
+        <Column Name="MONEDERO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTALSINIVA" DataType="System.Decimal"/>
+        <Column Name="SUBTOTALCONIVA" DataType="System.Decimal"/>
+        <Column Name="MONTOIVA" DataType="System.Decimal"/>
+        <Column Name="TRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="INDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="MONTOIEPS" DataType="System.Decimal"/>
+        <Column Name="MONTOIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="SUBTIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="ABONOOTROCORTE" DataType="System.String"/>
+        <Column Name="ABONOREFERENCIAOTROCORTE" DataType="System.String"/>
+        <Column Name="INTERCAMBIOMERCANCIA" DataType="System.Decimal"/>
+        <Column Name="DEPOSITO" DataType="System.Decimal"/>
+        <Column Name="DEPOSITOTERCERO" DataType="System.Decimal"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="PAGOID" DataType="System.Int64"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="ESFACTURAELECTRONICA" DataType="System.String"/>
+        <Column Name="FOLIOSAT" DataType="System.Int32"/>
+        <Column Name="SERIESAT" DataType="System.String"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="NOMBREBANCO" DataType="System.String"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <Column Name="ESTATUSDOCTONOMBRE" DataType="System.String"/>
+        <Column Name="PERSONAID" DataType="System.Int64"/>
+        <Column Name="CAJEROID" DataType="System.Int64"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORCLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRE" DataType="System.String"/>
+        <Column Name="ESTATUSDOCTOID" DataType="System.Int64"/>
+        <Column Name="FECHACORTE" DataType="System.DateTime"/>
+        <Column Name="TIPOABONOCLAVE" DataType="System.String"/>
+        <Column Name="TIPOABONONOMBRE" DataType="System.String"/>
+        <Column Name="EFECTIVOCONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="TARJETACONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="CHEQUECONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="CAMBIOCHEQUECONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="CREDITOCONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="VALECONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="MONEDEROCONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="TRANSFERENCIACONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="INDEFINICOCONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="INTERCAMBIOCONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="DEPOSITOCONSENTIDO" DataType="System.Decimal"/>
+        <Column Name="DEPOSITOTERCONSENTIDO" DataType="System.Decimal"/>
+        <CommandParameter Name="fechainicio" DataType="5" Expression="[fechainicio]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="usuarioid" DataType="1" Expression="vendedorId" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="vendedorid" DataType="System.Decimal"/>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="700" PaperHeight="420.1" FirstPageSource="15" OtherPagesSource="15">
+    <PageHeaderBand Name="PageHeader1" Width="2570.4" Height="75.6">
+      <TextObject Name="Text30" Top="56.7" Width="2220.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Fecha Inicio: [fechainicio] a Fecha Fin: [fechafin]" WordWrap="false" Font="Arial, 14pt, style=Bold">
+        <Formats>
+          <DateFormat/>
+          <GeneralFormat/>
+        </Formats>
+      </TextObject>
+      <TextObject Name="Text29" Top="37.8" Width="2220.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Vendedor: [CBVendedor.Text]" WordWrap="false" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text47" Width="2220.75" Height="37.8" CanShrink="true" CanBreak="false" Text="CORTE DETALLADO" WordWrap="false" Font="Arial, 22pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="80.93" Width="2570.4" Height="18.9" Condition="[Main.CAJEROID]">
+      <TextObject Name="Text7" Width="2220.75" Height="18.9" CanShrink="true" CanBreak="false" Text="VENDEDOR: [Main.VENDEDORCLAVE] [Main.VENDEDORNOMBRE]" WordWrap="false" Font="Arial, 14pt, style=Bold"/>
+      <GroupHeaderBand Name="GroupHeader2" Top="105.17" Width="2570.4" Height="28.35" Condition="[Main.CORTEID]">
+        <TextObject Name="Text50" Top="9.45" Width="2220.75" Height="18.9" CanShrink="true" CanBreak="false" Text="CORTE: [Main.CORTEID] Fecha corte: [Main.FECHACORTE]" WordWrap="false" Font="Arial, 12pt, style=Bold"/>
+        <GroupHeaderBand Name="GroupHeader3" Top="138.85" Width="2570.4" Height="18.9" Condition="[Main.TIPODOCTOID]">
+          <TextObject Name="Text3" Width="2220.75" Height="18.9" CanShrink="true" CanBreak="false" Text="TIPO DE DOCUMENTO: [Main.TIPODOCTONOMBRE]" WordWrap="false" Font="Arial, 11pt, style=Bold"/>
+          <GroupHeaderBand Name="GroupHeader4" Top="163.08" Width="2570.4" Height="37.8" Condition="[Main.ESTATUSDOCTOID]">
+            <TextObject Name="Text51" Width="236.25" Height="18.9" CanShrink="true" CanBreak="false" Text="ESTATUS DE DOCUMENTO" WordWrap="false" Font="Arial, 10pt, style=Bold"/>
+            <TextObject Name="Text52" Left="236.25" Width="340.2" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.ESTATUSDOCTONOMBRE]" WordWrap="false"/>
+            <TextObject Name="Text14" Left="576.45" Top="18.9" Width="66.15" Height="18.9" CanShrink="true" CanBreak="false" Text="PAGOID" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text16" Left="642.6" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="FECHAHORA" Format="Date" Format.Format="d" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text18" Left="737.1" Top="18.9" Width="160.65" Height="18.9" Text="TIPOABONONOMBRE" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text20" Left="897.75" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="AB OTR CORTE" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text22" Left="992.25" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="EFECTIVO" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text24" Left="1086.75" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="TARJETA" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text26" Left="1181.25" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="CHEQUE" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text28" Left="1275.75" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="CREDITO" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text36" Left="1370.25" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="VALE" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text38" Left="1464.75" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="MONEDERO" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text40" Left="1559.25" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="TRANSF." WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text42" Left="1653.75" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="DEPOSITO" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text44" Left="1748.25" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="DEP TERCERO" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text55" Top="18.9" Width="66.15" Height="18.9" CanShrink="true" CanBreak="false" Text="FOLIO" WordWrap="false" Font="Arial, 9pt, style=Italic, Underline"/>
+            <TextObject Name="Text10" Left="66.15" Top="18.9" Width="85.05" Height="18.9" CanShrink="true" CanBreak="false" Text="Folio Sat&#13;&#10;" WordWrap="false"/>
+            <TextObject Name="Text5" Left="151.2" Top="18.9" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="CLIENTE" WordWrap="false"/>
+            <TextObject Name="Text56" Left="226.8" Top="18.9" Width="349.65" Height="18.9" CanShrink="true" CanBreak="false" Text="NOMBRE" WordWrap="false"/>
+            <TextObject Name="Text54" Left="1842.75" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="INTERCAMBIO " WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text46" Left="1937.25" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="INDEFINIDO" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <TextObject Name="Text62" Left="2031.75" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="BANCO" WordWrap="false" Font="Arial, 8pt"/>
+            <TextObject Name="Text60" Left="2126.25" Top="18.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="REFE BAN" WordWrap="false" Font="Arial, 8pt, style=Italic, Underline"/>
+            <DataBand Name="Data1" Top="206.22" Width="2570.4" Height="18.9" CanGrow="true" DataSource="Table2">
+              <TextObject Name="Text13" Left="576.45" Width="66.15" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.PAGOID]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="" Format.NegativePattern="1" WordWrap="false" Font="Arial, 8pt"/>
+              <TextObject Name="Text15" Left="642.6" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.FECHAHORA]" Format="Date" Format.Format="d" WordWrap="false" Font="Arial, 8pt"/>
+              <TextObject Name="Text17" Left="737.1" Width="160.65" Height="18.9" Text="[Main.TIPOABONONOMBRE]" Font="Arial, 8pt"/>
+              <TextObject Name="Text19" Left="897.75" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.ABONOOTROCORTE]" Format="Number" Format.UseLocale="true" WordWrap="false" Font="Arial, 8pt"/>
+              <TextObject Name="Text21" Left="992.25" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.EFECTIVOCONSENTIDO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text23" Left="1086.75" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.TARJETACONSENTIDO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text25" Left="1181.25" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.CHEQUECONSENTIDO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text27" Left="1275.75" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.CREDITO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text35" Left="1370.25" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.VALECONSENTIDO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text37" Left="1464.75" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.MONEDEROCONSENTIDO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text39" Left="1559.25" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.TRANSFERENCIACONSENTIDO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text41" Left="1653.75" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.DEPOSITOCONSENTIDO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text43" Left="1748.25" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.DEPOSITOTERCONSENTIDO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text45" Left="1937.25" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.INDEFINICOCONSENTIDO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text53" Left="1842.75" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.INTERCAMBIOCONSENTIDO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+              <TextObject Name="Text61" Left="2031.75" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.NOMBREBANCO]" WordWrap="false" Font="Arial, 8pt"/>
+              <TextObject Name="Text59" Left="2126.25" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.REFERENCIABANCARIA]" WordWrap="false" Font="Arial, 8pt"/>
+              <TextObject Name="Text4" Width="66.15" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.DOCTOFOLIO]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="" Format.NegativePattern="1" WordWrap="false" Font="Arial, 9pt"/>
+              <TextObject Name="Text9" Left="66.15" Width="85.05" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.FOLIOSAT]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="" Format.NegativePattern="1" WordWrap="false" Font="Arial, 9pt"/>
+              <TextObject Name="Text11" Left="151.2" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.PERSONACLAVE]" WordWrap="false" Font="Arial, 9pt"/>
+              <TextObject Name="Text12" Left="226.8" Width="349.65" Height="18.9" CanShrink="true" CanBreak="false" Text="[Main.PERSONANOMBRE]" WordWrap="false" Font="Arial, 9pt"/>
+              <Sort>
+                <Sort Expression="[Main.FECHAHORA]"/>
+                <Sort Expression="[Main.DOCTOFOLIO]"/>
+              </Sort>
+            </DataBand>
+            <GroupFooterBand Name="GroupFooter4" Top="230.45" Width="2570.4"/>
+          </GroupHeaderBand>
+          <GroupFooterBand Name="GroupFooter3" Top="235.78" Width="2570.4"/>
+        </GroupHeaderBand>
+        <GroupFooterBand Name="GroupFooter2" Top="241.12" Width="2570.4"/>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="246.45" Width="2570.4"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="251.78" Width="2570.4" Height="28.35">
+      <TextObject Name="Text49" Left="1001.7" Top="9.45" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[Page]" WordWrap="false"/>
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Date" Format.Format="d" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[US_NAME]" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="386" AcceptButton="btnOk" CancelButton="btnCancel" LoadEvent="Form1_Load">
+    <ButtonControl Name="btnOk" Left="118" Top="327" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" ClickEvent="" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="327" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <ComboBoxControl Name="CBVendedor" Left="36" Top="164" Width="165" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Vendedor: 0" TextChangedEvent="CBVendedor_TextChanged" DataColumn="vendedor.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+    <LabelControl Name="Label1" Left="36" Top="148" Width="53" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Vendedor"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="36" Top="72" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechainicio" FilterOperation="GreaterThanOrEqual" Value="12/12/2014 07:55:43"/>
+    <LabelControl Name="Label2" Left="36" Top="56" Width="62" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="36" Top="116" Font="Tahoma, 8pt" TabIndex="6" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="12/12/2014 07:55:45"/>
+    <LabelControl Name="Label3" Left="36" Top="100" Width="51" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="Fecha fin" ClickEvent=""/>
+    <LabelControl Name="Label4" Left="40" Top="12" Width="221" Height="19" Font="Tahoma, 12pt" TabIndex="8" Text="Cobranza detallado por cajero"/>
+  </DialogPage>
+</Report>

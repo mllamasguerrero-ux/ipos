@@ -1,0 +1,51 @@
+create or alter procedure GET_EXISTENCIAPARAPRODPROMO (
+    PRODUCTOID D_FK,
+    ALMACENID D_FK,
+    CANTIDAD D_CANTIDAD)
+returns (
+    HAYEXISTENCIA D_BOOLCS,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable EXISPRODBASE D_CANTIDAD;
+declare variable BASEPRODPROMOID D_CANTIDAD;
+BEGIN
+
+
+   SELECT PRODUCTO.baseprodpromoid FROM PRODUCTO WHERE ID = :PRODUCTOID INTO :BASEPRODPROMOID;
+
+   IF(COALESCE(:BASEPRODPROMOID,0) = 0 ) THEN
+   BEGIN
+          ERRORCODE = 4001;
+          SUSPEND;
+          EXIT;
+
+   END
+
+   
+       SELECT EXISTENCIA FROM GET_EXISTENCIA (
+                    :BASEPRODPROMOID ,
+                    :ALMACENID ,
+                    NULL,
+                    NULL) INTO :EXISPRODBASE;
+
+
+
+    IF( COALESCE(:EXISPRODBASE,0) < :CANTIDAD ) THEN
+    BEGIN
+        HAYEXISTENCIA = 'N';
+    END
+    ELSE
+    BEGIN
+        HAYEXISTENCIA = 'S';
+    END
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1043;
+      SUSPEND;
+   END 
+END

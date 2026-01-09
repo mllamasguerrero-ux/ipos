@@ -1,0 +1,38 @@
+create or alter procedure KIT_AJUSTARIMPUESTOS (
+    DOCTOID D_FK,
+    MOVTOID D_FK,
+    ESKIT D_BOOLCN)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable IVA D_PRECIO;
+declare variable IEPS D_PRECIO;
+declare variable NUMREG INTEGER;
+BEGIN
+
+   ERRORCODE = 0;
+
+
+       
+        IF(COALESCE(:eskit, 'N') = 'S') THEN
+        BEGIN
+            select COUNT(*) NUMREG , MAX(ERRORCODE), SUM(COALESCE(DETALLEKITIVA,0.0)) IVA, SUM(COALESCE(DETALLEKITIEPS,0.0)) ieps FROM KIT_OBTENREFERENCIA (:DOCTOID, :MOVTOID)
+            INTO :NUMREG, :ERRORCODE,  :IVA, :IEPS;
+            IF(COALESCE(:NUMREG, 0) > 0 AND COALESCE(:ERRORCODE, 0) = 0) THEN
+            BEGIN
+                 UPDATE MOVTO SET IVA = COALESCE(:IVA, 0.0), IEPS = COALESCE(:IEPS, 0.0),  IMPUESTO = COALESCE(:IVA, 0.0) + COALESCE(:IEPS, 0.0) , TOTAL = SUBTOTAL + COALESCE(:IVA, 0.0) + COALESCE(:IEPS, 0.0)  WHERE ID = :MOVTOID;   
+            END
+
+
+        END
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+   
+   WHEN ANY DO
+   BEGIN
+     ERRORCODE = 1076;
+     --SUSPEND;
+   END
+END

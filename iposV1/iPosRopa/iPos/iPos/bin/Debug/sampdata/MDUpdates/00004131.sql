@@ -1,0 +1,48 @@
+create or alter procedure INVFIS_DEL_NOTERMINADOS
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable DOCTOSPENDIENTES D_FK;
+declare variable DOCTOID D_FK;
+BEGIN
+   SELECT COALESCE(COUNT(D.ID), 0)
+   FROM DOCTO D
+   WHERE D.TIPODOCTOID in (50,53)
+     AND D.ESTATUSDOCTOID IN (0,3)
+   INTO :DOCTOSPENDIENTES;
+
+
+   -- si no existe, salir
+   IF (:DOCTOSPENDIENTES <= 0) THEN
+   BEGIN
+      ERRORCODE = 0;
+   END
+   ELSE
+   BEGIN
+
+      UPDATE DOCTO SET ESTATUSDOCTOID = 0
+       WHERE TIPODOCTOID in (50,53)
+       AND ESTATUSDOCTOID IN (3);
+
+      FOR
+         SELECT D.ID
+         FROM DOCTO D
+         WHERE D.TIPODOCTOID in (50,53)
+           AND D.ESTATUSDOCTOID IN (0,3)
+         INTO :DOCTOID
+      DO
+      BEGIN
+         SELECT ERRORCODE
+         FROM DOCTO_DELETE(:DOCTOID)
+         INTO :ERRORCODE;
+      END
+   END
+
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1005;
+      SUSPEND;
+   END 
+END

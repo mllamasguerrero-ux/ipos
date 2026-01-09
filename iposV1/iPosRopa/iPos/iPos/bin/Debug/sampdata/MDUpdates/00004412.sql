@@ -1,0 +1,14 @@
+execute block
+as
+declare variable MAXID D_FK;
+begin
+
+SELECT MAX(ID) FROM ALMACEN into :MAXID;
+
+
+EXECUTE STATEMENT
+               'ALTER SEQUENCE SEQ_ALMACEN RESTART WITH  ' || CAST(COALESCE(:MAXID,0) + 1 AS VARCHAR(20)) ;
+
+
+
+end

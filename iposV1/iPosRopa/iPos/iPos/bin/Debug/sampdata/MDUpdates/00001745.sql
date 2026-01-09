@@ -1,0 +1,76 @@
+CREATE OR ALTER VIEW INVENTARIOCOSTEADO(
+    ID,
+    CLAVE,
+    NOMBRE,
+    LINEA,
+    PROVEEDOR,
+    ALMACEN,
+    CANTIDAD,
+    COSTOPROMEDIO,
+    COSTOULTIMO,
+    COSTOREPOSICION,
+    COSTOPROMEDIOTOTAL,
+    COSTOULTIMOTOTAL,
+    COSTOREPOSICIONTOTAL,
+    NOMBRELINEA ,
+    MARCA,
+    NOMBREMARCA,
+    PRECIO1,
+    TEXTO1,
+    TEXTO2,
+    TEXTO3,
+    TEXTO4,
+    TEXTO5,
+    TEXTO6,
+    NUMERO1,
+    NUMERO2,
+    NUMERO3,
+    NUMERO4,
+    FECHA1,
+    FECHA2
+)
+AS
+SELECT
+      P.ID,
+      P.CLAVE,
+      P.NOMBRE,
+      L.CLAVE AS LINEA,
+      PR.CLAVE AS PROVEEDOR,
+      A.CLAVE AS ALMACEN,
+      I.CANTIDAD,
+      P.COSTOPROMEDIO,
+      P.COSTOULTIMO,
+      P.COSTOREPOSICION,
+      P.COSTOPROMEDIO * I.CANTIDAD AS COSTOPROMEDIOTOTAL,
+      P.COSTOULTIMO * I.CANTIDAD AS COSTOULTIMOTOTAL,
+      P.COSTOREPOSICION * I.CANTIDAD AS COSTOREPOSICIONTOTAL ,
+      L.NOMBRE NOMBRELINEA ,
+      M.CLAVE MARCA,
+      M.NOMBRE NOMBREMARCA,
+      P.precio1,
+     c.texto1, 
+     c.texto2,
+     c.texto3,
+     c.texto4,
+     c.texto5,
+     c.texto6,
+     c.numero1,
+     c.numero2, 
+     c.numero3,
+     c.numero4,
+     c.fecha1, 
+     c.fecha2
+
+   FROM INVENTARIO I
+      LEFT JOIN PRODUCTO P
+         ON P.ID = I.PRODUCTOID
+      LEFT JOIN LINEA L
+         ON L.ID = P.LINEAID
+      LEFT JOIN PERSONA PR
+         ON PR.ID = P.PROVEEDOR1ID
+      LEFT JOIN ALMACEN A
+         ON A.ID = I.ALMACENID
+      LEFT JOIN MARCA M
+         ON M.ID = P.MARCAID 
+      left join productocaracteristicas c on c.productoid = p.id
+;

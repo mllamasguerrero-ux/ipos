@@ -1,0 +1,200 @@
+create or alter procedure RETIRO_CAJA_DESDECORTE (
+    CORTEID D_FK,
+    CAJEROID D_FK,
+    CAJAID D_FK)
+returns (
+    DOCTOID type of D_PK,
+    NUEVOMONTOBILLETESID D_FK,
+    ERRORCODE type of D_ERRORCODE)
+as
+declare variable MONTOBILLETESID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable FECHACORTE D_FECHA;
+declare variable TIPODECAMBIO D_TIPOCAMBIO;
+declare variable P1000 D_CANTIDAD;
+declare variable P500 D_CANTIDAD;
+declare variable P200 D_CANTIDAD;
+declare variable P100 D_CANTIDAD;
+declare variable P50 D_CANTIDAD;
+declare variable P20 D_CANTIDAD;
+declare variable D100 D_CANTIDAD;
+declare variable D50 D_CANTIDAD;
+declare variable D20 D_CANTIDAD;
+declare variable D10 D_CANTIDAD;
+declare variable D5 D_CANTIDAD;
+declare variable D2 D_CANTIDAD;
+declare variable D1 D_CANTIDAD;
+declare variable MORRALLAPESOS D_IMPORTE;
+declare variable MORRALLADOLARES D_IMPORTE;
+declare variable MORRALLADEDOLARENPESOS D_IMPORTE;
+declare variable SALDOFINAL D_IMPORTE;
+declare variable CHEQUES D_IMPORTE;
+declare variable VALES D_IMPORTE;
+declare variable TARJETA D_IMPORTE;
+declare variable CREDITO D_IMPORTE;
+declare variable MONEDERO D_IMPORTE;
+declare variable TRANSFERENCIA D_IMPORTE;
+declare variable INDEFINIDO D_IMPORTE;
+declare variable TIPOMONTOBILLETESID D_FK;
+declare variable DEPOSITO D_IMPORTE;
+declare variable DEPTERCERO D_IMPORTE;
+declare variable SALDOREALANTERIOR D_IMPORTE;
+declare variable SUMACAJA D_IMPORTE;
+declare variable SUMAEFECTIVO D_IMPORTE;
+BEGIN
+
+
+     DOCTOID = 0;
+     TIPODOCTOID = 62;
+
+     SELECT FIRST 1 PARAMETRO.sucursalid FROM PARAMETRO INTO :SUCURSALID;
+
+     SELECT FECHACORTE, SALDOREAL
+            FROM CORTE WHERE ID = :CORTEID  INTO :FECHACORTE, :SALDOREALANTERIOR;
+
+     SELECT ID, 
+            TIPODECAMBIO ,P1000 ,P500 ,P200 ,P100 ,P50 ,P20 ,
+            D100 ,D50 ,D20 ,D10 ,D5 ,D2 ,D1 ,
+            MORRALLAPESOS ,MORRALLADOLARES ,MORRALLADEDOLARENPESOS ,
+            SALDOFINAL ,
+            CHEQUES ,VALES , 0.0 ,0.0 ,0.0 ,0.0 ,0.0 ,
+            2 ,0.0 ,0.0
+            FROM montobilletes
+            WHERE CORTEID = :CORTEID
+            INTO :MONTOBILLETESID, 
+            :TIPODECAMBIO ,:P1000 ,:P500 ,:P200 ,:P100 ,:P50 ,:P20 ,
+            :D100 ,:D50 ,:D20 ,:D10 ,:D5 ,:D2 ,:D1 ,
+            :MORRALLAPESOS ,:MORRALLADOLARES ,:MORRALLADEDOLARENPESOS ,
+            :SALDOFINAL ,
+            :CHEQUES ,:VALES ,:TARJETA ,:CREDITO ,:MONEDERO ,:TRANSFERENCIA ,:INDEFINIDO ,
+            :TIPOMONTOBILLETESID ,:DEPOSITO ,:DEPTERCERO;
+
+     IF(COALESCE(:MONTOBILLETESID,0) = 0) THEN
+     BEGIN
+           
+        ERRORCODE = 0;
+        SUSPEND;
+        EXIT;
+     END
+
+       SUMAEFECTIVO =  COALESCE(:P1000,0.0) * 1000.00 + COALESCE(:P500,0.0) * 500.00 +
+                        COALESCE(:P200,0.0) * 200.00 + COALESCE(:P100,0.0) * 100.00 + COALESCE(:P50,0.0) * 50.00 + COALESCE(:P20,0.0) * 20.00 +
+            COALESCE(:D100, 0.00) * COALESCE(:TIPODECAMBIO, 1.00) * 100.00 + COALESCE(:D50, 0.00) * COALESCE(:TIPODECAMBIO, 1.00) * 50.00 +
+            COALESCE(:D20 , 0.00) * COALESCE(:TIPODECAMBIO, 1.00) * 20.00 + COALESCE(:D10, 0.00) * COALESCE(:TIPODECAMBIO, 1.00) * 10.00 +
+            COALESCE(:D5, 0.00) * COALESCE(:TIPODECAMBIO, 1.00) * 5.00 + COALESCE(:D2, 0.00) * COALESCE(:TIPODECAMBIO, 1.00) * 2.00 + COALESCE(:D1, 0.00) * COALESCE(:TIPODECAMBIO, 1.00) * 1.00 +
+            COALESCE(:MORRALLAPESOS, 0.00) + COALESCE(:MORRALLADOLARES , 0.00) * COALESCE(:TIPODECAMBIO, 1.00);
+
+
+     SELECT ERRORCODE FROM RETIRO_CAJA_DELETEPENDIENTES( :CORTEID) INTO :ERRORCODE;
+
+     IF(COALESCE(:ERRORCODE,0) > 0 ) THEN
+     BEGIN
+        SUSPEND;
+        EXIT;
+     END
+
+
+    SELECT DOCTOID, ERRORCODE FROM RETIRO_CAJA_INSERT (
+    1,
+    :SUCURSALID ,
+    :TIPODOCTOID ,
+    :CAJEROID ,
+    1,
+    :CAJAID,
+    '',
+    '',
+    :FECHACORTE,
+    :FECHACORTE,
+    :CORTEID,
+    'N',
+    null,
+    :CAJEROID )
+    INTO :DOCTOID, :ERRORCODE;
+    
+     IF(COALESCE(:ERRORCODE,0) > 0 ) THEN
+     BEGIN
+        SUSPEND;
+        EXIT;
+     END
+
+
+
+     SELECT 
+    MONTO_BILLETES_ID ,
+    ERRORCODE
+    FROM CORTE_MONTOBILLETES_UPDATE (
+    :CORTEID ,
+    :TIPODECAMBIO ,:P1000 ,:P500 ,:P200 ,:P100 ,:P50 ,:P20 ,
+            :D100 ,:D50 ,:D20 ,:D10 ,:D5 ,:D2 ,:D1 ,
+            :MORRALLAPESOS ,:MORRALLADOLARES ,:MORRALLADEDOLARENPESOS ,
+            :SALDOFINAL ,
+            :CHEQUES ,:VALES ,:TARJETA ,:CREDITO ,:MONEDERO ,:TRANSFERENCIA ,:INDEFINIDO ,
+            :TIPOMONTOBILLETESID , :DOCTOID, :DEPOSITO ,:DEPTERCERO)
+INTO 
+    :NUEVOMONTOBILLETESID,
+    :ERRORCODE ;
+             
+     IF(COALESCE(:ERRORCODE,0) > 0 ) THEN
+     BEGIN
+        SUSPEND;
+        EXIT;
+     END
+
+
+      select errorcode from RETIRO_CAJA_COMPLETAR (:DOCTOID,
+                                                    COALESCE(:SUMAEFECTIVO,0) ,
+                                                    COALESCE(:CHEQUES,0) ,
+                                                    COALESCE(:VALES,0))
+                                                    INTO :ERRORCODE;
+        
+     IF(COALESCE(:ERRORCODE,0) > 0 ) THEN
+     BEGIN
+        SUSPEND;
+        EXIT;
+     END
+
+
+     
+        SELECT ERRORCODE FROM CORTE_TOTALES_PORID( :CORTEID )
+        INTO :ERRORCODE;
+
+        
+        IF(COALESCE(:ERRORCODE,0) <> 0 ) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+
+        UPDATE CORTE SET SALDOREAL = COALESCE(SALDOREAL,0.00) - COALESCE(:SUMAEFECTIVO,0.00) WHERE ID = :CORTEID;
+
+        UPDATE MONTOBILLETES SET
+        P1000 = 0.00 ,P500 = 0.00 ,P200 = 0.00 ,P100 = 0.00 ,P50 = 0.00 ,P20 = 0.00 ,
+        D100 = 0.00 ,D50 = 0.00 ,D20 = 0.00 ,D10 = 0.00 ,D5 = 0.00 ,D2 = 0.00 ,D1 = 0.00 ,
+        MORRALLAPESOS = 0.00 ,MORRALLADOLARES = 0.00 ,MORRALLADEDOLARENPESOS = 0.00 ,
+        CHEQUES = 0.00 ,VALES = 0.00
+        WHERE ID = :MONTOBILLETESID;
+
+        
+        SELECT ERRORCODE FROM CORTE_ACTUALIZAR_DIFERENCIA( :CORTEID )
+        INTO :ERRORCODE;
+
+        
+        IF(COALESCE(:ERRORCODE,0) <> 0 ) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+
+    ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1004;
+      SUSPEND;
+   END 
+
+END

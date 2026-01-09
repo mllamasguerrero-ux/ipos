@@ -1,0 +1,1 @@
+insert into perfil_der (pd_perfil,pd_derecho) values ( 11,67);

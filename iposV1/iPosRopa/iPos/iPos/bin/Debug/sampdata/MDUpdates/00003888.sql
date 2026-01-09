@@ -1,0 +1,15 @@
+execute block
+as
+begin
+
+UPDATE MENUITEMS 
+SET MN_IDPARENT = 272
+WHERE MN_ID = 273;
+
+
+UPDATE MENUITEMS 
+SET MN_IDPARENT = 265
+WHERE MN_ID = 268;
+
+
+end

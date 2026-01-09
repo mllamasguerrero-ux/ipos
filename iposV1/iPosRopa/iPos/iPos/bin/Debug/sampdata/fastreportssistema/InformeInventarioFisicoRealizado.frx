@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/24/2015 12:04:16" ReportInfo.Modified="06/26/2018 22:14:42" ReportInfo.CreatorVersion="2018.3.5.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+     
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9uuwUiomfIy0rcsfoX8WrwOw=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select producto.clave, producto.nombre, producto.descripcion2, producto.descripcion1,&#13;&#10;movto.costoreposicion, movto.lote, movto.fechavence,&#13;&#10;coalesce(movto.cantidad,0) teorico,&#13;&#10;coalesce(movto.cantidadsurtida,0) fisico,&#13;&#10;coalesce(movto.cantidadsurtida,0) - coalesce(movto.cantidad,0) diferencia,&#13;&#10;(coalesce(movto.cantidadsurtida,0) - coalesce(movto.cantidad,0)) * (coalesce(movto.costoreposicion,0)) importediferencia&#13;&#10;  from docto&#13;&#10;inner join movto on docto.id = movto.doctoid&#13;&#10;inner join producto on producto.id = movto.productoid&#13;&#10;where docto.id = @doctoid&#13;&#10;and (@solodiferencias = 'N' or coalesce(movto.cantidadsurtida,0) - coalesce(movto.cantidad,0) &gt; 0)">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="LOTE" DataType="System.String"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="TEORICO" DataType="System.Decimal"/>
+        <Column Name="FISICO" DataType="System.Decimal"/>
+        <Column Name="DIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="IMPORTEDIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[doctoid]" DefaultValue="0"/>
+        <CommandParameter Name="solodiferencias" DataType="16" Size="1" Expression="[solodiferencias]" DefaultValue="N"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" DataType="System.Int32" Enabled="true" SelectCommand="select * from&#13;&#10;(&#13;&#10;select 0 ordenhelp, 0 as id ,current_date as fecha, 'Seleccione un inventario' as idfecha&#13;&#10;from parametro&#13;&#10;union all&#13;&#10;select 1 ordenhelp, id,fecha, (cast(id as varchar(10)) || '--' ||cast(fecha as varchar(15))) idfecha from docto where tipodoctoid = 50 and estatusdoctoid = 1&#13;&#10;)&#13;&#10;order by ordenhelp, fecha desc">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="IDFECHA" DataType="System.String"/>
+        <Column Name="ORDENHELP" DataType="System.Int32"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="doctoid" DataType="System.Int64"/>
+    <Parameter Name="solodiferencias" DataType="System.String"/>
+    <Total Name="Total" Expression="[Table.IMPORTEDIFERENCIA]" Evaluator="Data1" PrintOn="DataFooter1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="85.05">
+      <TextObject Name="Text23" Left="179.55" Top="9.45" Width="453.6" Height="28.35" Text="REPORTE DE INVENTARIO FISICO REALIZADO" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text24" Left="765.45" Top="9.45" Width="160.65" Height="18.9" Text="[Date]" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text25" Left="179.55" Top="47.25" Width="189" Height="18.9" Text="Consecutivo de inventario:" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text26" Left="378" Top="47.25" Width="94.5" Height="18.9" Text="[doctoid]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="89.05" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Width="85.05" Height="18.9" Text="CLAVE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text10" Left="548.1" Width="85.05" Height="28.35" Text="REPOSICION" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text12" Left="633.15" Width="66.15" Height="18.9" Text="LOTE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text14" Left="699.3" Width="75.6" Height="18.9" Text="CADUCA" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text16" Left="774.9" Width="66.15" Height="18.9" Text="TEORICO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text18" Left="841.05" Width="56.7" Height="18.9" Text="FISICO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text20" Left="897.75" Width="75.6" Height="18.9" Text="DIFERENCIA" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text22" Left="973.35" Width="66.15" Height="28.35" Text="IMP DIF" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text8" Left="85.05" Width="226.8" Height="18.9" Text="DESCRIPCION1" HorzAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text4" Left="311.85" Width="236.25" Height="18.9" Text="DESCRIPCION2" HorzAlign="Center" Font="Arial, 7pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="121.4" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="85.05" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text7" Left="85.05" Width="226.8" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 7pt"/>
+      <TextObject Name="Text9" Left="548.1" Width="85.05" Height="18.9" Text="[Table.COSTOREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="633.15" Width="66.15" Height="18.9" Text="[Table.LOTE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text13" Left="699.3" Width="75.6" Height="18.9" Text="[Table.FECHAVENCE]" Format="Date" Format.Format="d" Font="Arial, 7pt"/>
+      <TextObject Name="Text15" Left="774.9" Width="66.15" Height="18.9" Text="[Table.TEORICO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="841.05" Width="56.7" Height="18.9" Text="[Table.FISICO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="897.75" Width="75.6" Height="18.9" Text="[Table.DIFERENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="973.35" Width="66.15" Height="18.9" Text="[Table.IMPORTEDIFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text3" Left="311.85" Width="236.25" Height="18.9" Text="[Table.DESCRIPCION2]" Font="Arial, 7pt"/>
+      <DataFooterBand Name="DataFooter1" Top="144.3" Width="1047.06" Height="18.9">
+        <TextObject Name="Text5" Left="973.35" Width="66.15" Height="18.9" Fill.Color="Yellow" Text="[Total]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+      </DataFooterBand>
+      <Sort>
+        <Sort Expression="[Table.DESCRIPCION1]"/>
+      </Sort>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="167.2" Width="1047.06" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

@@ -1,0 +1,2 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+VALUES (222, 206, 'Estadistico venta de todos los productos', 'Estadistico por venta de todos los productos', 222, 2, 0);

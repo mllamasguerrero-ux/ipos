@@ -1,0 +1,1 @@
+insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (233, 'Catalogo de terminales de pago de servicios');

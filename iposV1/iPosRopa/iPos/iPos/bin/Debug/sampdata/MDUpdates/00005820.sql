@@ -1,0 +1,176 @@
+create or alter procedure PEDIDO_MOVIL_ENSAMBLE (
+    DOCTOID D_FK,
+    VENDEDORID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable MOVTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable CAJAID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PRODUCTOID D_FK;
+declare variable LOTE D_LOTE;
+declare variable FECHAVENCE D_FECHAVENCE;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable FALTANTES integer;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable PRECIO D_COSTO;
+declare variable COSTO D_COSTO;
+declare variable SUCURSALTID D_FK;
+declare variable ALMACENTID D_FK;
+declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable PERSONAID D_FK;
+declare variable DESCRIPCION1 D_STDTEXT_64;
+declare variable DESCRIPCION2 D_STDTEXT_64;
+declare variable DESCRIPCION3 D_STDTEXT_64;
+declare variable LOTEIMPORTADO D_FK;
+declare variable TIPODOCTOIDFORKIT D_FK;
+declare variable DOCTOIDFORKIT D_FK;
+declare variable KITDESGLOSADO D_BOOLCN;
+declare variable CANTIDADDEFACTURA D_CANTIDAD;
+declare variable CANTIDADDEREMISION D_CANTIDAD;
+declare variable CANTIDADDEINDEFINIDO D_CANTIDAD;
+declare variable DOCTOIDDESENSAMBLADO D_FK;
+declare variable FECHAINVENTARIO D_FECHA;
+declare variable CANTMAXENSAMBLAR D_CANTIDAD;
+declare variable CANTAENSAMBLAR D_CANTIDAD;
+declare variable TIPOVENDEDORMOVIL D_FK;
+declare variable MOVIL3_PREIMPORTAR D_BOOLCN_NULL;
+declare variable MANEJAKITS D_BOOLCN;
+BEGIN
+
+  ERRORCODE = 0;
+  
+
+   SELECT  TIPOVENDEDORMOVIL, MANEJAKITS FROM PARAMETRO INTO :TIPOVENDEDORMOVIL, :MANEJAKITS;
+
+   SELECT MOVIL3_PREIMPORTAR FROM PARAMETRO INTO :MOVIL3_PREIMPORTAR;
+
+                 
+   IF (COALESCE(:MANEJAKITS,'N') = 'N') THEN
+   BEGIN
+      ERRORCODE = 5;
+      SUSPEND;
+      EXIT;
+   END
+
+
+
+   SELECT TIPODOCTOID, ESTATUSDOCTOID , SUCURSALID , PERSONAID , FECHA , KITDESGLOSADO, ALMACENID
+   FROM DOCTO
+   WHERE ID = :DOCTOID
+   INTO :TIPODOCTOID, :ESTATUSDOCTOID, :SUCURSALID, :PERSONAID, :FECHAINVENTARIO, :KITDESGLOSADO , :ALMACENID;
+
+   -- Interceptar docto no existente
+   IF ((:TIPODOCTOID IS NULL) OR (:ESTATUSDOCTOID IS NULL)) THEN
+   BEGIN
+      ERRORCODE = 1071;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Solo admitir TipoDocto = 50, captura de inventario fisico.
+   IF (:TIPODOCTOID NOT IN (331)) THEN
+   BEGIN
+      ERRORCODE = 1071;
+      SUSPEND;
+      EXIT;
+   END
+
+
+
+
+
+    TIPODOCTOIDFORKIT = 501;
+    DOCTOIDFORKIT = 0;
+
+
+   -- Agrega los MOVTO.
+   FOR SELECT
+         MOVTO.PRODUCTOID, MOVTO.LOTE, MOVTO.FECHAVENCE,
+            COALESCE(MOVTO.cantidad , 0.00) - (COALESCE(PRODUCTO.existencia,0) - COALESCE(PRODUCTO.enprocesodesalida,0)) AS CANTIDAD ,
+         MOVTO.PRECIO, MOVTO.COSTO,
+         MOVTO.CANTIDADDEFACTURA,
+         MOVTO.CANTIDADDEREMISION,
+         MOVTO.CANTIDADDEINDEFINIDO,
+         MOVTO.DESCRIPCION1, MOVTO.DESCRIPCION2, MOVTO.DESCRIPCION3, MOVTO.LOTEIMPORTADO
+   FROM MOVTO
+      INNER JOIN PRODUCTO ON PRODUCTO.ID = MOVTO.PRODUCTOID
+   WHERE DOCTOID = :DOCTOID AND COALESCE(PRODUCTO.ESKIT,'N') = 'S' AND
+
+        COALESCE(MOVTO.cantidad, 0.00)  -  (COALESCE(PRODUCTO.existencia,0) - COALESCE(PRODUCTO.enprocesodesalida,0)) > 0
+
+
+   INTO
+       :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, :PRECIO, :COSTO,
+       :CANTIDADDEFACTURA,
+       :CANTIDADDEREMISION,
+       :CANTIDADDEINDEFINIDO ,
+       :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3, :LOTEIMPORTADO
+   DO
+   BEGIN
+
+
+               SELECT  TRUNC(CANTMAXENSAMBLAR,0)
+               FROM GET_MAXEXISTENCIAPARAKIT (:PRODUCTOID, :ALMACENID )
+               INTO :CANTMAXENSAMBLAR;
+
+               IF(COALESCE(:CANTMAXENSAMBLAR,0) >= COALESCE(:CANTIDAD,0) OR COALESCE(:CANTMAXENSAMBLAR,0) = -1) THEN
+               BEGIN      
+                    CANTAENSAMBLAR =  COALESCE(:CANTIDAD,0);
+               END
+               ELSE
+               BEGIN   
+                    CANTAENSAMBLAR =  COALESCE(:CANTMAXENSAMBLAR,0);
+               END
+
+               IF(COALESCE(:CANTAENSAMBLAR,0) > 0) THEN
+               BEGIN
+
+
+      
+                     SELECT DOCTOID, MOVTOID, ERRORCODE
+                        FROM MOVTO_INSERT(:DOCTOIDFORKIT, 0, :ALMACENID, :SUCURSALID, :TIPODOCTOIDFORKIT, 0, 0, :PERSONAID, :VENDEDORID, 1, 0,
+                        :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTAENSAMBLAR, 0, 0, 0, 0, 0, 0,
+                        :REFERENCIA, '', :COSTO, :SUCURSALID, :ALMACENID, 'N', NULL, CURRENT_DATE, CURRENT_DATE, 0.00,:DOCTOID,NULL,NULL,NULL,NULL, :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3, NULL, :LOTEIMPORTADO, 'N','N')
+                        INTO :DOCTOIDFORKIT, :MOVTOID, :ERRORCODE;
+
+             
+                      IF(COALESCE(:ERRORCODE,0) <> 0) THEN
+                      BEGIN    
+                          SUSPEND;
+                          EXIT;
+                      END
+
+
+        
+                    --asegurate de que se pasen las cantidades de facturado y remisionado
+                       UPDATE MOVTO  SET
+                          CANTIDADDEREMISION = :CANTAENSAMBLAR
+                         WHERE id = :MOVTOID;
+
+                END
+
+   END
+
+
+
+   IF(COALESCE(:DOCTOIDFORKIT,0) <> 0) THEN
+   BEGIN       
+        SELECT ERRORCODE FROM KIT_APLICAR( :DOCTOIDFORKIT) INTO :ERRORCODE;
+        IF(COALESCE(:ERRORCODE,0) <> 0) THEN
+        BEGIN    
+            SUSPEND;
+            EXIT;
+        END
+   END
+
+
+
+
+
+
+    SUSPEND;
+END

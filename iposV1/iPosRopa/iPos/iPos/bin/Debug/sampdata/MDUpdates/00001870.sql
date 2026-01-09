@@ -1,0 +1,1 @@
+update producto set enprocesodesalida = 0;

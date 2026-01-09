@@ -1,0 +1,8 @@
+UPDATE MENUITEMS
+SET MN_IDPARENT = 103,
+    MN_ETIQUETA = 'Monedero',
+    MN_DESC = 'Monedero',
+    MN_DERECHO = 96,
+    MN_LEVEL = 1,
+    MN_ORDEN = 3
+WHERE (MN_ID = 96);

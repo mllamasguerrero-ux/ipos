@@ -1,0 +1,23 @@
+create or alter procedure POLIZALINEA_HDR (
+    FECHA D_FECHA)
+returns (
+    FECHAFORMATO1 D_STDTEXT_SHORT,
+    CUENTAEMPRESA D_STDTEXT_SHORT,
+    LEYENDA D_STDTEXT_SHORT)
+as
+BEGIN
+
+
+        FECHAFORMATO1 = '';
+        --select first 1 CUENTA.numucuenta FROM CUENTA WHERE TIPOLINEAPOLIZAID = 0 INTO :CUENTAEMPRESA;
+        SELECT FIRST 1 SUCURSAL.cuentapoliza FROM PARAMETRO LEFT JOIN SUCURSAL ON SUCURSAL.id = PARAMETRO.sucursalid INTO :CUENTAEMPRESA;
+        CUENTAEMPRESA = COALESCE(:CUENTAEMPRESA,'0000000');
+        LEYENDA = 'Poliza ventas del dia ';
+
+        
+        suspend;
+
+
+
+
+END

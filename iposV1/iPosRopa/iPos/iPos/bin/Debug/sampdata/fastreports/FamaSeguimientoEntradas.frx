@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/13/2017 22:07:57" ReportInfo.Modified="09/14/2017 10:21:26" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void btnOk_Click(object sender, EventArgs e)
+    {
+      switch(ComboBox1.SelectedIndex)
+      {
+        case 0 : Report.SetParameterValue(&quot;TIPODOCTOID&quot;,11); break;
+        case 1 : Report.SetParameterValue(&quot;TIPODOCTOID&quot;,41); break;
+        case 2 : Report.SetParameterValue(&quot;TIPODOCTOID&quot;,14); break;
+        default : Report.SetParameterValue(&quot;TIPODOCTOID&quot;,11); break;
+      }
+    }
+
+    private void Label3_Click(object sender, EventArgs e)
+    {
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls38CxK5rM2JUqm3ogTrw0JhUT+9sofDJNdza0FWCXboYLPO30n0NoWItAWRt6Q9ykY6YYQ4/C24euSOWP1MbjnY=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT * FROM GET_ENTRADA_SALIDA(@FOLIO,@TIPODOCTOID)">
+        <Column Name="NUMERO" DataType="System.Int32"/>
+        <Column Name="NUMERODETAIL" DataType="System.Int32"/>
+        <Column Name="KARDEXID" DataType="System.Int64"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="MOVTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="SUCURSALID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="SUCURSALCLAVE" DataType="System.String"/>
+        <Column Name="TIPODOCTOCLAVE" DataType="System.String"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="CANTIDADINI" DataType="System.Decimal"/>
+        <Column Name="CANTIDADMOV" DataType="System.Decimal"/>
+        <Column Name="CANTIDADFIN" DataType="System.Decimal"/>
+        <Column Name="CANTIDADAPARTADOINI" DataType="System.Decimal"/>
+        <Column Name="CANTIDADAPARTADOMOV" DataType="System.Decimal"/>
+        <Column Name="CANTIDADAPARTADOFIN" DataType="System.Decimal"/>
+        <Column Name="NOMBREVENDEDOR" DataType="System.String"/>
+        <Column Name="SUBTIPODOCTOCLAVE" DataType="System.String"/>
+        <Column Name="MOVTOENTRADAID" DataType="System.Int64"/>
+        <Column Name="LOTE" DataType="System.String"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="LOTEIMPORTADO" DataType="System.Int64"/>
+        <Column Name="MOVTOCANTIDAD" DataType="System.Decimal"/>
+        <Column Name="CANTIDADADISTRIBUIR" DataType="System.Decimal"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="SUCURSALTCLAVE" DataType="System.String"/>
+        <Column Name="SUCURSALTNOMBRE" DataType="System.String"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <Column Name="CANTIDADTOTALINVENTARIO" DataType="System.Decimal"/>
+        <CommandParameter Name="FOLIO" DataType="10" Expression="[FOLIO]" DefaultValue="0"/>
+        <CommandParameter Name="TIPODOCTOID" DataType="1" Expression="[TIPODOCTOID]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="oT2" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;DOCTO.ID, DOCTO.FOLIO, DOCTO.FECHA, DOCTO.FECHAHORA,&#13;&#10;P.CLAVE PERSONACLAVE , P.NOMBRE PERSONANOMBRE,&#13;&#10;USUARIO.CLAVE USUARIOCLAVE, USUARIO.NOMBRE USUARIONOMBRE,&#13;&#10;TIPODOCTO.NOMBRE TIPODOCTONOMBRE&#13;&#10;&#13;&#10;FROM DOCTO&#13;&#10;LEFT JOIN PERSONA P ON P.ID = DOCTO.PERSONAID&#13;&#10;LEFT JOIN PERSONA USUARIO ON USUARIO.ID = DOCTO.VENDEDORID&#13;&#10;LEFT JOIN TIPODOCTO ON TIPODOCTO.ID = DOCTO.TIPODOCTOID&#13;&#10;WHERE DOCTO.FOLIO = @FOLIO AND DOCTO.TIPODOCTOID = @TIPODOCTOID&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="USUARIOCLAVE" DataType="System.String"/>
+        <Column Name="USUARIONOMBRE" DataType="System.String"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <CommandParameter Name="TIPODOCTOID" DataType="1" Expression="[TIPODOCTOID]" DefaultValue="0"/>
+        <CommandParameter Name="FOLIO" DataType="10" Expression="[FOLIO]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="FOLIO" DataType="System.Decimal"/>
+    <Parameter Name="TIPODOCTOID" DataType="System.Int32"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="500" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1814.4" Height="198.45">
+      <TextObject Name="Text1" Left="160.65" Top="75.6" Width="94.5" Height="18.9" Text="[FOLIO]" Font="Arial, 12pt"/>
+      <TextObject Name="Text35" Left="614.25" Top="75.6" Width="94.5" Height="18.9" Text="[oT2.FECHAHORA]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text27" Left="18.9" Top="160.65" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text28" Left="113.4" Top="160.65" Width="132.3" Height="28.35" Text="PRODUCTO CLAVE" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text29" Left="245.7" Top="160.65" Width="425.25" Height="28.35" Text="DESCRIPCION" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text30" Left="670.95" Top="160.65" Width="113.4" Height="28.35" Text="LOTE" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text31" Left="784.35" Top="160.65" Width="94.5" Height="28.35" Text="FECHA VENCIMIENTO" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text33" Left="897.75" Top="160.65" Width="94.5" Height="28.35" Text="CANTIDAD INVENTARIO" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text34" Left="160.65" Top="113.4" Width="94.5" Height="18.9" Text="[oT2.PERSONACLAVE]"/>
+      <TextObject Name="Text36" Left="255.15" Top="113.4" Width="245.7" Height="18.9" Text="[oT2.PERSONANOMBRE]"/>
+      <TextObject Name="Text37" Left="614.25" Top="113.4" Width="94.5" Height="18.9" Text="[oT2.USUARIONOMBRE]"/>
+      <TextObject Name="Text38" Top="75.6" Width="151.2" Height="18.9" Text="[oT2.TIPODOCTONOMBRE]" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text39" Top="113.4" Width="151.2" Height="18.9" Text="PROVEEDOR" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text40" Left="510.3" Top="75.6" Width="103.95" Height="18.9" Text="FECHA" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text41" Left="510.3" Top="113.4" Width="103.95" Height="18.9" Text="USUARIO" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text42" Left="122.85" Top="9.45" Width="585.9" Height="47.25" Text="SEGUIMIENTO DE ENTRADAS" Font="Arial, 24pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="202.45" Width="1814.4"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="206.45" Width="1814.4" Height="47.25" Condition="[Table.MOVTOENTRADAID]">
+      <TextObject Name="Text5" Left="784.35" Top="28.35" Width="160.65" Height="18.9" Text="CLIENTE NOMBRE" Font="Arial, 8pt, style=Italic, Underline"/>
+      <TextObject Name="Text7" Left="689.85" Top="28.35" Width="94.5" Height="18.9" Text="CLIENTE CLAVE" Font="Arial, 8pt, style=Italic, Underline"/>
+      <TextObject Name="Text8" Left="595.35" Top="28.35" Width="94.5" Height="18.9" Text="VENDEDOR" Font="Arial, 8pt, style=Italic, Underline"/>
+      <TextObject Name="Text10" Left="122.85" Top="28.35" Width="94.5" Height="18.9" Text="TIPO" Font="Arial, 8pt, style=Italic, Underline"/>
+      <TextObject Name="Text12" Left="945" Top="28.35" Width="94.5" Height="18.9" Text="SUCURSAL DESTINO CLAVE" Font="Arial, 8pt, style=Italic, Underline"/>
+      <TextObject Name="Text14" Left="1039.5" Top="28.35" Width="151.2" Height="18.9" Text="SUCURSAL DESTINO NOMBRE" Font="Arial, 8pt, style=Italic, Underline"/>
+      <TextObject Name="Text16" Left="217.35" Top="28.35" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Italic, Underline"/>
+      <TextObject Name="Text18" Left="406.35" Top="28.35" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 8pt, style=Italic, Underline"/>
+      <TextObject Name="Text20" Left="311.85" Top="28.35" Width="94.5" Height="18.9" Text="HORA" Font="Arial, 8pt, style=Italic, Underline"/>
+      <TextObject Name="Text22" Left="500.85" Top="28.35" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 8pt, style=Italic, Underline"/>
+      <TextObject Name="Text2" Left="113.4" Width="132.3" Height="18.9" Text="[Table.PRODUCTOCLAVE]" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text23" Left="245.7" Width="425.25" Height="18.9" Text="[Table.PRODUCTODESCRIPCION]" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text24" Left="18.9" Width="94.5" Height="18.9" Text="[Table.MOVTOCANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt, style=Bold" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="670.95" Width="113.4" Height="18.9" Text="[Table.LOTE]" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text26" Left="784.35" Width="94.5" Height="18.9" Text="[Table.FECHAVENCE]" Format="Date" Format.Format="d" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text32" Left="897.75" Width="94.5" Height="18.9" Text="[Table.CANTIDADTOTALINVENTARIO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 10pt, style=Bold" Trimming="EllipsisCharacter"/>
+      <DataBand Name="Data1" Top="257.7" Width="1814.4" Height="18.9" DataSource="Table">
+        <TextObject Name="Text4" Left="784.35" Width="160.65" Height="18.9" Text="[Table.PERSONANOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text6" Left="689.85" Width="94.5" Height="18.9" Text="[Table.PERSONACLAVE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text3" Left="595.35" Width="94.5" Height="18.9" Text="[Table.NOMBREVENDEDOR]" Font="Arial, 8pt"/>
+        <TextObject Name="Text9" Left="122.85" Width="94.5" Height="18.9" Text="[Table.TIPODOCTONOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text11" Left="945" Width="94.5" Height="18.9" Text="[Table.SUCURSALTCLAVE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text13" Left="1039.5" Width="151.2" Height="18.9" Text="[Table.SUCURSALTNOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text15" Left="217.35" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+        <TextObject Name="Text17" Left="406.35" Width="94.5" Height="18.9" Text="[Table.DOCTOFOLIO]" Font="Arial, 8pt"/>
+        <TextObject Name="Text19" Left="311.85" Width="94.5" Height="18.9" Text="[Table.FECHAHORA]" Format="Time" Format.Format="t" Font="Arial, 8pt"/>
+        <TextObject Name="Text21" Left="500.85" Width="94.5" Height="18.9" Text="[Table.CANTIDADMOV]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="280.6" Width="1814.4"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="284.6" Width="1814.4" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="330" AcceptButton="btnOk" CancelButton="btnCancel" BackColor="SteelBlue">
+    <ButtonControl Name="btnOk" Left="118" Top="270" Anchor="Bottom, Right" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="0" Text="Aceptar" ClickEvent="btnOk_Click" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="270" Anchor="Bottom, Right" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <NumericUpDownControl Name="NumericUpDown1" Left="48" Top="152" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="FOLIO" FilterOperation="GreaterThanOrEqual" Maximum="100000000"/>
+    <LabelControl Name="Label1" Left="48" Top="136" Width="38" Height="13" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="3" Text="FOLIO"/>
+    <LabelControl Name="Label2" Left="44" Top="68" Width="31" Height="13" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="5" Text="TIPO"/>
+    <ComboBoxControl Name="ComboBox1" Left="48" Top="92" Font="Tahoma, 8pt" TabIndex="6" Text="COMPRAS" ItemHeight="13" ItemsText="COMPRA&#13;&#10;TRASLADO RECEPCION&#13;&#10;PEDIDOS RECEPCION"/>
+    <LabelControl Name="Label3" Left="16" Top="20" Width="249" Height="19" BackColor="SteelBlue" Font="Tahoma, 12pt, style=Bold" ForeColor="White" TabIndex="5" Text="SEGUIMIENTO DE ENTRADAS" ClickEvent="Label3_Click"/>
+  </DialogPage>
+</Report>

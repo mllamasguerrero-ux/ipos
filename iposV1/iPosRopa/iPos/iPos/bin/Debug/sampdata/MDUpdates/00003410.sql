@@ -1,0 +1,2 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+VALUES (228, 231, 'Ventas por Dia Con Utilidad MultiSucursal', 'Ventas por Dia Con Utilidad MultiSucursal', 228, 2, 1);

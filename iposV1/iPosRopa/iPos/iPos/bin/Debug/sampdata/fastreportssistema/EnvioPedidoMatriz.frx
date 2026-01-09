@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/24/2013 08:32:51" ReportInfo.Modified="12/24/2013 19:20:19" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+      
+    }
+
+    private void Shape1_BeforePrint(object sender, EventArgs e)
+    {                                     
+          Decimal existencia = ((Decimal)Report.GetColumnValue(&quot;Table.EXISTENCIA&quot;)) ;
+          Decimal aPedir = ((Decimal)Report.GetColumnValue(&quot;Table.CANTIDADSURTIDA&quot;));   
+          String inventariable = ((String)Report.GetColumnValue(&quot;Table.INVENTARIABLE&quot;));
+      
+        if (aPedir &gt; existencia &amp;&amp; inventariable == &quot;S&quot;)
+        {
+          Shape1.Visible = true;
+        }
+        else
+        {    
+          Shape1.Visible = false;
+        }
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2b1b4DEmeQ92ChEKYql4TW0=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT        DOCTO.ID AS DOCTOID, MOVTO.ID AS MOVTOID, DOCTO.REFERENCIA, MOVTO.PARTIDA, PRODUCTO.CLAVE AS PRODUCTO, &#13;&#10;                         PRODUCTO.DESCRIPCION1 AS DESCRIPCION, MOVTO.CANTIDAD, MOVTO.LOTE, MOVTO.CANTIDAD AS CANTIDADSURTIDA, MOVTO.CANTIDADFALTANTE, &#13;&#10;                         MOVTO.LOCALIDAD, PRODUCTO.EXISTENCIA, PRODUCTO.INVENTARIABLE, productocaracteristicas.texto1, productocaracteristicas.texto2, &#13;&#10;                         productocaracteristicas.texto3, productocaracteristicas.texto4, productocaracteristicas.texto5, productocaracteristicas.texto6, productocaracteristicas.numero1, &#13;&#10;                         productocaracteristicas.numero2, productocaracteristicas.numero3, productocaracteristicas.numero4, productocaracteristicas.fecha1, productocaracteristicas.fecha2, &#13;&#10;                         DOCTO.DESCRIPCION AS pedidodescripcion, SUCURSALPEDIDO.CLAVE AS sucursalpedidoclave, SUCURSALPEDIDO.NOMBRE AS sucursalpedidonombre&#13;&#10;FROM            DOCTO INNER JOIN&#13;&#10;                         MOVTO ON MOVTO.DOCTOID = DOCTO.ID LEFT OUTER JOIN&#13;&#10;                         PRODUCTO ON PRODUCTO.ID = MOVTO.PRODUCTOID LEFT OUTER JOIN&#13;&#10;                         productocaracteristicas ON productocaracteristicas.productoid = PRODUCTO.ID LEFT OUTER JOIN&#13;&#10;                         SUCURSAL SUCURSALPEDIDO ON SUCURSALPEDIDO.ID = DOCTO.SUCURSALTID&#13;&#10;WHERE        (MOVTO.CANTIDAD &gt; 0) AND (DOCTO.ESTATUSDOCTOID = 0) AND (DOCTO.ID = @DOCTOID)&#13;&#10;ORDER BY DOCTOID, MOVTOID">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="MOVTOID" DataType="System.Int64"/>
+        <Column Name="REFERENCIA" DataType="System.String"/>
+        <Column Name="PARTIDA" DataType="System.Int16"/>
+        <Column Name="PRODUCTO" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="LOTE" DataType="System.String"/>
+        <Column Name="CANTIDADSURTIDA" DataType="System.Decimal"/>
+        <Column Name="CANTIDADFALTANTE" DataType="System.Decimal"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="INVENTARIABLE" DataType="System.String"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+        <Column Name="PEDIDODESCRIPCION" DataType="System.String"/>
+        <Column Name="SUCURSALPEDIDOCLAVE" DataType="System.String"/>
+        <Column Name="SUCURSALPEDIDONOMBRE" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="soloconexistencias" DataType="System.Boolean"/>
+    <Parameter Name="descripcionpedido" DataType="System.String"/>
+    <Parameter Name="sucursal" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="420" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1512" Height="103.95">
+      <TextObject Name="Text45" Left="179.55" Top="9.45" Width="557.55" Height="37.8" Text="Reporte de surtimiento de pedido" Font="Arial, 20pt, style=Bold"/>
+      <TextObject Name="Text46" Left="359.1" Top="75.6" Width="311.85" Height="18.9" Text="[sucursal]"/>
+      <TextObject Name="Text47" Left="359.1" Top="47.25" Width="311.85" Height="18.9" Text="[descripcionpedido]"/>
+      <TextObject Name="Text48" Left="255.15" Top="47.25" Width="94.5" Height="18.9" Text="Tipo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text49" Left="255.15" Top="75.6" Width="94.5" Height="18.9" Text="Sucursal:" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="107.95" Width="1512" Height="28.35">
+      <TextObject Name="Text6" Top="9.45" Width="75.6" Height="18.9" Text="REFERENCIA" Font="Arial, 9pt"/>
+      <TextObject Name="Text8" Left="75.6" Top="9.45" Width="47.25" Height="18.9" Text="PARTIDA" Font="Arial, 9pt"/>
+      <TextObject Name="Text10" Left="122.85" Top="9.45" Width="94.5" Height="18.9" Text="PRODUCTO" Font="Arial, 9pt"/>
+      <TextObject Name="Text12" Left="217.35" Top="9.45" Width="94.5" Height="18.9" Text="DESCRIPCION" Font="Arial, 9pt"/>
+      <TextObject Name="Text14" Left="311.85" Top="9.45" Width="66.15" Height="18.9" Text="CANTIDAD" Font="Arial, 9pt"/>
+      <TextObject Name="Text16" Left="378" Top="9.45" Width="66.15" Height="18.9" Text="CANTIDADSURTIDA" Font="Arial, 9pt"/>
+      <TextObject Name="Text18" Left="444.15" Top="9.45" Width="66.15" Height="18.9" Text="CANTIDADFALTANTE" Font="Arial, 9pt"/>
+      <TextObject Name="Text2" Left="510.3" Top="9.45" Width="56.7" Height="18.9" Text="LOCALIDAD" Font="Arial, 9pt"/>
+      <TextObject Name="Text4" Left="567" Top="9.45" Width="66.15" Height="18.9" Text="EXISTENCIA" Font="Arial, 9pt"/>
+      <TextObject Name="Text20" Left="633.15" Top="9.45" Width="66.15" Height="18.9" Text="INVENTARIABLE" Font="Arial, 9pt"/>
+      <TextObject Name="Text22" Left="699.3" Top="9.45" Width="66.15" Height="18.9" Text="TEXTO1" Font="Arial, 9pt"/>
+      <TextObject Name="Text24" Left="765.45" Top="9.45" Width="66.15" Height="18.9" Text="TEXTO2" Font="Arial, 9pt"/>
+      <TextObject Name="Text26" Left="831.6" Top="9.45" Width="66.15" Height="18.9" Text="TEXTO3" Font="Arial, 9pt"/>
+      <TextObject Name="Text28" Left="897.75" Top="9.45" Width="66.15" Height="18.9" Text="TEXTO4" Font="Arial, 9pt"/>
+      <TextObject Name="Text30" Left="963.9" Top="9.45" Width="66.15" Height="18.9" Text="TEXTO5" Font="Arial, 9pt"/>
+      <TextObject Name="Text32" Left="1030.05" Top="9.45" Width="56.7" Height="18.9" Text="TEXTO6" Font="Arial, 9pt"/>
+      <TextObject Name="Text34" Left="1086.75" Top="9.45" Width="56.7" Height="18.9" Text="NUMERO1" Font="Arial, 9pt"/>
+      <TextObject Name="Text36" Left="1143.45" Top="9.45" Width="66.15" Height="18.9" Text="NUMERO2" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Left="1209.6" Top="9.45" Width="66.15" Height="18.9" Text="NUMERO3" Font="Arial, 9pt"/>
+      <TextObject Name="Text40" Left="1275.75" Top="9.45" Width="66.15" Height="18.9" Text="NUMERO4" Font="Arial, 9pt"/>
+      <TextObject Name="Text42" Left="1341.9" Top="9.45" Width="75.6" Height="18.9" Text="FECHA1" Font="Arial, 9pt"/>
+      <TextObject Name="Text44" Left="1417.5" Top="9.45" Width="75.6" Height="18.9" Text="FECHA2" Font="Arial, 9pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="140.3" Width="1512" Height="18.9" BeforePrintEvent="Data1_BeforePrint" DataSource="Table" Filter="![soloconexistencias] ||  [Table.INVENTARIABLE] != &quot;S&quot;  ||  ([Table.EXISTENCIA] &gt;= [Table.CANTIDADSURTIDA])">
+      <ShapeObject Name="Shape1" Width="1493.1" Height="18.9" Fill.Color="Red" BeforePrintEvent="Shape1_BeforePrint"/>
+      <TextObject Name="Text5" Width="75.6" Height="18.9" Text="[Table.REFERENCIA]" Font="Arial, 9pt"/>
+      <TextObject Name="Text7" Left="75.6" Width="47.25" Height="18.9" Text="[Table.PARTIDA]" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="122.85" Width="94.5" Height="18.9" Text="[Table.PRODUCTO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text11" Left="217.35" Width="94.5" Height="18.9" Text="[Table.DESCRIPCION]" Font="Arial, 9pt"/>
+      <TextObject Name="Text13" Left="311.85" Width="66.15" Height="18.9" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="378" Width="66.15" Height="18.9" Text="[Table.CANTIDADSURTIDA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="444.15" Width="66.15" Height="18.9" Text="[Table.CANTIDADFALTANTE]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text1" Left="510.3" Width="56.7" Height="18.9" Text="[Table.LOCALIDAD]" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="567" Width="66.15" Height="18.9" Text="[Table.EXISTENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="633.15" Width="66.15" Height="18.9" Text="[Table.INVENTARIABLE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="699.3" Width="66.15" Height="18.9" Text="[Table.TEXTO1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text23" Left="765.45" Width="66.15" Height="18.9" Text="[Table.TEXTO2]" Font="Arial, 9pt"/>
+      <TextObject Name="Text25" Left="831.6" Width="66.15" Height="18.9" Text="[Table.TEXTO3]" Font="Arial, 9pt"/>
+      <TextObject Name="Text27" Left="897.75" Width="66.15" Height="18.9" Text="[Table.TEXTO4]" Font="Arial, 9pt"/>
+      <TextObject Name="Text29" Left="963.9" Width="66.15" Height="18.9" Text="[Table.TEXTO5]" Font="Arial, 9pt"/>
+      <TextObject Name="Text31" Left="1030.05" Width="56.7" Height="18.9" Text="[Table.TEXTO6]" Font="Arial, 9pt"/>
+      <TextObject Name="Text33" Left="1086.75" Width="56.7" Height="18.9" Text="[Table.NUMERO1]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text35" Left="1143.45" Width="66.15" Height="18.9" Text="[Table.NUMERO2]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text37" Left="1209.6" Width="66.15" Height="18.9" Text="[Table.NUMERO3]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text39" Left="1275.75" Width="66.15" Height="18.9" Text="[Table.NUMERO4]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text41" Left="1341.9" Width="75.6" Height="18.9" Text="[Table.FECHA1]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text43" Left="1417.5" Width="75.6" Height="18.9" Text="[Table.FECHA2]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="163.2" Width="1512" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

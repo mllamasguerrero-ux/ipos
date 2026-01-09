@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/06/2018 16:30:06" ReportInfo.Modified="09/06/2018 19:39:11" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+        Data1.Visible = ( ((Int32)Report.GetColumnValue(&quot;Table.DTL_ORDEN&quot;)) != 0);
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls7IrftX6n5/ducOEX1LLYdu9LbcI+5IcbofADKdXxt+3FbQwK8neVoz2L29Wk4sX8bTvsGglu5NlzD1zm24jLm+nSD4OFoPF8nC1U/F2Z9Eg">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select  * from polizalineav2_det_opc(@fecha,@opcion)&#13;&#10;order by numlinea, DTL_ORDEN">
+        <Column Name="NUMERO" DataType="System.Int32"/>
+        <Column Name="NUMCUENTA" DataType="System.String"/>
+        <Column Name="LEYENDA" DataType="System.String"/>
+        <Column Name="TIPOENTRADA" DataType="System.Int32"/>
+        <Column Name="MONTO" DataType="System.Decimal"/>
+        <Column Name="NUMLINEA" DataType="System.Int32"/>
+        <Column Name="DTL_ORDEN" DataType="System.Int32"/>
+        <Column Name="HDR_CONCEPTO1" DataType="System.String"/>
+        <Column Name="HDR_CONCEPTO2" DataType="System.String"/>
+        <Column Name="DTL_NIV1_CONCEPTO" DataType="System.String"/>
+        <Column Name="DTL_NIV1_NOMBREID1" DataType="System.String"/>
+        <Column Name="DTL_NIV1_ID1" DataType="System.Int64"/>
+        <Column Name="DTL_NIV1_NOMBREID2" DataType="System.String"/>
+        <Column Name="DTL_NIV1_ID2" DataType="System.Int64"/>
+        <Column Name="DTL_NIV1_NOMBREFECHA1" DataType="System.String"/>
+        <Column Name="DTL_NIV1_FECHA1" DataType="System.DateTime"/>
+        <Column Name="DTL_NIV1_NOMBREREFERENCIA1" DataType="System.String"/>
+        <Column Name="DTL_NIV1_REFERENCIA1" DataType="System.String"/>
+        <Column Name="DTL_NIV1_NOMBREREFERENCIA2" DataType="System.String"/>
+        <Column Name="DTL_NIV1_REFERENCIA2" DataType="System.String"/>
+        <Column Name="DTL_NIV1_NOMBREREFERENCIA3" DataType="System.String"/>
+        <Column Name="DTL_NIV1_REFERENCIA3" DataType="System.String"/>
+        <Column Name="DTL_NIV1_NOMBREREFERENCIA4" DataType="System.String"/>
+        <Column Name="DTL_NIV1_REFERENCIA4" DataType="System.String"/>
+        <Column Name="DTL_NIV1_NOMBREREFERENCIA5" DataType="System.String"/>
+        <Column Name="DTL_NIV1_REFERENCIA5" DataType="System.String"/>
+        <Column Name="DTL_NIV1_NOMBREREFERENCIA6" DataType="System.String"/>
+        <Column Name="DTL_NIV1_REFERENCIA6" DataType="System.String"/>
+        <Column Name="DTL_NIV1_NOMBREREFERENCIA7" DataType="System.String"/>
+        <Column Name="DTL_NIV1_REFERENCIA7" DataType="System.String"/>
+        <Column Name="DTL_NIV1_NOMBREREFERENCIA8" DataType="System.String"/>
+        <Column Name="DTL_NIV1_REFERENCIA8" DataType="System.String"/>
+        <Column Name="DTL_NIV1_NOMBREREFERENCIA9" DataType="System.String"/>
+        <Column Name="DTL_NIV1_REFERENCIA9" DataType="System.String"/>
+        <Column Name="DTL_NIV1_NOMBREMONTO1" DataType="System.String"/>
+        <Column Name="DTL_NIV1_MONTO1" DataType="System.Decimal"/>
+        <Column Name="DTL_NIV1_NOMBREMONTO2" DataType="System.String"/>
+        <Column Name="DTL_NIV1_MONTO2" DataType="System.Decimal"/>
+        <Column Name="DTL_NIV1_NOMBREMONTO3" DataType="System.String"/>
+        <Column Name="DTL_NIV1_MONTO3" DataType="System.Decimal"/>
+        <Column Name="DTL_NIV2_CONCEPTO" DataType="System.String"/>
+        <Column Name="DTL_NIV2_NOMBREID1" DataType="System.String"/>
+        <Column Name="DTL_NIV2_ID1" DataType="System.Int64"/>
+        <Column Name="DTL_NIV2_NOMBREID2" DataType="System.String"/>
+        <Column Name="DTL_NIV2_ID2" DataType="System.Int64"/>
+        <Column Name="DTL_NIV2_NOMBREFECHA1" DataType="System.String"/>
+        <Column Name="DTL_NIV2_FECHA1" DataType="System.DateTime"/>
+        <Column Name="DTL_NIV2_NOMBREREFERENCIA1" DataType="System.String"/>
+        <Column Name="DTL_NIV2_REFERENCIA1" DataType="System.String"/>
+        <Column Name="DTL_NIV2_NOMBREREFERENCIA2" DataType="System.String"/>
+        <Column Name="DTL_NIV2_REFERENCIA2" DataType="System.String"/>
+        <Column Name="DTL_NIV2_NOMBREREFERENCIA3" DataType="System.String"/>
+        <Column Name="DTL_NIV2_REFERENCIA3" DataType="System.String"/>
+        <Column Name="DTL_NIV2_NOMBREREFERENCIA4" DataType="System.String"/>
+        <Column Name="DTL_NIV2_REFERENCIA4" DataType="System.String"/>
+        <Column Name="DTL_NIV2_NOMBREREFERENCIA5" DataType="System.String"/>
+        <Column Name="DTL_NIV2_REFERENCIA5" DataType="System.String"/>
+        <Column Name="DTL_NIV2_NOMBREREFERENCIA6" DataType="System.String"/>
+        <Column Name="DTL_NIV2_REFERENCIA6" DataType="System.String"/>
+        <Column Name="DTL_NIV2_NOMBREREFERENCIA7" DataType="System.String"/>
+        <Column Name="DTL_NIV2_REFERENCIA7" DataType="System.String"/>
+        <Column Name="DTL_NIV2_NOMBREREFERENCIA8" DataType="System.String"/>
+        <Column Name="DTL_NIV2_REFERENCIA8" DataType="System.String"/>
+        <Column Name="DTL_NIV2_NOMBREREFERENCIA9" DataType="System.String"/>
+        <Column Name="DTL_NIV2_REFERENCIA9" DataType="System.String"/>
+        <Column Name="DTL_NIV2_NOMBREMONTO1" DataType="System.String"/>
+        <Column Name="DTL_NIV2_MONTO1" DataType="System.Decimal"/>
+        <Column Name="DTL_NIV2_NOMBREMONTO2" DataType="System.String"/>
+        <Column Name="DTL_NIV2_MONTO2" DataType="System.Decimal"/>
+        <Column Name="DTL_NIV2_NOMBREMONTO3" DataType="System.String"/>
+        <Column Name="DTL_NIV2_MONTO3" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="opcion" DataType="16" Expression="[opcion]" DefaultValue="S"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="fecha" DataType="System.DateTime"/>
+    <Parameter Name="opcion" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="1600" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="5972.4"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="5972.4" Height="90.72"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="98.72" Width="5972.4" Height="41.58" Condition="[Table.NUMLINEA]">
+      <TextObject Name="Text2" Left="3.78" Width="120.96" Height="18.9" Text="[Table.NUMLINEA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text1" Left="124.74" Width="147.42" Height="18.9" Text="[Table.NUMCUENTA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="275.94" Width="136.08" Height="18.9" Text="[Table.LEYENDA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="412.02" Width="151.2" Height="18.9" Text="[Table.TIPOENTRADA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="567" Width="136.08" Height="18.9" Text="[Table.MONTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text6" Left="714.42" Width="189" Height="18.9" Text="[Table.HDR_CONCEPTO1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="907.2" Width="147.42" Height="18.9" Text="[Table.HDR_CONCEPTO2]" Font="Arial, 8pt"/>
+      <GroupHeaderBand Name="GroupHeader2" Top="144.3" Width="5972.4" Condition="[Table.DTL_ORDEN]">
+        <DataBand Name="Data1" Top="148.3" Width="5972.4" Height="18.9" BeforePrintEvent="Data1_BeforePrint" DataSource="Table">
+          <TextObject Name="Text34" Left="1220.94" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_REFERENCIA1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text41" Left="1409.94" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_REFERENCIA2]" Font="Arial, 8pt"/>
+          <TextObject Name="Text43" Left="1602.72" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_REFERENCIA3]" Font="Arial, 8pt"/>
+          <TextObject Name="Text45" Left="1795.5" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_REFERENCIA4]" Font="Arial, 8pt"/>
+          <TextObject Name="Text47" Left="1984.5" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_REFERENCIA5]" Font="Arial, 8pt"/>
+          <TextObject Name="Text49" Left="2177.28" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_REFERENCIA6]" Font="Arial, 8pt"/>
+          <TextObject Name="Text54" Left="3428.46" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_REFERENCIA1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text56" Left="3617.46" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_REFERENCIA2]" Font="Arial, 8pt"/>
+          <TextObject Name="Text58" Left="3806.46" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_REFERENCIA3]" Font="Arial, 8pt"/>
+          <TextObject Name="Text60" Left="4006.8" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_REFERENCIA4]" Font="Arial, 8pt"/>
+          <TextObject Name="Text62" Left="4195.8" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_REFERENCIA5]" Font="Arial, 8pt"/>
+          <TextObject Name="Text64" Left="4384.8" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_REFERENCIA6]" Font="Arial, 8pt"/>
+          <TextObject Name="Text14" Left="1315.44" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREREFERENCIA2]" Font="Arial, 8pt"/>
+          <TextObject Name="Text15" Left="1504.44" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREREFERENCIA3]" Font="Arial, 8pt"/>
+          <TextObject Name="Text16" Left="1697.22" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREREFERENCIA4]" Font="Arial, 8pt"/>
+          <TextObject Name="Text17" Left="1890" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREREFERENCIA5]" Font="Arial, 8pt"/>
+          <TextObject Name="Text18" Left="2079" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREREFERENCIA6]" Font="Arial, 8pt"/>
+          <TextObject Name="Text24" Left="3522.96" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREREFERENCIA2]" Font="Arial, 8pt"/>
+          <TextObject Name="Text25" Left="3711.96" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREREFERENCIA3]" Font="Arial, 8pt"/>
+          <TextObject Name="Text26" Left="3908.52" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREREFERENCIA4]" Font="Arial, 8pt"/>
+          <TextObject Name="Text27" Left="4101.3" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREREFERENCIA5]" Font="Arial, 8pt"/>
+          <TextObject Name="Text28" Left="4290.3" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREREFERENCIA6]" Font="Arial, 8pt"/>
+          <TextObject Name="Text42" Left="2657.34" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_ID2]" Font="Arial, 8pt"/>
+          <TextObject Name="Text46" Left="2846.34" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_FECHA1]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+          <TextObject Name="Text50" Left="3035.34" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_MONTO1]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text52" Left="3235.68" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_MONTO2]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text40" Left="2468.34" Width="94.5" Height="18.9" Text="DTL_NIV2_ID1" Font="Arial, 8pt"/>
+          <TextObject Name="Text20" Left="2373.84" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREID1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text21" Left="2562.84" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREID2]" Font="Arial, 8pt"/>
+          <TextObject Name="Text22" Left="2751.84" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREFECHA1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text29" Left="2940.84" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREMONTO1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text30" Left="3141.18" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREMONTO2]" Font="Arial, 8pt"/>
+          <TextObject Name="Text23" Left="3330.18" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_NOMBREREFERENCIA1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text9" Left="3.78" Width="173.88" Height="18.9" Text="[Table.DTL_NIV1_CONCEPTO]" Font="Arial, 8pt"/>
+          <TextObject Name="Text33" Left="279.72" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_ID1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text35" Left="468.72" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_ID2]" Font="Arial, 8pt"/>
+          <TextObject Name="Text37" Left="657.72" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_FECHA1]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+          <TextObject Name="Text36" Left="846.72" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_MONTO1]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text39" Left="1035.72" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_MONTO2]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text10" Left="181.44" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREID1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text11" Left="374.22" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREID2]" Font="Arial, 8pt"/>
+          <TextObject Name="Text12" Left="563.22" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREFECHA1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text31" Left="752.22" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREMONTO1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text32" Left="941.22" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREMONTO2]" Font="Arial, 8pt"/>
+          <TextObject Name="Text13" Left="1130.22" Width="94.5" Height="18.9" Text="[Table.DTL_NIV1_NOMBREREFERENCIA1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text19" Left="2275.56" Width="94.5" Height="18.9" Text="[Table.DTL_NIV2_CONCEPTO]" Font="Arial, 8pt"/>
+        </DataBand>
+        <GroupFooterBand Name="GroupFooter2" Top="171.2" Width="5972.4"/>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="175.2" Width="5972.4" Height="18.9"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="198.1" Width="5972.4"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="52" Top="56" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fecha" Value="2018-05-01"/>
+    <LabelControl Name="Label1" Left="52" Top="40" Width="34" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="fecha"/>
+    <TextBoxControl Name="TextBox1" Left="56" Top="108" Font="Tahoma, 8pt" TabIndex="4" Text="S" ReportParameter="opcion"/>
+    <LabelControl Name="Label2" Left="56" Top="92" Width="38" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="opcion"/>
+  </DialogPage>
+</Report>

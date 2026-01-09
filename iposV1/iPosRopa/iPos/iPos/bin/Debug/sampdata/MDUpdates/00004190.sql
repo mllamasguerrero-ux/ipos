@@ -1,0 +1,278 @@
+CREATE OR ALTER PROCEDURE INVENTARIO_UI (
+    ALMACENID D_FK,
+    PRODUCTOID D_FK,
+    LOTE D_LOTE,
+    FECHAVENCE D_FECHAVENCE,
+    CANTIDAD D_CANTIDAD,
+    PRECIO D_PRECIO,
+    COSTO D_COSTO,
+    ORIGENFISCALID D_FK,
+    ESAPARTADO D_BOOLCN,
+    KARDEXID D_FK,
+    LOTEIMPORTADO D_FK)
+RETURNS (
+    OK D_BOOLCN,
+    ERRORCODE D_ERRORCODE)
+AS
+declare variable INVENTARIOID type of D_FK;
+declare variable SENTIDOINV type of D_SENTIDO;
+declare variable MANEJALOTES char(1);
+declare variable MANEJALOTEIMPORTADO char(1);
+declare variable LOTEINVENTARIO type of D_LOTE;
+declare variable FECHAVENCEINVENTARIO type of D_FECHAVENCE;
+declare variable LOTEIMPORTADOINVENTARIO type of D_FK;
+BEGIN
+
+
+
+
+   --MANEJALOTES = 'N'; -- Este posteriormente proviene de parametros.
+   select manejalote, MANEJALOTEIMPORTADO from producto where id = :productoid into :manejalotes, :MANEJALOTEIMPORTADO;
+
+   IF ((:CANTIDAD IS NULL) OR (:CANTIDAD = 0)) THEN
+   BEGIN
+      ERRORCODE = 1026;
+      SUSPEND;
+      EXIT;
+   END
+
+   IF ((:LOTE IS NULL) OR (:MANEJALOTES = 'N')) THEN
+   BEGIN
+
+        IF(:LOTEIMPORTADO IS NULL or :MANEJALOTEIMPORTADO = 'N' ) THEN
+        BEGIN
+            
+            SELECT FIRST 1 ID, LOTE, FECHAVENCE, LOTEIMPORTADO
+            FROM INVENTARIO
+            WHERE
+                ALMACENID = :ALMACENID
+                AND PRODUCTOID = :PRODUCTOID
+                AND ORIGENFISCALID = :ORIGENFISCALID
+                AND ESAPARTADO = :ESAPARTADO
+                INTO :INVENTARIOID, :LOTEinventario, :FECHAVENCEinventario, :LOTEIMPORTADOINVENTARIO;
+
+        END
+        ELSE
+        BEGIN
+            
+            SELECT FIRST 1 ID, LOTE, FECHAVENCE, LOTEIMPORTADO
+            FROM INVENTARIO
+            WHERE
+                ALMACENID = :ALMACENID
+                AND PRODUCTOID = :PRODUCTOID
+                AND ORIGENFISCALID = :ORIGENFISCALID
+                AND ESAPARTADO = :ESAPARTADO
+                AND LOTEIMPORTADO = :LOTEIMPORTADO
+                INTO :INVENTARIOID, :LOTEinventario, :FECHAVENCEinventario, :LOTEIMPORTADOINVENTARIO;
+        END
+
+
+
+         LOTE = NULL;
+         FECHAVENCE = NULL;
+
+   END
+   BEGIN
+
+        
+        IF(:LOTEIMPORTADO IS NULL or :MANEJALOTEIMPORTADO = 'N' ) THEN
+        BEGIN
+
+            
+            SELECT ID, LOTE, FECHAVENCE, LOTEIMPORTADO
+            FROM INVENTARIO
+            WHERE 
+             ALMACENID = :ALMACENID
+            AND PRODUCTOID = :PRODUCTOID
+            AND LOTE = :LOTE
+            AND FECHAVENCE = :FECHAVENCE
+            AND ORIGENFISCALID = :ORIGENFISCALID  
+            AND ESAPARTADO = :ESAPARTADO  
+            AND COALESCE(LOTEIMPORTADO,'') = COALESCE(:LOTEIMPORTADO,'')
+            INTO :INVENTARIOID, :LOTEinventario, :FECHAVENCEinventario, :LOTEIMPORTADOINVENTARIO;
+        END
+        ELSE
+        BEGIN
+
+            
+            SELECT ID, LOTE, FECHAVENCE , LOTEIMPORTADO
+            FROM INVENTARIO
+            WHERE 
+             ALMACENID = :ALMACENID
+            AND PRODUCTOID = :PRODUCTOID
+            AND LOTE = :LOTE
+            AND FECHAVENCE = :FECHAVENCE
+            AND ORIGENFISCALID = :ORIGENFISCALID  
+            AND ESAPARTADO = :ESAPARTADO  
+            AND LOTEIMPORTADO = :LOTEIMPORTADO
+            INTO :INVENTARIOID, :LOTEinventario, :FECHAVENCEinventario, :LOTEIMPORTADOINVENTARIO;
+
+        END
+
+   END
+      
+
+
+   IF (:INVENTARIOID IS NULL) THEN
+   BEGIN
+
+
+
+      INSERT INTO INVENTARIO
+         (ALMACENID, PRODUCTOID, LOTE, FECHAVENCE, CANTIDAD,ORIGENFISCALID,ESAPARTADO, LOTEIMPORTADO)
+      VALUES
+         (:ALMACENID, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD,:ORIGENFISCALID, :ESAPARTADO, :LOTEIMPORTADO)
+      RETURNING ID
+         INTO :INVENTARIOID;
+
+
+
+       IF( :MANEJALOTES = 'S' AND :LOTE IS NULL AND  :LOTEINVENTARIO IS NOT NULL) THEN
+       BEGIN
+              UPDATE KARDEX SET LOTE = :LOTEINVENTARIO , FECHAVENCE = :FECHAVENCEINVENTARIO WHERE ID = :KARDEXID;
+       END
+
+       
+
+       IF( :MANEJALOTEIMPORTADO = 'S' AND :LOTEIMPORTADO IS NULL AND  :LOTEIMPORTADOINVENTARIO IS NOT NULL) THEN
+       BEGIN
+              UPDATE KARDEX SET LOTEIMPORTADO = :LOTEIMPORTADOINVENTARIO  WHERE ID = :KARDEXID;
+       END
+
+
+   END
+   ELSE
+   BEGIN
+      IF ((:LOTE IS NULL) OR (:MANEJALOTES = 'N')) THEN
+      BEGIN
+
+      
+        IF(:LOTEIMPORTADO IS NULL or :MANEJALOTEIMPORTADO = 'N' ) THEN
+        BEGIN
+            
+            UPDATE INVENTARIO
+            SET
+            CANTIDAD = CANTIDAD + :CANTIDAD
+            WHERE  PRODUCTOID = :PRODUCTOID  
+            AND ORIGENFISCALID = :ORIGENFISCALID  
+            AND ESAPARTADO = :ESAPARTADO
+            AND ID = :INVENTARIOID;
+        END
+        ELSE
+        BEGIN
+            
+            UPDATE INVENTARIO
+            SET
+            CANTIDAD = CANTIDAD + :CANTIDAD
+            WHERE  PRODUCTOID = :PRODUCTOID  
+            AND ORIGENFISCALID = :ORIGENFISCALID  
+            AND ESAPARTADO = :ESAPARTADO
+            AND LOTEIMPORTADO = :LOTEIMPORTADO
+            AND ID = :INVENTARIOID;
+
+        END
+
+
+
+
+            
+            IF( :MANEJALOTES = 'S' AND :LOTE IS NULL AND  :LOTEINVENTARIO IS NOT NULL) THEN
+            BEGIN
+              UPDATE KARDEX SET LOTE = :LOTEINVENTARIO , FECHAVENCE = :FECHAVENCEINVENTARIO WHERE ID = :KARDEXID;
+            END
+            
+            IF( :MANEJALOTEIMPORTADO = 'S' AND :LOTEIMPORTADO IS NULL AND  :LOTEIMPORTADOINVENTARIO IS NOT NULL) THEN
+            BEGIN
+              UPDATE KARDEX SET LOTEIMPORTADO = :LOTEIMPORTADOINVENTARIO  WHERE ID = :KARDEXID;
+            END
+
+      END
+      ELSE
+      BEGIN
+
+      
+        IF(:LOTEIMPORTADO IS NULL or :MANEJALOTEIMPORTADO = 'N' ) THEN
+        BEGIN
+            
+            UPDATE INVENTARIO
+            SET
+            CANTIDAD = CANTIDAD + :CANTIDAD
+            WHERE  PRODUCTOID = :PRODUCTOID
+            AND LOTE = :LOTE
+            AND FECHAVENCE = :FECHAVENCE  
+            AND ORIGENFISCALID = :ORIGENFISCALID  
+            AND ESAPARTADO = :ESAPARTADO 
+            AND ID = :INVENTARIOID;
+        END
+        ELSE
+        BEGIN
+                   
+            UPDATE INVENTARIO
+            SET
+            CANTIDAD = CANTIDAD + :CANTIDAD
+            WHERE  PRODUCTOID = :PRODUCTOID
+            AND LOTE = :LOTE
+            AND FECHAVENCE = :FECHAVENCE  
+            AND ORIGENFISCALID = :ORIGENFISCALID  
+            AND ESAPARTADO = :ESAPARTADO
+            AND LOTEIMPORTADO = :LOTEIMPORTADO
+            AND ID = :INVENTARIOID;
+
+
+        END
+
+         /*RETURNING ID
+            INTO :INVENTARIOID;*/
+
+
+      END
+   END
+
+   UPDATE PRODUCTO P
+   SET P.EXISTENCIA = (
+      SELECT SUM(I.CANTIDAD)
+      FROM INVENTARIO I
+      where i.productoid = :PRODUCTOID and ESAPARTADO = 'N') ,
+       P.existenciafacturado =  (
+           SELECT SUM(I.CANTIDAD)
+           FROM INVENTARIO I
+           where i.productoid = :PRODUCTOID
+           AND ORIGENFISCALID = 3
+           AND ESAPARTADO = 'N') ,
+       P.existenciaremisionado =  (
+           SELECT SUM(I.CANTIDAD)
+           FROM INVENTARIO I
+           where i.productoid = :PRODUCTOID
+           AND ORIGENFISCALID = 2
+           AND ESAPARTADO = 'N')  ,
+       P.EXISTENCIAAPARTADO = (
+      SELECT SUM(I.CANTIDAD)
+      FROM INVENTARIO I
+      where i.productoid = :PRODUCTOID and ESAPARTADO = 'S') ,
+       P.existenciafacturadoapartado =  (
+           SELECT SUM(I.CANTIDAD)
+           FROM INVENTARIO I
+           where i.productoid = :PRODUCTOID
+           AND ORIGENFISCALID = 3
+           AND ESAPARTADO = 'S') ,
+       P.existenciaremisionadoapartado =  (
+           SELECT SUM(I.CANTIDAD)
+           FROM INVENTARIO I
+           where i.productoid = :PRODUCTOID
+           AND ORIGENFISCALID = 2
+           AND ESAPARTADO = 'S')
+    WHERE P.ID = :PRODUCTOID ;
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+
+      ERRORCODE = 1027;
+      SUSPEND;
+   END
+END
+
+

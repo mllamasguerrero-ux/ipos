@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" StartReportEvent="_StartReport" ReportInfo.Created="04/12/2015 11:54:43" ReportInfo.Modified="08/02/2017 10:57:02" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void DateTimePicker1_DataLoaded(object sender, EventArgs e)
+    {
+      DateTimePicker1.Value = DateTime.Today;
+    }
+
+    private void _StartReport(object sender, EventArgs e)
+    {
+         DateTimePicker1.Value = DateTime.Today;
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls6VtLZk5X/HNHdlg37G4jlMz39Vqdqi1iZIehrXC/pLpCqKBT87UoPKO4btXfX+fzpPq2gY8d1pmut0iO6EejnM=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;inventario.almacenid,&#13;&#10;producto.nombre nombreproducto,&#13;&#10;producto.descripcion1 descripcion1producto,&#13;&#10;producto.clave claveproducto,&#13;&#10;coalesce(inventario.lote,'') kardexlote,&#13;&#10;coalesce(inventario.fechavence, '1899-12-30') kardexfechavence,&#13;&#10;almacen.nombre nombrealmacen, &#13;&#10;coalesce(inventario.origenfiscalid,2) origenfiscalid,&#13;&#10;origenfiscal.nombre origenfiscalnombre , &#13;&#10;sum(&#13;&#10;case when docto.tipodoctoid = -51 then 1&#13;&#10;     when docto.tipodoctoid = -52 then -1&#13;&#10;     when kardex.esapartado = 'S' then 0&#13;&#10;     else coalesce(tipodocto.sentidoinventario,0)&#13;&#10;end  * coalesce(kardex.cantidad,0))&#13;&#10;+&#13;&#10;max( case when coalesce(inventario.esapartado,'N') &lt;&gt; 'S' then coalesce(inventario.cantidadinicial ,0) else 0 end)&#13;&#10;as cantidad  ,&#13;&#10;sum(&#13;&#10;case when kardex.esapartado = 'S' then tipodocto.sentidoinventarioapartados&#13;&#10;     else 0&#13;&#10;end  * coalesce(kardex.cantidad,0))&#13;&#10;+&#13;&#10;max( case when coalesce(inventario.esapartado,'N') = 'S' then coalesce(inventario.cantidadinicial ,0) else 0 end)  as cantidadapartados ,&#13;&#10;&#13;&#10;producto.costoreposicion ,&#13;&#10;&#13;&#10;(coalesce(producto.costoreposicion,0) *&#13;&#10;(sum(&#13;&#10;case when docto.tipodoctoid = -51 then 1&#13;&#10;     when docto.tipodoctoid = -52 then -1&#13;&#10;     when kardex.esapartado = 'S' then 0&#13;&#10;     else coalesce(tipodocto.sentidoinventario,0)&#13;&#10;end  * coalesce(kardex.cantidad,0))&#13;&#10;+&#13;&#10;max( case when coalesce(inventario.esapartado,'N') &lt;&gt; 'S' then coalesce(inventario.cantidadinicial ,0) else 0 end))) as costoreposiciontotal ,&#13;&#10;&#13;&#10;lotesimportados.pedimento, &#13;&#10;lotesimportados.tipocambio,&#13;&#10;lotesimportados.fechaimportacion ,&#13;&#10;lotesimportados.sataduanaid        ,&#13;&#10;lotesimportados.aduana&#13;&#10;&#13;&#10;from&#13;&#10;inventario left join kardex on&#13;&#10;        inventario.productoid = kardex.productoid and&#13;&#10;        inventario.almacenid = kardex.almacenid and&#13;&#10;        coalesce(inventario.lote,'') = coalesce(kardex.lote, '') and&#13;&#10;        coalesce(inventario.fechavence, '1899-12-30') = coalesce(kardex.fechavence, '1899-12-30') and&#13;&#10;        coalesce(inventario.esapartado,'') = coalesce(kardex.esapartado,'') and&#13;&#10;        coalesce(inventario.origenfiscalid,2) = coalesce(kardex.origenfiscalid,2)  and&#13;&#10;        coalesce(inventario.loteimportado,0) = coalesce(kardex.loteimportado,0) and&#13;&#10;        kardex.fecha &lt;= @fecha&#13;&#10;left join docto on kardex.doctoid = docto.id&#13;&#10;left join tipodocto on tipodocto.id = docto.tipodoctoid&#13;&#10;left join producto on producto.id = inventario.productoid&#13;&#10;left join almacen on almacen.id = inventario.almacenid&#13;&#10;left join origenfiscal on origenfiscal.id = coalesce(inventario.origenfiscalid,2)&#13;&#10;left join lotesimportados on lotesimportados.id =  coalesce(inventario.loteimportado,0)&#13;&#10;&#13;&#10;where cast(inventario.creado as date) &lt;= @fecha&#13;&#10;&#13;&#10;group by&#13;&#10;inventario.almacenid,&#13;&#10;producto.nombre ,&#13;&#10;producto.descripcion1,&#13;&#10;producto.clave ,&#13;&#10;coalesce(inventario.lote,'') ,&#13;&#10;inventario.fechavence ,&#13;&#10;almacen.nombre,&#13;&#10;coalesce(inventario.origenfiscalid,2),&#13;&#10;origenfiscal.nombre,&#13;&#10;producto.costoreposicion ,&#13;&#10;inventario.loteimportado ,&#13;&#10;&#13;&#10;lotesimportados.pedimento, &#13;&#10;lotesimportados.tipocambio,&#13;&#10;lotesimportados.fechaimportacion ,&#13;&#10;lotesimportados.sataduanaid  ,&#13;&#10;lotesimportados.aduana&#13;&#10;&#13;&#10;&#13;&#10;having&#13;&#10; ( sum(&#13;&#10;case when docto.tipodoctoid = -51 then 1&#13;&#10;     when docto.tipodoctoid = -52 then -1&#13;&#10;     when kardex.esapartado = 'S' then 0&#13;&#10;     else coalesce(tipodocto.sentidoinventario,0)&#13;&#10;end  * coalesce(kardex.cantidad,0))&#13;&#10;+&#13;&#10;max( case when coalesce(inventario.esapartado,'N') &lt;&gt; 'S' then coalesce(inventario.cantidadinicial ,0) else 0 end)&#13;&#10;) &lt;&gt; 0&#13;&#10; order by producto.clave&#13;&#10;&#13;&#10; /*&#13;&#10;&#13;&#10;&#13;&#10; sum(&#13;&#10;case when docto.tipodoctoid = -51 then 1&#13;&#10;     when docto.tipodoctoid = -52 then -1&#13;&#10;     when kardex.esapartado = 'S' then 0&#13;&#10;     else tipodocto.sentidoinventario&#13;&#10;end  * kardex.cantidad) &lt;&gt; 0 or&#13;&#10;sum(&#13;&#10;case when kardex.esapartado = 'S' then tipodocto.sentidoinventarioapartados&#13;&#10;     else 0&#13;&#10;end  * kardex.cantidad) &lt;&gt; 0&#13;&#10;&#13;&#10;order by producto.clave  */">
+        <Column Name="ALMACENID" DataType="System.Int64"/>
+        <Column Name="NOMBREPRODUCTO" DataType="System.String"/>
+        <Column Name="CLAVEPRODUCTO" DataType="System.String"/>
+        <Column Name="KARDEXLOTE" DataType="System.String"/>
+        <Column Name="KARDEXFECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="CANTIDADAPARTADOS" DataType="System.Decimal"/>
+        <Column Name="NOMBREALMACEN" DataType="System.String"/>
+        <Column Name="ORIGENFISCALID" DataType="System.Int64"/>
+        <Column Name="ORIGENFISCALNOMBRE" DataType="System.String"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="COSTOREPOSICIONTOTAL" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION1PRODUCTO" DataType="System.String"/>
+        <Column Name="PEDIMENTO" DataType="System.String"/>
+        <Column Name="TIPOCAMBIO" DataType="System.Decimal"/>
+        <Column Name="FECHAIMPORTACION" DataType="System.DateTime"/>
+        <Column Name="SATADUANAID" DataType="System.Int64"/>
+        <Column Name="ADUANA" DataType="System.String"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[Fecha]" DefaultValue="01.01.2001"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="Fecha" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="380" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1360.8" Height="94.5">
+      <TextObject Name="Text19" Left="207.9" Top="9.45" Width="425.25" Height="18.9" Text="INVENTARIO POR FECHA" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text16" Left="652.05" Top="28.35" Width="160.65" Height="18.9" Text="[Date]"/>
+      <TextObject Name="Text17" Left="567" Top="56.7" Width="245.7" Height="18.9" Text="[Fecha]"/>
+      <TextObject Name="Text8" Top="56.7" Width="538.65" Height="18.9" Text="La fecha que se establece a continuacion mostrara la existencia al final de esa fecha:"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="98.5" Width="1360.8" Height="28.35">
+      <TextObject Name="Text4" Left="103.95" Width="103.95" Height="18.9" Text="CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="207.9" Width="179.55" Height="18.9" Text="NOMBRE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="642.6" Width="94.5" Height="28.35" Text="FECHA VENCE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="859.95" Width="103.95" Height="18.9" Text="CANTIDAD" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text14" Left="963.9" Width="113.4" Height="28.35" Text="CANTIDAD APARTADOS" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text2" Width="103.95" Height="18.9" Text="ALMACEN" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text20" Left="737.1" Width="122.85" Height="28.35" Text="ORIGEN FISCAL NOMBRE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text22" Left="1077.3" Width="113.4" Height="28.35" Text="COSTO REPOSICION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text24" Left="1190.7" Width="103.95" Height="28.35" Text="COSTO REPO. TOTAL" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text7" Left="387.45" Width="132.3" Height="18.9" Text="PEDIMENTO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text25" Left="519.75" Width="122.85" Height="18.9" Text="LOTE" Font="Arial, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="130.85" Width="1360.8" Height="28.35" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text3" Left="103.95" Width="103.95" Height="28.35" Text="[Table.CLAVEPRODUCTO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="642.6" Width="94.5" Height="28.35" Text="[Table.KARDEXFECHAVENCE]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="859.95" Width="103.95" Height="28.35" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="963.9" Width="113.4" Height="28.35" Text="[Table.CANTIDADAPARTADOS]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text1" Width="103.95" Height="28.35" Text="[Table.NOMBREALMACEN]" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="737.1" Width="122.85" Height="28.35" Text="[Table.ORIGENFISCALNOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text21" Left="1077.3" Width="113.4" Height="28.35" Text="[Table.COSTOREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="1190.7" Width="113.4" Height="28.35" Text="[Table.COSTOREPOSICIONTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="207.9" Width="179.55" Height="28.35" CanGrow="true" Text="[Table.DESCRIPCION1PRODUCTO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="387.45" Width="132.3" Height="18.9" Text="[Table.PEDIMENTO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text15" Left="519.75" Width="122.85" Height="18.9" Text="[Table.KARDEXLOTE]" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="163.2" Width="1360.8" Height="28.35">
+      <TextObject Name="Text26" Left="963.9" Top="9.45" Width="66.15" Height="18.9" Text="Page"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="190" AcceptButton="btnOk" CancelButton="btnCancel" BackColor="RoyalBlue" Text="Inventario por fecha">
+    <ButtonControl Name="btnOk" Left="118" Top="131" Anchor="Bottom, Right" BackColor="RoyalBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="131" Anchor="Bottom, Right" BackColor="RoyalBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="56" Top="40" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="Fecha" DataLoadedEvent="DateTimePicker1_DataLoaded" Value="04/12/2015 12:05:45"/>
+    <LabelControl Name="Label1" Left="52" Top="20" Width="36" Height="13" BackColor="RoyalBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="3" Text="Fecha"/>
+  </DialogPage>
+</Report>

@@ -1,0 +1,12 @@
+|||||100+++++//lstBase = (nombreTablaMinPrimeraLetra)Dao.SelectForSelector  catalogoGeneralParam0
+                    case "(nombreTabla)":
+                        lstBase = (nombreTablaMinPrimeraLetra)Dao.SelectForSelector(null,
+                                                                                |||||110+++++catalogDef.CatalogParam != null ? ((nombreTabla)Param)catalogDef.CatalogParam : new (nombreTabla)Param(defaultParam),|||||120+++++catalogDef.CatalogParam != null ? ((nombreTabla)Param)catalogDef.CatalogParam : new (nombreTabla)Param(catalogoGeneralParam0),|||||130+++++
+                                                                                catalogDef.ExtraCondition);
+                        break;
+
+                    !!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+110;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;NO
+120;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;SI
+130;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

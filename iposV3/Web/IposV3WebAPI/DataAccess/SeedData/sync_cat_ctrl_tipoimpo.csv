@@ -1,0 +1,12 @@
+﻿id;clave;nombre
+1;RecCompras ;RecCompras
+2;Producto ;Producto
+3;Traslados ;Traslados
+4;ExistenciasGen ;ExistenciasGen
+5;MatrizPedidos ;MatrizPedidos
+6;RecComprasAux ;RecComprasAux
+7;TrasladosAux ;TrasladosAux
+8;TrasladosDevo ;TrasladosDevo
+9;PedidosDevo ;PedidosDevo
+21;PreciosTemp ;PreciosTemp
+25;SolicitudMercancia ;SolicitudMercancia

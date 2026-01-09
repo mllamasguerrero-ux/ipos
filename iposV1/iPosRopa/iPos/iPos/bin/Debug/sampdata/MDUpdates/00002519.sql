@@ -1,0 +1,23 @@
+CREATE TABLE CONTRARECIBODTL (
+    ID                    D_PK NOT NULL /* D_PK = BIGINT NOT NULL */,
+    ACTIVO                D_BOOLCS /* D_BOOLCS = CHAR(1) DEFAULT 'S' NOT NULL CHECK (VALUE IN ('S', 'N')) */,
+    CREADO                D_TIMESTAMP /* D_TIMESTAMP = TIMESTAMP default current_timestamp NOT NULL */,
+    CREADOPOR_USERID      D_FK DEFAULT 0 /* D_FK = BIGINT */,
+    MODIFICADO            D_TIMESTAMP /* D_TIMESTAMP = TIMESTAMP default current_timestamp NOT NULL */,
+    MODIFICADOPOR_USERID  D_FK DEFAULT 0 /* D_FK = BIGINT */,
+    CONTRARECIBOID        D_FK /* D_FK = BIGINT */,
+    DOCTOID               D_FK /* D_FK = BIGINT */,
+    FECHA                 D_FECHA /* D_FECHA = DATE */,
+    FECHAVENCE            D_FECHA /* D_FECHA = DATE */,
+    FOLIO                 D_DOCTOFOLIO /* D_DOCTOFOLIO = INTEGER */,
+    SERIE                 D_DOCTOSERIE /* D_DOCTOSERIE = VARCHAR(31) */,
+    FOLIOSAT              D_DOCTOFOLIO /* D_DOCTOFOLIO = INTEGER */,
+    SERIESAT              D_DOCTOSERIE /* D_DOCTOSERIE = VARCHAR(31) */,
+    ESTATUSID             D_FK /* D_FK = BIGINT */,
+    TOTALDOCTO            D_PRECIO /* D_PRECIO = NUMERIC(18,2) DEFAULT 0.00 */,
+    ABONODOCTO            D_PRECIO /* D_PRECIO = NUMERIC(18,2) DEFAULT 0.00 */,
+    SALDODOCTO            D_PRECIO /* D_PRECIO = NUMERIC(18,2) DEFAULT 0.00 */,
+    TOTAL                 D_PRECIO /* D_PRECIO = NUMERIC(18,2) DEFAULT 0.00 */,
+    ABONO                 D_PRECIO /* D_PRECIO = NUMERIC(18,2) DEFAULT 0.00 */,
+    SALDO                 D_PRECIO /* D_PRECIO = NUMERIC(18,2) DEFAULT 0.00 */
+);

@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="Vb" ReportInfo.Created="08/29/2021 22:47:49" ReportInfo.Modified="10/18/2024 10:40:02" ReportInfo.CreatorVersion="2014.2.10.0">
+  <ScriptText>Imports System
+Imports System.Collections
+Imports System.Collections.Generic
+Imports System.ComponentModel
+Imports System.Windows.Forms
+Imports System.Drawing
+Imports Microsoft.VisualBasic
+Imports FastReport
+Imports FastReport.Data
+Imports FastReport.Dialog
+Imports FastReport.Table
+Imports FastReport.Barcode
+Imports FastReport.Utils
+
+Namespace FastReport
+  Public Class ReportScript
+
+
+    Private Sub Label1_Click(ByVal sender As object, ByVal e As EventArgs)
+      
+    End Sub
+
+    Private Sub Label3_Click(ByVal sender As object, ByVal e As EventArgs)
+      
+    End Sub
+  End Class
+End Namespace
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqGXDUjVHoOo39U7VHz/cohboC87uIIffsgzROmdYrsozCzYReASD25r9j9cwlC1qdUGxZSKNZtfRM6UBreIjLW6D3EG/76Uk5U9E9wH7B/+XWnJL6pKRiRtUk3Lgw/+xfJsBR9pU7rSABXwYsGxaOZg==">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;  mq.id ,&#13;&#10;  mq.clave ,&#13;&#10;  mq.descripcion1 ,&#13;&#10;  mq.unidad ,&#13;&#10;  mq.pzacaja,&#13;&#10;  mq.existencia,&#13;&#10;  mq.proveedor_clave,&#13;&#10;  mq.proveedor_nombre,&#13;&#10;  mq.costoreposicion,&#13;&#10;  mq.almacen,&#13;&#10;  mq.existencia_en_almacen,&#13;&#10;  mq.cantidad,&#13;&#10;&#13;&#10;  mq.total_enero,   &#13;&#10;  mq.total_febrero,&#13;&#10;  mq.total_marzo,&#13;&#10;  mq.total_abril,&#13;&#10;  mq.total_mayo,&#13;&#10;  mq.total_junio,&#13;&#10;  mq.total_julio,&#13;&#10;  mq.total_agosto,&#13;&#10;  mq.total_septiembre,&#13;&#10;  mq.total_octubre,&#13;&#10;  mq.total_noviembre,&#13;&#10;  mq.total_diciembre,&#13;&#10;&#13;&#10;  mq.total_cajas,&#13;&#10;&#13;&#10;  mq.descpzacaja  ,&#13;&#10;  oc.cantidad oc_cantidad&#13;&#10;&#13;&#10;from&#13;&#10;(&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;  select&#13;&#10;    producto.id,&#13;&#10;    producto.clave,&#13;&#10;    producto.descripcion1,&#13;&#10;    producto.unidad,&#13;&#10;    producto.pzacaja,&#13;&#10;    producto.existencia,&#13;&#10;    proveedor.clave AS proveedor_clave,&#13;&#10;    proveedor.nombre AS proveedor_nombre,&#13;&#10;    producto.costoreposicion,&#13;&#10;    q.almacen,&#13;&#10;    inventarioalmacen.cantidad existencia_en_almacen,&#13;&#10;    sum(coalesce(q.cantidad,0)) cantidad,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 1 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_enero,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 2 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_febrero,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 3 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_marzo,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 4 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_abril,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 5 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_mayo,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 6 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_junio,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 7 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_julio,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 8 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_agosto,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 9 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_septiembre,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 10 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_octubre,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 11 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_noviembre,&#13;&#10;    SUM(CASE WHEN EXTRACT(MONTH FROM q.fecha) = 12 THEN coalesce(q.cantidad, 0) ELSE 0 END) AS total_diciembre,&#13;&#10; &#13;&#10;    SUM(  case when ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then q.cantidad&#13;&#10;      else  (coalesce(q.cantidad, 0)) / COALESCE(producto.pzacaja, 1)&#13;&#10;      end&#13;&#10;      ) AS total_cajas,&#13;&#10;    case&#13;&#10;        when  producto.unidad = 'KG' then&#13;&#10;          cast(sum(cast(q.cantidad as numeric(18,3))) as varchar(20) )  || ' KG'&#13;&#10;        when producto.unidad &lt;&gt; 'PZA' and producto.unidad &lt;&gt; 'KG' then&#13;&#10;        cast(sum(cast(q.cantidad as numeric(18,2))) as varchar(20) )&#13;&#10;        when ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;         cast(sum(cast(q.cantidad as numeric(18,2))) as varchar(20) ) || ' PZAS'&#13;&#10;        else&#13;&#10;        cast(trunc( coalesce( sum(cast(q.cantidad as numeric(18,2))),0)/coalesce(producto.pzacaja,1)) as varchar(20)) || ' cajas ' ||  cast(mod(coalesce(    sum(cast(q.cantidad as numeric(18,2)))   ,0),coalesce(producto.pzacaja,1)) as varchar(10)) || ' piezas '  end   descpzacaja&#13;&#10;&#13;&#10; from&#13;&#10; producto inner join&#13;&#10; (&#13;&#10;&#13;&#10;    select&#13;&#10;        pkp.id productoid,&#13;&#10;        cast(((case when d.tipodoctoid in  (20,21) then 1 else -1 end) * COALESCE(movto.cantidad,0) * coalesce(kv.cantidadparte,1)) as numeric(18,4)) cantidad,&#13;&#10;       almacen.clave as almacen,&#13;&#10;       d.almacenid,&#13;&#10;       d.fecha&#13;&#10;       from movto&#13;&#10;       inner join producto p on movto.productoid =p.id&#13;&#10;       inner  join docto d on movto.doctoid = d.id&#13;&#10;       inner  join almacen on d.almacenid=almacen.id&#13;&#10;       inner  join KITSUNNIVEL_VIEW  kv  on kv.productokitid = p.id&#13;&#10;       inner join producto  pkp  on kv.PRODUCTOPARTEID = pkp.id&#13;&#10;        where  movto.cantidad &gt; 0 and d.tipodoctoid in (20,21,22) and d.estatusdoctoid = 1 and D.FECHA&gt;=@FECHAINICIO AND D.FECHA&lt;=@FECHAFIN&#13;&#10;               AND coalesce(p.eskit,'N') = 'S' and coalesce(d.subtipodoctoid,0) not in (7,8)&#13;&#10;               and (  coalesce(@almacen,cast('TODOS' as varchar(31))) = cast('TODOS' as varchar(31)) or almacen.clave=@almacen)&#13;&#10;&#13;&#10;&#13;&#10;     union all&#13;&#10;&#13;&#10;     select           &#13;&#10;        p.id productoid,&#13;&#10;        cast(((case when d.tipodoctoid in (20,21) then 1 else -1 end) * COALESCE(movto.cantidad,0) ) as numeric(18,4)) cantidad,&#13;&#10;        almacen.clave as almacen,&#13;&#10;        d.almacenid,&#13;&#10;        d.fecha&#13;&#10;&#13;&#10;    from movto&#13;&#10;        inner join producto p on MOVTO.productoid =p.id&#13;&#10;        inner join docto d on movto.doctoid = d.id&#13;&#10;        inner join almacen on d.almacenid=almacen.id&#13;&#10;         where  movto.cantidad &gt; 0 and d.tipodoctoid in (21,22) and d.estatusdoctoid = 1 and D.FECHA&gt;=@FECHAINICIO AND D.FECHA&lt;=@FECHAFIN&#13;&#10;        AND coalesce(p.eskit,'N') = 'N' and coalesce(d.subtipodoctoid,0) not in (7,8)&#13;&#10;        and (  coalesce(@almacen,cast('TODOS' as varchar(31))) = cast('TODOS' as varchar(31)) or almacen.clave=@almacen)&#13;&#10;&#13;&#10;&#13;&#10;     union all&#13;&#10;&#13;&#10;     select p.id productoid,&#13;&#10;            0.00 as cantidad ,&#13;&#10;            almacen.clave as almacen,&#13;&#10;            almacen.id as almacenid,&#13;&#10;            current_date as fecha&#13;&#10;     from producto  p&#13;&#10;     inner join almacen on (  coalesce(@almacen,cast('TODOS' as varchar(31))) = cast('TODOS' as varchar(31)) or almacen.clave=@almacen)&#13;&#10;     where coalesce(p.eskit,'N') = 'N' and&#13;&#10;           coalesce(p.activo,'N') = 'S'&#13;&#10;&#13;&#10;&#13;&#10;   ) q  on q.productoid = producto.id&#13;&#10;   LEFT JOIN persona proveedor ON producto.PROVEEDOR1ID = proveedor.id&#13;&#10;&#13;&#10;   left join (&#13;&#10;                   select  inventario.productoid, inventario.almacenid,&#13;&#10;                           sum(coalesce(inventario.cantidad ,0)) cantidad&#13;&#10;                    from inventario&#13;&#10;                    where coalesce(inventario.esapartado , 'N') = 'N'&#13;&#10;                    group by inventario.productoid, inventario.almacenid)&#13;&#10;                  inventarioalmacen   on inventarioalmacen.productoid = producto.id  and inventarioalmacen.almacenid = q.almacenid&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;  group by&#13;&#10;      producto.id,&#13;&#10;    producto.clave,&#13;&#10;    producto.descripcion1,&#13;&#10;    producto.unidad,&#13;&#10;    producto.pzacaja,&#13;&#10;    producto.existencia,&#13;&#10;    proveedor.clave,&#13;&#10;    proveedor.nombre,&#13;&#10;    producto.costoreposicion,&#13;&#10;    inventarioalmacen.cantidad ,&#13;&#10;    q.almacen&#13;&#10;  ) mq&#13;&#10;INNER JOIN&#13;&#10;&#13;&#10;(&#13;&#10;     &#13;&#10; select productoid, sum(coalesce(cantidad,0)) as cantidad&#13;&#10; from&#13;&#10; (&#13;&#10;&#13;&#10;    select&#13;&#10;        pkp.id productoid,&#13;&#10;        sum(cast( COALESCE(movto.cantidad,0) * coalesce(kv.cantidadparte,1) as numeric(18,4))) cantidad&#13;&#10;       from movto&#13;&#10;       inner join producto p on movto.productoid =p.id&#13;&#10;       inner  join docto d on movto.doctoid = d.id&#13;&#10;       inner  join KITSUNNIVEL_VIEW  kv  on kv.productokitid = p.id&#13;&#10;       inner join producto  pkp  on kv.PRODUCTOPARTEID = pkp.id&#13;&#10;        where  movto.cantidad &gt; 0 and (d.ESTATUSDOCTOID = 0) AND (d.TIPODOCTOID in (11,17))&#13;&#10;                AND (d.TIPODOCTOID &lt;&gt; 11 OR ( d.SUBTIPODOCTOID IN (6,16,23)))&#13;&#10;               AND coalesce(p.eskit,'N') = 'S'&#13;&#10;        group by pkp.id&#13;&#10;&#13;&#10;&#13;&#10;     union all&#13;&#10;&#13;&#10;    select&#13;&#10;        p.id productoid,&#13;&#10;        sum(COALESCE(movto.cantidad,0) ) cantidad&#13;&#10;       from movto&#13;&#10;       inner join producto p on movto.productoid =p.id&#13;&#10;       inner  join docto d on movto.doctoid = d.id&#13;&#10;        where  movto.cantidad &gt; 0 and (d.ESTATUSDOCTOID = 0) AND (d.TIPODOCTOID in (11,17))&#13;&#10;                AND (d.TIPODOCTOID &lt;&gt; 11 OR ( d.SUBTIPODOCTOID IN (6,16,23)))&#13;&#10;               AND coalesce(p.eskit,'N') = 'N'&#13;&#10;        group by p.id&#13;&#10;&#13;&#10;&#13;&#10;    &#13;&#10;     union all&#13;&#10;&#13;&#10;     select p.id productoid,&#13;&#10;            0.00 as cantidad&#13;&#10;     from producto  p&#13;&#10;     where coalesce(p.eskit,'N') = 'N' and&#13;&#10;           coalesce(p.activo,'N') = 'S'&#13;&#10;&#13;&#10;     ) oc_nested&#13;&#10;    group by oc_nested.productoid&#13;&#10;  ) oc on oc.productoid = mq.id&#13;&#10;order by mq.clave , mq.almacen">
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="DESCPZACAJA" DataType="System.String"/>
+        <Column Name="ALMACEN" DataType="System.String"/>
+        <Column Name="TOTAL_ENERO" DataType="System.Decimal"/>
+        <Column Name="TOTAL_FEBRERO" DataType="System.Decimal"/>
+        <Column Name="TOTAL_MARZO" DataType="System.Decimal"/>
+        <Column Name="TOTAL_ABRIL" DataType="System.Decimal"/>
+        <Column Name="TOTAL_MAYO" DataType="System.Decimal"/>
+        <Column Name="TOTAL_JUNIO" DataType="System.Decimal"/>
+        <Column Name="TOTAL_JULIO" DataType="System.Decimal"/>
+        <Column Name="TOTAL_AGOSTO" DataType="System.Decimal"/>
+        <Column Name="TOTAL_SEPTIEMBRE" DataType="System.Decimal"/>
+        <Column Name="TOTAL_OCTUBRE" DataType="System.Decimal"/>
+        <Column Name="TOTAL_NOVIEMBRE" DataType="System.Decimal"/>
+        <Column Name="TOTAL_DICIEMBRE" DataType="System.Decimal"/>
+        <Column Name="PROVEEDOR_CLAVE" DataType="System.String"/>
+        <Column Name="PROVEEDOR_NOMBRE" DataType="System.String"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="TOTAL_CAJAS" DataType="System.Decimal"/>
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="EXISTENCIA_EN_ALMACEN" DataType="System.Decimal"/>
+        <Column Name="OC_CANTIDAD" DataType="System.Decimal"/>
+        <CommandParameter Name="FECHAINICIO" DataType="5" Expression="[FECHAINICIO]" DefaultValue="01/01/2022"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[FECHAFIN]" DefaultValue="01/01/2023"/>
+        <CommandParameter Name="almacen" DataType="16" Size="31" Expression="[almacen]" DefaultValue="TIENDA"/>
+      </TableDataSource>
+      <TableDataSource Name="ALMACEN" DataType="System.Int32" Enabled="true" TableName="ALMACEN" SelectCommand="SELECT ID, CLAVE, NOMBRE FROM ALMACEN&#13;&#10;UNION SELECT 0 AS ID, 'TODOS' AS CLAVE, 'TODOS' AS NOMBRE   from rdb$database">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="FECHAINICIO" DataType="System.DateTime"/>
+    <Parameter Name="FECHAFIN" DataType="System.DateTime"/>
+    <Parameter Name="almacen" DataType="System.String"/>
+    <Parameter Name="US_ID" DataType="System.Int64"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="1009.4" PaperHeight="215.9" FirstPageSource="258" OtherPagesSource="258">
+    <PageHeaderBand Name="PageHeader1" Width="3739.93" Height="37.8">
+      <TextObject Name="Text2" Top="18.9" Width="94.5" Height="18.9" Text="CLAVE" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="179.55" Top="18.9" Width="292.95" Height="18.9" Text="DESCRIPCION1" Font="Arial, 8pt"/>
+      <TextObject Name="Text6" Left="1048.95" Top="18.9" Width="94.5" Height="18.9" Text="EXISTENCIA" Font="Arial, 8pt"/>
+      <TextObject Name="Text8" Left="2107.35" Top="18.9" Width="103.95" Height="18.9" Text="TOTAL VENDID" Font="Arial, 8pt"/>
+      <TextObject Name="Text10" Left="2305.8" Top="18.9" Width="94.5" Height="18.9" Text="INV P COMPRA" Font="Arial, 8pt"/>
+      <TextObject Name="Text12" Left="954.45" Top="18.9" Width="94.5" Height="18.9" Text="PZACAJA" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="1048.95" Width="94.5" Height="18.9" Text="[almacen]" Font="Arial, 8pt"/>
+      <TextObject Name="Text15" Left="1143.45" Top="18.9" Width="75.6" Height="18.9" Text="ENERO" Font="Arial, 8pt"/>
+      <TextObject Name="Text17" Left="1219.05" Top="18.9" Width="75.6" Height="18.9" Text="FEB" Font="Arial, 8pt"/>
+      <TextObject Name="Text19" Left="1823.85" Top="18.9" Width="94.5" Height="18.9" Text="OCTUBRE" Font="Arial, 8pt"/>
+      <TextObject Name="Text21" Left="1918.35" Top="18.9" Width="94.5" Height="18.9" Text="NOVIEMBRE" Font="Arial, 8pt"/>
+      <TextObject Name="Text23" Left="2012.85" Top="18.9" Width="94.5" Height="18.9" Text="DICIEMBRE" Font="Arial, 8pt"/>
+      <TextObject Name="Text25" Left="472.5" Top="18.9" Width="94.5" Height="18.9" Text="CLAVEPROV" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="567" Top="18.9" Width="387.45" Height="18.9" Text="NOMBRE" Font="Arial, 8pt"/>
+      <TextObject Name="Text29" Left="1294.65" Top="18.9" Width="75.6" Height="18.9" Text="MARZO" Font="Arial, 8pt"/>
+      <TextObject Name="Text31" Left="1370.25" Top="18.9" Width="75.6" Height="18.9" Text="ABRIL" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="1445.85" Top="18.9" Width="75.6" Height="18.9" Text="MAYO" Font="Arial, 8pt"/>
+      <TextObject Name="Text35" Left="1521.45" Top="18.9" Width="75.6" Height="18.9" Text="JUNIO" Font="Arial, 8pt"/>
+      <TextObject Name="Text37" Left="1597.05" Top="18.9" Width="75.6" Height="18.9" Text="JULIO" Font="Arial, 8pt"/>
+      <TextObject Name="Text39" Left="1672.65" Top="18.9" Width="75.6" Height="18.9" Text="AGOSTO" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="1748.25" Top="18.9" Width="75.6" Height="18.9" Text="SEPTIEMBR" Font="Arial, 8pt"/>
+      <TextObject Name="Text43" Left="2211.3" Top="18.9" Width="94.5" Height="18.9" Text="COSTO REPO" Font="Arial, 8pt"/>
+      <TextObject Name="Text44" Left="2400.3" Top="18.9" Width="94.5" Height="18.9" Text="# CAJAS" Font="Arial, 8pt"/>
+      <TextObject Name="Text46" Width="94.5" Height="18.9" Text="FECHAS:"/>
+      <TextObject Name="Text47" Left="94.5" Width="378" Height="18.9" Text="DEL [FECHAINICIO] A [FECHAFIN]">
+        <Formats>
+          <DateFormat/>
+          <GeneralFormat/>
+        </Formats>
+      </TextObject>
+      <TextObject Name="Text49" Left="2494.8" Top="18.9" Width="94.5" Height="18.9" Text="EN OR COMPRA" Font="Arial, 8pt"/>
+      <TextObject Name="Text51" Left="94.5" Top="18.9" Width="85.05" Height="18.9" Text="ALMACEN" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="41.8" Width="3739.93" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.CLAVE]"/>
+      <TextObject Name="Text3" Left="179.55" Width="292.95" Height="18.9" Text="[Table.DESCRIPCION1]"/>
+      <TextObject Name="Text11" Left="954.45" Width="94.5" Height="18.9" Text="[Table.PZACAJA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text5" Left="1048.95" Width="94.5" Height="18.9" Text="[Table.EXISTENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text24" Left="472.5" Width="94.5" Height="18.9" Text="[Table.PROVEEDOR_CLAVE]"/>
+      <TextObject Name="Text26" Left="567" Width="387.45" Height="18.9" Text="[Table.PROVEEDOR_NOMBRE]"/>
+      <TextObject Name="Text14" Left="1143.45" Width="75.6" Height="18.9" Text="[Table.TOTAL_ENERO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text16" Left="1219.05" Width="75.6" Height="18.9" Text="[Table.TOTAL_FEBRERO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text28" Left="1294.65" Width="75.6" Height="18.9" Text="[Table.TOTAL_MARZO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text30" Left="1370.25" Width="75.6" Height="18.9" Text="[Table.TOTAL_ABRIL]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="2305.8" Width="94.5" Height="18.9" Text="[[Table.EXISTENCIA]-[Table.CANTIDAD]]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="2107.35" Width="103.95" Height="18.9" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text18" Left="1823.85" Width="94.5" Height="18.9" Text="[Table.TOTAL_OCTUBRE]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="1918.35" Width="94.5" Height="18.9" Text="[Table.TOTAL_NOVIEMBRE]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text22" Left="2012.85" Width="94.5" Height="18.9" Text="[Table.TOTAL_DICIEMBRE]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text32" Left="1445.85" Width="75.6" Height="18.9" Text="[Table.TOTAL_MAYO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text34" Left="1521.45" Width="75.6" Height="18.9" Text="[Table.TOTAL_JUNIO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text36" Left="1597.05" Width="75.6" Height="18.9" Text="[Table.TOTAL_JULIO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text38" Left="1672.65" Width="75.6" Height="18.9" Text="[Table.TOTAL_AGOSTO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text40" Left="1748.25" Width="75.6" Height="18.9" Text="[Table.TOTAL_SEPTIEMBRE]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text42" Left="2211.3" Width="94.5" Height="18.9" Text="[Table.COSTOREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text45" Left="2400.3" Width="94.5" Height="18.9" Text="[Table.TOTAL_CAJAS]&#13;&#10;" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text48" Left="2494.8" Width="94.5" Height="18.9" Text="[Table.OC_CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text50" Left="94.5" Width="85.05" Height="18.9" Text="[Table.ALMACEN]"/>
+      <Sort>
+        <Sort Expression="[Table.PROVEEDOR_NOMBRE]"/>
+        <Sort Expression="[Table.EXISTENCIA]-[Table.CANTIDAD]"/>
+      </Sort>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="64.7" Width="3739.93" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="66" Top="178" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="OK" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="149" Top="178" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancel" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="132" Top="52" Width="104" Font="Tahoma, 8pt" TabIndex="2" Text="01/01/2022" ReportParameter="FECHAINICIO" Format="Short" Value="01/01/2022 22:52:00"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="132" Top="84" Width="104" Font="Tahoma, 8pt" TabIndex="3" Text="01/01/2023" ReportParameter="FECHAFIN" Format="Short" Value="01/01/2023 22:53:00"/>
+    <LabelControl Name="Label1" Left="36" Top="52" Width="77" Height="13" Font="Tahoma, 8pt" TabIndex="4" Text="FECHA INICIO" ClickEvent="Label1_Click"/>
+    <LabelControl Name="Label2" Left="36" Top="84" Width="57" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="FECHAFIN"/>
+    <ComboBoxControl Name="ComboBox1" Left="132" Top="120" Width="105" Font="Tahoma, 8pt" TabIndex="6" Text="TIENDA" DataColumn="ALMACEN.CLAVE" ReportParameter="almacen" DropDownWidth="105" ItemHeight="13"/>
+    <LabelControl Name="Label3" Left="40" Top="124" Width="54" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="ALMACEN" ClickEvent="Label3_Click"/>
+  </DialogPage>
+</Report>

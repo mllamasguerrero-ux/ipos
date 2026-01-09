@@ -1,0 +1,34 @@
+create or alter procedure GET_EXISTENCIAPARAKIT (
+    PRODUCTOID D_FK,
+    CANTIDAD D_CANTIDAD)
+returns (
+    HAYEXISTENCIA D_BOOLCS,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable CUENTASINEXIS integer;
+BEGIN
+
+    CUENTASINEXIS = 0;
+    HAYEXISTENCIA = 'S';
+
+    SELECT COUNT(*) FROM kitdefinicion K
+    INNER JOIN PRODUCTO P ON K.productoparteid = P.ID
+    WHERE COALESCE(K.productokitid, 0) = :PRODUCTOID
+    AND P.EXISTENCIA < (COALESCE(K.cantidadparte,0) *  :CANTIDAD  )
+    INTO :CUENTASINEXIS;
+
+    IF( COALESCE(:CUENTASINEXIS,0) > 0 ) THEN
+    BEGIN
+        HAYEXISTENCIA = 'N';
+    END
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1043;
+      SUSPEND;
+   END 
+END

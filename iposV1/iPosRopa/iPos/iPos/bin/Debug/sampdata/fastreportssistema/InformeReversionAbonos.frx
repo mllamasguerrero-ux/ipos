@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/08/2014 19:23:29" ReportInfo.Modified="05/22/2018 17:54:46" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    public long vendedorId = 0;                 
+
+   
+
+    private void CBVendedor_TextChanged(object sender, EventArgs e)
+    {
+      string[] split = CBVendedor.Text.Split(new string[] { &quot;# Vendedor: &quot; }, StringSplitOptions.None);
+      string strNumCliente = &quot;0&quot;;
+      if(split.Length &gt; 1)     
+        strNumCliente = split[1];
+      
+      try
+      {
+        vendedorId = long.Parse(strNumCliente);
+      }
+      catch{
+      }
+    }
+        
+  
+
+    private void Form1_Load(object sender, EventArgs e)
+    {         
+      DateTimePicker1.Value = DateTime.Today; 
+      DateTimePicker2.Value = DateTime.Today;
+    }
+                     
+             
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29iylxlz281QHEmEGuYLY19gtpAFwwXrDVuSZpfKeuv4EoJePn6Wr838yUFDRBsx2uhA=">
+      <TableDataSource Name="Table1" Alias="vendedor" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Vendedor: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Vendedor: ' || cast(id as varchar(13)) nombre from persona where tipopersonaid  in (20)&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Main" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;DOCTOPAGO.ID,&#13;&#10;DOCTOPAGO.FECHA,&#13;&#10;DOCTO.FOLIO FOLIOVENTA,&#13;&#10;DOCTOPAGO.PAGOID FOLIOPAGO,&#13;&#10;CASE WHEN COALESCE(DOCTO.TIMBRADOSELLOCFDI,'') &lt;&gt; '' THEN&#13;&#10;        CAST(COALESCE(DOCTO.FOLIOSAT,0) AS VARCHAR(30)) || COALESCE(DOCTO.SERIESAT,'')&#13;&#10;    ELSE ''&#13;&#10;    END  FOLIOSAT,&#13;&#10;CLIENTE.CLAVE CLIENTECLAVE,&#13;&#10;CLIENTE.NOMBRE CLIENTENOMBRE,&#13;&#10;COALESCE(CLIENTE.NOMBRES,'') || ' ' || COALESCE(CLIENTE.APELLIDOS,'')  CLIENTENOMBRES,&#13;&#10;CAJEROORIG.CLAVE CAJEROORIGCLAVE,&#13;&#10;CAJEROORIG.NOMBRE CAJEROORIGNOMBRE,&#13;&#10;DPORIG.FECHA FECHAORIGINAL,    &#13;&#10;CAJERO.CLAVE CAJEROCLAVE,&#13;&#10;CAJERO.NOMBRE CAJERONOMBRE,&#13;&#10;DOCTOPAGO.IMPORTE,&#13;&#10;DOCTOPAGO.FORMAPAGOID,&#13;&#10;FORMAPAGO.CLAVE FORMAPAGOCLAVE,&#13;&#10;FORMAPAGO.NOMBRE FORMAPAGONOMBRE,&#13;&#10;DOCTOPAGO.NOTAS ,&#13;&#10;BANCOS.NOMBRE BANCONOMBRE,&#13;&#10;DOCTOPAGO.REFERENCIABANCARIA,&#13;&#10;TIPODOCTO.NOMBRE TIPODOCTONOMBRE&#13;&#10;&#13;&#10;FROM DOCTOPAGO&#13;&#10;INNER JOIN DOCTO ON DOCTO.ID = DOCTOPAGO.DOCTOID&#13;&#10;LEFT JOIN PERSONA CLIENTE ON CLIENTE.ID = DOCTO.PERSONAID&#13;&#10;LEFT JOIN CORTE ON CORTE.ID = DOCTOPAGO.CORTEID&#13;&#10;LEFT JOIN PERSONA CAJERO ON CAJERO.ID = CORTE.CAJEROID&#13;&#10;LEFT JOIN FORMAPAGO ON FORMAPAGO.ID = DOCTOPAGO.FORMAPAGOID&#13;&#10;LEFT JOIN DOCTOPAGO DPORIG ON DPORIG.ID = DOCTOPAGO.DOCTOPAGOREFID&#13;&#10;LEFT JOIN CORTE CORTEORIG ON CORTEORIG.ID = DPORIG.CORTEID&#13;&#10;LEFT JOIN PERSONA CAJEROORIG ON CAJEROORIG.ID = CORTEORIG.CAJEROID&#13;&#10;LEFT JOIN BANCOS ON BANCOS.ID = DOCTOPAGO.BANCO&#13;&#10;LEFT JOIN TIPODOCTO ON TIPODOCTO.ID = DOCTO.TIPODOCTOID&#13;&#10;WHERE  doctopago.fecha &gt;= @fechainicio and doctopago.fecha &lt;= @fechafin&#13;&#10;and doctopago.tipoabonoid = 3&#13;&#10;and (@usuarioid = 0 or @usuarioid =  cajero.id)&#13;&#10;ORDER BY DOCTOPAGO.FECHA&#13;&#10;">
+        <Column Name="FOLIOPAGO" DataType="System.Int64"/>
+        <Column Name="CLIENTECLAVE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="CAJERONOMBRE" DataType="System.String"/>
+        <Column Name="CAJEROCLAVE" DataType="System.String"/>
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FOLIOVENTA" DataType="System.Int32"/>
+        <Column Name="FOLIOSAT" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRES" DataType="System.String"/>
+        <Column Name="CAJEROORIGCLAVE" DataType="System.String"/>
+        <Column Name="CAJEROORIGNOMBRE" DataType="System.String"/>
+        <Column Name="FECHAORIGINAL" DataType="System.DateTime"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="FORMAPAGOID" DataType="System.Int64"/>
+        <Column Name="FORMAPAGOCLAVE" DataType="System.String"/>
+        <Column Name="FORMAPAGONOMBRE" DataType="System.String"/>
+        <Column Name="NOTAS" DataType="System.String"/>
+        <Column Name="BANCONOMBRE" DataType="System.String"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <CommandParameter Name="fechainicio" DataType="5" Expression="[fechainicio]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="usuarioid" DataType="1" Expression="vendedorId" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="vendedorid" DataType="System.Decimal"/>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="550" PaperHeight="420.1" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="2003.4" Height="141.75">
+      <TextObject Name="Text29" Left="103.95" Top="75.6" Width="94.5" Height="18.9" Text="Vendedor" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text31" Left="217.35" Top="75.6" Width="302.4" Height="18.9" Text="[CBVendedor.Text]" Font="Arial, 9pt"/>
+      <TextObject Name="Text30" Left="103.95" Top="103.95" Width="94.5" Height="18.9" Text="Fecha Inicio" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text32" Left="548.1" Top="103.95" Width="94.5" Height="18.9" Text="Fecha fin" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text33" Left="217.35" Top="103.95" Width="302.4" Height="18.9" Text="[fechainicio]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text34" Left="661.5" Top="103.95" Width="302.4" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text47" Left="179.55" Top="9.45" Width="774.9" Height="37.8" Text="REPORTE DE REVERSION DE ABONOS" Font="Arial, 22pt, style=Bold"/>
+      <TextObject Name="Text48" Left="1001.7" Top="56.7" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="145.75" Width="2003.4" Height="28.35">
+      <TextObject Name="Text2" Left="94.5" Width="94.5" Height="18.9" Text="FOLIO PAGO" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Width="94.5" Height="18.9" Text="CONSECUTIVO" Font="Arial, 8pt"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt"/>
+      <TextObject Name="Text8" Left="406.35" Width="94.5" Height="18.9" Text="FOLIO VENTA" Font="Arial, 8pt"/>
+      <TextObject Name="Text10" Left="500.85" Width="94.5" Height="18.9" Text="FOLIO SAT" Font="Arial, 8pt"/>
+      <TextObject Name="Text12" Left="595.35" Width="94.5" Height="18.9" Text="CLIENTE CLAVE" Font="Arial, 8pt"/>
+      <TextObject Name="Text14" Left="689.85" Width="255.15" Height="18.9" Text="CLIENTE NOMBRES" Font="Arial, 8pt"/>
+      <TextObject Name="Text16" Left="945" Width="217.35" Height="18.9" Text="CAJERO ORIGINAL" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="1162.35" Width="217.35" Height="18.9" Text="CAJERO REVERSION" Font="Arial, 8pt"/>
+      <TextObject Name="Text20" Left="1379.7" Width="94.5" Height="18.9" Text="IMPORTE" Font="Arial, 8pt"/>
+      <TextObject Name="Text22" Left="1474.2" Width="170.1" Height="18.9" Text="FORMA PAGO" Font="Arial, 8pt"/>
+      <TextObject Name="Text24" Left="1644.3" Width="349.65" Height="18.9" Text="NOTAS" Font="Arial, 8pt"/>
+      <TextObject Name="Text26" Left="283.5" Width="122.85" Height="18.9" Text="TIPO DOC. PAGADO" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="178.1" Width="2003.4" Height="18.9" CanGrow="true" DataSource="Table2">
+      <TextObject Name="Text1" Left="94.5" Width="94.5" Height="18.9" Text="[Main.FOLIOPAGO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Width="94.5" Height="18.9" Text="[Main.ID]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" Text="[Main.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="406.35" Width="94.5" Height="18.9" Text="[Main.FOLIOVENTA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="500.85" Width="94.5" Height="18.9" Text="[Main.FOLIOSAT]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="595.35" Width="94.5" Height="18.9" Text="[Main.CLIENTECLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="689.85" Width="255.15" Height="18.9" Text="[Main.CLIENTENOMBRES]" Font="Arial, 8pt"/>
+      <TextObject Name="Text15" Left="945" Width="217.35" Height="18.9" Text="[Main.CAJEROORIGNOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text17" Left="1162.35" Width="217.35" Height="18.9" Text="[Main.CAJERONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text19" Left="1379.7" Width="94.5" Height="18.9" Text="[Main.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="1474.2" Width="170.1" Height="18.9" Text="[Main.FORMAPAGONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text23" Left="1644.3" Width="349.65" Height="18.9" Text="[Main.NOTAS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text25" Left="283.5" Width="122.85" Height="18.9" Text="[Main.TIPODOCTONOMBRE]" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="201" Width="2003.4" Height="28.35">
+      <TextObject Name="Text49" Left="1426.95" Top="9.45" Width="94.5" Height="18.9" Text="[Page]"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="306" AcceptButton="btnOk" CancelButton="btnCancel" BackColor="SteelBlue" LoadEvent="Form1_Load">
+    <ButtonControl Name="btnOk" Left="118" Top="247" Anchor="Bottom, Right" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="0" Text="Aceptar" ClickEvent="" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="247" Anchor="Bottom, Right" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <ComboBoxControl Name="CBVendedor" Left="36" Top="164" Width="165" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Vendedor: 0" TextChangedEvent="CBVendedor_TextChanged" DataColumn="vendedor.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+    <LabelControl Name="Label1" Left="36" Top="148" Width="53" Height="13" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="3" Text="Vendedor"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="36" Top="72" Font="Tahoma, 8pt" TabIndex="4" Text="viernes, 12 de diciembre de 2014" ReportParameter="fechainicio" FilterOperation="GreaterThanOrEqual" Value="12/12/2014 07:55:43"/>
+    <LabelControl Name="Label2" Left="36" Top="56" Width="62" Height="13" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="5" Text="Fecha inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="36" Top="116" Font="Tahoma, 8pt" TabIndex="6" Text="viernes, 12 de diciembre de 2014" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="12/12/2014 07:55:45"/>
+    <LabelControl Name="Label3" Left="36" Top="100" Width="51" Height="13" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="7" Text="Fecha fin" ClickEvent=""/>
+    <LabelControl Name="Label4" Left="40" Top="12" Width="234" Height="19" BackColor="SteelBlue" Font="Tahoma, 12pt" ForeColor="White" TabIndex="8" Text="Reporte de reversion de abonos"/>
+  </DialogPage>
+</Report>

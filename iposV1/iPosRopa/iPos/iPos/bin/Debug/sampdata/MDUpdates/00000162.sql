@@ -1,0 +1,2 @@
+ALTER TABLE PARAMETRO
+  ADD     IPOS_TYPE              D_FK;

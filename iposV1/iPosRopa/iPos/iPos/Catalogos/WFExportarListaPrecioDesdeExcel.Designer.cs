@@ -1,0 +1,174 @@
+﻿namespace iPos
+{
+    partial class WFExportarListaPrecioDesdeExcel
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.TBImpCatalogos = new System.Windows.Forms.TextBox();
+            this.BTEnviar = new System.Windows.Forms.Button();
+            this.BTImpCatalogos = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.CBPrecioConImpuesto = new System.Windows.Forms.CheckBox();
+            this.SuspendLayout();
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(83, 9);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(217, 24);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "EXPORTAR A EXCEL";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(9, 48);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(251, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Crea un archivo excel vacio y seleccionalo";
+            // 
+            // TBImpCatalogos
+            // 
+            this.TBImpCatalogos.Location = new System.Drawing.Point(12, 64);
+            this.TBImpCatalogos.Name = "TBImpCatalogos";
+            this.TBImpCatalogos.Size = new System.Drawing.Size(275, 20);
+            this.TBImpCatalogos.TabIndex = 5;
+            // 
+            // BTEnviar
+            // 
+            this.BTEnviar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(116)))), ((int)(((byte)(156)))));
+            this.BTEnviar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
+            this.BTEnviar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BTEnviar.Image = global::iPos.Properties.Resources.saveNoBack_J;
+            this.BTEnviar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BTEnviar.Location = new System.Drawing.Point(146, 178);
+            this.BTEnviar.Name = "BTEnviar";
+            this.BTEnviar.Size = new System.Drawing.Size(123, 34);
+            this.BTEnviar.TabIndex = 8;
+            this.BTEnviar.Text = "Exportar";
+            this.BTEnviar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BTEnviar.UseVisualStyleBackColor = false;
+            this.BTEnviar.Click += new System.EventHandler(this.BTEnviar_Click);
+            // 
+            // BTImpCatalogos
+            // 
+            this.BTImpCatalogos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(116)))), ((int)(((byte)(156)))));
+            this.BTImpCatalogos.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.BTImpCatalogos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
+            this.BTImpCatalogos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BTImpCatalogos.Image = global::iPos.Properties.Resources.searchNoBack_J;
+            this.BTImpCatalogos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BTImpCatalogos.Location = new System.Drawing.Point(295, 54);
+            this.BTImpCatalogos.Name = "BTImpCatalogos";
+            this.BTImpCatalogos.Size = new System.Drawing.Size(107, 39);
+            this.BTImpCatalogos.TabIndex = 6;
+            this.BTImpCatalogos.Text = "Explorar";
+            this.BTImpCatalogos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BTImpCatalogos.UseVisualStyleBackColor = false;
+            this.BTImpCatalogos.Click += new System.EventHandler(this.BTImpCatalogos_Click);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 114);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(275, 23);
+            this.progressBar1.TabIndex = 10;
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // CBPrecioConImpuesto
+            // 
+            this.CBPrecioConImpuesto.AutoSize = true;
+            this.CBPrecioConImpuesto.BackColor = System.Drawing.Color.Transparent;
+            this.CBPrecioConImpuesto.Checked = true;
+            this.CBPrecioConImpuesto.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CBPrecioConImpuesto.ForeColor = System.Drawing.Color.White;
+            this.CBPrecioConImpuesto.Location = new System.Drawing.Point(295, 120);
+            this.CBPrecioConImpuesto.Name = "CBPrecioConImpuesto";
+            this.CBPrecioConImpuesto.Size = new System.Drawing.Size(102, 17);
+            this.CBPrecioConImpuesto.TabIndex = 292;
+            this.CBPrecioConImpuesto.Text = "Con impuesto";
+            this.CBPrecioConImpuesto.UseVisualStyleBackColor = false;
+            // 
+            // WFExportarListaPrecioDesdeExcel
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.BackgroundImage = global::iPos.Properties.Resources.ipos_material_flat_walppaer_5;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(414, 236);
+            this.Controls.Add(this.CBPrecioConImpuesto);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.BTEnviar);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.BTImpCatalogos);
+            this.Controls.Add(this.TBImpCatalogos);
+            this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Name = "WFExportarListaPrecioDesdeExcel";
+            this.Text = "Exportar lista precio a excel";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button BTEnviar;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button BTImpCatalogos;
+        private System.Windows.Forms.TextBox TBImpCatalogos;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        public System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.CheckBox CBPrecioConImpuesto;
+    }
+}

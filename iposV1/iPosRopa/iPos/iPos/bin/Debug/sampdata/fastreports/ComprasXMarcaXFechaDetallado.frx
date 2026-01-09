@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/12/2018 13:24:10" ReportInfo.Modified="10/12/2018 13:35:53" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {        
+    public long marcaId = 0;
+
+    private void CBMarca_TextChanged(object sender, EventArgs e)
+    {
+      
+      string[] split = CBMarca.Text.Split(new string[] { &quot;# Marca: &quot; }, StringSplitOptions.None);
+      string strNumCliente = &quot;0&quot;;
+      if(split.Length &gt; 1)     
+        strNumCliente = split[1];
+      
+      try
+      {
+        marcaId = long.Parse(strNumCliente);
+        Report.SetParameterValue(&quot;marcaid&quot;, marcaId);
+      }
+      catch{
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQqoaLDGihVIV9qRg8YgXXA24=">
+      <TableDataSource Name="MARCA" DataType="System.Int32" Enabled="true" TableName="MARCA" SelectCommand="select 0 as id, '' as clave, 'Todos # Marca: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Marca: ' || cast(id as varchar(13)) nombre from marca&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;marca.nombre marcanombre,&#13;&#10;marca.clave marcaclave,&#13;&#10;producto.clave productoclave,&#13;&#10;producto.nombre productonombre,&#13;&#10;producto.descripcion productodescripcion, &#13;&#10;producto.descripcion1 productodescripcion1,&#13;&#10;producto.descripcion2 productodescripcion2,&#13;&#10;sum(&#13;&#10;    case when coalesce(producto.pzacaja,0) = 0 then&#13;&#10;                     coalesce(movto.cantidad,0) * (case when docto.tipodoctoid = 12 then -1 else 1 end)&#13;&#10;        else round(coalesce(movto.cantidad,0)/ coalesce(producto.pzacaja,0) ,0)&#13;&#10;    end&#13;&#10;    )  cajas,&#13;&#10;&#13;&#10;(sum(  movto.total ) /&#13;&#10;        case when sum(coalesce(movto.cantidad,0.00)) &gt; 0 then&#13;&#10;                sum(coalesce(movto.cantidad,0.00))&#13;&#10;              else 1.00&#13;&#10;       end )&#13;&#10;     precio_unitario_c_i,&#13;&#10;      &#13;&#10;(sum(  movto.total ) /&#13;&#10;        case when sum(coalesce(movto.cantidad,0.00)) &gt; 0 then&#13;&#10;                sum(coalesce(movto.cantidad,0.00))&#13;&#10;              else 1.00&#13;&#10;       end ) *&#13;&#10;      case when coalesce(producto.pzacaja,0) = 0 then 1 else 0 end  precio_caja_c_i,&#13;&#10;              &#13;&#10;(sum(  movto.precio * movto.cantidad ) /&#13;&#10;        case when sum(coalesce(movto.cantidad,0.00)) &gt; 0 then&#13;&#10;                sum(coalesce(movto.cantidad,0.00))&#13;&#10;              else 1.00&#13;&#10;       end )&#13;&#10;     precio_unitario_s_i,&#13;&#10;      &#13;&#10;(sum(  movto.precio * movto.cantidad ) /&#13;&#10;        case when sum(coalesce(movto.cantidad,0.00)) &gt; 0 then&#13;&#10;                sum(coalesce(movto.cantidad,0.00))&#13;&#10;              else 1.00&#13;&#10;       end ) *&#13;&#10;      case when coalesce(producto.pzacaja,0) = 0 then 1 else 0 end  precio_caja_s_i&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;      from docto&#13;&#10;      left join movto on movto.doctoid = docto.id&#13;&#10;      left join producto on producto.id = movto.productoid&#13;&#10;      left join marca on marca.id = producto.marcaid&#13;&#10;      where docto.tipodoctoid in (11, 12) and docto.estatusdoctoid = 1&#13;&#10;      and docto.fecha &gt;= @fechainicial and docto.fecha &lt;= @fechafinal&#13;&#10;      and (producto.marcaid = @marcaid or  @marcaid = 0)&#13;&#10;&#13;&#10;      group by&#13;&#10;      marca.nombre ,&#13;&#10;marca.clave ,&#13;&#10;producto.clave ,&#13;&#10;producto.nombre ,&#13;&#10;producto.descripcion ,&#13;&#10;producto.descripcion1 ,&#13;&#10;producto.descripcion2 ,&#13;&#10;producto.pzacaja&#13;&#10;">
+        <Column Name="MARCANOMBRE" DataType="System.String"/>
+        <Column Name="MARCACLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION1" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION2" DataType="System.String"/>
+        <Column Name="CAJAS" DataType="System.Decimal"/>
+        <Column Name="PRECIO_UNITARIO_C_I" DataType="System.Decimal"/>
+        <Column Name="PRECIO_CAJA_C_I" DataType="System.Decimal"/>
+        <Column Name="PRECIO_UNITARIO_S_I" DataType="System.Decimal"/>
+        <Column Name="PRECIO_CAJA_S_I" DataType="System.Decimal"/>
+        <CommandParameter Name="fechainicial" DataType="5" Expression="[fechainicial]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="fechafinal" DataType="5" Expression="[fechafinal]" DefaultValue="01/01/2030"/>
+        <CommandParameter Name="marcaid" DataType="1" Expression="[marcaid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="fechainicial" DataType="System.DateTime"/>
+    <Parameter Name="fechafinal" DataType="System.DateTime"/>
+    <Parameter Name="marcaid" DataType="System.Int64"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="1047.06" Height="28.35">
+      <TextObject Name="Text4" Left="26.46" Width="94.5" Height="18.9" Text="PRODUCTOCLAVE"/>
+      <TextObject Name="Text6" Left="124.74" Width="94.5" Height="18.9" Text="PRODUCTONOMBRE"/>
+      <TextObject Name="Text8" Left="226.8" Width="94.5" Height="18.9" Text="PRODUCTODESCRIPCION1"/>
+      <TextObject Name="Text10" Left="328.86" Width="94.5" Height="18.9" Text="CAJAS"/>
+      <TextObject Name="Text12" Left="427.14" Width="94.5" Height="18.9" Text="PRECIO_UNITARIO_C_I"/>
+      <TextObject Name="Text14" Left="529.2" Width="94.5" Height="18.9" Text="PRECIO_CAJA_C_I"/>
+      <TextObject Name="Text16" Left="627.48" Width="94.5" Height="18.9" Text="PRECIO_UNITARIO_S_I"/>
+      <TextObject Name="Text18" Left="721.98" Width="94.5" Height="18.9" Text="PRECIO_CAJA_S_I"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="74.15" Width="1047.06" Height="18.9" Condition="[Table.MARCACLAVE]">
+      <TextObject Name="Text1" Left="-3.78" Width="94.5" Height="18.9" Text="[[Table.MARCACLAVE]]"/>
+      <TextObject Name="Text2" Left="117.18" Width="94.5" Height="18.9" Text="[Table.MARCANOMBRE]"/>
+      <DataBand Name="Data1" Top="97.05" Width="1047.06" Height="30.24" DataSource="Table">
+        <TextObject Name="Text3" Left="26.46" Top="11.34" Width="94.5" Height="18.9" Text="[Table.PRODUCTOCLAVE]"/>
+        <TextObject Name="Text5" Left="124.74" Top="11.34" Width="94.5" Height="18.9" Text="[Table.PRODUCTONOMBRE]"/>
+        <TextObject Name="Text7" Left="226.8" Top="11.34" Width="94.5" Height="18.9" Text="[Table.PRODUCTODESCRIPCION1]"/>
+        <TextObject Name="Text9" Left="328.86" Top="11.34" Width="94.5" Height="18.9" Text="[Table.CAJAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text11" Left="427.14" Top="11.34" Width="94.5" Height="18.9" Text="[Table.PRECIO_UNITARIO_C_I]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text13" Left="529.2" Top="11.34" Width="94.5" Height="18.9" Text="[Table.PRECIO_CAJA_C_I]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text15" Left="627.48" Top="11.34" Width="94.5" Height="18.9" Text="[Table.PRECIO_UNITARIO_S_I]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text17" Left="721.98" Top="11.34" Width="94.5" Height="18.9" Text="[Table.PRECIO_CAJA_S_I]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="131.29" Width="1047.06" Height="18.9"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="154.19" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="56" Top="40" Font="Tahoma, 8pt" TabIndex="2" Text="viernes, 12 de octubre de 2018" ReportParameter="fechainicial" FilterOperation="GreaterThanOrEqual" Value="10/12/2018 13:27:15"/>
+    <LabelControl Name="Label1" Left="56" Top="24" Width="59" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="fechainicial"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="60" Top="88" Font="Tahoma, 8pt" TabIndex="4" Text="viernes, 12 de octubre de 2018" ReportParameter="fechafinal" FilterOperation="LessThanOrEqual" Value="10/12/2018 13:27:17"/>
+    <LabelControl Name="Label2" Left="60" Top="72" Width="54" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="fechafinal"/>
+    <ComboBoxControl Name="CBMarca" Left="64" Top="148" Width="169" Font="Tahoma, 8pt" TabIndex="6" Text="Todos # Marca: 0" TextChangedEvent="CBMarca_TextChanged" DataColumn="MARCA.NOMBRE" DropDownWidth="169" ItemHeight="13"/>
+  </DialogPage>
+</Report>

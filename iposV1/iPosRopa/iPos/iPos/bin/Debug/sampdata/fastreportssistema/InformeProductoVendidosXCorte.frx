@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/24/2016 18:14:30" ReportInfo.Modified="09/09/2016 16:34:02" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9umOjkZ/mpKp10WO9YrkbTsc=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;movto.productoid,&#13;&#10;producto.clave,&#13;&#10;producto.descripcion,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2, &#13;&#10;sucursal.clave clavesucursal,&#13;&#10;sucursal.nombre nombresucursal ,&#13;&#10;sum( case when docto.tipodoctoid = 21 then coalesce(movto.cantidad,0) else coalesce(movto.cantidad,0) * (-1) end) cantidad,&#13;&#10;avg(movto.precio) preciopromedio,&#13;&#10;sum( case when docto.tipodoctoid = 21 then coalesce(movto.total,0) else coalesce(movto.total,0) * (-1) end)  total,&#13;&#10;producto.existencia,&#13;&#10;producto.requierereceta	&#13;&#10;from&#13;&#10;docto left join movto  on movto.doctoid = docto.id&#13;&#10;left join producto on producto.id = movto.productoid&#13;&#10;left join parametro on 1 = 1&#13;&#10;left join sucursal on sucursal.id = parametro.sucursalid&#13;&#10;where docto.corteid = @corteid&#13;&#10;and docto.estatusdoctoid = 1&#13;&#10;and docto.tipodoctoid in (21,22)&#13;&#10;&#13;&#10;group by&#13;&#10;movto.productoid,&#13;&#10;producto.clave,&#13;&#10;producto.descripcion,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2, &#13;&#10;sucursal.clave, &#13;&#10;sucursal.nombre ,&#13;&#10;producto.existencia,&#13;&#10;producto.requierereceta">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="CLAVESUCURSAL" DataType="System.String"/>
+        <Column Name="NOMBRESUCURSAL" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="PRECIOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="REQUIERERECETA" DataType="System.String"/>
+        <CommandParameter Name="corteid" DataType="1" Expression="[corteid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="CorteCajero" DataType="System.Int32" Enabled="true" SelectCommand="select corte.id, corte.fechacorte, corte.cajeroid, persona.nombre, sucursal.nombre nombresucursal&#13;&#10;from corte left join persona on persona.id = corte.cajeroid&#13;&#10;left join sucursal on sucursal.id = corte.sucursalid&#13;&#10;where corte.id = @corteid">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FECHACORTE" DataType="System.DateTime"/>
+        <Column Name="CAJEROID" DataType="System.Int64"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="NOMBRESUCURSAL" DataType="System.String"/>
+        <CommandParameter Name="corteid" DataType="1" Expression="[corteid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="corteid" DataType="System.Decimal"/>
+    <Total Name="Total" Expression="[Table.TOTAL]" Evaluator="Data1" ResetAfterPrint="false"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="170" PaperHeight="279.4" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="567" Height="66.15">
+      <TextObject Name="Text3" Left="94.5" Top="37.8" Width="189" Height="18.9" Text="[CorteCajero.FECHACORTE]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text4" Left="378" Top="37.8" Width="189" Height="18.9" Text="[CorteCajero.NOMBRE]"/>
+      <TextObject Name="Text13" Top="37.8" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text18" Left="283.5" Top="37.8" Width="94.5" Height="18.9" Text="CAJERO" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text14" Left="94.5" Top="9.45" Width="274.05" Height="18.9" Text="[CorteCajero.NOMBRESUCURSAL]"/>
+      <TextObject Name="Text19" Left="-9450" Top="-9450" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text20" Top="9.45" Width="94.5" Height="18.9" Text="SUCURSAL" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="70.15" Width="567" Height="28.35">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="94.5" Width="189" Height="18.9" Text="DESCRIPCION1" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="378" Width="94.5" Height="28.35" Text="PRECIO PROMEDIO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="472.5" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="102.5" Width="567" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="94.5" Width="189" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="283.5" Width="94.5" Height="18.9" Text="[Table.CANTIDAD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="378" Width="94.5" Height="18.9" Text="[Table.PRECIOPROMEDIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="472.5" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="125.4" Width="567" Height="18.9">
+      <TextObject Name="Text17" Left="472.5" Width="94.5" Height="18.9" Text="[Total]" Font="Arial, 9pt, style=Bold"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="148.3" Width="567" Height="9.45"/>
+  </ReportPage>
+</Report>

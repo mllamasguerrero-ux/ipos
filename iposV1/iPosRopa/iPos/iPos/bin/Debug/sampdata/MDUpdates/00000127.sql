@@ -1,0 +1,29 @@
+CREATE OR ALTER VIEW PRODUCTOS(
+    ID,
+    PRODUCTO,
+    CLAVE,
+    DESCRIPCION1,
+    DESCRIPCION2,
+    PRECIO1,
+    LIMITEPRECIO2,
+    PRECIO2,
+    EAN,
+    EXISTENCIA,
+    PROVEEDOR)
+AS
+SELECT P.ID,
+    COALESCE(TRIM(P.CLAVE), '')
+    ||COALESCE(TRIM(P.EAN), '')
+    ||COALESCE(TRIM(P.NOMBRE), '')
+    ||COALESCE(TRIM(P.DESCRIPCION), '')
+    ||COALESCE(TRIM(P.DESCRIPCION1),'')
+    ||COALESCE(TRIM(P.DESCRIPCION2), '') producto, 
+     P.CLAVE, P.DESCRIPCION1, P.DESCRIPCION2, P.PRECIO1, P.LIMITEPRECIO2, P.PRECIO2 , P.EAN , INV.EXISTENCIA, PR.NOMBRE as PROVEEDOR
+
+  FROM PRODUCTO  P
+  left join
+  (select  productoid,sum(cantidad) EXISTENCIA from inventario group by productoid) inv
+  on   P.id = inv.productoid
+  LEFT join persona PR on PR.id = P.proveedor1id
+  ORDER BY CLAVE
+;

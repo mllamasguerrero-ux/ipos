@@ -1,0 +1,15 @@
+EXECUTE block
+AS
+declare variable errorcode d_errorcode;
+declare variable PERSONAID D_FK;
+BEGIN
+
+  FOR
+   SELECT ID FROM persona WHERE TIPOPERSONAID = 50
+   INTO :PERSONAID
+   DO
+   BEGIN  
+    SELECT ERRORCODE from PERSONA_AJUSTAR_SALDOS (:PERSONAID) INTO :ERRORCODE;
+   END
+
+END

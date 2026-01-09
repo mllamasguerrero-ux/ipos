@@ -1,0 +1,153 @@
+create or alter procedure APLICA_PROMOCIONES_CUPONES (
+    DOCTOID D_FK)
+returns (
+    HAYCUPONESAPLICADOS D_BOOLCN,
+    ERRORCODE D_ERRORCODE)
+as
+-- DECLARACION DE VARIABLES
+declare variable ESTATUSDOCTOID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable TOTAL D_PRECIO;
+declare variable CUENTACUPONESAPLICADOS integer;
+declare variable PROMOCIONID D_FK;
+declare variable TIPOPROMOCIONID D_FK;
+declare variable IMPORTEPROMO D_PRECIO;
+declare variable RANGOPROMOCIONID D_FK;
+declare variable PROMOCIONPRODUCTOID D_FK;
+declare variable PROMOCIONLINEAID D_FK;
+declare variable DIASEMANA integer;
+declare variable TOTALPARAPROMOCION D_PRECIO;
+declare variable PRODUCTOID D_FK;
+BEGIN
+
+    HAYCUPONESAPLICADOS = 'N';
+
+
+    -- RESTO DE CODIGO
+
+    SELECT FIRST 1 ESTATUSDOCTOID, TIPODOCTOID, TOTAL
+    FROM DOCTO
+    WHERE ID = :DOCTOID
+    INTO :ESTATUSDOCTOID, :TIPODOCTOID, :TOTAL;
+
+    IF(coalesce(:ESTATUSDOCTOID,0) <> 1 )THEN
+    BEGIN
+
+        ERRORCODE = 1001;
+        SUSPEND;
+        EXIT;
+
+    END
+
+    
+    IF(coalesce(:TIPODOCTOID,0) <> 21 )THEN
+    BEGIN
+
+        ERRORCODE = 1001;
+        SUSPEND;
+        EXIT;
+
+    END
+
+    SELECT COUNT(*)
+    FROM CUPONESAPLICADOS
+    WHERE DOCTOID = :DOCTOID
+    INTO :CUENTACUPONESAPLICADOS;
+
+    IF(COALESCE(:CUENTACUPONESAPLICADOS,0) > 0) THEN
+    BEGIN
+
+        ERRORCODE = 1001;
+        SUSPEND;
+        EXIT;
+
+    END
+
+    DIASEMANA = EXTRACT ( WEEKDAY FROM CURRENT_DATE); -- ver el store proc de promoprecio
+
+    FOR SELECT PROMOCION.ID,
+               PROMOCION.tipopromocionid,
+               PROMOCION.importe,
+               PROMOCION.RANGOPROMOCIONID,
+               PROMOCION.PRODUCTOID,
+               PROMOCION.LINEAID
+        FROM PROMOCION
+        WHERE    PROMOCION.TIPOPROMOCIONID IN (8,9)
+        AND PROMOCION.fechainicio<= CURRENT_DATE AND PROMOCION.FECHAFIN >= current_date
+        AND
+         (
+         (PROMOCION.lunes = 'S' AND :DIASEMANA = 1 ) or
+         (PROMOCION.martes = 'S' AND :DIASEMANA = 2 ) or
+         (PROMOCION.miercoles = 'S' AND :DIASEMANA = 3 ) or
+         (PROMOCION.jueves = 'S' AND :DIASEMANA = 4 ) or
+         (PROMOCION.viernes = 'S' AND :DIASEMANA =5 ) or
+         (PROMOCION.sabado = 'S' AND :DIASEMANA = 6 ) or
+         (PROMOCION.domingo = 'S' AND :DIASEMANA = 0 )
+         )
+        AND PROMOCION.activo = 'S'
+
+    INTO :PROMOCIONID,
+         :TIPOPROMOCIONID,
+         :IMPORTEPROMO,
+         :RANGOPROMOCIONID,
+         :PROMOCIONPRODUCTOID,
+         :PROMOCIONLINEAID
+    DO
+    BEGIN
+        IF(:RANGOPROMOCIONID = 1)THEN
+        BEGIN
+           SELECT SUM(TOTAL)
+           FROM MOVTO
+           WHERE DOCTOID = :DOCTOID
+           AND PRODUCTOID = :PROMOCIONPRODUCTOID
+           INTO :TOTALPARAPROMOCION;
+        END
+        ELSE IF(:RANGOPROMOCIONID = 2)THEN
+        BEGIN
+            SELECT SUM(TOTAL)
+            FROM MOVTO
+            LEFT JOIN PRODUCTO
+            ON MOVTO.PRODUCTOID = :PRODUCTOID
+            WHERE DOCTOID = :DOCTOID
+            AND PRODUCTOID = :PRODUCTOID
+            AND PRODUCTO.LINEAID = :PROMOCIONLINEAID
+            INTO :TOTALPARAPROMOCION ;
+        END
+        ELSE IF(:RANGOPROMOCIONID = 4) THEN
+        BEGIN
+            SELECT TOTAL
+            FROM DOCTO
+            WHERE ID = :DOCTOID
+            INTO :TOTALPARAPROMOCION;
+        END
+
+        IF(:TOTALPARAPROMOCION >= :IMPORTEPROMO) THEN
+        BEGIN
+            INSERT INTO CUPONESAPLICADOS (DOCTOID, PROMOCIONCUPONID)
+            VALUES (:DOCTOID, :PROMOCIONID);
+
+            HAYCUPONESAPLICADOS = 'S';
+        END
+
+        IF(:PROMOCIONID = 8) THEN
+        BEGIN
+            UPDATE CUPONESAPLICADOS
+            SET CUPONESAPLICADOS.cantidad = 1
+            WHERE CUPONESAPLICADOS.DOCTOID = DOCTOID;
+        END
+
+        ELSE
+        BEGIN
+            UPDATE CUPONESAPLICADOS
+            SET CUPONESAPLICADOS.cantidad =
+                FLOOR(:TOTALPARAPROMOCION / :IMPORTEPROMO)
+            WHERE CUPONESAPLICADOS.DOCTOID = DOCTOID;
+        END
+
+    END
+
+    ERRORCODE = 0;
+    SUSPEND;
+    EXIT;
+
+END

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/10/2017 20:39:22" ReportInfo.Modified="10/21/2017 15:21:01" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQquzfxHCsRDLOS1c4bcPit5U=">
+      <TableDataSource Name="TABLA1" DataType="System.Int32" PropName="PRODUCTO" Enabled="true" TableName="TABLA1" SelectCommand="SELECT FIRST 1 PRODUCTO.CLAVE PRODUCTOCLAVE,&#13;&#10;             PRODUCTO.NOMBRE PRODUCTONOMBRE,&#13;&#10;            PRODUCTO.DESCRIPCION PRODUCTODESCRIPCION,&#13;&#10;            PRODUCTO.EXISTENCIA CANTIDAD,&#13;&#10;           PRODUCTO.CLAVE PROVEEDORCLAVE,&#13;&#10;           PRODUCTO.NOMBRE PROVEEDORNOMBRE,&#13;&#10;           PRODUCTO.CLAVE SUCURSALCLAVE,&#13;&#10;           PRODUCTO.NOMBRE SUCURSALNOMBRE,&#13;&#10;           PRODUCTO.FECHACAMBIOPRECIO FECHA&#13;&#10;&#13;&#10;FROM PRODUCTO&#13;&#10;&#13;&#10;           ">
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="PROVEEDORCLAVE" DataType="System.String"/>
+        <Column Name="PROVEEDORNOMBRE" DataType="System.String"/>
+        <Column Name="SUCURSALCLAVE" DataType="System.String"/>
+        <Column Name="SUCURSALNOMBRE" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="ProveedorNombre" DataType="System.String"/>
+    <Parameter Name="SucursalNombre" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="309.4" PaperHeight="215.9" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1093.93" Height="113.4">
+      <TextObject Name="Text17" Left="9.45" Top="18.9" Width="708.75" Height="28.35" Text="EXISTENCIA DE PRODUCTOS POR PROVEEDOR Y SUCURSAL" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text18" Left="18.9" Top="66.15" Width="103.95" Height="18.9" Text="PROVEEDOR" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text19" Left="387.45" Top="66.15" Width="151.2" Height="18.9" Text="SUCURSAL" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="151.2" Top="66.15" Width="198.45" Height="18.9" Text="[ProveedorNombre]"/>
+      <TextObject Name="Text21" Left="557.55" Top="66.15" Width="198.45" Height="18.9" Text="[SucursalNombre]"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="117.4" Width="1093.93" Height="28.35">
+      <TextObject Name="Text2" Width="94.5" Height="28.35" Text="PRODUCTO CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="28.35" Text="PRODUCTO NOMBRE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="189" Width="207.9" Height="28.35" Text="PRODUCTO DESCRIPCION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="396.9" Width="75.6" Height="18.9" Text="CANTIDAD" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="472.5" Width="94.5" Height="28.35" Text="PROVEEDOR CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="567" Width="170.1" Height="28.35" Text="PROVEEDOR NOMBRE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="737.1" Width="94.5" Height="28.35" Text="SUCURSAL CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="831.6" Width="151.2" Height="28.35" Text="SUCURSAL NOMBRE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text23" Left="982.8" Width="94.5" Height="28.35" Text="FECHA ULT. ACT." Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="149.75" Width="1093.93" Height="18.9" DataSource="TABLA1">
+      <TextObject Name="Text1" Left="-9.45" Width="103.95" Height="18.9" Text="[TABLA1.PRODUCTOCLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="189" Width="207.9" Height="18.9" Text="[TABLA1.PRODUCTODESCRIPCION]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="396.9" Width="75.6" Height="18.9" Text="[TABLA1.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="472.5" Width="94.5" Height="18.9" Text="[TABLA1.PROVEEDORCLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="737.1" Width="94.5" Height="18.9" Text="[TABLA1.SUCURSALCLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="567" Width="170.1" Height="18.9" Text="[TABLA1.PROVEEDORNOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="831.6" Width="151.2" Height="18.9" Text="[TABLA1.SUCURSALNOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text15" Left="94.5" Width="94.5" Height="18.9" Text="[TABLA1.PRODUCTONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text22" Left="982.8" Width="94.5" Height="18.9" Text="[TABLA1.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="172.65" Width="1093.93" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

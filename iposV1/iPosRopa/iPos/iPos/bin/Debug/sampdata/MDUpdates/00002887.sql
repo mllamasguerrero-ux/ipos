@@ -1,0 +1,2 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+VALUES (212, 106, 'Entradas/Salidas Productos que requieren receta', 'Entradas/Salidas Productos que requieren receta', 212, 2, 20);

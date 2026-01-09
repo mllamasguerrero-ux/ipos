@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/02/2014 13:27:39" ReportInfo.Modified="04/22/2014 16:54:06" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    
+    
+
+    private void Text6_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetParameterValue(&quot;itemid&quot;)) == 0)
+      { 
+          Text6.Text = &quot;Todos&quot;;
+      }               
+      else 
+      {
+          Text6.Text = ((String)Report.GetColumnValue(&quot;Table2.VENDEDORCLAVE&quot;)) + &quot; &quot; +  ((String)Report.GetColumnValue(&quot;Table2.VENDEDORNOMBRES&quot;)) + &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table2.VENDEDORAPELLIDOS&quot;));
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2fxCQ44vLLee1gaEJRGFsTM=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;persona.clave,&#13;&#10;persona.nombre,&#13;&#10;persona.nombres,&#13;&#10;persona.apellidos,&#13;&#10;persona.domicilio,&#13;&#10;persona.numerointerior,&#13;&#10;persona.numeroexterior,&#13;&#10;persona.colonia,&#13;&#10;persona.ciudad,&#13;&#10;persona.municipio,&#13;&#10;persona.estado,&#13;&#10;persona.codigopostal,&#13;&#10;persona.telefono1,&#13;&#10;persona.celular,&#13;&#10;persona.gaffete,&#13;&#10;vendedor.clave vendedorclave,&#13;&#10;vendedor.nombre vendedornombre,&#13;&#10;vendedor.nombres vendedornombres,&#13;&#10;vendedor.apellidos vendedorapellidos,&#13;&#10;vendedor.domicilio vendedordomicilio,&#13;&#10;vendedor.numerointerior vendedornumerointerior,&#13;&#10;vendedor.numeroexterior vendedornumeroexterior,&#13;&#10;vendedor.colonia vendedorcolonia,&#13;&#10;vendedor.ciudad vendedorciudad,&#13;&#10;vendedor.municipio vendedormunicipio,&#13;&#10;vendedor.estado vendedorestado,&#13;&#10;vendedor.codigopostal vendedorcodigopostal,&#13;&#10;vendedor.telefono1 vendedortelefono1,&#13;&#10;vendedor.celular vededorcelular,&#13;&#10;vendedor.gaffete vendedorgaffete&#13;&#10;from&#13;&#10;persona &#13;&#10;left join persona vendedor on vendedor.id = persona.vendedorid&#13;&#10;where persona.tipopersonaid = 50 and @itemid in (0,coalesce(persona.vendedorid,0))&#13;&#10;order by vendedor.clave">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="NOMBRES" DataType="System.String"/>
+        <Column Name="APELLIDOS" DataType="System.String"/>
+        <Column Name="DOMICILIO" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="CIUDAD" DataType="System.String"/>
+        <Column Name="MUNICIPIO" DataType="System.String"/>
+        <Column Name="CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="CELULAR" DataType="System.String"/>
+        <Column Name="GAFFETE" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="TELEFONO1" DataType="System.String"/>
+        <Column Name="VENDEDORCLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRES" DataType="System.String"/>
+        <Column Name="VENDEDORAPELLIDOS" DataType="System.String"/>
+        <Column Name="VENDEDORDOMICILIO" DataType="System.String"/>
+        <Column Name="VENDEDORNUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="VENDEDORNUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="VENDEDORCOLONIA" DataType="System.String"/>
+        <Column Name="VENDEDORCIUDAD" DataType="System.String"/>
+        <Column Name="VENDEDORMUNICIPIO" DataType="System.String"/>
+        <Column Name="VENDEDORESTADO" DataType="System.String"/>
+        <Column Name="VENDEDORCODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="VENDEDORTELEFONO1" DataType="System.String"/>
+        <Column Name="VEDEDORCELULAR" DataType="System.String"/>
+        <Column Name="VENDEDORGAFFETE" DataType="System.String"/>
+        <CommandParameter Name="itemid" DataType="1" Expression="[itemid]" DefaultValue="-1"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" DataType="System.Int32" Enabled="true" SelectCommand="select first 1&#13;&#10;vendedor.clave vendedorclave,&#13;&#10;vendedor.nombre vendedornombre,&#13;&#10;vendedor.nombres vendedornombres,&#13;&#10;vendedor.apellidos vendedorapellidos,&#13;&#10;vendedor.domicilio vendedordomicilio,&#13;&#10;vendedor.numerointerior vendedornumerointerior,&#13;&#10;vendedor.numeroexterior vendedornumeroexterior,&#13;&#10;vendedor.colonia vendedorcolonia,&#13;&#10;vendedor.ciudad vendedorciudad,&#13;&#10;vendedor.municipio vendedormunicipio,&#13;&#10;vendedor.estado vendedorestado,&#13;&#10;vendedor.codigopostal vendedorcodigopostal,&#13;&#10;vendedor.telefono1 vendedortelefono1,&#13;&#10;vendedor.celular vededorcelular,&#13;&#10;vendedor.gaffete vendedorgaffete&#13;&#10;from&#13;&#10;persona vendedor&#13;&#10;where @itemid in (0, vendedor.id)&#13;&#10;">
+        <Column Name="VENDEDORCLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRES" DataType="System.String"/>
+        <Column Name="VENDEDORAPELLIDOS" DataType="System.String"/>
+        <Column Name="VENDEDORDOMICILIO" DataType="System.String"/>
+        <Column Name="VENDEDORNUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="VENDEDORNUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="VENDEDORCOLONIA" DataType="System.String"/>
+        <Column Name="VENDEDORCIUDAD" DataType="System.String"/>
+        <Column Name="VENDEDORMUNICIPIO" DataType="System.String"/>
+        <Column Name="VENDEDORESTADO" DataType="System.String"/>
+        <Column Name="VENDEDORCODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="VENDEDORTELEFONO1" DataType="System.String"/>
+        <Column Name="VEDEDORCELULAR" DataType="System.String"/>
+        <Column Name="VENDEDORGAFFETE" DataType="System.String"/>
+        <CommandParameter Name="itemid" DataType="1" Expression="[itemid]" DefaultValue="-1"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="itemid" DataType="System.Decimal"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="350" PaperHeight="210.1">
+    <ReportTitleBand Name="ReportTitle1" Width="1247.4" Height="217.35">
+      <TextObject Name="Text19" Left="85.05" Top="9.45" Width="349.65" Height="18.9" Text="Catalogo de clientes por vendedor" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text20" Left="103.95" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text21" Left="103.95" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text22" Left="567" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text23" Left="103.95" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text24" Left="567" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text25" Left="567" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text26" Left="103.95" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="567" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text28" Left="103.95" Top="141.75" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text29" Left="9.45" Top="66.15" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text30" Left="9.45" Top="85.05" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text31" Left="9.45" Top="103.95" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text32" Left="9.45" Top="122.85" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text33" Left="9.45" Top="141.75" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="481.95" Top="66.15" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="481.95" Top="85.05" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text36" Left="481.95" Top="103.95" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="481.95" Top="122.85" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text38" Left="9.45" Top="37.8" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text5" Left="9.45" Top="170.1" Width="75.6" Height="18.9" Text="Vendedor" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text6" Left="103.95" Top="170.1" Width="302.4" Height="18.9" BeforePrintEvent="Text6_BeforePrint" Font="Arial, 8.25pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="221.35" Width="1247.4" Height="28.35">
+      <TextObject Name="Text2" Width="75.6" Height="18.9" Text="CLAVE" Font="Arial, 8pt"/>
+      <TextObject Name="Text8" Left="453.6" Width="94.5" Height="18.9" Text="COLONIA" Font="Arial, 8pt"/>
+      <TextObject Name="Text10" Left="548.1" Width="94.5" Height="18.9" Text="CIUDAD" Font="Arial, 8pt"/>
+      <TextObject Name="Text12" Left="642.6" Width="94.5" Height="18.9" Text="ESTADO" Font="Arial, 8pt"/>
+      <TextObject Name="Text14" Left="737.1" Width="94.5" Height="18.9" Text="CODIGOPOSTAL" Font="Arial, 8pt"/>
+      <TextObject Name="Text16" Left="831.6" Width="94.5" Height="18.9" Text="TELEFONO1" Font="Arial, 8pt"/>
+      <TextObject Name="Text17" Left="75.6" Width="189" Height="18.9" Text="NOMBRE" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="264.6" Width="189" Height="18.9" Text="DOMICILIO" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="926.1" Width="94.5" Height="28.35" Text="VENDEDOR CLAVE" Font="Arial, 8pt"/>
+      <TextObject Name="Text43" Left="1030.05" Width="198.45" Height="28.35" Text="VENDEDOR NOMBRES" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="253.7" Width="1247.4" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Width="75.6" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="75.6" Width="189" Height="18.9" CanGrow="true" Text="[Table.NOMBRES] [Table.APELLIDOS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="264.6" Width="189" Height="18.9" CanGrow="true" Text="[Table.DOMICILIO] [Table.NUMEROEXTERIOR] [Table.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="453.6" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="548.1" Width="94.5" Height="18.9" Text="[Table.CIUDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="642.6" Width="94.5" Height="18.9" Text="[Table.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="737.1" Width="94.5" Height="18.9" Text="[Table.CODIGOPOSTAL]" Font="Arial, 8pt"/>
+      <TextObject Name="Text15" Left="831.6" Width="94.5" Height="18.9" Text="[Table.TELEFONO1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="926.1" Width="94.5" Height="18.9" Text="[Table.VENDEDORCLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text42" Left="1030.05" Width="198.45" Height="18.9" Text="[Table.VENDEDORNOMBRE] [Table2.VENDEDORNOMBRES] [Table2.VENDEDORAPELLIDOS] " Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="276.6" Width="1247.4" Height="18.9">
+      <TextObject Name="Text39" Left="746.55" Width="94.5" Height="18.9" Text="[Page]" Font="Arial, 8pt"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

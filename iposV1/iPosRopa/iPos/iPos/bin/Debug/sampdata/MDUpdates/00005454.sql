@@ -1,0 +1,1 @@
+select sucursalid from parametro

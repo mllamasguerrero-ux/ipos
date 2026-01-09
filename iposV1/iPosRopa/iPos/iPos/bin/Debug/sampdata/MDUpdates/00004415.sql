@@ -1,0 +1,173 @@
+create or alter procedure IMPORTAR_SALDOS_CLIENTES (
+    CLIENTECLAVE D_CLAVE,
+    PRODUCTOCLAVE D_CLAVE,
+    CANTIDAD D_CANTIDAD,
+    IMPORTE D_PRECIO,
+    REFERENCIA D_REFERENCIA,
+    PRODUCTODESCRIPCION D_DESCRIPCION,
+    VENDEDORID D_FK,
+    VENCE D_FECHA,
+    SOLOVALIDAR D_BOOLCN)
+returns (
+    DOCTOID D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRODUCTOID D_FK;
+declare variable PERSONAID D_FK;
+declare variable MOVTOID D_FK;
+declare variable CUENTA integer;
+declare variable PRECIO D_PRECIO;
+declare variable SUCURSALID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable FECHA D_FECHA;
+declare variable HAYCORTEACTIVO D_BOOLCN;
+declare variable CORTEID2 D_FK;
+BEGIN
+   SELECT ID
+   FROM PRODUCTO
+   WHERE CLAVE = :PRODUCTOCLAVE
+   INTO :PRODUCTOID;
+
+   if( :PRODUCTOID is null )  then
+   begin
+      ERRORCODE = 5014;
+      SUSPEND;
+      EXIT;
+   end
+
+   SELECT first 1 ID
+   FROM PERSONA
+   WHERE CLAVE = :CLIENTECLAVE and tipopersonaid = 50
+   INTO :PERSONAID;
+
+   if( :PERSONAID is null )  then
+   begin
+      ERRORCODE = 5015;--AGREGAR A ERROR CODE CLIENTE NO EXISTE
+      SUSPEND;
+      EXIT;
+   end
+
+
+   SELECT COUNT(*) FROM DOCTO WHERE TIPODOCTOID = 21 AND REFERENCIA = :referencia
+   INTO :CUENTA;
+
+
+   IF(COALESCE(:CUENTA,0 ) > 0 ) THEN
+   BEGIN
+       
+      ERRORCODE = 5016;--AGREGAR A ERROR CODE REFERENCIA REPETIDA
+      SUSPEND;
+      EXIT;
+   END
+
+   
+   IF(COALESCE(:CANTIDAD,0 ) <= 0 ) THEN
+   BEGIN
+       
+      ERRORCODE = 5017;--LA CATNIDAD NO PUEDE SER MENOR O IGUAL A CERO
+      SUSPEND;
+      EXIT;
+   END
+
+   
+   SELECT HAYCORTEACTIVO,CORTEID,ERRORCODE
+   FROM HAY_CORTE_ACTIVO(:VENDEDORID)
+   INTO :HAYCORTEACTIVO, :CORTEID2, :ERRORCODE;
+
+   IF (:ERRORCODE > 0) THEN
+   BEGIN
+        DOCTOID = 0;
+        SUSPEND;
+        EXIT;
+   END
+
+   -- SI SOLO VALIDAR SUSPEND EXIT END
+   IF(COALESCE(:SOLOVALIDAR,'N') = 'S') THEN
+   BEGIN
+      ERRORCODE = 0;
+      SUSPEND;
+      EXIT;
+   END
+
+
+   PRECIO = ROUND(:importe / :CANTIDAD,2);
+
+   FECHA = CURRENT_DATE;
+
+
+   TIPODOCTOID = 21;
+   SELECT PARAMETRO.sucursalid FROM PARAMETRO INTO :SUCURSALID;
+
+
+      SELECT DOCTOID, ERRORCODE
+      FROM DOCTO_INSERT (
+         :VENDEDORID,
+         1,
+         :SUCURSALID,
+         :TIPODOCTOID,
+         0,
+         0,
+         :PERSONAID,
+         :VENDEDORID,
+         1,
+         :REFERENCIA,
+         NULL,--:REFERENCIAS,
+         NULL,--:SUCURSALTID,
+         NULL,--:ALMACENTID,
+         :FECHA,
+        :VENCE,
+         NULL ,
+         'S' ,
+         1
+      ) INTO :DOCTOID, :ERRORCODE;
+
+     
+        IF (:ERRORCODE > 0) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+       -- UPDATE DOCTO SET SUBTIPODOCTOID = 6 WHERE ID = :DOCTOID;
+
+
+
+
+   -- Guarda el movimiento en movto
+   SELECT DOCTOID , MOVTOID
+   FROM MOVTO_INSERT (
+      :DOCTOID, 0, 1, 1, :TIPODOCTOID, 0, 0, 0, :VENDEDORID, 0,
+      0, :PRODUCTOID, NULL, NULL, :CANTIDAD, 0, :CANTIDAD, 0, 0,:PRECIO, 0,
+      :REFERENCIA, NULL, NULL, NULL, NULL, 'N', 0,
+      :FECHA, :VENCE, 0.00, NULL,NULL,NULL,NULL,NULL,:PRODUCTODESCRIPCION, :PRODUCTODESCRIPCION,NULL , NULL, NULL
+   ) INTO :DOCTOID, :MOVTOID;
+           
+    IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+    BEGIN
+        SUSPEND;
+        EXIT;
+    END
+   
+
+     SELECT ERRORCODE
+   FROM DOCTO_SAVE(:DOCTOID)
+   INTO :ERRORCODE;
+
+    IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+    BEGIN
+        SUSPEND;
+        EXIT;
+    END
+   
+    ERRORCODE = 0;
+   SUSPEND;
+   
+   -- WHEN ANY DO
+   -- BEGIN
+   --    ERRORCODE = 1065;
+   --     SUSPEND;
+   -- END
+
+
+
+END

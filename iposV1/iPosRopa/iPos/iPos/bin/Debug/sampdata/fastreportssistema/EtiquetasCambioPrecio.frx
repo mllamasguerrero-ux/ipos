@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/16/2016 18:13:21" ReportInfo.Modified="01/17/2016 13:54:46" ReportInfo.CreatorVersion="2016.1.1.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls+ISDnxCHa8XXVrRjq+mBKQ1wgRNtufIxZ9DzIhudGbs3IkUNh4EWoxEyIXAM+WHdcHuKkUOxnpLl0olI7OK1qo=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT        L.ID, L.ACTIVO, L.CREADO, L.CREADOPOR_USERID, L.MODIFICADO, L.MODIFICADOPOR_USERID, L.PRODUCTOID, ROUND((L.PRECIO1 * (1 + P.TASAIEPS / 100.00)) * (1 + P.TASAIVA / 100.00), 2) AS PRECIO1, &#13;&#10;                         ROUND((L.PRECIO2 * (1 + P.TASAIEPS / 100.00)) * (1 + P.TASAIVA / 100.00), 2) AS PRECIO2, ROUND((L.PRECIO3 * (1 + P.TASAIEPS / 100.00)) * (1 + P.TASAIVA / 100.00), 2) AS PRECIO3, &#13;&#10;                         ROUND((L.PRECIO4 * (1 + P.TASAIEPS / 100.00)) * (1 + P.TASAIVA / 100.00), 2) AS PRECIO4, ROUND((L.PRECIO5 * (1 + P.TASAIEPS / 100.00)) * (1 + P.TASAIVA / 100.00), 2) AS PRECIO5, L.FECHA, P.CLAVE, &#13;&#10;                         P.NOMBRE, P.DESCRIPCION1&#13;&#10;FROM            PRODUCTOPRECIOLOG L INNER JOIN&#13;&#10;                         PRODUCTO P ON L.PRODUCTOID = P.ID&#13;&#10;WHERE        (L.FECHA = @FECHA) AND (@SOLOPRECIO1 &lt;&gt; 'S') OR&#13;&#10;                         (@SOLOPRECIO1 = 'S') AND (L.FECHAPRECIO1 = @FECHA)">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRECIO1" DataType="System.Decimal"/>
+        <Column Name="PRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIO3" DataType="System.Decimal"/>
+        <Column Name="PRECIO4" DataType="System.Decimal"/>
+        <Column Name="PRECIO5" DataType="System.Decimal"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <CommandParameter Name="SOLOPRECIO1" DataType="16" Size="1" Expression="[SOLOPRECIO1]" DefaultValue="S"/>
+        <CommandParameter Name="FECHA" DataType="5" Expression="[FECHA]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="FECHA" DataType="System.DateTime"/>
+    <Parameter Name="SOLOPRECIO1" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" RawPaperSize="1" FirstPageSource="15" OtherPagesSource="15" Columns.Count="3" Columns.Width="65.3" Columns.Positions="0,65.3,130.6">
+    <DataBand Name="Data1" Width="246.83" Height="160.65" DataSource="Table" KeepDetail="true">
+      <TableObject Name="Table1" Width="245.68" Height="160.65" Border.Lines="All" Border.Style="Dash">
+        <TableColumn Name="Column1" Width="245.68"/>
+        <TableRow Name="Row1" Height="12.6">
+          <TableCell Name="Cell1" Text="[Table.NOMBRE]" HorzAlign="Center" VertAlign="Center" Font="Arial, 7pt"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="31.5">
+          <TableCell Name="Cell6" CanBreak="false" Text="[Table.DESCRIPCION1]" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="107.1">
+          <TableCell Name="Cell11" Text="[Table.PRECIO1]" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" Font="Arial, 28pt, style=Bold"/>
+        </TableRow>
+        <TableRow Name="Row4" Height="9.45">
+          <TableCell Name="Cell12" Text="[Table.FECHA]" Format="Date" Format.Format="dd/MM/yyyy" Font="Arial, 5pt"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+  </ReportPage>
+</Report>

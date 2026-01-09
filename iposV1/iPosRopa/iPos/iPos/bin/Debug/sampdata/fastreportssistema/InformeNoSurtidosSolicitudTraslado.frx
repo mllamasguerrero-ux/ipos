@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/08/2014 19:23:29" ReportInfo.Modified="01/03/2025 17:42:03" ReportInfo.CreatorVersion="2014.2.10.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {                       
+
+   
+              
+        
+  
+
+    private void Form1_Load(object sender, EventArgs e)
+    {    
+      
+      DateTimePicker1.Value = DateTime.Today;  
+      DateTimePicker2.Value = DateTime.Today;
+    }
+                     
+
+    
+            
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC3QPp0QHNuhDELCXwyEP+JgdJmLZHc1ocW8qDDSdU+fAn2HNHT/6xhmTcnttIMIFbI=">
+      <TableDataSource Name="Table2" Alias="Main" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;cliente.clave clienteclave,&#13;&#10;cliente.nombre clientenombre,&#13;&#10;cliente.nombres clientenombres,&#13;&#10;cliente.apellidos  clienteapellidos,&#13;&#10;vendedor.clave vendedorclave,&#13;&#10;vendedor.nombre vendedornombre,&#13;&#10;coalesce(doctoventa.fecha,docto.fecha) doctofecha,&#13;&#10;coalesce(doctoventa.folio, docto.folio) doctofolio,&#13;&#10;producto.clave productoclave,&#13;&#10;producto.descripcion productodescripcion,&#13;&#10;producto.descripcion1 productodescripcion1,&#13;&#10;coalesce(movto.cantidad,0.00) + coalesce(movto.cantidadfaltante,0.00) cantidadpedida,&#13;&#10;movto.cantidad cantidadsurtida,&#13;&#10;movto.cantidadfaltante cantidadfaltante,&#13;&#10;round((movto.precio  * cast( (1.0000 + ( (CASE WHEN COALESCE(PM.desgloseieps,'N') = 'S' THEN movto.tasaieps ELSE 0.0000 END) /100.0000)) * (1.0000 + (movto.tasaiva/100.0000)) as numeric(18,4))),2) preciounitario,&#13;&#10;round((movto.precio  * cast( (1.0000 + ( (CASE WHEN COALESCE(PM.desgloseieps,'N') = 'S' THEN movto.tasaieps ELSE 0.0000 END) /100.0000)) * (1.0000 + (movto.tasaiva/100.0000)) as numeric(18,4))),2) *  movto.cantidadfaltante  importefaltante,&#13;&#10;&#13;&#10;docto.sucursaltid,&#13;&#10;sucursalt.clave sucursaltclave,&#13;&#10;sucursalt.nombre sucursaltnombre&#13;&#10;&#13;&#10;from docto&#13;&#10;left join movto on movto.doctoid = docto.id&#13;&#10;left join docto doctoventa on doctoventa.id = docto.doctorefid&#13;&#10;left join producto on producto.id = movto.productoid&#13;&#10;left join parametro pm on 1 = 1&#13;&#10;left join persona cliente on cliente.id = docto.personaid&#13;&#10;left join persona vendedor on vendedor.id = docto.vendedorfinal&#13;&#10;left join sucursal sucursalt on docto.sucursaltid = sucursalt.id&#13;&#10;&#13;&#10;where docto.tipodoctoid = 81 and docto.estatusdoctoid = 1 &#13;&#10;and docto.fecha &gt;= @fechainicial and docto.fecha &lt;= @fechafinal&#13;&#10;and coalesce(movto.cantidadfaltante,0) &gt; 0&#13;&#10;order by docto.fecha&#13;&#10;">
+        <Column Name="CLIENTECLAVE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRES" DataType="System.String"/>
+        <Column Name="CLIENTEAPELLIDOS" DataType="System.String"/>
+        <Column Name="VENDEDORCLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRE" DataType="System.String"/>
+        <Column Name="DOCTOFECHA" DataType="System.DateTime"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION1" DataType="System.String"/>
+        <Column Name="CANTIDADPEDIDA" DataType="System.Decimal"/>
+        <Column Name="CANTIDADSURTIDA" DataType="System.Decimal"/>
+        <Column Name="CANTIDADFALTANTE" DataType="System.Decimal"/>
+        <Column Name="PRECIOUNITARIO" DataType="System.Decimal"/>
+        <Column Name="IMPORTEFALTANTE" DataType="System.Decimal"/>
+        <Column Name="SUCURSALTID" DataType="System.Int64"/>
+        <Column Name="SUCURSALTCLAVE" DataType="System.String"/>
+        <Column Name="SUCURSALTNOMBRE" DataType="System.String"/>
+        <CommandParameter Name="fechainicial" DataType="5" Expression="[fechainicio]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafinal" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="vendedorid" DataType="System.Decimal"/>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="esfacturaelectronica" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="279" PaperHeight="216" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="979.02" Height="132.3">
+      <TextObject Name="Text30" Left="9.45" Top="103.95" Width="94.5" Height="18.9" Text="Fecha Inicio" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text32" Left="359.1" Top="103.95" Width="94.5" Height="18.9" Text="Fecha fin" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text33" Left="122.85" Top="103.95" Width="207.9" Height="18.9" Text="[fechainicio]"/>
+      <TextObject Name="Text34" Left="472.5" Top="103.95" Width="226.8" Height="18.9" Text="[fechafin]"/>
+      <TextObject Name="Text47" Left="9.45" Top="9.45" Width="954.45" Height="37.8" Text="FALTANTES DE SURTIDO DE MERCANCIA A SUCURSALES" Font="Arial, 22pt, style=Bold"/>
+      <TextObject Name="Text48" Left="812.7" Top="56.7" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="136.3" Width="979.02" Height="9.45"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="149.75" Width="979.02" Height="18.9" Condition="[Main.SUCURSALTCLAVE]">
+      <TextObject Name="Text1" Left="217.35" Width="189" Height="18.9" Text="[Main.SUCURSALTCLAVE]" Font="Arial, 11pt"/>
+      <TextObject Name="Text3" Left="415.8" Width="217.35" Height="18.9" Text="[Main.SUCURSALTNOMBRE]" Font="Arial, 11pt"/>
+      <TextObject Name="Text4" Width="189" Height="18.9" Text="SUCURSAL DESTINO:" Font="Arial, 11pt, style=Bold"/>
+      <GroupHeaderBand Name="GroupHeader2" Top="172.65" Width="979.02" Height="56.7" Condition="[Main.DOCTOFOLIO]">
+        <TextObject Name="Text2" Left="311.85" Width="141.75" Height="18.9" Text="[[Main.DOCTOFOLIO]]"/>
+        <TextObject Name="Text59" Left="226.8" Width="75.6" Height="18.9" Text="FOLIO:" Font="Arial, 10pt, style=Bold"/>
+        <TextObject Name="Text60" Left="18.9" Width="75.6" Height="18.9" Text="FECHA:" Font="Arial, 10pt, style=Bold"/>
+        <TextObject Name="Text5" Left="103.95" Width="113.4" Height="18.9" Text="[Main.DOCTOFECHA]" Format="Date" Format.Format="d"/>
+        <TextObject Name="Text11" Left="141.75" Top="28.35" Width="94.5" Height="28.35" Text="PRODUCTO DESCRIPCION" Font="Arial, 8pt, style=Italic, Underline"/>
+        <TextObject Name="Text9" Left="37.8" Top="28.35" Width="94.5" Height="28.35" Text="PRODUCTO CLAVE" Font="Arial, 8pt, style=Italic, Underline"/>
+        <TextObject Name="Text13" Left="292.95" Top="28.35" Width="94.5" Height="28.35" Text="CANTIDAD PEDIDA" Font="Arial, 8pt, style=Italic, Underline"/>
+        <TextObject Name="Text15" Left="396.9" Top="28.35" Width="94.5" Height="28.35" Text="CANTIDAD SURTIDA" Font="Arial, 8pt, style=Italic, Underline"/>
+        <TextObject Name="Text17" Left="500.85" Top="28.35" Width="94.5" Height="28.35" Text="CANTIDAD FALTANTE" Font="Arial, 8pt, style=Italic, Underline"/>
+        <TextObject Name="Text19" Left="604.8" Top="28.35" Width="94.5" Height="28.35" Text="PRECIO UNITARIO" Font="Arial, 8pt, style=Italic, Underline"/>
+        <TextObject Name="Text21" Left="708.75" Top="28.35" Width="94.5" Height="28.35" Text="IMPORTE FALTANTE" Font="Arial, 8pt, style=Italic, Underline"/>
+        <DataBand Name="Data1" Top="233.35" Width="979.02" Height="18.9" CanGrow="true" DataSource="Table2">
+          <TextObject Name="Text8" Left="37.8" Width="94.5" Height="18.9" Text="[Main.PRODUCTOCLAVE]" Font="Arial, 8pt"/>
+          <TextObject Name="Text10" Left="141.75" Width="141.75" Height="18.9" Text="[Main.PRODUCTODESCRIPCION1]" Font="Arial, 8pt"/>
+          <TextObject Name="Text12" Left="292.95" Width="94.5" Height="18.9" Text="[Main.CANTIDADPEDIDA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text14" Left="396.9" Width="94.5" Height="18.9" Text="[Main.CANTIDADSURTIDA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text16" Left="500.85" Width="94.5" Height="18.9" Text="[Main.CANTIDADFALTANTE]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text18" Left="604.8" Width="94.5" Height="18.9" Text="[Main.PRECIOUNITARIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text20" Left="708.75" Width="94.5" Height="18.9" Text="[Main.IMPORTEFALTANTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        </DataBand>
+        <GroupFooterBand Name="GroupFooter2" Top="256.25" Width="979.02"/>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="260.25" Width="979.02"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="264.25" Width="979.02" Height="28.35">
+      <TextObject Name="Text49" Left="812.7" Width="94.5" Height="18.9" Text="[Page]"/>
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="394" Height="266" AcceptButton="btnOk" CancelButton="btnCancel" LoadEvent="Form1_Load">
+    <ButtonControl Name="btnOk" Left="206" Top="195" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" ClickEvent="" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="293" Top="195" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="36" Top="72" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechainicio" FilterOperation="GreaterThanOrEqual" Value="12/12/2014 07:55:43"/>
+    <LabelControl Name="Label2" Left="36" Top="56" Width="62" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="36" Top="116" Font="Tahoma, 8pt" TabIndex="6" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="12/12/2014 07:55:45"/>
+    <LabelControl Name="Label3" Left="36" Top="100" Width="51" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="Fecha fin" ClickEvent=""/>
+    <LabelControl Name="Label4" Left="40" Top="12" Width="290" Height="19" Font="Tahoma, 12pt" TabIndex="8" Text="Faltantes de pedidos de vendedor movil"/>
+  </DialogPage>
+</Report>

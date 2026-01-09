@@ -1,0 +1,2 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN)
+  VALUES (101, 100, 'Reimpresion de factura electronica', 'Reimpresión de factura electronica', 101, 2, 2);

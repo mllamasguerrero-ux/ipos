@@ -1,0 +1,7 @@
+CREATE GENERATOR SEQ_SAT_MONEDA;
+
+
+
+
+
+

@@ -1,0 +1,453 @@
+create or alter procedure PEDIDO_MOVIL_COMPLETAR (
+    DOCTOID D_FK)
+returns (
+    DOCTOPAGOID D_FK,
+    DOCTOVENTAID D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable TIPODOCTOID D_FK;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable FALTANTES integer;
+declare variable REFERENCIAS varchar(255);
+declare variable EXISTENCIASINSUFICIENTES integer;
+declare variable COSTOREPO D_COSTO;
+declare variable ESFRANQUICIA D_BOOLCN;
+declare variable MOVTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PERSONAID D_FK;
+declare variable PRODUCTOID D_FK;
+declare variable LOTE D_LOTE;
+declare variable FECHAVENCE D_FECHAVENCE;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable PRECIO D_PRECIO;
+declare variable COSTO D_COSTO;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable SERIE varchar(31);
+declare variable FOLIO integer;
+declare variable ALMACENTID D_FK;
+declare variable SUCURSALTID D_FK;
+declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable CANTIDADDEFACTURA D_CANTIDAD;
+declare variable CANTIDADDEREMISION D_CANTIDAD;
+declare variable CANTIDADDEINDEFINIDO D_CANTIDAD;
+declare variable NEWMOVTOID D_FK;
+declare variable PERSONASUCURSALID D_FK;
+declare variable DESCRIPCION1 D_STDTEXT_64;
+declare variable DESCRIPCION2 D_STDTEXT_64;
+declare variable DESCRIPCION3 D_STDTEXT_64;
+declare variable CANTIDADVENDIDA D_CANTIDAD;
+declare variable VENDEDORID D_FK;
+declare variable ESFACTURAELECTRONICA D_BOOLCN;
+declare variable HAYCORTEACTIVO D_BOOLCN;
+declare variable CORTEID D_FK;
+declare variable FECHACORTE D_FECHA;
+declare variable FECHA D_FECHA;
+declare variable SALDOINICIAL D_IMPORTE;
+declare variable INGRESO D_IMPORTE;
+declare variable EGRESO D_IMPORTE;
+declare variable DEVOLUCION D_IMPORTE;
+declare variable APORTACION D_IMPORTE;
+declare variable RETIRO D_IMPORTE;
+declare variable SALDOFINAL D_IMPORTE;
+declare variable SALDOREAL D_IMPORTE;
+declare variable SALDOREALCREDITO D_IMPORTE;
+declare variable IMPORTEPAGO D_IMPORTE;
+declare variable MANEJALOTE D_BOOLCN;
+declare variable BLOQUEADO D_BOOLCN;
+declare variable HAYPRECIOSNOVALIDOS D_BOOLCN;
+declare variable TIENEDERECHO D_BOOLCN;
+declare variable COSTOREPOSICION D_COSTO;
+declare variable HABSURTIDOPOSTPUESTO D_BOOLCN;
+declare variable HABVERIFICACIONCXC D_BOOLCN;
+declare variable LOTEIMPORTADO D_FK;
+declare variable MANEJALOTEIMPORTADO D_BOOLCN;
+declare variable TIPOVENDEDORMOVIL D_FK;
+declare variable RUTAEMBARQUEID D_FK;
+declare variable MOVIL3_PREIMPORTAR D_BOOLCN_NULL;
+declare variable FONDODINAMICO D_IMPORTE;
+BEGIN
+
+
+   SELECT  TIPOVENDEDORMOVIL FROM PARAMETRO INTO :TIPOVENDEDORMOVIL;
+
+   SELECT MOVIL3_PREIMPORTAR FROM PARAMETRO INTO :MOVIL3_PREIMPORTAR;
+
+   -- Si no es documento de compra 11.
+   IF ((:DOCTOID IS NULL) OR (:DOCTOID = 0)) THEN
+   BEGIN
+      ERRORCODE = 1060;
+      SUSPEND;
+      EXIT;
+   END
+
+   SELECT SUCURSALID, HABSURTIDOPOSTPUESTO, HABVERIFICACIONCXC FROM PARAMETRO INTO :SUCURSALID, :HABSURTIDOPOSTPUESTO, :HABVERIFICACIONCXC;
+
+   -- Validar estatus.
+   SELECT TIPODOCTOID, ESTATUSDOCTOID, REFERENCIAS , PERSONAID , VENDEDORID , ESFACTURAELECTRONICA , FECHA, RUTAEMBARQUEID
+   FROM DOCTO
+   WHERE ID = :DOCTOID
+   INTO :TIPODOCTOID, :ESTATUSDOCTOID, :REFERENCIAS, :PERSONAID, :VENDEDORID, :ESFACTURAELECTRONICA, :FECHA, :RUTAEMBARQUEID;
+
+   -- Si no es documento de compra 11.
+   IF ((:TIPODOCTOID IS NULL) OR (:TIPODOCTOID = 0)) THEN
+   BEGIN
+      ERRORCODE = 1060;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Si no es documento de compra 11.
+   IF (:TIPODOCTOID <> 331 ) THEN
+   BEGIN
+      ERRORCODE = 1061;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Si el estatus no es borrador .
+   IF (:ESTATUSDOCTOID <> 0) THEN
+   BEGIN
+      ERRORCODE = 1062;
+      SUSPEND;
+      EXIT;
+   END
+
+
+
+
+   
+        
+        SELECT HAYCORTEACTIVO,CORTEID,ERRORCODE, FECHACORTE
+        FROM HAY_CORTE_ACTIVO(:VENDEDORID)
+        INTO :HAYCORTEACTIVO, :CORTEID, :ERRORCODE, :FECHACORTE;
+        
+        IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+        BEGIN
+                        SUSPEND;
+                        EXIT;
+        END
+
+
+        IF(:HAYCORTEACTIVO = 'S' AND :FECHACORTE < CURRENT_DATE ) THEN
+        BEGIN
+           SELECT SALDOINICIAL ,
+                  INGRESO ,
+                  EGRESO ,
+                  DEVOLUCION ,
+                  APORTACION ,
+                  RETIRO ,
+                  SALDOFINAL ,
+                  SALDOREAL ,
+                  SALDOREALCREDITO   ,
+                  FONDODINAMICO,
+                  ERRORCODE
+                  FROM CORTE_TOTALES ( :SUCURSALID , :VENDEDORID)
+                  INTO
+                    :SALDOINICIAL ,
+                    :INGRESO ,
+                    :EGRESO ,
+                    :DEVOLUCION ,
+                    :APORTACION ,
+                    :RETIRO ,
+                    :SALDOFINAL ,
+                    :SALDOREAL ,
+                    :SALDOREALCREDITO,
+                    :FONDODINAMICO,
+                    :ERRORCODE ;
+
+                    
+                    IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+                    BEGIN
+                        SUSPEND;
+                        EXIT;
+                    END
+
+
+                   SELECT ERRORCODE FROM CORTE_CERRAR (
+                    :SUCURSALID ,
+                    :CORTEID ,
+                    :FECHACORTE ,
+                    :VENDEDORID ,
+                    :SALDOINICIAL ,
+                    :INGRESO ,
+                    :EGRESO ,
+                    :DEVOLUCION ,
+                    :APORTACION ,
+                    :RETIRO ,
+                    :SALDOFINAL ,
+                    :SALDOREAL ,
+                    :SALDOREAL - :SALDOFINAL,
+                    :SALDOREALCREDITO,
+                    :FONDODINAMICO)
+                    INTO :ERRORCODE;
+
+                IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+                BEGIN
+                        SUSPEND;
+                        EXIT;
+                END
+
+                HAYCORTEACTIVO = 'N';
+        END
+
+        IF(:HAYCORTEACTIVO = 'N') THEN
+        BEGIN
+
+                SELECT CORTEID, ERRORCODE FROM  CORTE_ABRIR (
+                    CURRENT_DATE,
+                    :SUCURSALID,
+                    :VENDEDORID,
+                    0,
+                    2) INTO :CORTEID, :ERRORCODE;
+
+                    
+                IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+                BEGIN
+                        SUSPEND;
+                        EXIT;
+                END
+
+        END
+
+        
+                update docto set corteid = :corteid where id = :DOCTOID;
+
+
+
+      SELECT ERRORCODE FROM PEDIDO_MOVIL_ENSAMBLE (:DOCTOID,:VENDEDORID)  INTO :ERRORCODE;  
+      IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+      BEGIN
+               SUSPEND;
+               EXIT;
+      END
+
+
+        -- Agrega el DOCTO.
+        INSERT INTO DOCTO
+        (ALMACENID, SUCURSALID, TIPODOCTOID, ESTATUSDOCTOID, ESTATUSDOCTOPAGOID,
+        PERSONAID, CAJEROID, VENDEDORID, CORTEID, FECHA, FECHAHORA, SERIE, FOLIO,
+        PLAZO, VENCE, IMPORTE, DESCUENTO, SUBTOTAL, IVA, TOTAL, CARGO, ABONO, SALDO,
+        CAJAID, REFERENCIA, REFERENCIAS, SUCURSALTID, ALMACENTID, PROMOCION, ESFACTURAELECTRONICA,
+        FOLIOSAT,SERIESAT,TIMBRADOFECHA, TIMBRADOUUID,TIMBRADOCERTSAT,ESAPARTADO,DOCTOREFID, IEPS, IMPUESTO, SUBTIPODOCTOID, OBSERVACION, RUTAEMBARQUEID, TIMBRADOFORMAPAGOSAT)
+        SELECT
+        ALMACENID, SUCURSALID, 21, 0, 0,
+        COALESCE(:PERSONAID,1), CAJEROID, VENDEDORID, CORTEID, CURRENT_DATE, CURRENT_TIMESTAMP, NULL, NULL,
+        PLAZO, CURRENT_DATE, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
+        CAJAID, REFERENCIA, REFERENCIAS, SUCURSALTID, ALMACENTID, 'N' , :ESFACTURAELECTRONICA ,
+        FOLIOSAT,SERIESAT,TIMBRADOFECHA, TIMBRADOUUID,TIMBRADOCERTSAT , ESAPARTADO,ID, 0.00, 0.00 ,15, OBSERVACION , :RUTAEMBARQUEID , 99
+        FROM DOCTO WHERE ID = :DOCTOID
+        RETURNING ID INTO :DOCTOVENTAID;
+
+
+
+        -- Agrega los MOVTO.
+        FOR SELECT
+            MOVTO.ID, MOVTO.PRODUCTOID,
+            CASE WHEN COALESCE(PRODUCTO.MANEJALOTE,'N') = 'S' THEN '-TEMP-' ELSE MOVTO.LOTE END,
+            CASE WHEN COALESCE(PRODUCTO.MANEJALOTE,'N') = 'S' THEN CURRENT_DATE ELSE MOVTO.FECHAVENCE END,
+            CASE WHEN COALESCE(:MOVIL3_PREIMPORTAR,'N') = 'S' THEN
+                        MOVTO.cantidadsurtida
+                 ELSE
+                        CASE WHEN ((COALESCE(PRODUCTO.existencia,0) - COALESCE(PRODUCTO.enprocesodesalida,0)) >= MOVTO.cantidad) THEN
+                            MOVTO.cantidad
+                        ELSE
+                            (COALESCE(PRODUCTO.existencia,0) - COALESCE(PRODUCTO.enprocesodesalida,0))
+                        END
+                 END AS CANTIDAD ,
+            MOVTO.PRECIO, MOVTO.COSTO,
+            MOVTO.TIPODIFERENCIAINVENTARIOID  , MOVTO.CANTIDADDEFACTURA, MOVTO.CANTIDADDEREMISION, MOVTO.CANTIDADDEINDEFINIDO , MOVTO.DESCRIPCION1, MOVTO.DESCRIPCION2, MOVTO.DESCRIPCION3,
+            PRODUCTO.MANEJALOTE  ,
+            CASE WHEN COALESCE(PRODUCTO.MANEJALOTEIMPORTADO,'N') = 'S' THEN '-TEMP-' ELSE MOVTO.LOTEIMPORTADO END,
+            PRODUCTO.manejaloteimportado
+            FROM MOVTO LEFT JOIN PRODUCTO ON PRODUCTO.ID = MOVTO.PRODUCTOID
+            WHERE DOCTOID = :DOCTOID  AND
+            COALESCE(PRODUCTO.existencia,0) - COALESCE(PRODUCTO.enprocesodesalida,0) >= 0
+            INTO
+            :MOVTOID, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, :PRECIO, :COSTO, 
+            :TIPODIFERENCIAINVENTARIOID , :CANTIDADDEFACTURA, :CANTIDADDEREMISION, :CANTIDADDEINDEFINIDO  , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 ,
+            :MANEJALOTE , :LOTEIMPORTADO , :MANEJALOTEIMPORTADO
+        DO
+        if (COALESCE(:cantidad,0) > 0) then
+          BEGIN --if cantidad > 0
+            SELECT ERRORCODE,MOVTOID
+            FROM MOVTO_INSERT (
+            :DOCTOVENTAID, 0, :ALMACENID, :SUCURSALID, 21, 0, 0, :PERSONAID, :VENDEDORID, 1,
+            0, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, 0, 0, 0, 0, :PRECIO, 0,
+            :REFERENCIA, :REFERENCIAS, :COSTO, :SUCURSALID, :ALMACENID, 'N', 
+            :TIPODIFERENCIAINVENTARIOID, CURRENT_DATE, CURRENT_DATE, 0.00 ,NULL,NULL,NULL,NULL,NULL , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3   , NULL, :LOTEIMPORTADO, 'N','N'
+            ) INTO :ERRORCODE,:NEWMOVTOID;
+            
+            IF (:ERRORCODE <> 0) THEN
+            BEGIN
+
+                SUSPEND;
+                EXIT;
+            END
+
+
+        END
+
+
+        
+         
+        SELECT ERRORCODE FROM ASIGNARLOTE_SURTIRPEDIDO (
+            :DOCTOVENTAID )
+        INTO  :ERRORCODE;
+
+        IF(:ERRORCODE <> 0) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+
+
+        DELETE FROM MOVTO WHERE DOCTOID = :DOCTOVENTAID AND LOTE = '-TEMP-';
+
+        UPDATE DOCTO SET  DOCTOREFID = :DOCTOVENTAID WHERE ID = :DOCTOID;
+
+
+
+       HAYPRECIOSNOVALIDOS = 'N';
+        
+        FOR SELECT
+            MOVTO.ID, MOVTO.PRODUCTOID, MOVTO.LOTE, MOVTO.FECHAVENCE, CASE WHEN COALESCE(PRODUCTO.EXISTENCIA,0) >= MOVTO.cantidad THEN MOVTO.cantidad ELSE COALESCE(PRODUCTO.EXISTENCIA,0) END AS CANTIDAD , MOVTO.PRECIO, MOVTO.COSTO,
+            MOVTO.TIPODIFERENCIAINVENTARIOID  , MOVTO.CANTIDADDEFACTURA, MOVTO.CANTIDADDEREMISION, MOVTO.CANTIDADDEINDEFINIDO , MOVTO.DESCRIPCION1, MOVTO.DESCRIPCION2, MOVTO.DESCRIPCION3
+            ,MOVTO.COSTOREPOSICION  , MOVTO.LOTEIMPORTADO
+            FROM MOVTO LEFT JOIN PRODUCTO ON PRODUCTO.ID = MOVTO.PRODUCTOID
+            WHERE DOCTOID = :DOCTOID
+            INTO
+            :MOVTOID, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, :PRECIO, :COSTO, 
+            :TIPODIFERENCIAINVENTARIOID , :CANTIDADDEFACTURA, :CANTIDADDEREMISION, :CANTIDADDEINDEFINIDO  , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3
+            ,:COSTOREPOSICION, :LOTEIMPORTADO
+        DO
+        BEGIN
+
+
+              SELECT SUM(COALESCE(MOVTO.CANTIDAD,0)) FROM MOVTO WHERE DOCTOID = :DOCTOVENTAID
+                AND PRODUCTOID = :PRODUCTOID AND precio = :precio into :CANTIDADVENDIDA;
+
+              UPDATE MOVTO SET CANTIDADSURTIDA = COALESCE(:CANTIDADVENDIDA, 0),  CANTIDADFALTANTE = COALESCE(CANTIDAD,0) - COALESCE(:CANTIDADVENDIDA, 0)
+              WHERE ID = :MOVTOID;
+
+              IF( :HAYPRECIOSNOVALIDOS = 'N' AND COALESCE(:TIPOVENDEDORMOVIL,0) not in (3,4)) THEN
+              BEGIN
+               SELECT TIENEDERECHO, ERRORCODE
+               FROM VALIDAR_PRECIO(:PRODUCTOID, :PRECIO, :PRECIO, :COSTOREPOSICION, :VENDEDORID, 21, 15)
+               INTO :TIENEDERECHO , :ERRORCODE;
+
+               IF(COALESCE(:TIENEDERECHO ,'S') = 'N' or COALESCE(:ERRORCODE,0) <> 0) THEN
+               BEGIN
+                  HAYPRECIOSNOVALIDOS = 'S';
+                  ERRORCODE = 0;
+               END
+              END
+
+
+        END
+
+
+        SELECT PERSONA.bloqueado FROM PERSONA WHERE ID = :PERSONAID INTO :BLOQUEADO;
+
+
+        IF(/*COALESCE(:BLOQUEADO,'N') = 'N' AND*/ COALESCE(:HAYPRECIOSNOVALIDOS,'N') = 'N') THEN
+        BEGIN
+
+
+
+
+         SELECT FIRST 1 TOTAL FROM DOCTO WHERE ID = :DOCTOVENTAID INTO :IMPORTEPAGO;
+
+
+         SELECT DOCTOPAGOID, ERRORCODE
+         FROM DOCTOPAGO_INSERT (
+         :DOCTOVENTAID,
+         4,
+         CURRENT_DATE, CURRENT_TIMESTAMP, :CORTEID,
+         :IMPORTEPAGO, 0.00, 0.00 ,
+         1,
+         NULL ,
+         'N'  ,
+         1 ,
+         NULL,
+         NULL,
+         NULL  ,
+         CURRENT_DATE,
+         CURRENT_DATE,
+         'N',
+         1,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL
+       ) INTO :DOCTOPAGOID, :ERRORCODE;
+          
+        IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+
+       IF(COALESCE(:HABSURTIDOPOSTPUESTO, 'N') = 'S') THEN
+       BEGIN
+         UPDATE DOCTO SET
+            ESTADOSURTIDOID = CASE WHEN COALESCE(:HABVERIFICACIONCXC,'N') = 'S' THEN 4 ELSE 2 END
+         WHERE ID = :DOCTOVENTAID;
+       END
+        
+        SELECT ERRORCODE
+        FROM DOCTO_SAVE(:DOCTOVENTAID)
+        INTO :ERRORCODE;
+        
+        IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+
+        
+        IF ((:ERRORCODE IS NOT NULL) AND (:ERRORCODE > 0)) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+       END
+
+
+      /*UPDATE DOCTO SET TIPODOCTOID = 21, CARGO = TOTAL, SUBTIPODOCTOID = 7 WHERE ID = :DOCTOID;
+      UPDATE MOVTO SET TIPODOCTOID = 21, CARGO = TOTAL WHERE DOCTOID = :DOCTOID; */
+
+
+
+   --END
+
+
+
+
+
+         
+        SELECT ERRORCODE
+        FROM DOCTO_SAVE(:DOCTOID)
+        INTO :ERRORCODE;
+
+
+
+
+   SUSPEND;
+   
+   /*WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1063;
+      SUSPEND;
+   END */
+END

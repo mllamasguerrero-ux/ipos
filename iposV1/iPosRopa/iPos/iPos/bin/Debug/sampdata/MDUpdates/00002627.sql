@@ -1,0 +1,4 @@
+UPDATE MOVTO
+SET SURTIBLE = 'S'
+
+

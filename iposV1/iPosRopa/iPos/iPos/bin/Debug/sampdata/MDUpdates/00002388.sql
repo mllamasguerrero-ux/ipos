@@ -1,0 +1,606 @@
+CREATE OR ALTER TRIGGER MOVTO_REPL_AU FOR MOVTO
+ACTIVE AFTER UPDATE POSITION 0
+AS
+declare variable HABILITARREPL D_BOOLCN;
+declare variable PERSONAID D_FK;
+declare variable REPLID D_FK;
+begin
+  /* Trigger text */
+
+  IF( (COALESCE(NEW.estatusmovtoid,0) <> COALESCE(OLD.estatusmovtoid,0)) 
+     ) THEN
+   BEGIN
+
+     SELECT FIRST 1 habilitarrepl FROM PARAMETRO INTO :HABILITARREPL;
+
+     IF(COALESCE(:HABILITARREPL,'N') = 'S') THEN
+     BEGIN
+        
+
+
+      SELECT MAX(COALESCE(PERSONAID,0)) FROM DOCTO WHERE ID = COALESCE(NEW.DOCTOID,0)
+      AND COALESCE(DOCTO.tipodoctoid,0) IN (21, 22, 23, 24, 25)
+      INTO :PERSONAID;
+
+      IF( COALESCE(:PERSONAID,0) NOT IN (0,1)) THEN
+      BEGIN
+
+        SELECT REPLID FROM REPLMOVTO WHERE ID = NEW.ID INTO :REPLID;
+        
+        IF(COALESCE(:REPLID,0) = 0) THEN
+        BEGIN
+
+         INSERT INTO REPLMOVTO
+               (
+             
+         ID,
+         
+         ACTIVO,
+         
+         CREADO,
+         
+         CREADOPOR_USERID,
+         
+         MODIFICADO,
+         
+         MODIFICADOPOR_USERID,
+         
+         DOCTOID,
+         
+         TIPODOCTOID,
+         
+         PARTIDA,
+         
+         ESTATUSMOVTOID,
+         
+         FECHA,
+         
+         FECHAHORA,
+         
+         PRODUCTOID,
+         
+         LOTE,
+         
+         FECHAVENCE,
+         
+         CANTIDAD,
+         
+         CANTIDADSURTIDA,
+         
+         CANTIDADFALTANTE,
+         
+         CANTIDADDEVUELTA,
+         
+         CANTIDADSALDO,
+         
+         PRECIOLISTA,
+         
+         DESCUENTOPORCENTAJE,
+         
+         DESCUENTO,
+         
+         PRECIO,
+         
+         IMPORTE,
+         
+         SUBTOTAL,
+         
+         IVA,
+         
+         TOTAL,
+         
+         COSTO,
+         
+         COSTOIMPORTE,
+         
+         CARGO,
+         
+         ABONO,
+         
+         SALDO,
+         
+         DOCTOREFID,
+         
+         MOVTOREFID,
+         
+         PROMOCION,
+         
+         TIPODIFERENCIAINVENTARIOID,
+         
+         IMPORTEDESCUENTO,
+         
+         EXISTENCIASEXPORTADAS,
+         
+         PORCENTAJEDESCUENTOMANUAL,
+         
+         PRECIOMANUAL,
+         
+         COSTOREPOSICION,
+         
+         COSTOPROMEDIO,
+         
+         PRECIOMAXIMOPUBLICO,
+         
+         PRECIOCLASIFICACION,
+         
+         LOCALIDAD,
+         
+         TASAIVA,
+         
+         INGRESOPRECIOMANUAL,
+         
+         DESCUENTOVALE,
+         
+         DESCUENTOVALEPORCENTAJE,
+         
+         CANTIDADDEFACTURA,
+         
+         CANTIDADDEREMISION,
+         
+         CANTIDADDEINDEFINIDO,
+         
+         ESAPARTADO,
+         
+         CANTDEVUELTADEFACTURA,
+         
+         CANTDEVUELTADEREMISION,
+         
+         CANTDEVUELTADEINDEFINIDO,
+         
+         COMISIONXUNIDAD,
+         
+         ANAQUELID,
+         
+         CAJAS,
+         
+         PIEZAS,
+         
+         PZACAJA,
+         
+         PROMOCIONID,
+         
+         PROMOCIONDESGLOSE,
+         
+         MONEDEROABONO,
+         
+         REGISTROPROCESOSALIDA,
+         
+         PRECIOVISIBLETRASLADO,
+         
+         RAZONDESCUENTOCAJERO,
+         
+         PRECIOMANUALMASBAJO,
+         
+         DESCRIPCION1,
+         
+         DESCRIPCION2,
+         
+         DESCRIPCION3,
+         
+         CLAVEPROD,
+         
+         TASAISRRETENIDO,
+         
+         ISRRETENIDO,
+         
+         TASAIVARETENIDO,
+         
+         IVARETENIDO,
+         
+         ORDEN,
+         
+         TASAIEPS,
+         
+         IEPS,
+         
+         TASAIMPUESTO,
+         
+         IMPUESTO,
+         
+         UTILIDAD,
+         
+         COSTOULTIMO,
+         
+         MOVTOADJUNTOAID,
+         
+         ENPROCESOPARTES,
+         
+         ESKIT,
+         
+         PRECIOCONREBAJA,
+         
+         TOTALCONREBAJA,
+         
+         ESTADOREBAJA,
+         
+         CANTAUTREBAJA
+                  )
+         
+       VALUES(
+         NEW.ID,
+         
+         NEW.ACTIVO,
+         
+         NEW.CREADO,
+         
+         NEW.CREADOPOR_USERID,
+         
+         NEW.MODIFICADO,
+         
+         NEW.MODIFICADOPOR_USERID,
+         
+         NEW.DOCTOID,
+         
+         NEW.TIPODOCTOID,
+         
+         NEW.PARTIDA,
+         
+         NEW.ESTATUSMOVTOID,
+         
+         NEW.FECHA,
+         
+         NEW.FECHAHORA,
+         
+         NEW.PRODUCTOID,
+         
+         NEW.LOTE,
+         
+         NEW.FECHAVENCE,
+         
+         NEW.CANTIDAD,
+         
+         NEW.CANTIDADSURTIDA,
+         
+         NEW.CANTIDADFALTANTE,
+         
+         NEW.CANTIDADDEVUELTA,
+         
+         NEW.CANTIDADSALDO,
+         
+         NEW.PRECIOLISTA,
+         
+         NEW.DESCUENTOPORCENTAJE,
+         
+         NEW.DESCUENTO,
+         
+         NEW.PRECIO,
+         
+         NEW.IMPORTE,
+         
+         NEW.SUBTOTAL,
+         
+         NEW.IVA,
+         
+         NEW.TOTAL,
+         
+         NEW.COSTO,
+         
+         NEW.COSTOIMPORTE,
+         
+         NEW.CARGO,
+         
+         NEW.ABONO,
+         
+         NEW.SALDO,
+         
+         NEW.DOCTOREFID,
+         
+         NEW.MOVTOREFID,
+         
+         NEW.PROMOCION,
+         
+         NEW.TIPODIFERENCIAINVENTARIOID,
+         
+         NEW.IMPORTEDESCUENTO,
+         
+         NEW.EXISTENCIASEXPORTADAS,
+         
+         NEW.PORCENTAJEDESCUENTOMANUAL,
+         
+         NEW.PRECIOMANUAL,
+         
+         NEW.COSTOREPOSICION,
+         
+         NEW.COSTOPROMEDIO,
+         
+         NEW.PRECIOMAXIMOPUBLICO,
+         
+         NEW.PRECIOCLASIFICACION,
+         
+         NEW.LOCALIDAD,
+         
+         NEW.TASAIVA,
+         
+         NEW.INGRESOPRECIOMANUAL,
+         
+         NEW.DESCUENTOVALE,
+         
+         NEW.DESCUENTOVALEPORCENTAJE,
+         
+         NEW.CANTIDADDEFACTURA,
+         
+         NEW.CANTIDADDEREMISION,
+         
+         NEW.CANTIDADDEINDEFINIDO,
+         
+         NEW.ESAPARTADO,
+         
+         NEW.CANTDEVUELTADEFACTURA,
+         
+         NEW.CANTDEVUELTADEREMISION,
+         
+         NEW.CANTDEVUELTADEINDEFINIDO,
+         
+         NEW.COMISIONXUNIDAD,
+         
+         NEW.ANAQUELID,
+         
+         NEW.CAJAS,
+         
+         NEW.PIEZAS,
+         
+         NEW.PZACAJA,
+         
+         NEW.PROMOCIONID,
+         
+         NEW.PROMOCIONDESGLOSE,
+         
+         NEW.MONEDEROABONO,
+         
+         NEW.REGISTROPROCESOSALIDA,
+         
+         NEW.PRECIOVISIBLETRASLADO,
+         
+         NEW.RAZONDESCUENTOCAJERO,
+         
+         NEW.PRECIOMANUALMASBAJO,
+         
+         NEW.DESCRIPCION1,
+         
+         NEW.DESCRIPCION2,
+         
+         NEW.DESCRIPCION3,
+         
+         NEW.CLAVEPROD,
+         
+         NEW.TASAISRRETENIDO,
+         
+         NEW.ISRRETENIDO,
+         
+         NEW.TASAIVARETENIDO,
+         
+         NEW.IVARETENIDO,
+         
+         NEW.ORDEN,
+         
+         NEW.TASAIEPS,
+         
+         NEW.IEPS,
+         
+         NEW.TASAIMPUESTO,
+         
+         NEW.IMPUESTO,
+         
+         NEW.UTILIDAD,
+         
+         NEW.COSTOULTIMO,
+         
+         NEW.MOVTOADJUNTOAID,
+         
+         NEW.ENPROCESOPARTES,
+         
+         NEW.ESKIT,
+         
+         NEW.PRECIOCONREBAJA,
+         
+         NEW.TOTALCONREBAJA,
+         
+         NEW.ESTADOREBAJA,
+         
+         NEW.CANTAUTREBAJA
+         );
+         
+       END
+       ELSE
+       BEGIN
+
+           update  REPLMOVTO
+  set
+
+ID=NEW.ID,
+
+ACTIVO=NEW.ACTIVO,
+
+CREADOPOR_USERID=NEW.CREADOPOR_USERID,
+
+MODIFICADO = NEW.MODIFICADO,
+
+MODIFICADOPOR_USERID=NEW.MODIFICADOPOR_USERID,
+
+DOCTOID=NEW.DOCTOID,
+
+TIPODOCTOID=NEW.TIPODOCTOID,
+
+PARTIDA=NEW.PARTIDA,
+
+ESTATUSMOVTOID=NEW.ESTATUSMOVTOID,
+
+FECHA=NEW.FECHA,
+
+FECHAHORA = NEW.FECHAHORA,
+
+PRODUCTOID=NEW.PRODUCTOID,
+
+LOTE=NEW.LOTE,
+
+FECHAVENCE=NEW.FECHAVENCE,
+
+CANTIDAD=NEW.CANTIDAD,
+
+CANTIDADSURTIDA=NEW.CANTIDADSURTIDA,
+
+CANTIDADFALTANTE=NEW.CANTIDADFALTANTE,
+
+CANTIDADDEVUELTA=NEW.CANTIDADDEVUELTA,
+
+CANTIDADSALDO=NEW.CANTIDADSALDO,
+
+PRECIOLISTA=NEW.PRECIOLISTA,
+
+DESCUENTOPORCENTAJE=NEW.DESCUENTOPORCENTAJE,
+
+DESCUENTO=NEW.DESCUENTO,
+
+PRECIO=NEW.PRECIO,
+
+IMPORTE=NEW.IMPORTE,
+
+SUBTOTAL=NEW.SUBTOTAL,
+
+IVA=NEW.IVA,
+
+TOTAL=NEW.TOTAL,
+
+COSTO=NEW.COSTO,
+
+COSTOIMPORTE=NEW.COSTOIMPORTE,
+
+CARGO=NEW.CARGO,
+
+ABONO=NEW.ABONO,
+
+SALDO=NEW.SALDO,
+
+DOCTOREFID=NEW.DOCTOREFID,
+
+MOVTOREFID=NEW.MOVTOREFID,
+
+PROMOCION=NEW.PROMOCION,
+
+TIPODIFERENCIAINVENTARIOID=NEW.TIPODIFERENCIAINVENTARIOID,
+
+IMPORTEDESCUENTO=NEW.IMPORTEDESCUENTO,
+
+EXISTENCIASEXPORTADAS=NEW.EXISTENCIASEXPORTADAS,
+
+PORCENTAJEDESCUENTOMANUAL=NEW.PORCENTAJEDESCUENTOMANUAL,
+
+PRECIOMANUAL=NEW.PRECIOMANUAL,
+
+COSTOREPOSICION=NEW.COSTOREPOSICION,
+
+COSTOPROMEDIO=NEW.COSTOPROMEDIO,
+
+PRECIOMAXIMOPUBLICO=NEW.PRECIOMAXIMOPUBLICO,
+
+PRECIOCLASIFICACION=NEW.PRECIOCLASIFICACION,
+
+LOCALIDAD=NEW.LOCALIDAD,
+
+TASAIVA=NEW.TASAIVA,
+
+INGRESOPRECIOMANUAL=NEW.INGRESOPRECIOMANUAL,
+
+DESCUENTOVALE=NEW.DESCUENTOVALE,
+
+DESCUENTOVALEPORCENTAJE=NEW.DESCUENTOVALEPORCENTAJE,
+
+CANTIDADDEFACTURA=NEW.CANTIDADDEFACTURA,
+
+CANTIDADDEREMISION=NEW.CANTIDADDEREMISION,
+
+CANTIDADDEINDEFINIDO=NEW.CANTIDADDEINDEFINIDO,
+
+ESAPARTADO=NEW.ESAPARTADO,
+
+CANTDEVUELTADEFACTURA=NEW.CANTDEVUELTADEFACTURA,
+
+CANTDEVUELTADEREMISION=NEW.CANTDEVUELTADEREMISION,
+
+CANTDEVUELTADEINDEFINIDO=NEW.CANTDEVUELTADEINDEFINIDO,
+
+COMISIONXUNIDAD=NEW.COMISIONXUNIDAD,
+
+ANAQUELID=NEW.ANAQUELID,
+
+CAJAS=NEW.CAJAS,
+
+PIEZAS=NEW.PIEZAS,
+
+PZACAJA=NEW.PZACAJA,
+
+PROMOCIONID=NEW.PROMOCIONID,
+
+PROMOCIONDESGLOSE=NEW.PROMOCIONDESGLOSE,
+
+MONEDEROABONO=NEW.MONEDEROABONO,
+
+REGISTROPROCESOSALIDA=NEW.REGISTROPROCESOSALIDA,
+
+PRECIOVISIBLETRASLADO=NEW.PRECIOVISIBLETRASLADO,
+
+RAZONDESCUENTOCAJERO=NEW.RAZONDESCUENTOCAJERO,
+
+PRECIOMANUALMASBAJO=NEW.PRECIOMANUALMASBAJO,
+
+DESCRIPCION1=NEW.DESCRIPCION1,
+
+DESCRIPCION2=NEW.DESCRIPCION2,
+
+DESCRIPCION3=NEW.DESCRIPCION3,
+
+CLAVEPROD=NEW.CLAVEPROD,
+
+TASAISRRETENIDO=NEW.TASAISRRETENIDO,
+
+ISRRETENIDO=NEW.ISRRETENIDO,
+
+TASAIVARETENIDO=NEW.TASAIVARETENIDO,
+
+IVARETENIDO=NEW.IVARETENIDO,
+
+ORDEN=NEW.ORDEN,
+
+TASAIEPS=NEW.TASAIEPS,
+
+IEPS=NEW.IEPS,
+
+TASAIMPUESTO=NEW.TASAIMPUESTO,
+
+IMPUESTO=NEW.IMPUESTO,
+
+UTILIDAD=NEW.UTILIDAD,
+
+COSTOULTIMO=NEW.COSTOULTIMO,
+
+MOVTOADJUNTOAID=NEW.MOVTOADJUNTOAID,
+
+ENPROCESOPARTES=NEW.ENPROCESOPARTES,
+
+ESKIT=NEW.ESKIT,
+
+PRECIOCONREBAJA=NEW.PRECIOCONREBAJA,
+
+TOTALCONREBAJA=NEW.TOTALCONREBAJA,
+
+ESTADOREBAJA=NEW.ESTADOREBAJA,
+
+CANTAUTREBAJA=NEW.CANTAUTREBAJA,
+
+REPLTIMECAMBIO = CURRENT_TIMESTAMP
+  where 
+
+REPLID=:REPLID;
+
+       END
+
+
+          
+
+       END
+
+     END
+
+   END
+
+end

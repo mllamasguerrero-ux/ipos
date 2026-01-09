@@ -1,0 +1,2 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+VALUES (236, 110, 'Reporte de recargas Emida', 'Reporte de recargas Emida', 236, 2, 16);

@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 11:45:50" ReportInfo.Modified="12/15/2024 18:18:23" ReportInfo.CreatorVersion="2014.2.10.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+           
+       
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQquwyEf4VXKh3kqnH9wLxGws=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;   movtogasto.id movtogastoid,&#13;&#10;   docto.fecha ,&#13;&#10;   docto.referencias,&#13;&#10;   persona.clave cajeroclave,&#13;&#10;   persona.nombre cajeronombre,&#13;&#10;   gasto.clave clavegasto,&#13;&#10;   gasto.nombre nombregasto,&#13;&#10;   movtogasto.total,&#13;&#10;   docto.origenfiscalid,&#13;&#10;   almacen.clave as almacennombre,&#13;&#10;   tipogasto.nombre tipogasto,&#13;&#10;   centrocosto.nombre centrocosto&#13;&#10;from docto&#13;&#10;join movtogasto on movtogasto.doctoid = docto.id&#13;&#10;join persona on docto.vendedorid = persona.id&#13;&#10;join gasto on gasto.id = movtogasto.gastoid&#13;&#10;join almacen on docto.almacenid=almacen.id&#13;&#10;join tipogasto on tipogasto.id = gasto.tipogastoid&#13;&#10;join centrocosto on centrocosto.id = movtogasto.centrocostoid&#13;&#10;&#13;&#10;where&#13;&#10;docto.tipodoctoid = 63 and&#13;&#10;docto.estatusdoctoid = 1 and&#13;&#10;docto.fecha &gt;= @fechaini and docto.fecha &lt;= @fechafin&#13;&#10;and (docto.cajeroid = @cajeroid  or @cajeroid = 0  )&#13;&#10;and (movtogasto.gastoid = @gastoid or @gastoid = 0 )&#13;&#10;and (@origenfiscalid &lt; 2  or docto.origenfiscalid = @origenfiscalid)&#13;&#10;and (@almacenid = 0  or docto.almacenid = @almacenid)&#13;&#10;and (@tipogastoid = 0  or gasto.tipogastoid = @tipogastoid)&#13;&#10;and (@centrocostoid = 0  or movtogasto.centrocostoid = @centrocostoid)">
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="MOVTOGASTOID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="CAJEROCLAVE" DataType="System.String"/>
+        <Column Name="CAJERONOMBRE" DataType="System.String"/>
+        <Column Name="CLAVEGASTO" DataType="System.String"/>
+        <Column Name="NOMBREGASTO" DataType="System.String"/>
+        <Column Name="REFERENCIAS" DataType="System.String"/>
+        <Column Name="ORIGENFISCALID" DataType="System.Int64"/>
+        <Column Name="ALMACENNOMBRE" DataType="System.String"/>
+        <Column Name="TIPOGASTO" DataType="System.String"/>
+        <Column Name="CENTROCOSTO" DataType="System.String"/>
+        <CommandParameter Name="cajeroid" DataType="1" Expression="[cajeroid]" DefaultValue="0"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+        <CommandParameter Name="gastoid" DataType="1" Expression="[gastoid]" DefaultValue="0"/>
+        <CommandParameter Name="origenfiscalid" DataType="1" Expression="[origenFiscalId]" DefaultValue="1"/>
+        <CommandParameter Name="almacenid" DataType="1" Expression="[almacenid]" DefaultValue="0"/>
+        <CommandParameter Name="tipogastoid" DataType="1" Expression="[tipogastoid]" DefaultValue="0"/>
+        <CommandParameter Name="centrocostoid" DataType="1" Expression="[centrocostoid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="cajeroid" DataType="System.Decimal"/>
+    <Parameter Name="gastoid" DataType="System.Decimal"/>
+    <Parameter Name="cajeronombre" DataType="System.String"/>
+    <Parameter Name="gastonombre" DataType="System.String"/>
+    <Parameter Name="origenFiscalId" DataType="System.Decimal"/>
+    <Parameter Name="almacenid" DataType="System.Decimal"/>
+    <Parameter Name="almacennombre" DataType="System.String"/>
+    <Parameter Name="centrocostoid" DataType="System.Decimal"/>
+    <Parameter Name="centrocostonombre" DataType="System.String"/>
+    <Parameter Name="tipogastoid" DataType="System.Decimal"/>
+    <Parameter Name="tipogastonombre" DataType="System.String"/>
+    <Total Name="Total" Expression="[Table.TOTAL]" Evaluator="Data1" PrintOn="PageFooter1" ResetAfterPrint="false"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="217.35">
+      <TextObject Name="Text31" Left="103.95" Top="85.05" Width="151.2" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text45" Left="255.15" Top="122.85" Width="292.95" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="103.95" Top="103.95" Width="151.2" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text47" Left="255.15" Top="141.75" Width="292.95" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="255.15" Top="9.45" Width="292.95" Height="18.9" Text="Reporte de gastos detallado" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text24" Left="548.1" Top="47.25" Width="103.95" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Left="255.15" Top="47.25" Width="292.95" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="255.15" Top="66.15" Width="292.95" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="103.95" Top="47.25" Width="151.2" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text40" Left="255.15" Top="85.05" Width="292.95" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="103.95" Top="66.15" Width="151.2" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="255.15" Top="103.95" Width="292.95" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="103.95" Top="122.85" Width="151.2" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text49" Left="9.45" Top="160.65" Width="94.5" Height="18.9" Text="Cajero:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Left="9.45" Top="179.55" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text51" Left="548.1" Top="179.55" Width="103.95" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="103.95" Top="179.55" Width="151.2" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="652.05" Top="179.55" Width="245.7" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 7pt"/>
+      <TextObject Name="Text52" Left="548.1" Top="160.65" Width="103.95" Height="18.9" Text="Gasto:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text1" Left="103.95" Top="160.65" Width="151.2" Height="18.9" Text="[cajeronombre]"/>
+      <TextObject Name="Text2" Left="652.05" Top="160.65" Width="245.7" Height="18.9" Text="[gastonombre]" Font="Arial, 7pt"/>
+      <TextObject Name="Text56" Left="9.45" Top="198.45" Width="94.5" Height="18.9" Text="Almacen:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text57" Left="103.95" Top="198.45" Width="151.2" Height="18.9" Text="[almacennombre]"/>
+      <TextObject Name="Text58" Left="548.1" Top="198.45" Width="103.95" Height="18.9" Text="Tipo Gasto:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text59" Left="652.05" Top="198.45" Width="245.7" Height="18.9" Text="[tipogastonombre]" Font="Arial, 7pt"/>
+      <TextObject Name="Text60" Left="548.1" Top="141.75" Width="103.95" Height="18.9" Text="Centro costo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text61" Left="652.05" Top="141.75" Width="245.7" Height="18.9" Text="[centrocostonombre]" Font="Arial, 7pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="221.35" Width="1047.06" Height="18.9">
+      <TextObject Name="Text4" Left="9.45" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="103.95" Width="151.2" Height="18.9" Text="CAJERO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="255.15" Width="292.95" Height="18.9" Text="NOMBRE GASTO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="548.1" Width="103.95" Height="18.9" Text="TOTAL" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="652.05" Width="245.7" Height="18.9" Text="REFERENCIAS" Font="Arial, 7pt"/>
+      <TextObject Name="Text53" Left="897.75" Width="66.15" Height="18.9" Text="TIPO&#13;&#10;"/>
+      <TextObject Name="Text17" Left="963.9" Width="75.6" Height="18.9" Text="ALMACEN"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="244.25" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text3" Left="9.45" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="103.95" Width="151.2" Height="18.9" Text="[Table.CAJERONOMBRE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="255.15" Width="292.95" Height="18.9" Text="[Table.NOMBREGASTO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text11" Left="548.1" Width="103.95" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="652.05" Width="245.7" Height="18.9" Text="[Table.REFERENCIAS]" Font="Arial, 7pt"/>
+      <TextObject Name="Text15" Left="897.75" Width="66.15" Height="18.9" Text="[IIf( [Table.ORIGENFISCALID] == 2, &quot;No fiscal&quot;,IIf([Table.ORIGENFISCALID] ==3,&quot;Fiscal&quot;,&quot;Todos&quot;))]"/>
+      <TextObject Name="Text16" Left="963.9" Width="75.6" Height="18.9" Text="[Table.ALMACENNOMBRE]"/>
+      <DataFooterBand Name="DataFooter1" Top="267.15" Width="1047.06" Height="18.9">
+        <TextObject Name="Text13" Left="548.1" Width="103.95" Height="18.9" Text="[Total]" Format="Currency" Format.UseLocale="true" HorzAlign="Right"/>
+        <TextObject Name="Text14" Left="255.15" Width="292.95" Height="18.9" Text="TOTAL" HorzAlign="Right"/>
+      </DataFooterBand>
+      <Sort>
+        <Sort Expression="[Table.FECHA]"/>
+        <Sort Expression="[Table.CAJERONOMBRE]"/>
+      </Sort>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="290.05" Width="1047.06" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="103.95" Width="151.2" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="255.15" Width="292.95" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="548.1" Width="103.95" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

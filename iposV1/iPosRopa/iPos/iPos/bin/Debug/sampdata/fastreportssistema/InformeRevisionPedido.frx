@@ -1,0 +1,682 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;FastReport.Firebird.dll&#13;&#10;FastReport.Bars.dll&#13;&#10;FastReport.dll&#13;&#10;FastReport.Editor.dll&#13;&#10;FirebirdSql.Data.FirebirdClient.dll" DoublePass="true" ReportInfo.Created="12/17/2013 17:36:14" ReportInfo.Modified="03/24/2016 07:57:55" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+                   
+using System.Text;
+using System.Globalization;
+
+namespace FastReport
+{
+  
+  
+  /// &lt;summary&gt;
+  /// Convierte números en su expresión numérica a su numeral cardinal
+  /// &lt;/summary&gt;
+  public sealed class NumaletRpt
+  {
+    #region Miembros estáticos
+
+    private const int UNI = 0, DIECI = 1, DECENA = 2, CENTENA = 3;
+    private static string[,] _matriz = new string[CENTENA + 1, 10]
+      {
+      {null,&quot; uno&quot;, &quot; dos&quot;, &quot; tres&quot;, &quot; cuatro&quot;, &quot; cinco&quot;, &quot; seis&quot;, &quot; siete&quot;, &quot; ocho&quot;, &quot; nueve&quot;},
+      {&quot; diez&quot;,&quot; once&quot;,&quot; doce&quot;,&quot; trece&quot;,&quot; catorce&quot;,&quot; quince&quot;,&quot; dieciséis&quot;,&quot; diecisiete&quot;,&quot; dieciocho&quot;,&quot; diecinueve&quot;},
+      {null,null,null,&quot; treinta&quot;,&quot; cuarenta&quot;,&quot; cincuenta&quot;,&quot; sesenta&quot;,&quot; setenta&quot;,&quot; ochenta&quot;,&quot; noventa&quot;},
+      {null,null,null,null,null,&quot; quinientos&quot;,null,&quot; setecientos&quot;,null,&quot; novecientos&quot;}
+      };
+
+    private const Char sub = (Char)26;
+    //Cambiar acá si se quiere otro comportamiento en los métodos de clase
+    public const String SeparadorDecimalSalidaDefault = &quot;pesos con&quot;;
+    public const String MascaraSalidaDecimalDefault = &quot;00'/100.-' M. N.&quot;;
+    public const Int32 DecimalesDefault = 2;
+    public const Boolean LetraCapitalDefault = false;
+    public const Boolean ConvertirDecimalesDefault = false;
+    public const Boolean ApocoparUnoParteEnteraDefault = false;
+    public const Boolean ApocoparUnoParteDecimalDefault = false;
+
+
+
+    #endregion
+
+    #region Propiedades
+
+    private Int32 _decimales = DecimalesDefault;
+    private CultureInfo _cultureInfo = CultureInfo.CurrentCulture;
+    private String _separadorDecimalSalida = SeparadorDecimalSalidaDefault;
+    private Int32 _posiciones = DecimalesDefault;
+    private String _mascaraSalidaDecimal, _mascaraSalidaDecimalInterna = MascaraSalidaDecimalDefault;
+    private Boolean _esMascaraNumerica = true;
+    private Boolean _letraCapital = LetraCapitalDefault;
+    private Boolean _convertirDecimales = ConvertirDecimalesDefault;
+    private Boolean _apocoparUnoParteEntera = false;
+    private Boolean _apocoparUnoParteDecimal;
+
+    /// &lt;summary&gt;
+    /// Indica la cantidad de decimales que se pasarán a entero para la conversión
+    /// &lt;/summary&gt;
+    /// &lt;remarks&gt;Esta propiedad cambia al cambiar MascaraDecimal por un valor que empieze con '0'&lt;/remarks&gt;
+    public Int32 Decimales
+    {
+      get { return _decimales; }
+      set
+      {
+        if (value &gt; 10) throw new ArgumentException(value.ToString() + &quot; excede el número máximo de decimales admitidos, solo se admiten hasta 10.&quot;);
+        _decimales = value;
+      }
+    }
+
+    /// &lt;summary&gt;
+    /// Objeto CultureInfo utilizado para convertir las cadenas de entrada en números
+    /// &lt;/summary&gt;
+    public CultureInfo CultureInfo
+    {
+      get { return _cultureInfo; }
+      set { _cultureInfo = value; }
+    }
+
+    /// &lt;summary&gt;
+    /// Indica la cadena a intercalar entre la parte entera y la decimal del número
+    /// &lt;/summary&gt;
+    public String SeparadorDecimalSalida
+    {
+      get { return _separadorDecimalSalida; }
+      set
+      {
+        _separadorDecimalSalida = value;
+        //Si el separador decimal es compuesto, infiero que estoy cuantificando algo,
+        //por lo que apocopo el &quot;uno&quot; convirtiéndolo en &quot;un&quot;
+        if (value.Trim().IndexOf(&quot; &quot;) &gt; 0)
+          _apocoparUnoParteEntera = true;
+        else _apocoparUnoParteEntera = false;
+      }
+    }
+
+    /// &lt;summary&gt;
+    /// Indica el formato que se le dara a la parte decimal del número
+    /// &lt;/summary&gt;
+    public String MascaraSalidaDecimal
+    {
+      get
+      {
+        if (!String.IsNullOrEmpty(_mascaraSalidaDecimal))
+          return _mascaraSalidaDecimal;
+        else return &quot;&quot;;
+      }
+      set
+      {
+        //determino la cantidad de cifras a redondear a partir de la cantidad de '0' o '#' 
+        //que haya al principio de la cadena, y también si es una máscara numérica
+        int i = 0;
+        while (i &lt; value.Length
+          &amp;&amp; (value[i] == '0')
+          | value[i] == '#')
+          i++;
+        _posiciones = i;
+        if (i &gt; 0)
+        {
+          _decimales = i;
+          _esMascaraNumerica = true;
+        }
+        else _esMascaraNumerica = false;
+        _mascaraSalidaDecimal = value;
+        if (_esMascaraNumerica)
+          _mascaraSalidaDecimalInterna = value.Substring(0, _posiciones) + &quot;'&quot;
+            + value.Substring(_posiciones)
+            .Replace(&quot;''&quot;, sub.ToString())
+            .Replace(&quot;'&quot;, String.Empty)
+            .Replace(sub.ToString(), &quot;'&quot;) + &quot;'&quot;;
+        else
+          _mascaraSalidaDecimalInterna = value
+            .Replace(&quot;''&quot;, sub.ToString())
+            .Replace(&quot;'&quot;, String.Empty)
+            .Replace(sub.ToString(), &quot;'&quot;);
+      }
+    }
+
+    /// &lt;summary&gt;
+    /// Indica si la primera letra del resultado debe estár en mayúscula
+    /// &lt;/summary&gt;
+    public Boolean LetraCapital
+    {
+      get { return _letraCapital; }
+      set { _letraCapital = value; }
+    }
+
+    /// &lt;summary&gt;
+    /// Indica si se deben convertir los decimales a su expresión nominal
+    /// &lt;/summary&gt;
+    public Boolean ConvertirDecimales
+    {
+      get { return _convertirDecimales; }
+      set
+      {
+        _convertirDecimales = value;
+        _apocoparUnoParteDecimal = value;
+        if (value)
+        {// Si la máscara es la default, la borro
+          if (_mascaraSalidaDecimal == MascaraSalidaDecimalDefault)
+            MascaraSalidaDecimal = &quot;&quot;;
+        }
+        else if (String.IsNullOrEmpty(_mascaraSalidaDecimal))
+          //Si no hay máscara dejo la default
+          MascaraSalidaDecimal = MascaraSalidaDecimalDefault;
+      }
+    }
+
+    /// &lt;summary&gt;
+    /// Indica si de debe cambiar &quot;uno&quot; por &quot;un&quot; en las unidades.
+    /// &lt;/summary&gt;
+    public Boolean ApocoparUnoParteEntera
+    {
+      get { return _apocoparUnoParteEntera; }
+      set { _apocoparUnoParteEntera = value; }
+    }
+
+    /// &lt;summary&gt;
+    /// Determina si se debe apococopar el &quot;uno&quot; en la parte decimal
+    /// &lt;/summary&gt;
+    /// &lt;remarks&gt;El valor de esta propiedad cambia al setear ConvertirDecimales&lt;/remarks&gt;
+    public Boolean ApocoparUnoParteDecimal
+    {
+      get { return _apocoparUnoParteDecimal; }
+      set { _apocoparUnoParteDecimal = value; }
+    }
+
+    #endregion
+
+    #region Constructores
+
+    public NumaletRpt()
+    {
+      MascaraSalidaDecimal = MascaraSalidaDecimalDefault;
+      SeparadorDecimalSalida = SeparadorDecimalSalidaDefault;
+      LetraCapital = LetraCapitalDefault;
+      ConvertirDecimales = _convertirDecimales;
+    }
+
+    public NumaletRpt(Boolean ConvertirDecimales, String MascaraSalidaDecimal, String SeparadorDecimalSalida, Boolean LetraCapital)
+    {
+      if (!String.IsNullOrEmpty(MascaraSalidaDecimal))
+        this.MascaraSalidaDecimal = MascaraSalidaDecimal;
+      if (!String.IsNullOrEmpty(SeparadorDecimalSalida))
+        _separadorDecimalSalida = SeparadorDecimalSalida;
+      _letraCapital = LetraCapital;
+      _convertirDecimales = ConvertirDecimales;
+    }
+    #endregion
+
+    #region Conversores de instancia
+
+    public String ToCustomCardinal(Double Numero)
+    { return Convertir((Decimal)Numero, _decimales, _separadorDecimalSalida, _mascaraSalidaDecimalInterna, _esMascaraNumerica, _letraCapital, _convertirDecimales, _apocoparUnoParteEntera, _apocoparUnoParteDecimal); }
+
+    public String ToCustomCardinal(String Numero)
+    {
+      Double dNumero;
+      if (Double.TryParse(Numero, NumberStyles.Float, _cultureInfo, out dNumero))
+        return ToCustomCardinal(dNumero);
+      else throw new ArgumentException(&quot;'&quot; + Numero + &quot;' no es un número válido.&quot;);
+    }
+
+    public String ToCustomCardinal(Decimal Numero)
+    { return ToCardinal((Numero)); }
+
+    public String ToCustomCardinal(Int32 Numero)
+    { return Convertir((Decimal)Numero, 0, _separadorDecimalSalida, _mascaraSalidaDecimalInterna, _esMascaraNumerica, _letraCapital, _convertirDecimales, _apocoparUnoParteEntera, false); }
+
+    #endregion
+
+    #region Conversores estáticos
+
+    public static String ToCardinal(Int32 Numero)
+    {
+      return Convertir((Decimal)Numero, 0, null, null, true, LetraCapitalDefault, ConvertirDecimalesDefault, ApocoparUnoParteEnteraDefault, ApocoparUnoParteDecimalDefault);
+    }
+
+    public static String ToCardinal(Double Numero)
+    {
+      return ToCardinal((Decimal)Numero);
+    }
+
+    public static String ToCardinal(String Numero, CultureInfo ReferenciaCultural)
+    {
+      Double dNumero;
+      if (Double.TryParse(Numero, NumberStyles.Float, ReferenciaCultural, out dNumero))
+        return ToCardinal(dNumero);
+      else throw new ArgumentException(&quot;'&quot; + Numero + &quot;' no es un número válido.&quot;);
+    }
+
+    public static String ToCardinal(String Numero)
+    {
+      return NumaletRpt.ToCardinal(Numero, CultureInfo.CurrentCulture);
+    }
+
+    public static String ToCardinal(Decimal Numero)
+    {
+      return Convertir(Numero, DecimalesDefault, SeparadorDecimalSalidaDefault, MascaraSalidaDecimalDefault, true, LetraCapitalDefault, ConvertirDecimalesDefault, ApocoparUnoParteEnteraDefault, ApocoparUnoParteDecimalDefault);
+    }
+
+    #endregion
+
+    private static String Convertir(Decimal Numero, Int32 Decimales, String SeparadorDecimalSalida, String MascaraSalidaDecimal, Boolean EsMascaraNumerica, Boolean LetraCapital, Boolean ConvertirDecimales, Boolean ApocoparUnoParteEntera, Boolean ApocoparUnoParteDecimal)
+    {
+      Int64 Num;
+      Int32 terna, centenaTerna, decenaTerna, unidadTerna, iTerna;
+      String cadTerna;
+      StringBuilder Resultado = new StringBuilder();
+
+      Num = (Int64)Math.Abs(Numero);
+
+      if (Num &gt;= 1000000000000 || Num &lt; 0) throw new ArgumentException(&quot;El número '&quot; + Numero.ToString() + &quot;' excedió los límites del conversor: [0;1.000.000.000.000)&quot;);
+      if (Num == 0)
+        Resultado.Append(&quot; cero&quot;);
+      else
+      {
+        iTerna = 0;
+        while (Num &gt; 0)
+        {
+          iTerna++;
+          cadTerna = String.Empty;
+          terna = (Int32)(Num % 1000);
+
+          centenaTerna = (Int32)(terna / 100);
+          decenaTerna = terna % 100;
+          unidadTerna = terna % 10;
+
+          if ((decenaTerna &gt; 0) &amp;&amp; (decenaTerna &lt; 10))
+            cadTerna = _matriz[UNI, unidadTerna] + cadTerna;
+          else if ((decenaTerna &gt;= 10) &amp;&amp; (decenaTerna &lt; 20))
+            cadTerna = cadTerna + _matriz[DIECI, unidadTerna];
+          else if (decenaTerna == 20)
+            cadTerna = cadTerna + &quot; veinte&quot;;
+          else if ((decenaTerna &gt; 20) &amp;&amp; (decenaTerna &lt; 30))
+            cadTerna = &quot; veinti&quot; + _matriz[UNI, unidadTerna].Substring(1);
+          else if ((decenaTerna &gt;= 30) &amp;&amp; (decenaTerna &lt; 100))
+            if (unidadTerna != 0)
+              cadTerna = _matriz[DECENA, (Int32)(decenaTerna / 10)] + &quot; y&quot; + _matriz[UNI, unidadTerna] + cadTerna;
+            else
+              cadTerna += _matriz[DECENA, (Int32)(decenaTerna / 10)];
+
+          switch (centenaTerna)
+          {
+            case 1:
+              if (decenaTerna &gt; 0) cadTerna = &quot; ciento&quot; + cadTerna;
+              else cadTerna = &quot; cien&quot; + cadTerna;
+              break;
+            case 5:
+            case 7:
+            case 9:
+              cadTerna = _matriz[CENTENA, (Int32)(terna / 100)] + cadTerna;
+              break;
+            default:
+              if ((Int32)(terna / 100) &gt; 1) cadTerna = _matriz[UNI, (Int32)(terna / 100)] + &quot;cientos&quot; + cadTerna;
+              break;
+          }
+          //Reemplazo el 'uno' por 'un' si no es en las únidades o si se solicító apocopar
+          if ((iTerna &gt; 1 | ApocoparUnoParteEntera) &amp;&amp; decenaTerna == 21)
+            cadTerna = cadTerna.Replace(&quot;veintiuno&quot;, &quot;veintiún&quot;);
+          else if ((iTerna &gt; 1 | ApocoparUnoParteEntera) &amp;&amp; unidadTerna == 1 &amp;&amp; decenaTerna != 11)
+            cadTerna = cadTerna.Substring(0, cadTerna.Length - 1);
+            //Acentúo 'veintidós', 'veintitrés' y 'veintiséis'
+          else if (decenaTerna == 22) cadTerna = cadTerna.Replace(&quot;veintidos&quot;, &quot;veintidós&quot;);
+          else if (decenaTerna == 23) cadTerna = cadTerna.Replace(&quot;veintitres&quot;, &quot;veintitrés&quot;);
+          else if (decenaTerna == 26) cadTerna = cadTerna.Replace(&quot;veintiseis&quot;, &quot;veintiséis&quot;);
+
+          //Completo miles y millones
+          switch (iTerna)
+          {
+            case 3:
+              if (Numero &lt; 2000000) cadTerna += &quot; millón&quot;;
+              else cadTerna += &quot; millones&quot;;
+              break;
+            case 2:
+            case 4:
+              if (terna &gt; 0) cadTerna += &quot; mil&quot;;
+              break;
+          }
+          Resultado.Insert(0, cadTerna);
+          Num = (Int32)(Num / 1000);
+        } //while
+      }
+
+      //Se agregan los decimales si corresponde
+      if (Decimales &gt; 0)
+      {
+        Resultado.Append(&quot; &quot; + SeparadorDecimalSalida + &quot; &quot;);
+        Int32 EnteroDecimal = (Int32)Math.Round((Double)(Numero - (Int64)Numero) * Math.Pow(10, Decimales), 0);
+        if (ConvertirDecimales)
+        {
+          Boolean esMascaraDecimalDefault = MascaraSalidaDecimal == MascaraSalidaDecimalDefault;
+          Resultado.Append(Convertir((Decimal)EnteroDecimal, 0, null, null, EsMascaraNumerica, false, false, (ApocoparUnoParteDecimal &amp;&amp; !EsMascaraNumerica/*&amp;&amp; !esMascaraDecimalDefault*/), false) + &quot; &quot;
+            + (EsMascaraNumerica ? &quot;&quot; : MascaraSalidaDecimal));
+        }
+        else
+          if (EsMascaraNumerica) Resultado.Append(EnteroDecimal.ToString(MascaraSalidaDecimal));
+        else Resultado.Append(EnteroDecimal.ToString() + &quot; &quot; + MascaraSalidaDecimal);
+      }
+      //Se pone la primer letra en mayúscula si corresponde y se retorna el resultado
+      if (LetraCapital)
+        return Resultado[1].ToString().ToUpper() + Resultado.ToString(2, Resultado.Length - 2);
+      else
+        return Resultado.ToString().Substring(1);
+    }
+  }
+  
+  
+  
+  public class ReportScript
+  {
+    
+
+                   
+
+    private void Text18_BeforePrint(object sender, EventArgs e)
+    {
+      if(  Report.GetColumnValue(&quot;REC_MASTER.FECHAFACTURA&quot;) == null)
+        return;
+      
+      if( ((DateTime)Report.GetColumnValue(&quot;REC_MASTER.FECHAFACTURA&quot;)) &lt; DateTime.Parse(&quot;01/01/2000&quot;))
+        return;
+                                                                        
+      Text18.Text = ((String)Report.GetColumnValue(&quot;REC_MASTER.DOC_REF_HEADER5&quot;)) + &quot;  Fecha Factura: &quot; +  ((DateTime)Report.GetColumnValue(&quot;REC_MASTER.FECHAFACTURA&quot;)).ToString(&quot;dd/MM/yyyy&quot;);
+    }
+
+    private void Picture1_BeforePrint(object sender, EventArgs e)
+    {           
+           Picture1.ImageLocation =  ((String)Report.GetColumnValue(&quot;REC_MASTER.LOGOIMAGE&quot;)).Replace(&quot;{BaseDirectory}&quot;, System.IO.Path.GetDirectoryName(Report.FileName ) + &quot;\\..\\..&quot; ) ;    
+    }
+    
+
+   
+
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+      try{
+        
+      
+        Data1.Visible =((String)Report.GetParameterValue(&quot;desglosekits&quot;)).Equals(&quot;S&quot;) &amp;&amp; ((Int64)Report.GetColumnValue(&quot;REC_DETAIL.KITMOVTOID&quot;)) &gt; 0;
+      }
+      catch(Exception ex)
+      {
+        Data1.Visible = false;
+        MessageBox.Show(ex.Message);
+      }   
+    }
+
+    private void Text75_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((String)Report.GetParameterValue(&quot;desglosekits&quot;)).Equals(&quot;S&quot;) &amp;&amp;  ((String)Report.GetColumnValue(&quot;REC_DETAIL.ESKIT&quot;)) == &quot;S&quot;)
+      {
+        Text75.Visible = false;
+      }
+      else{
+         Text75.Visible = true;
+      }
+    }
+
+    private void PageFooter1_BeforePrint(object sender, EventArgs e)
+    {
+      /*if(  ((Decimal)Report.GetColumnValue(&quot;REC_MASTER.MONTOREBAJA&quot;)) &gt; 0 )
+      {
+        shapeDescPP.Visible = true;
+        shapeTotalPP.Visible = true;
+        lblDescPP.Visible = true;
+        lblTotalPP.Visible = true;
+        valDescPP.Visible = true;
+        valTotalPP.Visible = true;
+      }  
+      else{ 
+        shapeDescPP.Visible = false;
+        shapeTotalPP.Visible = false;
+        lblDescPP.Visible = false;
+        lblTotalPP.Visible = false;
+        valDescPP.Visible = false;
+        valTotalPP.Visible = false;
+      }*/
+    }   
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqGXDUjVHoOo39U7VHz/cohboC87uIIffsgzROmdYrsoyLqNefFxFcJwrJj2UdQGssDygdH1v33WybpxKsRehsLaYYJhHd3d37jR6E5s5aXcYjs4SwwOJp6nOTF8aIB0KG+4A05MYFB81Cn7fqteQTfEYl0kNg+w81vXtbNTTCHRlQN4Ks8VWaJNMd0uQO+MQ/miCC73aqqKayNL52p63OYw==">
+      <TableDataSource Name="Table" Alias="REC_MASTER" DataType="System.Int32" Enabled="true" SelectCommand="SELECT R.*, p.fiscalnombre,&#13;&#10;  &#13;&#10;p.FACT_ELECT_FOLDER&#13;&#10;||  '\facturaelectronica\IMG\logofarmafree.png'  as logoimage&#13;&#10;&#13;&#10;&#13;&#10; FROM &quot;RECIBO_MASTER&quot; R&#13;&#10;&#13;&#10;inner join parametro p on 1 = 1&#13;&#10;&#13;&#10; where r.doctoid = @doctoid">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="HEADERCANCELACION" DataType="System.String"/>
+        <Column Name="NOMBRESUCURSAL" DataType="System.String"/>
+        <Column Name="DESCRIPCIONSUCURSAL" DataType="System.String"/>
+        <Column Name="EMPRESA_RFC" DataType="System.String"/>
+        <Column Name="EMPRESA_COLONIA" DataType="System.String"/>
+        <Column Name="EMPRESA_DOMICICIO" DataType="System.String"/>
+        <Column Name="EMPRESA_NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="EMPRESA_NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="EMPRESA_CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="EMPRESA_RAZON_SOCIAL" DataType="System.String"/>
+        <Column Name="EMPRESA_TELEFONO" DataType="System.String"/>
+        <Column Name="EMPRESA_CIUDAD" DataType="System.String"/>
+        <Column Name="EMPRESA_ESTADO" DataType="System.String"/>
+        <Column Name="EMPRESA_MUNICIPIO" DataType="System.String"/>
+        <Column Name="LUGARDEEXPEDICION" DataType="System.String"/>
+        <Column Name="FECHADEEXPEDICION" DataType="System.DateTime"/>
+        <Column Name="CAJERO" DataType="System.String"/>
+        <Column Name="TICKET" DataType="System.Int32"/>
+        <Column Name="TITULO" DataType="System.String"/>
+        <Column Name="TITULO_PERSONA" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER1" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER2" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER3" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER4" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="PERSONADOMICILIO" DataType="System.String"/>
+        <Column Name="PERSONANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="PERSONANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="PERSONACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PERSONACOLONIA" DataType="System.String"/>
+        <Column Name="PERSONATELEFONO" DataType="System.String"/>
+        <Column Name="PERSONARAZONSOCIAL" DataType="System.String"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOVALE" DataType="System.Decimal"/>
+        <Column Name="TOTAL_CON_LETRA" DataType="System.String"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="CAMBIO" DataType="System.Decimal"/>
+        <Column Name="CAJA" DataType="System.String"/>
+        <Column Name="TURNO" DataType="System.String"/>
+        <Column Name="PAGOEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="PAGOTARJETA" DataType="System.Decimal"/>
+        <Column Name="PAGOCREDITO" DataType="System.Decimal"/>
+        <Column Name="PAGOCHEQUE" DataType="System.Decimal"/>
+        <Column Name="PAGOVALE" DataType="System.Decimal"/>
+        <Column Name="ABONO" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="PAGOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="ABONOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="SALDOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="VIGENCIAMONEDERO" DataType="System.DateTime"/>
+        <Column Name="MONEDEROID" DataType="System.Int64"/>
+        <Column Name="CUSTOMFOOTER" DataType="System.String"/>
+        <Column Name="APLICADO" DataType="System.Decimal"/>
+        <Column Name="PERSONARFC" DataType="System.String"/>
+        <Column Name="PERSONACIUDAD" DataType="System.String"/>
+        <Column Name="PERSONAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGACALLE" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGACOLONIA" DataType="System.String"/>
+        <Column Name="ENTREGAMUNICIPIO" DataType="System.String"/>
+        <Column Name="ENTREGAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PAGOTRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="PAGONOIDENTIFICADO" DataType="System.Decimal"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="REFERENCIAS" DataType="System.String"/>
+        <Column Name="FECHAFACTURA" DataType="System.DateTime"/>
+        <Column Name="NOTAPAGO" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER5" DataType="System.String"/>
+        <Column Name="LOGOIMAGE" DataType="System.String"/>
+        <Column Name="FISCALNOMBRE" DataType="System.String"/>
+        <Column Name="PLAZO" DataType="System.Int16"/>
+        <Column Name="VENCE" DataType="System.DateTime"/>
+        <Column Name="MONTOREBAJA" DataType="System.Decimal"/>
+        <Column Name="TOTALCONREBAJA" DataType="System.Decimal"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[pdoctoid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="REC_DETAIL" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;        MOVTO.doctoid,&#13;&#10;&#13;&#10;        (CASE&#13;&#10;         WHEN (docto.tipodoctoid in  (41)) THEN MOVTO.cantidadsurtida&#13;&#10;         ELSE MOVTO.cantidad&#13;&#10;        END ) cantidad,&#13;&#10;&#13;&#10;       &#13;&#10;        CASE WHEN PRODUCTO.descripcion_comodin = 'S' AND MOVTO.descripcion1 IS NOT NULL AND MOVTO.descripcion1 &lt;&gt; '' THEN MOVTO.DESCRIPCION1 ELSE  PRODUCTO.DESCRIPCION1 END&#13;&#10;&#13;&#10;        AS DESCRIPCION1,&#13;&#10;&#13;&#10;        CASE WHEN PRODUCTO.descripcion_comodin = 'S' AND MOVTO.descripcion1 IS NOT NULL AND MOVTO.descripcion1 &lt;&gt; '' THEN MOVTO.DESCRIPCION2 ELSE  PRODUCTO.DESCRIPCION2 END AS DESCRIPCION2,&#13;&#10;&#13;&#10;        (CASE&#13;&#10;         WHEN (docto.tipodoctoid in  (11,41)) THEN MOVTO.costo&#13;&#10;         ELSE MOVTO.precio&#13;&#10;        END ) PRECIO,&#13;&#10;&#13;&#10;        MOVTO.descuento,&#13;&#10;&#13;&#10;        (CASE&#13;&#10;         WHEN (docto.tipodoctoid in  (41)) THEN MOVTO.costoimporte&#13;&#10;         ELSE MOVTO.subtotal&#13;&#10;         END ) subtotal,&#13;&#10;&#13;&#10;        PRODUCTO.tasaiva TASAIVA,&#13;&#10;        CASE WHEN docto.tipodoctoid = 21 then MOVTO.total + coalesce(MOVTO.DESCUENTOVALE,0) else MOVTO.total end total,&#13;&#10;        MOVTO.lote,&#13;&#10;        MOVTO.fechavence ,&#13;&#10;        movto.cantidadfaltante ,&#13;&#10;        MOVTO.cantidadsurtida  ,&#13;&#10;        MOVTO.cantidad ,&#13;&#10;        movto.IMPORTEDESCUENTO,&#13;&#10;        MOVTO.IVA IMPORTEIVA ,&#13;&#10;        coalesce(MOVTO.DESCUENTOVALE,0) descuentovale,&#13;&#10;        linea.tiporecarga ,&#13;&#10;&#13;&#10;&#13;&#10;        (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                   cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                ELSE&#13;&#10;                    cast(cast(COALESCE(MOVTO.precio,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                END ) PRECIOCONIVA  ,&#13;&#10;&#13;&#10;                c.texto1,&#13;&#10;                c.texto2,&#13;&#10;                c.texto3,&#13;&#10;                c.texto4,&#13;&#10;                c.texto5,&#13;&#10;                c.texto6,&#13;&#10;                c.numero1,&#13;&#10;                c.numero2,&#13;&#10;                c.numero3,&#13;&#10;                c.numero4,&#13;&#10;                c.fecha1, &#13;&#10;                c.fecha2,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;           &#13;&#10;        CASE WHEN PRODUCTO.descripcion_comodin = 'S' AND MOVTO.descripcion1 IS NOT NULL AND MOVTO.descripcion1 &lt;&gt; '' THEN MOVTO.DESCRIPCION3 ELSE  PRODUCTO.DESCRIPCION3 END AS DESCRIPCION3 ,&#13;&#10;        PRODUCTO.descripcion_comodin ,&#13;&#10;        PRODUCTO.manejalote  ,&#13;&#10;                             &#13;&#10;        MOVTO.TASAIEPS TASAIEPS ,&#13;&#10;        MOVTO.IEPS IMPORTEIEPS ,&#13;&#10;        (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;&#13;&#10;                        COALESCE(MOVTO.costo,0) * ((100 + coalesce(MOVTO.tasaieps,0)) / 100 )&#13;&#10;                ELSE&#13;&#10;                    COALESCE(MOVTO.precio,0) * ((100 + coalesce(MOVTO.tasaieps,0)) / 100 )&#13;&#10;                END ) PRECIOCONIEPS  ,&#13;&#10;                               &#13;&#10;        MOVTO.TASAIMPUESTO TASAIMPUESTO ,&#13;&#10;        MOVTO.IMPUESTO IMPORTEIMPUESTO ,&#13;&#10;&#13;&#10;        (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                   cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                ELSE&#13;&#10;                    cast(cast(COALESCE(MOVTO.precio,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                END ) PRECIOCONIMPUESTO,&#13;&#10;&#13;&#10;&#13;&#10;case when docto.subtipodoctoid = 13 then '[DPP]' || producto.clave else producto.clave end productoclave    ,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;movto.tasaieps,&#13;&#10;&#13;&#10;movto.descuentoporcentaje,&#13;&#10;&#13;&#10;producto.pzacaja,&#13;&#10;&#13;&#10;case when coalesce(producto.pzacaja,0) = 0 then  &#13;&#10;cast(movto.cantidad as varchar(10)) || ' pzas' else &#13;&#10;cast(trunc(coalesce(movto.cantidad,0)/coalesce(producto.pzacaja,1)) as varchar(10)) || ' cajas ' ||  cast(mod(coalesce(movto.cantidad,0),coalesce(producto.pzacaja,1)) as varchar(10)) || ' piezas '&#13;&#10;end &#13;&#10;&#13;&#10;descpzacaja,&#13;&#10;&#13;&#10;case when COALESCE(movto.descuentoporcentaje,0) &lt; 100 then&#13;&#10;round(&#13;&#10;      (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                   cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                ELSE&#13;&#10;                    cast(cast(COALESCE(MOVTO.preciolista,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                END ) &#13;&#10;, 2)&#13;&#10;  else&#13;&#10;     0.00&#13;&#10;  end&#13;&#10;&#13;&#10;PRECIOCONIMPUESTOSINDESCUENTO,&#13;&#10;&#13;&#10;&#13;&#10;(&#13;&#10;&#13;&#10;case when COALESCE(movto.descuentoporcentaje,0) &lt; 100 then&#13;&#10;round(&#13;&#10;      (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                   cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                ELSE&#13;&#10;                    cast(cast(COALESCE(MOVTO.preciolista,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                END ) &#13;&#10;, 2)&#13;&#10;  else&#13;&#10;     0.00&#13;&#10;  end&#13;&#10;&#13;&#10;  -&#13;&#10;&#13;&#10; (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                   cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                ELSE&#13;&#10;                    cast(cast(COALESCE(MOVTO.precio,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                END )&#13;&#10;&#13;&#10;&#13;&#10;) &#13;&#10; DESCUENTOUNITARIO,&#13;&#10;&#13;&#10;movto.preciomaximopublico ,&#13;&#10;&#13;&#10;&#13;&#10;coalesce(MKITREF.id,0) KITMOVTOID,&#13;&#10;PKITREF.CLAVE  KITPRODCLAVE,&#13;&#10;PKITREF.nombre KITPRODNOMBRE,&#13;&#10;PKITREF.descripcion1 KITDESCRIPCION1,&#13;&#10;MKITREF.preciolista KITPRECIOLISTA,&#13;&#10;MKITREF.precio KITPRECIO,&#13;&#10;MKITREF.tasaiva KITTASAIVA,&#13;&#10;MKITREF.tasaieps KITTASAIEPS,&#13;&#10;MKITREF.tasaimpuesto KITIMPUESTO,&#13;&#10;MKITREF.iva KITIVA,&#13;&#10;MKITREF.ieps KITIEPS,&#13;&#10;MKITREF.subtotal KITSUBTOTAL,&#13;&#10;MKITREF.TOTAL KITTOTAL,&#13;&#10;MKITREF.cantidad KITCANTIDAD,&#13;&#10;&#13;&#10;case when coalesce(PKITREF.pzacaja,0) = 0 then&#13;&#10;cast(MKITREF.cantidad as varchar(10)) || ' pzas' else&#13;&#10;cast(trunc(coalesce(MKITREF.cantidad,0)/coalesce(PKITREF.pzacaja,1)) as varchar(10)) || ' cajas ' ||  cast(mod(coalesce(MKITREF.cantidad,0),coalesce(PKITREF.pzacaja,1)) as varchar(10)) || ' piezas '&#13;&#10;end  KITDESCPZACAJA  ,&#13;&#10;&#13;&#10;MOVTO.ID MOVTOID,&#13;&#10;coalesce(PRODUCTO.ESKIT,'N') ESKIT,&#13;&#10;&#13;&#10;&#13;&#10; (CASE   WHEN (docto.tipodoctoid in  (11,41)) THEN&#13;&#10;                   cast(cast(COALESCE(MOVTO.costo,0)  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                ELSE&#13;&#10;                    cast(cast(COALESCE(PRODUCTO.PRECIOSUGERIDO,COALESCE(MOVTO.PRECIO,0))  * ((100 + cast(coalesce(MOVTO.tasaieps,0) as numeric(10,4))) / 100 ) as d_importe)  * ((100 + coalesce(MOVTO.tasaiva,0)) / 100 ) as d_importe)&#13;&#10;                END ) PRECIOSUGERIDOCONIMPUESTO&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;        FROM MOVTO left join docto on docto.id = movto.doctoid&#13;&#10;        left JOIN PRODUCTO ON MOVTO.productoid = PRODUCTO.ID&#13;&#10;        left join linea on linea.id = producto.lineaid&#13;&#10;        left join PRODUCTOCARACTERISTICAS  c on c.productoid = producto.id&#13;&#10;    left join parametro on 1 = 1&#13;&#10;&#13;&#10;    left join MOVTO MKITREF ON MKITREF.doctoid = COALESCE(DOCTO.doctokitrefid,0) AND MKITREF.movtorefid = MOVTO.ID&#13;&#10;        left JOIN PRODUCTO PKITREF ON MKITREF.productoid = PKITREF.ID&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;where  movto.doctoid = @doctoid&#13;&#10;        order by &#13;&#10;case when coalesce(parametro.ordenimpresion,'') = 'DESCRIPCION' then&#13;&#10;producto.descripcion&#13;&#10;    when coalesce(parametro.ordenimpresion,'') = 'DESCRIPCION1' then&#13;&#10;producto.descripcion1&#13;&#10;    when coalesce(parametro.ordenimpresion,'') = 'DESCRIPCION2' then&#13;&#10;producto.descripcion2&#13;&#10; else movto.orden&#13;&#10;end,&#13;&#10;&#13;&#10;&#13;&#10;movto.orden, movto.partida">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="LOTE" DataType="System.String"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="CANTIDADSURTIDA" DataType="System.Decimal"/>
+        <Column Name="IMPORTEDESCUENTO" DataType="System.Decimal"/>
+        <Column Name="IMPORTEIVA" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOVALE" DataType="System.Decimal"/>
+        <Column Name="TIPORECARGA" DataType="System.String"/>
+        <Column Name="PRECIOCONIVA" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION3" DataType="System.String"/>
+        <Column Name="TASAIVA" DataType="System.Decimal"/>
+        <Column Name="CANTIDADFALTANTE" DataType="System.Decimal"/>
+        <Column Name="CANTIDAD1" DataType="System.Decimal"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+        <Column Name="DESCRIPCION_COMODIN" DataType="System.String"/>
+        <Column Name="MANEJALOTE" DataType="System.String"/>
+        <Column Name="TASAIEPS" DataType="System.Decimal"/>
+        <Column Name="IMPORTEIEPS" DataType="System.Decimal"/>
+        <Column Name="PRECIOCONIEPS" DataType="System.Decimal"/>
+        <Column Name="TASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="IMPORTEIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="PRECIOCONIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="TASAIEPS1" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOPORCENTAJE" DataType="System.Decimal"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="DESCPZACAJA" DataType="System.String"/>
+        <Column Name="PRECIOCONIMPUESTOSINDESCUENTO" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOUNITARIO" DataType="System.Decimal"/>
+        <Column Name="PRECIOMAXIMOPUBLICO" DataType="System.Decimal"/>
+        <Column Name="KITMOVTOID" DataType="System.Int64"/>
+        <Column Name="KITPRODCLAVE" DataType="System.String"/>
+        <Column Name="KITPRODNOMBRE" DataType="System.String"/>
+        <Column Name="KITDESCRIPCION1" DataType="System.String"/>
+        <Column Name="KITPRECIOLISTA" DataType="System.Decimal"/>
+        <Column Name="KITPRECIO" DataType="System.Decimal"/>
+        <Column Name="KITTASAIVA" DataType="System.Decimal"/>
+        <Column Name="KITIEPS" DataType="System.Decimal"/>
+        <Column Name="KITIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="KITIVA" DataType="System.Decimal"/>
+        <Column Name="KITSUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="KITTOTAL" DataType="System.Decimal"/>
+        <Column Name="KITCANTIDAD" DataType="System.Decimal"/>
+        <Column Name="KITTASAIEPS" DataType="System.Decimal"/>
+        <Column Name="MOVTOID" DataType="System.Int64"/>
+        <Column Name="KITDESCPZACAJA" DataType="System.String"/>
+        <Column Name="ESKIT" DataType="System.String"/>
+        <Column Name="PRECIOSUGERIDOCONIMPUESTO" DataType="System.Decimal"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[pdoctoid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="pdoctoid" DataType="System.Decimal"/>
+    <Parameter Name="usaDatosDeEntregaCuandoExista" DataType="System.String"/>
+    <Parameter Name="desglosekits" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" RawPaperSize="119">
+    <PageHeaderBand Name="PageHeader1" Width="740.5" Height="359.1">
+      <ShapeObject Name="Shape1" Left="330.75" Top="37.8" Width="387.45" Height="103.95" Shape="RoundRectangle"/>
+      <ShapeObject Name="Shape3" Left="18.9" Top="236.25" Width="689.85" Height="75.6" Shape="RoundRectangle"/>
+      <ShapeObject Name="Shape4" Left="18.9" Top="311.85" Width="689.85" Height="37.8" Shape="RoundRectangle"/>
+      <TextObject Name="Text8" Left="28.35" Top="321.3" Width="75.6" Height="18.9" Text="Cantidad" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="207.9" Top="321.3" Width="491.4" Height="18.9" Text="Descripción" VertAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <LineObject Name="Line7" Left="122.85" Top="349.65" Height="-37.8"/>
+      <TextObject Name="Text73" Left="122.85" Top="321.3" Width="85.05" Height="18.9" Text="Producto" Font="Arial, 8pt, style=Bold"/>
+      <LineObject Name="Line18" Left="207.9" Top="349.65" Height="-37.8"/>
+      <TextObject Name="Text38" Left="75.6" Top="283.5" Width="103.95" Height="18.9" Text="[REC_MASTER.PERSONACODIGOPOSTAL]" Font="Arial, 9pt"/>
+      <TextObject Name="Text39" Left="236.25" Top="283.5" Width="122.85" Height="18.9" Text="[REC_MASTER.PERSONATELEFONO]" Font="Arial, 9pt"/>
+      <LineObject Name="Line6" Left="18.9" Top="283.5" Width="689.85"/>
+      <TextObject Name="Text68" Left="189" Top="283.5" Width="37.8" Height="18.9" Text="Tel:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text69" Left="18.9" Top="283.5" Width="56.7" Height="18.9" Text="C. P. :" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text70" Left="359.1" Top="283.5" Width="56.7" Height="18.9" Text="Ciudad:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text71" Left="538.65" Top="283.5" Width="56.7" Height="18.9" Text="Estado:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text60" Left="415.8" Top="283.5" Width="122.85" Height="18.9" Text="[REC_MASTER.PERSONACIUDAD]" Font="Arial, 9pt"/>
+      <TextObject Name="Text72" Left="604.8" Top="283.5" Width="94.5" Height="18.9" Text="[REC_MASTER.PERSONAESTADO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text33" Left="75.6" Top="245.7" Width="340.2" Height="18.9" Text="[REC_MASTER.PERSONANOMBRE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text34" Left="75.6" Top="264.6" Width="226.8" Height="18.9" Text="[REC_MASTER.PERSONADOMICILIO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text35" Left="302.4" Top="264.6" Width="56.7" Height="18.9" Text="[REC_MASTER.PERSONANUMEROEXTERIOR]" Font="Arial, 9pt"/>
+      <TextObject Name="Text36" Left="359.1" Top="264.6" Width="56.7" Height="18.9" Text="[REC_MASTER.PERSONANUMEROINTERIOR]" Font="Arial, 9pt"/>
+      <TextObject Name="Text37" Left="463.05" Top="264.6" Width="236.25" Height="18.9" Text="[REC_MASTER.PERSONACOLONIA]" Font="Arial, 9pt"/>
+      <LineObject Name="Line5" Left="18.9" Top="264.6" Width="689.85"/>
+      <TextObject Name="Text47" Left="463.05" Top="245.7" Width="236.25" Height="18.9" Text="[REC_MASTER.PERSONARFC]"/>
+      <TextObject Name="Text64" Left="18.9" Top="245.7" Width="56.7" Height="18.9" Text="Nombre:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text65" Left="415.8" Top="245.7" Width="47.25" Height="18.9" Text="R.F.C.:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text66" Left="18.9" Top="264.6" Width="56.7" Height="18.9" Text="Dom. :" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text67" Left="415.8" Top="264.6" Width="56.7" Height="18.9" Text="Colonia:" Font="Arial, 8.25pt, style=Bold"/>
+      <TextObject Name="Text15" Left="28.35" Top="217.35" Width="292.95" Height="18.9" Text="[REC_MASTER.TITULO_PERSONA]" Font="Arial, 9.75pt, style=Bold"/>
+      <LineObject Name="Line4" Left="425.25" Top="217.35" Width="283.5"/>
+      <TextObject Name="Text32" Left="453.6" Top="198.45" Width="245.7" Height="18.9" Text="[REC_MASTER.DOC_REF_HEADER4]" Font="Arial, 8pt"/>
+      <LineObject Name="Line3" Left="453.6" Top="198.45" Width="245.7"/>
+      <TextObject Name="Text18" Left="28.35" Top="198.45" Width="359.1" Height="18.9" BeforePrintEvent="Text18_BeforePrint" Text="[REC_MASTER.DOC_REF_HEADER5]" Font="Arial, 8pt"/>
+      <TextObject Name="Text31" Left="453.6" Top="179.55" Width="245.7" Height="18.9" Text="[REC_MASTER.DOC_REF_HEADER3]" Font="Arial, 8pt"/>
+      <LineObject Name="Line2" Left="453.6" Top="179.55" Width="245.7"/>
+      <TextObject Name="Text30" Left="453.6" Top="160.65" Width="245.7" Height="18.9" Text="[REC_MASTER.DOC_REF_HEADER2]" Font="Arial, 8pt"/>
+      <LineObject Name="Line1" Left="453.6" Top="160.65" Width="245.7"/>
+      <TextObject Name="Text27" Left="85.05" Top="132.3" Width="236.25" Height="18.9" Text="[REC_MASTER.LUGARDEEXPEDICION]" Font="Arial, 9pt"/>
+      <TextObject Name="Text28" Left="85.05" Top="151.2" Width="236.25" Height="18.9" Text="[REC_MASTER.FECHADEEXPEDICION]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text29" Left="453.6" Top="141.75" Width="245.7" Height="18.9" Text="[REC_MASTER.DOC_REF_HEADER1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text50" Left="28.35" Top="132.3" Width="47.25" Height="18.9" Text="Lugar" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text51" Left="28.35" Top="151.2" Width="47.25" Height="18.9" Text="Fecha" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text26" Left="359.1" Top="122.85" Width="340.2" Height="18.9" Text="[&quot;Telefono: &quot;] [REC_MASTER.EMPRESA_TELEFONO] [&quot;Colonia: &quot;] [REC_MASTER.EMPRESA_CODIGOPOSTAL]" HorzAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text52" Left="28.35" Top="113.4" Width="94.5" Height="18.9" Text="Expedición" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text5" Left="359.1" Top="103.95" Width="340.2" Height="18.9" Text="[REC_MASTER.EMPRESA_COLONIA]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text6" Left="359.1" Top="85.05" Width="340.2" Height="18.9" Text="[REC_MASTER.EMPRESA_DOMICICIO] [REC_MASTER.EMPRESA_NUMEROEXTERIOR] [REC_MASTER.EMPRESA_NUMEROINTERIOR]&#13;&#10;" HorzAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text4" Left="359.1" Top="66.15" Width="340.2" Height="18.9" Text="[REC_MASTER.EMPRESA_RFC]" HorzAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text2" Left="359.1" Top="47.25" Width="340.2" Height="18.9" Text="[REC_MASTER.NOMBRESUCURSAL]" HorzAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text16" Left="264.6" Top="18.9" Width="434.7" Height="18.9" Text="Impresión para revisión: [REC_MASTER.TICKET]" Font="Arial, 11pt"/>
+      <PictureObject Name="Picture1" Left="28.35" Top="9.45" Width="170.1" Height="85.05" BeforePrintEvent="Picture1_BeforePrint"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="363.1" Width="740.5" Height="18.9" Condition="[REC_DETAIL.MOVTOID]">
+      <TextObject Name="Text9" Left="207.9" Width="491.4" Height="18.9" CanGrow="true" CanShrink="true" CanBreak="false" Text="[REC_DETAIL.DESCRIPCION1] [IIf(Length(Trim([REC_DETAIL.LOTE]))==0,&quot;&quot;,&quot;Lote:&quot;)] [IIf(Length(Trim([REC_DETAIL.LOTE]))==0,&quot;&quot;,[REC_DETAIL.LOTE])]  [IIf(Length(Trim([REC_DETAIL.LOTE]))==0,&quot;&quot;,&quot;Caducidad al:&quot;)] [IIf(Length(Trim([REC_DETAIL.LOTE]))==0,&quot;&quot;,FormatDateTime([REC_DETAIL.FECHAVENCE]))] " Font="Arial, 8pt"/>
+      <TextObject Name="Text42" Left="122.85" Width="85.05" Height="18.9" Text="[REC_DETAIL.PRODUCTOCLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text75" Left="28.35" Width="94.5" Height="18.9" BeforePrintEvent="Text75_BeforePrint" Text="[REC_DETAIL.DESCPZACAJA]" Format="Number" Format.UseLocale="true" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <DataBand Name="Data1" Top="386" Width="740.5" Height="18.9" CanGrow="true" CanShrink="true" BeforePrintEvent="Data1_BeforePrint" DataSource="Table1" KeepDetail="true">
+        <TextObject Name="Text3" Left="28.35" Width="94.5" Height="18.9" Text="[REC_DETAIL.KITDESCPZACAJA]" Format="Number" Format.UseLocale="true" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text19" Left="122.85" Width="85.05" Height="18.9" Text="[REC_DETAIL.KITPRODCLAVE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text20" Left="207.9" Width="453.6" Height="18.9" Text="[REC_DETAIL.KITDESCRIPCION1]" Font="Arial, 8pt"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="408.9" Width="740.5"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="412.9" Width="740.5" Height="9.45" CanShrink="true" BeforePrintEvent="PageFooter1_BeforePrint">
+      <ChildBand Name="Child1" Top="426.35" Width="740.5" Height="9.45"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

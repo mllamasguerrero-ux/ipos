@@ -1,0 +1,4 @@
+﻿id;sat_clave;sat_descripcion;sat_retencion;sat_traslado;sat_localfederal;sat_entidadaplica
+1;1;ISR;Si;No;Federal;null
+2;2;IVA;Si;Si;Federal;null
+3;3;IEPS;Si;Si;Federal;null

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/26/2024 17:43:22" ReportInfo.Modified="11/28/2024 18:30:28" ReportInfo.CreatorVersion="2023.3.0.0">
+  <Dictionary>
+    <PostgresDataConnection Name="Connection" ConnectionString="rijcmlq8ZkN6qUj4G/zvKvLeJ9DDB6WCp22J48oQEWWvz8/J/MqaWZWZ9Wh4OP9L3F+2eZWVGsmrWuKGKxYjTQvmk6jSBYXGbiz845vYxjSRZvSwS4=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10; producto.&quot;EmpresaId&quot; EMPRESAID,&#13;&#10; producto.&quot;SucursalId&quot; SUCURSALID,&#13;&#10; producto.&quot;Id&quot; PRODUCTOID,&#13;&#10; producto.&quot;Clave&quot; PRODUCTOCLAVE,&#13;&#10; producto.&quot;Nombre&quot; PRODUCTONOMBRE,&#13;&#10; producto.&quot;Descripcion&quot; DESCRIPCION,&#13;&#10; producto.&quot;Descripcion1&quot; DESCRIPCION1,&#13;&#10; producto.&quot;Descripcion2&quot; DESCRIPCION2,&#13;&#10; movto.&quot;Lote&quot; LOTE,&#13;&#10; movto.&quot;Fechavence&quot; FECHAVENCE,&#13;&#10; movto.&quot;Loteimportado&quot; LOTEIMPORTADO,&#13;&#10; SUM(COALESCE(movto_inventario.&quot;Cantidad_real&quot;,0.0)) CANTIDADFISICA,&#13;&#10; SUM(COALESCE(movto_inventario.&quot;Cantidad_teorica&quot;,0.0)) CANTIDADTEORICA,&#13;&#10; (&#13;&#10; 	SUM(COALESCE(movto_inventario.&quot;Cantidad_real&quot;,0.0)) - &#13;&#10;    SUM(COALESCE(movto_inventario.&quot;Cantidad_teorica&quot;,0.0)) &#13;&#10; ) CANTIDADDIFERENCIA,&#13;&#10; CASE COALESCE(param_precio_inv.&quot;Clave&quot;,'')&#13;&#10;                WHEN 'PRECIO 1' THEN producto_precios.&quot;Precio1&quot;&#13;&#10;                WHEN 'PRECIO 2' THEN producto_precios.&quot;Precio2&quot;&#13;&#10;                WHEN 'PRECIO 3' THEN producto_precios.&quot;Precio3&quot;&#13;&#10;                WHEN 'PRECIO 4' THEN producto_precios.&quot;Precio4&quot;&#13;&#10;                WHEN 'PRECIO 5' THEN producto_precios.&quot;Precio5&quot;&#13;&#10;                WHEN 'COSTOULTIMO' THEN producto_precios.&quot;Costoultimo&quot;&#13;&#10;                WHEN 'COSTOREPO' THEN producto_precios.&quot;Costorepo&quot;&#13;&#10;                WHEN 'SINPRECIO' THEN  0.0&#13;&#10;                ELSE  producto_precios.&quot;Precio1&quot;&#13;&#10;            END COSTOPRECIOMANEJADO,&#13;&#10;            &#13;&#10;            &#13;&#10;            (&#13;&#10; 				SUM(COALESCE(movto_inventario.&quot;Cantidad_real&quot;,0.0)) - &#13;&#10;    			SUM(COALESCE(movto_inventario.&quot;Cantidad_teorica&quot;,0.0)) &#13;&#10; 			) *&#13;&#10; 			(&#13;&#10;         	 CASE COALESCE(param_precio_inv.&quot;Clave&quot;,'')&#13;&#10;                WHEN 'PRECIO 1' THEN producto_precios.&quot;Precio1&quot;&#13;&#10;                WHEN 'PRECIO 2' THEN producto_precios.&quot;Precio2&quot;&#13;&#10;                WHEN 'PRECIO 3' THEN producto_precios.&quot;Precio3&quot;&#13;&#10;                WHEN 'PRECIO 4' THEN producto_precios.&quot;Precio4&quot;&#13;&#10;                WHEN 'PRECIO 5' THEN producto_precios.&quot;Precio5&quot;&#13;&#10;                WHEN 'COSTOULTIMO' THEN producto_precios.&quot;Costoultimo&quot;&#13;&#10;                WHEN 'COSTOREPO' THEN producto_precios.&quot;Costorepo&quot;&#13;&#10;                WHEN 'SINPRECIO' THEN  0.0&#13;&#10;                ELSE  producto_precios.&quot;Precio1&quot;&#13;&#10;             END&#13;&#10;            )&#13;&#10;            DIFERENCIACOSTOINVENTARIO&#13;&#10;from &quot;Producto&quot; producto&#13;&#10;left join &quot;Producto_precios&quot; producto_precios on &#13;&#10;	producto.&quot;EmpresaId&quot; = producto_precios.&quot;EmpresaId&quot; and &#13;&#10;    producto.&quot;SucursalId&quot; = producto_precios.&quot;SucursalId&quot; and&#13;&#10;    producto.&quot;Id&quot; = producto_precios.&quot;Productoid&quot;&#13;&#10;left join &quot;Movto&quot; movto on &#13;&#10;	producto.&quot;EmpresaId&quot; = movto.&quot;EmpresaId&quot; and &#13;&#10;    producto.&quot;SucursalId&quot; = movto.&quot;SucursalId&quot; and&#13;&#10;    producto.&quot;Id&quot; = movto.&quot;Productoid&quot;&#13;&#10;left join &quot;Movto_inventario&quot; movto_inventario on &#13;&#10;	producto.&quot;EmpresaId&quot; = movto_inventario.&quot;EmpresaId&quot; and &#13;&#10;    producto.&quot;SucursalId&quot; = movto_inventario.&quot;SucursalId&quot; and&#13;&#10;    movto.&quot;Id&quot; = movto_inventario.&quot;Movtoid&quot;&#13;&#10;left join &quot;Parametro&quot; parametro on &#13;&#10;	producto.&quot;EmpresaId&quot; = parametro.&quot;EmpresaId&quot; and &#13;&#10;	producto.&quot;SucursalId&quot; = parametro.&quot;SucursalId&quot;&#13;&#10;left join &quot;Tipo_precio&quot; param_precio_inv on &#13;&#10;	parametro.&quot;Precioajustedifinvid&quot; = param_precio_inv.&quot;Id&quot; &#13;&#10;where&#13;&#10;  producto.&quot;EmpresaId&quot; = @empresaid and producto.&quot;SucursalId&quot; = @sucursalid and (&#13;&#10;  @todoslosproductos = 'S'or&#13;&#10;   movto.&quot;Doctoid&quot; = @doctoid )&#13;&#10;group by &#13;&#10; producto.&quot;EmpresaId&quot;,&#13;&#10; producto.&quot;SucursalId&quot;,&#13;&#10; producto.&quot;Id&quot;,&#13;&#10; producto.&quot;Nombre&quot;,&#13;&#10; producto.&quot;Descripcion1&quot;,&#13;&#10; movto.&quot;Lote&quot;,&#13;&#10; movto.&quot;Fechavence&quot;,&#13;&#10; movto.&quot;Loteimportado&quot;,&#13;&#10; param_precio_inv.&quot;Clave&quot;,&#13;&#10; producto_precios.&quot;Precio1&quot;,&#13;&#10; producto_precios.&quot;Precio2&quot;,&#13;&#10; producto_precios.&quot;Precio3&quot;,&#13;&#10; producto_precios.&quot;Precio4&quot;,&#13;&#10; producto_precios.&quot;Precio5&quot;,&#13;&#10; producto_precios.&quot;Costoultimo&quot;,&#13;&#10; producto_precios.&quot;Costorepo&quot;&#13;&#10; &#13;&#10; HAVING (&#13;&#10; 				SUM(COALESCE(movto_inventario.&quot;Cantidad_real&quot;,0.0)) - &#13;&#10;    			SUM(COALESCE(movto_inventario.&quot;Cantidad_teorica&quot;,0.0)) &#13;&#10; 			) &lt;&gt; 0 OR @solodiferencias = 'N'&#13;&#10;">
+        <Column Name="empresaid" DataType="System.Int64"/>
+        <Column Name="sucursalid" DataType="System.Int64"/>
+        <Column Name="productoid" DataType="System.Int64"/>
+        <Column Name="productoclave" DataType="System.String"/>
+        <Column Name="productonombre" DataType="System.String"/>
+        <Column Name="descripcion" DataType="System.String"/>
+        <Column Name="descripcion1" DataType="System.String"/>
+        <Column Name="descripcion2" DataType="System.String"/>
+        <Column Name="lote" DataType="System.String"/>
+        <Column Name="fechavence" DataType="System.DateTime"/>
+        <Column Name="loteimportado" DataType="System.Int64"/>
+        <Column Name="cantidadfisica" DataType="System.Decimal"/>
+        <Column Name="cantidadteorica" DataType="System.Decimal"/>
+        <Column Name="cantidaddiferencia" DataType="System.Decimal"/>
+        <Column Name="costopreciomanejado" DataType="System.Decimal"/>
+        <Column Name="diferenciacostoinventario" DataType="System.Decimal"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[DOCTOID]" DefaultValue="0"/>
+        <CommandParameter Name="empresaid" DataType="1" Expression="[EMPRESAID]"/>
+        <CommandParameter Name="sucursalid" DataType="1" Expression="[SUCURSALID]"/>
+        <CommandParameter Name="todoslosproductos" DataType="22" Expression="[TODOSLOSPRODUCTOS]"/>
+        <CommandParameter Name="solodiferencias" DataType="22" Expression="[SOLODIFERENCIAS]"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="DOCTO" DataType="System.Int32" Enabled="true" ForceLoadData="true" SelectCommand="select&#13;&#10;      d.&quot;EmpresaId&quot; EMPRESAID,&#13;&#10;      d.&quot;SucursalId&quot; SUCURSALID,&#13;&#10;      d.&quot;Id&quot; DOCTOID,&#13;&#10;      d.&quot;Subtipodoctoid&quot; SUBTIPODOCTOID,&#13;&#10;      sd.&quot;Clave&quot; SUBTIPODOCTOCLAVE,&#13;&#10;      sd.&quot;Nombre&quot; SUBTIPODOCTONOMBRE,&#13;&#10;      d.&quot;Tipodoctoid&quot; TIPODOCTOID,&#13;&#10;      td.&quot;Clave&quot; TIPODOCTOCLAVE,&#13;&#10;      td.&quot;Nombre&quot; TIPODOCTONOMBRE&#13;&#10;    from &quot;Docto&quot; d&#13;&#10;    left join &quot;Subtipodocto&quot; sd on d.&quot;Subtipodoctoid&quot; = sd.&quot;Id&quot;&#13;&#10;    left join &quot;Tipodocto&quot; td on d.&quot;Tipodoctoid&quot; = td.&quot;Id&quot;&#13;&#10;    where d.&quot;EmpresaId&quot; = @empresaid and&#13;&#10;          d.&quot;SucursalId&quot; = @sucursalid and&#13;&#10;          d.&quot;Id&quot; = @doctoid">
+        <Column Name="empresaid" DataType="System.Int64"/>
+        <Column Name="sucursalid" DataType="System.Int64"/>
+        <Column Name="doctoid" DataType="System.Int64"/>
+        <Column Name="subtipodoctoid" DataType="System.Int64"/>
+        <Column Name="subtipodoctoclave" DataType="System.String"/>
+        <Column Name="subtipodoctonombre" DataType="System.String"/>
+        <Column Name="tipodoctoid" DataType="System.Int64"/>
+        <Column Name="tipodoctoclave" DataType="System.String"/>
+        <Column Name="tipodoctonombre" DataType="System.String"/>
+        <CommandParameter Name="empresaid" DataType="1" Expression="[EMPRESAID]"/>
+        <CommandParameter Name="sucursalid" DataType="1" Expression="[SUCURSALID]"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[DOCTOID]"/>
+      </TableDataSource>
+    </PostgresDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal" AsString=""/>
+    <Parameter Name="US_NAME" DataType="System.String" AsString=""/>
+    <Parameter Name="EMPRESAID" DataType="System.Int32" Expression="1"/>
+    <Parameter Name="SUCURSALID" DataType="System.Int32" Expression="1"/>
+    <Parameter Name="DOCTOID" DataType="System.Int32" Expression="163"/>
+    <Parameter Name="SOLODIFERENCIAS" DataType="System.Char" Expression="'N'"/>
+    <Parameter Name="TODOSLOSPRODUCTOS" DataType="System.Char" Expression="'N'"/>
+    <Parameter Name="TITULO" DataType="System.String" Expression="&quot;Reporte de inventario&quot;"/>
+    <Total Name="TotalCantidadTeorica" Expression="[Table.cantidadteorica]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="TotalCantidadFisica" Expression="[Table.cantidadfisica]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="TotalCantidadDiferencia" Expression="[Table.cantidaddiferencia]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="TotalDiferenciaCosto" Expression="[Table.diferenciacostoinventario]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="75.6">
+      <TextObject Name="Text21" Left="18.9" Top="9.45" Width="576.45" Height="28.35" Text="[TITULO]" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text22" Left="642.6" Top="18.9" Width="75.6" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text23" Left="18.9" Top="47.25" Width="75.6" Height="18.9" Text="TIPO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text24" Left="94.5" Top="47.25" Width="292.95" Height="18.9" Text="[DOCTO.subtipodoctonombre]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="79.6" Width="718.2" Height="18.9">
+      <TextObject Name="Text2" Width="75.6" Height="18.9" Text="CLAVE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text4" Left="75.6" Width="292.95" Height="18.9" Text="DESCRIPCION1" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text6" Left="368.55" Width="56.7" Height="18.9" Text="TEORICO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text8" Left="425.25" Width="47.25" Height="18.9" Text="FISICO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text10" Left="472.5" Width="56.7" Height="18.9" Text="DIF" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text12" Left="576.45" Width="66.15" Height="18.9" Text="IMPORTE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text14" Left="529.2" Width="47.25" Height="18.9" Text="COSTO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text25" Left="642.6" Width="75.6" Height="18.9" Text="NOTAS" Font="Arial, 7pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="102.5" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="75.6" Height="18.9" Text="[Table.productoclave]" Font="Arial, 7pt"/>
+      <TextObject Name="Text3" Left="75.6" Width="292.95" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="368.55" Width="56.7" Height="18.9" Text="[Table.CANTIDADTEORICA]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="425.25" Width="47.25" Height="18.9" Text="[Table.CANTIDADFISICA]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="472.5" Width="56.7" Height="18.9" Text="[Table.CANTIDADDIFERENCIA]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="576.45" Width="66.15" Height="18.9" Text="[Table.diferenciacostoinventario]" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="529.2" Width="47.25" Height="18.9" Text="[Table.COSTOPRECIOMANEJADO]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text26" Left="642.6" Width="75.6" Height="18.9" Text="&#13;&#10;------------------------------------------------" Font="Arial, 7pt"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="125.4" Width="718.2" Height="18.9">
+      <TextObject Name="Text15" Left="368.55" Width="56.7" Height="18.9" Text="[TotalCantidadTeorica]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" Font="Arial, 6pt, style=Bold"/>
+      <TextObject Name="Text16" Left="425.25" Width="47.25" Height="18.9" Text="[TotalCantidadFisica]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" Font="Arial, 6pt, style=Bold"/>
+      <TextObject Name="Text17" Left="472.5" Width="56.7" Height="18.9" Text="[TotalCantidadDiferencia]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" Font="Arial, 6pt, style=Bold"/>
+      <TextObject Name="Text18" Left="576.45" Width="66.15" Height="18.9" Text="[TotalDiferenciaCosto]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" Font="Arial, 6pt, style=Bold"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="148.3" Width="718.2" Height="18.9">
+      <TextObject Name="Text19" Left="633.15" Width="75.6" Height="18.9" Text="[Page] DE [TotalPages#]" Font="Arial, 6pt"/>
+      <TextObject Name="TextFooterGeneral2" Left="141.75" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="207.9" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="359.1" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

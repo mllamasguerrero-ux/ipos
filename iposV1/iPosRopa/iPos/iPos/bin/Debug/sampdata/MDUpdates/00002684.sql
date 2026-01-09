@@ -1,0 +1,1 @@
+INSERT INTO DERECHOS (DR_DERECHO, DR_DESCRIPCION) VALUES (10038, 'Ver ventas cerradas y canceladas de todos los cajeros');

@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/06/2014 21:00:03" ReportInfo.Modified="06/02/2018 18:59:49" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  
+  public class TextPositions
+  {
+       public TextObject textField;
+       public float initialX;
+       public string strField;
+    public TextPositions(ref TextObject p_textField)
+    {
+      textField = p_textField;
+      initialX = p_textField.Left;
+    }
+    
+    public TextPositions(ref TextObject p_textField, string p_strField)
+    {
+      textField = p_textField;
+      initialX = p_textField.Left;
+      strField = p_strField;
+    }
+    
+    
+    
+  }
+  
+  public class ReportScript
+  {
+                                         
+    
+         
+    private void ReportTitle1_BeforePrint(object sender, EventArgs e)
+    {      
+      
+               
+                 
+    }
+                                     
+           
+              
+        
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQqh9FHBPgMdnCH3jMXnV+338=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;docto.id doctoid,&#13;&#10;docto.fecha doctofecha,&#13;&#10;docto.folio doctofolio,&#13;&#10;producto.id productoid,&#13;&#10;producto.clave productoclave,&#13;&#10;producto.nombre productonombre,&#13;&#10;producto.descripcion productodescripcion ,&#13;&#10;producto.descripcion1 productodescripcion1,&#13;&#10;producto.descripcion2 productodescripcion2,&#13;&#10;producto.descripcion3 productodescripcion3,&#13;&#10;producto.tasaimpuesto,&#13;&#10;pr.nombre,&#13;&#10;&#13;&#10;&#13;&#10;pc.texto1 texto1,&#13;&#10;pc.texto2 texto2,&#13;&#10;pc.texto3 texto3,&#13;&#10;pc.texto4 texto4,&#13;&#10;pc.texto5 texto5,&#13;&#10;pc.texto6 texto6,&#13;&#10;pc.numero1 numero1,&#13;&#10;pc.numero2 numero2,&#13;&#10;pc.numero3 numero3,&#13;&#10;pc.numero4 numero4,&#13;&#10;pc.fecha1 fecha1,&#13;&#10;pc.fecha2 fecha2,&#13;&#10;&#13;&#10;movto.costo,&#13;&#10;movto.importe,&#13;&#10;movto.cantidad, &#13;&#10;movto.precio,&#13;&#10;movto.iva,&#13;&#10;movto.ieps,&#13;&#10;movto.impuesto,&#13;&#10;movto.total,&#13;&#10;movto.subtotal,&#13;&#10; case when coalesce(pr.dias,0) &gt; 0 then dateadd(pr.dias day to docto.fecha) else null end fechavence&#13;&#10;&#13;&#10; from movto&#13;&#10; left join docto on movto.doctoid = docto.id&#13;&#10; left join producto on producto.id = movto.productoid &#13;&#10; left join productocaracteristicas pc on pc.productoid = producto.id&#13;&#10; left join persona pr on pr.id = docto.personaid&#13;&#10; where docto.estatusdoctoid = 1 and movto.cantidad &gt; 0 and docto.tipodoctoid = @tipodoctoid and docto.fecha &gt;= @fechaini ">
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="DOCTOFECHA" DataType="System.DateTime"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION1" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION2" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION3" DataType="System.String"/>
+        <Column Name="TASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+        <Column Name="COSTO" DataType="System.Decimal"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <CommandParameter Name="FECHAINI" DataType="5" Expression="[FECHAINI]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="TIPODOCTOID" DataType="1" Expression="[TIPODOCTOID]" DefaultValue="21"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="EMPRESA" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="FECHAINI" DataType="System.DateTime"/>
+    <Parameter Name="FECHAFIN" DataType="System.DateTime"/>
+    <Parameter Name="TIPODOCTOID" DataType="System.Decimal"/>
+    <Parameter Name="TIPODOCTONOMBRE" DataType="System.String"/>
+    <Parameter Name="VENDEDORID" DataType="System.Decimal"/>
+    <Parameter Name="VENDEDORNOMBRE" DataType="System.String"/>
+    <Parameter Name="ALMACENID" DataType="System.Decimal"/>
+    <Parameter Name="NOMBREALMACEN" DataType="System.String"/>
+    <Parameter Name="REMISIONFACTURA" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="300" FirstPageSource="15" OtherPagesSource="15">
+    <PageHeaderBand Name="PageHeader1" Width="1058.4" Height="75.6">
+      <TextObject Name="Text68" Top="37.8" Width="1048.95" Height="18.9" Text="De la fecha: [Format(&quot;{0:dd/MM/yyyy}&quot;, [FECHAINI])]" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text74" Top="56.7" Width="1048.95" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" HorzAlign="Right" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text85" Width="1048.95" Height="18.9" Text="[EMPRESA.NOMBRE]" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text67" Top="18.9" Width="1048.95" Height="18.9" Text="REPORTE DE OTRAS ENTRADAS" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="79.6" Width="1058.4" Height="47.25" Condition="[Table.DOCTOID]">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[[Table.DOCTOID]]"/>
+      <TextObject Name="Text2" Left="189" Width="141.75" Height="18.9" Text="# ENTRADA: [Table.DOCTOFOLIO]" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="94.5" Top="18.9" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 9pt, style=Italic"/>
+      <TextObject Name="Text4" Top="18.9" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 9pt, style=Italic"/>
+      <TextObject Name="Text8" Left="189" Top="18.9" Width="141.75" Height="28.35" Text="PRODUCTO CLAVE" Font="Arial, 9pt, style=Italic"/>
+      <TextObject Name="Text10" Left="330.75" Top="18.9" Width="255.15" Height="28.35" Text="PRODUCTO DESCRIPCION1" Font="Arial, 9pt, style=Italic"/>
+      <TextObject Name="Text12" Left="585.9" Top="18.9" Width="103.95" Height="18.9" Text="PRECIO" HorzAlign="Center" Font="Arial, 9pt, style=Italic"/>
+      <TextObject Name="Text14" Left="689.85" Top="18.9" Width="103.95" Height="18.9" Text="SUBTOTAL" HorzAlign="Center" Font="Arial, 9pt, style=Italic"/>
+      <TextObject Name="Text16" Left="793.8" Top="18.9" Width="103.95" Height="18.9" Text="IMPUESTO" HorzAlign="Center" Font="Arial, 9pt, style=Italic"/>
+      <TextObject Name="Text18" Left="897.75" Top="18.9" Width="113.4" Height="18.9" Text="TOTAL" HorzAlign="Center" Font="Arial, 9pt, style=Italic"/>
+      <DataBand Name="Data1" Top="130.85" Width="1058.4" Height="18.9" DataSource="Table">
+        <TextObject Name="Text3" Width="94.5" Height="18.9" Text="[Table.DOCTOFECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+        <TextObject Name="Text5" Left="94.5" Width="94.5" Height="18.9" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text7" Left="189" Width="141.75" Height="18.9" Text="[Table.PRODUCTOCLAVE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text9" Left="330.75" Width="255.15" Height="18.9" Text="[Table.PRODUCTODESCRIPCION1]" Font="Arial, 8pt"/>
+        <TextObject Name="Text11" Left="585.9" Width="103.95" Height="18.9" Text="[Table.PRECIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text13" Left="689.85" Width="103.95" Height="18.9" Text="[Table.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text15" Left="793.8" Width="103.95" Height="18.9" Text="[Table.IMPUESTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text17" Left="897.75" Width="113.4" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="153.75" Width="1058.4"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="157.75" Width="1058.4" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="141.75" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="207.9" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="359.1" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

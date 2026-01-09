@@ -1,0 +1,335 @@
+﻿namespace iPos.Contabilidad
+{
+    partial class WFCuentasBancos
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WFCuentasBancos));
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.TSTPalabrasClave = new System.Windows.Forms.ToolStripTextBox();
+            this.TSBBuscar = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.TSBAgregar = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.TableDataGridView = new System.Windows.Forms.DataGridViewSum();
+            this.DGID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bUSQUEDASTRINGDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.aCTIVODataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nOMBREBANCODataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nOMBREDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rFCDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nOCUENTADataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bANCOIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColVer = new System.Windows.Forms.DataGridViewImageColumn();
+            this.colEditar = new System.Windows.Forms.DataGridViewImageColumn();
+            this.TableBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dSCatalogos = new iPos.Catalogos.DSCatalogos();
+            this.tableAdapterManager = new iPos.Catalogos.DSCatalogosTableAdapters.TableAdapterManager();
+            this.TableTableAdapter = new iPos.Catalogos.DSCatalogosTableAdapters.BANCO_VIEWTableAdapter();
+            this.cUENTABANCO_VIEWTableAdapter = new iPos.Catalogos.DSCatalogosTableAdapters.CUENTABANCO_VIEWTableAdapter();
+            this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TableDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TableBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dSCatalogos)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.toolStrip1.BackgroundImage = global::iPos.Properties.Resources.ipos_material_flat_walppaer_5_sin_logo;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel1,
+            this.TSTPalabrasClave,
+            this.TSBBuscar,
+            this.toolStripSeparator1,
+            this.TSBAgregar,
+            this.toolStripButton1});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(573, 25);
+            this.toolStrip1.TabIndex = 3;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripLabel1.ForeColor = System.Drawing.Color.White;
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(95, 22);
+            this.toolStripLabel1.Text = "Palabras clave:";
+            // 
+            // TSTPalabrasClave
+            // 
+            this.TSTPalabrasClave.Name = "TSTPalabrasClave";
+            this.TSTPalabrasClave.Size = new System.Drawing.Size(150, 25);
+            this.TSTPalabrasClave.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSTPalabrasClave_KeyDown);
+            // 
+            // TSBBuscar
+            // 
+            this.TSBBuscar.BackColor = System.Drawing.Color.Transparent;
+            this.TSBBuscar.BackgroundImage = global::iPos.Properties.Resources.search_J;
+            this.TSBBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.TSBBuscar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.TSBBuscar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(116)))), ((int)(((byte)(156)))));
+            this.TSBBuscar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.TSBBuscar.Name = "TSBBuscar";
+            this.TSBBuscar.Size = new System.Drawing.Size(23, 22);
+            this.TSBBuscar.Text = "Buscar";
+            this.TSBBuscar.Click += new System.EventHandler(this.TSBBuscar_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // TSBAgregar
+            // 
+            this.TSBAgregar.BackColor = System.Drawing.Color.Transparent;
+            this.TSBAgregar.BackgroundImage = global::iPos.Properties.Resources.add_J;
+            this.TSBAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.TSBAgregar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.TSBAgregar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(116)))), ((int)(((byte)(156)))));
+            this.TSBAgregar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.TSBAgregar.Name = "TSBAgregar";
+            this.TSBAgregar.Size = new System.Drawing.Size(23, 22);
+            this.TSBAgregar.Text = "Agregar";
+            this.TSBAgregar.Click += new System.EventHandler(this.TSBAgregar_Click);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.BackColor = System.Drawing.Color.Transparent;
+            this.toolStripButton1.BackgroundImage = global::iPos.Properties.Resources.exitRed_J;
+            this.toolStripButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(116)))), ((int)(((byte)(156)))));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "TSBSalir";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // TableDataGridView
+            // 
+            this.TableDataGridView.AllowUserToAddRows = false;
+            this.TableDataGridView.AutoGenerateColumns = false;
+            this.TableDataGridView.BackgroundColor = System.Drawing.Color.LightGray;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(117)))), ((int)(((byte)(117)))), ((int)(((byte)(117)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.TableDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TableDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DGID,
+            this.bUSQUEDASTRINGDataGridViewTextBoxColumn,
+            this.aCTIVODataGridViewTextBoxColumn,
+            this.nOMBREBANCODataGridViewTextBoxColumn,
+            this.nOMBREDataGridViewTextBoxColumn,
+            this.rFCDataGridViewTextBoxColumn,
+            this.nOCUENTADataGridViewTextBoxColumn,
+            this.bANCOIDDataGridViewTextBoxColumn,
+            this.ColVer,
+            this.colEditar});
+            this.TableDataGridView.DataSource = this.TableBindingSource;
+            this.TableDataGridView.EnableHeadersVisualStyles = false;
+            this.TableDataGridView.Location = new System.Drawing.Point(12, 28);
+            this.TableDataGridView.Name = "TableDataGridView";
+            this.TableDataGridView.ReadOnly = true;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(229)))), ((int)(((byte)(252)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.TableDataGridView.RowHeadersVisible = false;
+            this.TableDataGridView.Size = new System.Drawing.Size(549, 256);
+            this.TableDataGridView.TabIndex = 4;
+            this.TableDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableDataGridView_CellContentClick);
+            this.TableDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableDataGridView_CellDoubleClick);
+            this.TableDataGridView.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TableDataGridView_PreviewKeyDown);
+            // 
+            // DGID
+            // 
+            this.DGID.DataPropertyName = "ID";
+            this.DGID.HeaderText = "ID";
+            this.DGID.Name = "DGID";
+            this.DGID.ReadOnly = true;
+            this.DGID.Visible = false;
+            // 
+            // bUSQUEDASTRINGDataGridViewTextBoxColumn
+            // 
+            this.bUSQUEDASTRINGDataGridViewTextBoxColumn.DataPropertyName = "BUSQUEDASTRING";
+            this.bUSQUEDASTRINGDataGridViewTextBoxColumn.HeaderText = "BUSQUEDASTRING";
+            this.bUSQUEDASTRINGDataGridViewTextBoxColumn.Name = "bUSQUEDASTRINGDataGridViewTextBoxColumn";
+            this.bUSQUEDASTRINGDataGridViewTextBoxColumn.ReadOnly = true;
+            this.bUSQUEDASTRINGDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // aCTIVODataGridViewTextBoxColumn
+            // 
+            this.aCTIVODataGridViewTextBoxColumn.DataPropertyName = "ACTIVO";
+            this.aCTIVODataGridViewTextBoxColumn.HeaderText = "ACTIVO";
+            this.aCTIVODataGridViewTextBoxColumn.Name = "aCTIVODataGridViewTextBoxColumn";
+            this.aCTIVODataGridViewTextBoxColumn.ReadOnly = true;
+            this.aCTIVODataGridViewTextBoxColumn.Width = 60;
+            // 
+            // nOMBREBANCODataGridViewTextBoxColumn
+            // 
+            this.nOMBREBANCODataGridViewTextBoxColumn.DataPropertyName = "NOMBREBANCO";
+            this.nOMBREBANCODataGridViewTextBoxColumn.HeaderText = "BANCO";
+            this.nOMBREBANCODataGridViewTextBoxColumn.Name = "nOMBREBANCODataGridViewTextBoxColumn";
+            this.nOMBREBANCODataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // nOMBREDataGridViewTextBoxColumn
+            // 
+            this.nOMBREDataGridViewTextBoxColumn.DataPropertyName = "NOMBRE";
+            this.nOMBREDataGridViewTextBoxColumn.HeaderText = "NOMBRE";
+            this.nOMBREDataGridViewTextBoxColumn.Name = "nOMBREDataGridViewTextBoxColumn";
+            this.nOMBREDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // rFCDataGridViewTextBoxColumn
+            // 
+            this.rFCDataGridViewTextBoxColumn.DataPropertyName = "RFC";
+            this.rFCDataGridViewTextBoxColumn.HeaderText = "RFC";
+            this.rFCDataGridViewTextBoxColumn.Name = "rFCDataGridViewTextBoxColumn";
+            this.rFCDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // nOCUENTADataGridViewTextBoxColumn
+            // 
+            this.nOCUENTADataGridViewTextBoxColumn.DataPropertyName = "NOCUENTA";
+            this.nOCUENTADataGridViewTextBoxColumn.HeaderText = "NOCUENTA";
+            this.nOCUENTADataGridViewTextBoxColumn.Name = "nOCUENTADataGridViewTextBoxColumn";
+            this.nOCUENTADataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // bANCOIDDataGridViewTextBoxColumn
+            // 
+            this.bANCOIDDataGridViewTextBoxColumn.DataPropertyName = "BANCOID";
+            this.bANCOIDDataGridViewTextBoxColumn.HeaderText = "BANCOID";
+            this.bANCOIDDataGridViewTextBoxColumn.Name = "bANCOIDDataGridViewTextBoxColumn";
+            this.bANCOIDDataGridViewTextBoxColumn.ReadOnly = true;
+            this.bANCOIDDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // ColVer
+            // 
+            this.ColVer.HeaderText = "";
+            this.ColVer.Image = global::iPos.Properties.Resources.eye_J;
+            this.ColVer.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.ColVer.Name = "ColVer";
+            this.ColVer.ReadOnly = true;
+            this.ColVer.Width = 30;
+            // 
+            // colEditar
+            // 
+            this.colEditar.HeaderText = "";
+            this.colEditar.Image = global::iPos.Properties.Resources.edit_J;
+            this.colEditar.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.colEditar.Name = "colEditar";
+            this.colEditar.ReadOnly = true;
+            this.colEditar.Width = 30;
+            // 
+            // TableBindingSource
+            // 
+            this.TableBindingSource.DataMember = "CUENTABANCO_VIEW";
+            this.TableBindingSource.DataSource = this.dSCatalogos;
+            // 
+            // dSCatalogos
+            // 
+            this.dSCatalogos.DataSetName = "DSCatalogos";
+            this.dSCatalogos.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // tableAdapterManager
+            // 
+            this.tableAdapterManager.BackupDataSetBeforeUpdate = false;
+            this.tableAdapterManager.Connection = null;
+            this.tableAdapterManager.LINEA_VIEWTableAdapter = null;
+            this.tableAdapterManager.PERSONAAPARTADOTableAdapter = null;
+            this.tableAdapterManager.UpdateOrder = iPos.Catalogos.DSCatalogosTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
+            // 
+            // TableTableAdapter
+            // 
+            this.TableTableAdapter.ClearBeforeFill = true;
+            // 
+            // cUENTABANCO_VIEWTableAdapter
+            // 
+            this.cUENTABANCO_VIEWTableAdapter.ClearBeforeFill = true;
+            // 
+            // WFCuentasBancos
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(573, 306);
+            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.TableDataGridView);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "WFCuentasBancos";
+            this.Text = "Cuentas de Bancos";
+            this.Load += new System.EventHandler(this.WFCuentasBancos_Load);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TableDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TableBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dSCatalogos)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripTextBox TSTPalabrasClave;
+        private System.Windows.Forms.ToolStripButton TSBBuscar;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton TSBAgregar;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.DataGridViewSum TableDataGridView;
+        private System.Windows.Forms.BindingSource TableBindingSource;
+        private Catalogos.DSCatalogos dSCatalogos;
+        private Catalogos.DSCatalogosTableAdapters.TableAdapterManager tableAdapterManager;
+        private Catalogos.DSCatalogosTableAdapters.BANCO_VIEWTableAdapter TableTableAdapter;
+        private Catalogos.DSCatalogosTableAdapters.CUENTABANCO_VIEWTableAdapter cUENTABANCO_VIEWTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DGID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn bUSQUEDASTRINGDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn aCTIVODataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nOMBREBANCODataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nOMBREDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rFCDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nOCUENTADataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn bANCOIDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewImageColumn ColVer;
+        private System.Windows.Forms.DataGridViewImageColumn colEditar;
+    }
+}

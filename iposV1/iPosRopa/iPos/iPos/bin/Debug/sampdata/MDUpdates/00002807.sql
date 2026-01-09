@@ -1,0 +1,2 @@
+INSERT INTO DERECHOS (DR_DERECHO, DR_DESCRIPCION) 
+VALUES (207, 'Estadisticos por producto venta');

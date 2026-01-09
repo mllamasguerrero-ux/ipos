@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/06/2014 21:00:03" ReportInfo.Modified="11/12/2016 12:52:33" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+       
+  public class ReportScript
+  {
+         
+    
+              
+        
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9uhgYO1RdB8Qtr7XUE4Sfvkk=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;r.* ,&#13;&#10;CONSDOC.FOLIO FACTCONSFOLIO,&#13;&#10;CONSDOC.FOLIOSAT FACTONSFOLIOSAT,&#13;&#10;CONSDOC.SERIESAT FACTCONSSERIESAT&#13;&#10;from&#13;&#10;REP_VENTA_CONSALDO(@VENCIMIENTO, @TIPODOCTOID, @VENCIDAS, @ALMACENID) r&#13;&#10;LEFT JOIN DOCTO DOC ON R.DOCTOID = DOC.ID&#13;&#10;LEFT JOIN DOCTO CONSDOC ON DOC.FACTCONSID = CONSDOC.ID&#13;&#10;where (r.ESFACTURAELECTRONICA = @REMISIONFACTURA  OR @REMISIONFACTURA = 'T')">
+        <Column Name="NUMERO" DataType="System.Int32"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="SUCURSALT" DataType="System.String"/>
+        <Column Name="TIPODOC" DataType="System.String"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="ESTATUSDOCTONOMBRE" DataType="System.String"/>
+        <Column Name="ESFACTURAELECTRONICA" DataType="System.String"/>
+        <Column Name="SERIEFOLIOSAT" DataType="System.String"/>
+        <Column Name="PERSONA" DataType="System.String"/>
+        <Column Name="VENDEDOR" DataType="System.String"/>
+        <Column Name="VENDEDORDELCLIENTEID" DataType="System.Int64"/>
+        <Column Name="VENDEDORDELCLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORDELCLIENTECLAVE" DataType="System.String"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="NOMBREALMACEN" DataType="System.String"/>
+        <Column Name="TURNOCLAVE" DataType="System.String"/>
+        <Column Name="ALMACENID" DataType="System.Int64"/>
+        <Column Name="ALMACENTID" DataType="System.Int64"/>
+        <Column Name="NOMBREALMACENTRASPASO" DataType="System.String"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="FACTCONSFOLIO" DataType="System.Int32"/>
+        <Column Name="FACTONSFOLIOSAT" DataType="System.Int32"/>
+        <Column Name="FACTCONSSERIESAT" DataType="System.String"/>
+        <CommandParameter Name="VENCIMIENTO" DataType="5" Expression="[VENCIMIENTO]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="TIPODOCTOID" DataType="1" Expression="[TIPODOCTOID]" DefaultValue="21"/>
+        <CommandParameter Name="ALMACENID" DataType="1" Expression="[ALMACENID]" DefaultValue="0"/>
+        <CommandParameter Name="VENCIDAS" DataType="16" Size="1" Expression="[VENCIDAS]" DefaultValue="S"/>
+        <CommandParameter Name="REMISIONFACTURA" DataType="16" Expression="[REMISIONFACTURA]" DefaultValue="S"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="VENCIMIENTO" DataType="System.DateTime"/>
+    <Parameter Name="TIPODOCTOID" DataType="System.Decimal"/>
+    <Parameter Name="TIPODOCTONOMBRE" DataType="System.String"/>
+    <Parameter Name="REMISIONFACTURA" DataType="System.String"/>
+    <Parameter Name="REMISIONFACTURANOMBRE" DataType="System.String"/>
+    <Parameter Name="ALMACENID" DataType="System.Decimal"/>
+    <Parameter Name="NOMBREALMACEN" DataType="System.String"/>
+    <Parameter Name="VENCIDAS" DataType="System.String"/>
+    <Total Name="SumImporte" Expression="[Table.IMPORTE]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="SumDescuento" Expression="[Table.DESCUENTO]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="SumSubtotal" Expression="[Table.SUBTOTAL]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="SumIva" Expression="[Table.IVA]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="SumTotal" Expression="[Table.TOTAL]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="SumSaldo" Expression="[Table.TOTAL]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="900">
+    <ReportTitleBand Name="ReportTitle1" Width="3326.4" Height="122.85">
+      <TextObject Name="Text67" Left="302.4" Top="9.45" Width="444.15" Height="28.35" Text="REPORTE DE VENTAS CON SALDO" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text68" Left="160.65" Top="37.8" Width="94.5" Height="18.9" Text="Vencimiento:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text70" Left="160.65" Top="66.15" Width="94.5" Height="18.9" Text="Del tipo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text73" Left="264.6" Top="66.15" Width="226.8" Height="18.9" Text="[TIPODOCTONOMBRE]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text74" Left="916.65" Top="18.9" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text75" Left="510.3" Top="66.15" Width="132.3" Height="18.9" Text="Remision/Factura:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text81" Left="160.65" Top="94.5" Width="94.5" Height="18.9" Text="Del almacen:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text82" Left="264.6" Top="94.5" Width="226.8" Height="18.9" Text="[NOMBREALMACEN]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text69" Left="264.6" Top="37.8" Width="226.8" Height="18.9" Text="[VENCIMIENTO]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text83" Left="510.3" Top="94.5" Width="132.3" Height="18.9" Text="Solo vencidas:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text71" Left="661.5" Top="94.5" Width="94.5" Height="18.9" Text="[VENCIDAS]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text53" Left="661.5" Top="66.15" Width="179.55" Height="18.9" Text="[REMISIONFACTURANOMBRE]" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="126.85" Width="3326.4" Height="37.8">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="TIPO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="368.55" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="274.05" Width="94.5" Height="18.9" Text="ALMACEN" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="189" Width="85.05" Height="18.9" Text="HORA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="463.05" Width="94.5" Height="18.9" Text="IMPORTE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="557.55" Width="94.5" Height="18.9" Text="DESCUENTO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="652.05" Width="94.5" Height="18.9" Text="SUBTOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="746.55" Width="94.5" Height="18.9" Text="IVA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="841.05" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text22" Left="935.55" Width="94.5" Height="18.9" Text="SALDO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text24" Left="1030.05" Width="103.95" Height="18.9" Text="SUCURSALT" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text26" Left="1134" Width="122.85" Height="18.9" Text="ESTATUS DOCTO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text28" Left="1256.85" Width="122.85" Height="18.9" Text="VENDEDOR" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text30" Left="1379.7" Width="94.5" Height="28.35" Text="SERIE FOLIO SAT" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text32" Left="1474.2" Width="66.15" Height="28.35" Text="ES FACT. ELECT." Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text34" Left="1540.35" Width="113.4" Height="28.35" Text="VENDEDOR DEL CLIENTE CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text36" Left="1653.75" Width="198.45" Height="18.9" Text="VENDEDOR DE LCLIENTE NOMBRE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text38" Left="1852.2" Width="113.4" Height="18.9" Text="CLIENTE CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text40" Left="1965.6" Width="189" Height="18.9" Text="CLIENTE NOMBRE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text42" Left="2154.6" Width="179.55" Height="18.9" Text="CLIENTE NOMBRES" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text44" Left="2334.15" Width="189" Height="18.9" Text="CLIENTE APELLIDOS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text46" Left="2523.15" Width="94.5" Height="28.35" Text="FECHA VENCIMIENTO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text55" Left="2617.65" Width="94.5" Height="28.35" Text="CONSOLIDADO EN FOLIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text57" Left="2721.6" Width="94.5" Height="28.35" Text="CONSOLIDADO EN FOLIO SAT" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text59" Left="2825.55" Width="94.5" Height="28.35" Text="CONSOLIDADO EN SERIE SAT" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="168.65" Width="3326.4" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.TIPODOC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="368.55" Width="94.5" Height="18.9" Text="[Table.DOCTOFOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="274.05" Width="94.5" Height="18.9" Text="[Table.NOMBREALMACEN]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="189" Width="85.05" Height="18.9" Text="[Table.FECHAHORA]" Format="Time" Format.Format="t" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="463.05" Width="94.5" Height="18.9" Text="[Table.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="557.55" Width="94.5" Height="18.9" Text="[Table.DESCUENTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="652.05" Width="94.5" Height="18.9" Text="[Table.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="746.55" Width="94.5" Height="18.9" Text="[Table.IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="841.05" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="935.55" Width="94.5" Height="18.9" Text="[Table.SALDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="1030.05" Width="103.95" Height="18.9" Text="[Table.SUCURSALT]" Font="Arial, 8pt"/>
+      <TextObject Name="Text25" Left="1134" Width="122.85" Height="18.9" Text="[Table.ESTATUSDOCTONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="1256.85" Width="122.85" Height="18.9" Text="[Table.VENDEDOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text29" Left="1379.7" Width="94.5" Height="18.9" Text="[Table.SERIEFOLIOSAT]" Font="Arial, 8pt"/>
+      <TextObject Name="Text31" Left="1474.2" Width="66.15" Height="18.9" Text="[Table.ESFACTURAELECTRONICA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="1540.35" Width="113.4" Height="18.9" Text="[Table.VENDEDORDELCLIENTECLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text35" Left="1653.75" Width="198.45" Height="18.9" Text="[Table.VENDEDORDELCLIENTENOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text37" Left="1852.2" Width="113.4" Height="18.9" Text="[Table.PERSONACLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text39" Left="1965.6" Width="189" Height="18.9" Text="[Table.PERSONA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="2154.6" Width="179.55" Height="18.9" Text="[Table.PERSONANOMBRES]" Font="Arial, 8pt"/>
+      <TextObject Name="Text43" Left="2334.15" Width="189" Height="18.9" Text="[Table.PERSONAAPELLIDOS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text45" Left="2523.15" Width="94.5" Height="18.9" Text="[Table.FECHAVENCE]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text54" Left="2617.65" Width="94.5" Height="18.9" Text="[Table.FACTCONSFOLIO]" HideZeros="true" Font="Arial, 8pt"/>
+      <TextObject Name="Text56" Left="2721.6" Width="94.5" Height="18.9" Text="[Table.FACTONSFOLIOSAT]" HideZeros="true" Font="Arial, 8pt"/>
+      <TextObject Name="Text58" Left="2825.55" Width="94.5" Height="18.9" Text="[Table.FACTCONSSERIESAT]" Font="Arial, 8pt"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="191.55" Width="3326.4" Height="37.8">
+      <TextObject Name="Text47" Left="463.05" Width="94.5" Height="18.9" Text="[SumImporte]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text48" Left="557.55" Width="94.5" Height="18.9" Text="[SumDescuento]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text49" Left="652.05" Width="94.5" Height="18.9" Text="[SumSubtotal]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text50" Left="746.55" Width="94.5" Height="18.9" Text="[SumIva]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text51" Left="841.05" Width="94.5" Height="18.9" Text="[SumTotal]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text52" Left="935.55" Width="94.5" Height="18.9" Text="[SumSaldo]" Font="Arial, 8pt, style=Bold"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="233.35" Width="3326.4" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

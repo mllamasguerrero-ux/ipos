@@ -1,0 +1,47 @@
+CREATE OR ALTER PROCEDURE IGNORA_TRASLADO (
+    doctoid d_pk)
+returns (
+    errorcode d_errorcode)
+as
+declare variable estatusdoctoid d_fk;
+declare variable tipodoctoid d_fk;
+BEGIN
+   SELECT ESTATUSDOCTOID,TIPODOCTOID FROM DOCTO
+   WHERE ID = :DOCTOID
+   INTO :ESTATUSDOCTOID, :TIPODOCTOID;
+
+   IF (:ESTATUSDOCTOID <> 0) THEN
+   BEGIN
+      ERRORCODE = 1005;
+      SUSPEND;
+      EXIT;
+   END
+
+
+   IF (:TIPODOCTOID <> 41) THEN
+   BEGIN
+      ERRORCODE = 1005;
+      SUSPEND;
+      EXIT;
+   END
+
+   DELETE FROM DOCTOPAGO
+   WHERE DOCTOID = :DOCTOID;
+
+   DELETE FROM KARDEX
+   WHERE DOCTOID = :DOCTOID;
+
+   DELETE FROM MOVTO
+   WHERE DOCTOID = :DOCTOID;
+
+   UPDATE DOCTO SET ESTATUSDOCTOID = 4 , TIPODOCTOID = 44
+   WHERE ID = :DOCTOID;
+   
+   SUSPEND;
+   
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1006;
+      SUSPEND;
+   END
+END

@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 11:45:50" ReportInfo.Modified="03/15/2023 21:33:17" ReportInfo.CreatorVersion="2014.2.10.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    
+
+    private void Text53_BeforePrint(object sender, EventArgs e)
+    {
+      
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2cUqmvSlAbQHH4s/DXFRIAw=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;&#13;&#10;doctoorigen.id doctoid,&#13;&#10;doctoorigen.fecha doctofecha,&#13;&#10;doctoorigen.folio doctofolio,&#13;&#10;doctoorigen.serie doctoserie,&#13;&#10;doctoorigen.total doctototal,&#13;&#10;&#13;&#10;docto.fecha cancelacionfecha,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;pr.id personaid,&#13;&#10;pr.clave personaclave,&#13;&#10;pr.nombre personanombre,&#13;&#10;pr.nombres personanombres,&#13;&#10;pr.apellidos personaapellidos,&#13;&#10;&#13;&#10;&#13;&#10;v.id vcancid,&#13;&#10;v.clave vcancclave,&#13;&#10;v.nombre vcancnombre,&#13;&#10;v.nombres vcancnombres,&#13;&#10;v.apellidos vcancapellidos  ,&#13;&#10;&#13;&#10;vorigen.id vorigenlid,&#13;&#10;vorigen.clave vorigenclave,&#13;&#10;vorigen.nombre vorigennombre,&#13;&#10;vorigen.nombres vorigennombres,&#13;&#10;vorigen.apellidos vorigenapellidos,&#13;&#10;&#13;&#10;doctoorigen.tipodoctoid,&#13;&#10;td.nombre tipodoctonombre&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; from docto &#13;&#10;inner join docto doctoorigen on doctoorigen.id = docto.doctorefid&#13;&#10;left join tipodocto td on td.id = docto.tipodoctoid&#13;&#10;left join persona v on v.id = docto.vendedorid&#13;&#10;left join persona pr on pr.id = docto.personaid&#13;&#10;left join persona vorigen on vorigen.id = doctoorigen.vendedorid&#13;&#10; where docto.estatusdoctoid in (1) and &#13;&#10;(docto.tipodoctoid in (23,33,83,323, 123, 823) or docto.tipodoctoid in (13,18,113, 15,43, 1013)) and&#13;&#10;docto.fecha &gt;= @fechaini and docto.fecha &lt;= @fechafin&#13;&#10;order by doctoorigen.fecha, docto.fecha">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="DOCTOFECHA" DataType="System.DateTime"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="PERSONAID" DataType="System.Int64"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="DOCTOSERIE" DataType="System.String"/>
+        <Column Name="DOCTOTOTAL" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONFECHA" DataType="System.DateTime"/>
+        <Column Name="VCANCID" DataType="System.Int64"/>
+        <Column Name="VCANCCLAVE" DataType="System.String"/>
+        <Column Name="VCANCNOMBRE" DataType="System.String"/>
+        <Column Name="VCANCNOMBRES" DataType="System.String"/>
+        <Column Name="VCANCAPELLIDOS" DataType="System.String"/>
+        <Column Name="VORIGENLID" DataType="System.Int64"/>
+        <Column Name="VORIGENCLAVE" DataType="System.String"/>
+        <Column Name="VORIGENNOMBRE" DataType="System.String"/>
+        <Column Name="VORIGENNOMBRES" DataType="System.String"/>
+        <Column Name="VORIGENAPELLIDOS" DataType="System.String"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="ReversionAbonosClientes" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;DOCTOPAGO.ID,&#13;&#10;DOCTOPAGO.FECHA,&#13;&#10;DOCTO.FOLIO FOLIOVENTA,&#13;&#10;DOCTOPAGO.PAGOID FOLIOPAGO,&#13;&#10;CASE WHEN COALESCE(DOCTO.TIMBRADOSELLOCFDI,'') &lt;&gt; '' THEN&#13;&#10;        CAST(COALESCE(DOCTO.FOLIOSAT,0) AS VARCHAR(30)) || COALESCE(DOCTO.SERIESAT,'')&#13;&#10;    ELSE ''&#13;&#10;    END  FOLIOSAT,&#13;&#10;CLIENTE.CLAVE CLIENTECLAVE,&#13;&#10;CLIENTE.NOMBRE CLIENTENOMBRE,&#13;&#10;COALESCE(CLIENTE.NOMBRES,'') || ' ' || COALESCE(CLIENTE.APELLIDOS,'')  CLIENTENOMBRES,&#13;&#10;CAJEROORIG.CLAVE CAJEROORIGCLAVE,&#13;&#10;CAJEROORIG.NOMBRE CAJEROORIGNOMBRE,&#13;&#10;DPORIG.FECHA FECHAORIGINAL,    &#13;&#10;CAJERO.CLAVE CAJEROCLAVE,&#13;&#10;CAJERO.NOMBRE CAJERONOMBRE,&#13;&#10;DOCTOPAGO.IMPORTE,&#13;&#10;DOCTOPAGO.FORMAPAGOID,&#13;&#10;FORMAPAGO.CLAVE FORMAPAGOCLAVE,&#13;&#10;FORMAPAGO.NOMBRE FORMAPAGONOMBRE,&#13;&#10;DOCTOPAGO.NOTAS ,&#13;&#10;BANCOS.NOMBRE BANCONOMBRE,&#13;&#10;DOCTOPAGO.REFERENCIABANCARIA,&#13;&#10;TIPODOCTO.NOMBRE TIPODOCTONOMBRE&#13;&#10;&#13;&#10;FROM DOCTOPAGO&#13;&#10;INNER JOIN DOCTO ON DOCTO.ID = DOCTOPAGO.DOCTOID&#13;&#10;LEFT JOIN PERSONA CLIENTE ON CLIENTE.ID = DOCTO.PERSONAID&#13;&#10;LEFT JOIN CORTE ON CORTE.ID = DOCTOPAGO.CORTEID&#13;&#10;LEFT JOIN PERSONA CAJERO ON CAJERO.ID = CORTE.CAJEROID&#13;&#10;LEFT JOIN FORMAPAGO ON FORMAPAGO.ID = DOCTOPAGO.FORMAPAGOID&#13;&#10;LEFT JOIN DOCTOPAGO DPORIG ON DPORIG.ID = DOCTOPAGO.DOCTOPAGOREFID&#13;&#10;LEFT JOIN CORTE CORTEORIG ON CORTEORIG.ID = DPORIG.CORTEID&#13;&#10;LEFT JOIN PERSONA CAJEROORIG ON CAJEROORIG.ID = CORTEORIG.CAJEROID&#13;&#10;LEFT JOIN BANCOS ON BANCOS.ID = DOCTOPAGO.BANCO&#13;&#10;LEFT JOIN TIPODOCTO ON TIPODOCTO.ID = DOCTO.TIPODOCTOID&#13;&#10;WHERE  doctopago.fecha &gt;= @fechainicio and doctopago.fecha &lt;= @fechafin&#13;&#10;and doctopago.tipoabonoid = 3 and docto.tipodoctoid = 21&#13;&#10;ORDER BY DOCTOPAGO.FECHA">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FOLIOVENTA" DataType="System.Int32"/>
+        <Column Name="FOLIOPAGO" DataType="System.Int64"/>
+        <Column Name="FOLIOSAT" DataType="System.String"/>
+        <Column Name="CLIENTECLAVE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRES" DataType="System.String"/>
+        <Column Name="CAJEROORIGCLAVE" DataType="System.String"/>
+        <Column Name="CAJEROORIGNOMBRE" DataType="System.String"/>
+        <Column Name="FECHAORIGINAL" DataType="System.DateTime"/>
+        <Column Name="CAJEROCLAVE" DataType="System.String"/>
+        <Column Name="CAJERONOMBRE" DataType="System.String"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="FORMAPAGOID" DataType="System.Int64"/>
+        <Column Name="FORMAPAGOCLAVE" DataType="System.String"/>
+        <Column Name="FORMAPAGONOMBRE" DataType="System.String"/>
+        <Column Name="NOTAS" DataType="System.String"/>
+        <Column Name="BANCONOMBRE" DataType="System.String"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <CommandParameter Name="fechainicio" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2021"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+      </TableDataSource>
+      <TableDataSource Name="Table3" Alias="ReversionAbonosProvee" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;DOCTOPAGO.ID,&#13;&#10;DOCTOPAGO.FECHA,&#13;&#10;DOCTO.FOLIO FOLIOVENTA,&#13;&#10;DOCTOPAGO.PAGOID FOLIOPAGO,&#13;&#10;CASE WHEN COALESCE(DOCTO.TIMBRADOSELLOCFDI,'') &lt;&gt; '' THEN&#13;&#10;        CAST(COALESCE(DOCTO.FOLIOSAT,0) AS VARCHAR(30)) || COALESCE(DOCTO.SERIESAT,'')&#13;&#10;    ELSE ''&#13;&#10;    END  FOLIOSAT,&#13;&#10;CLIENTE.CLAVE CLIENTECLAVE,&#13;&#10;CLIENTE.NOMBRE CLIENTENOMBRE,&#13;&#10;COALESCE(CLIENTE.NOMBRES,'') || ' ' || COALESCE(CLIENTE.APELLIDOS,'')  CLIENTENOMBRES,&#13;&#10;CAJEROORIG.CLAVE CAJEROORIGCLAVE,&#13;&#10;CAJEROORIG.NOMBRE CAJEROORIGNOMBRE,&#13;&#10;DPORIG.FECHA FECHAORIGINAL,    &#13;&#10;CAJERO.CLAVE CAJEROCLAVE,&#13;&#10;CAJERO.NOMBRE CAJERONOMBRE,&#13;&#10;DOCTOPAGO.IMPORTE,&#13;&#10;DOCTOPAGO.FORMAPAGOID,&#13;&#10;FORMAPAGO.CLAVE FORMAPAGOCLAVE,&#13;&#10;FORMAPAGO.NOMBRE FORMAPAGONOMBRE,&#13;&#10;DOCTOPAGO.NOTAS ,&#13;&#10;BANCOS.NOMBRE BANCONOMBRE,&#13;&#10;DOCTOPAGO.REFERENCIABANCARIA,&#13;&#10;TIPODOCTO.NOMBRE TIPODOCTONOMBRE&#13;&#10;&#13;&#10;FROM DOCTOPAGO&#13;&#10;INNER JOIN DOCTO ON DOCTO.ID = DOCTOPAGO.DOCTOSALIDAID&#13;&#10;LEFT JOIN PERSONA CLIENTE ON CLIENTE.ID = DOCTO.PERSONAID&#13;&#10;LEFT JOIN CORTE ON CORTE.ID = DOCTOPAGO.CORTEID&#13;&#10;LEFT JOIN PERSONA CAJERO ON CAJERO.ID = CORTE.CAJEROID&#13;&#10;LEFT JOIN FORMAPAGO ON FORMAPAGO.ID = DOCTOPAGO.FORMAPAGOID&#13;&#10;LEFT JOIN DOCTOPAGO DPORIG ON DPORIG.ID = DOCTOPAGO.DOCTOPAGOREFID&#13;&#10;LEFT JOIN CORTE CORTEORIG ON CORTEORIG.ID = DPORIG.CORTEID&#13;&#10;LEFT JOIN PERSONA CAJEROORIG ON CAJEROORIG.ID = CORTEORIG.CAJEROID&#13;&#10;LEFT JOIN BANCOS ON BANCOS.ID = DOCTOPAGO.BANCO&#13;&#10;LEFT JOIN TIPODOCTO ON TIPODOCTO.ID = DOCTO.TIPODOCTOID&#13;&#10;WHERE  doctopago.fecha &gt;= @fechainicio and doctopago.fecha &lt;= @fechafin&#13;&#10;and doctopago.tipoabonoid = 3 and docto.tipodoctoid = 11&#13;&#10;ORDER BY DOCTOPAGO.FECHA">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FOLIOVENTA" DataType="System.Int32"/>
+        <Column Name="FOLIOPAGO" DataType="System.Int64"/>
+        <Column Name="FOLIOSAT" DataType="System.String"/>
+        <Column Name="CLIENTECLAVE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRES" DataType="System.String"/>
+        <Column Name="CAJEROORIGCLAVE" DataType="System.String"/>
+        <Column Name="CAJEROORIGNOMBRE" DataType="System.String"/>
+        <Column Name="FECHAORIGINAL" DataType="System.DateTime"/>
+        <Column Name="CAJEROCLAVE" DataType="System.String"/>
+        <Column Name="CAJERONOMBRE" DataType="System.String"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="FORMAPAGOID" DataType="System.Int64"/>
+        <Column Name="FORMAPAGOCLAVE" DataType="System.String"/>
+        <Column Name="FORMAPAGONOMBRE" DataType="System.String"/>
+        <Column Name="NOTAS" DataType="System.String"/>
+        <Column Name="BANCONOMBRE" DataType="System.String"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <CommandParameter Name="fechainicio" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2021"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Total Name="Total" Expression="[Table.DOCTOTOTAL]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="189">
+      <TextObject Name="Text31" Left="18.9" Top="85.05" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text45" Left="113.4" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="18.9" Top="103.95" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="491.4" Top="113.4" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text46" Left="576.45" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="113.4" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="18.9" Width="378" Height="18.9" Text="Cancelaciones" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text24" Left="727.65" Top="9.45" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Left="18.9" Top="28.35" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="113.4" Top="47.25" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="18.9" Top="47.25" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="491.4" Top="56.7" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="576.45" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="113.4" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="576.45" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="18.9" Top="66.15" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="491.4" Top="75.6" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="113.4" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text36" Left="491.4" Top="94.5" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="576.45" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="18.9" Top="122.85" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Left="18.9" Top="151.2" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text51" Left="538.65" Top="151.2" Width="75.6" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="132.3" Top="151.2" Width="94.5" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="623.7" Top="151.2" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="193" Width="1047.06" Height="56.7">
+      <TextObject Name="Text2" Left="18.9" Top="28.35" Width="66.15" Height="18.9" Text="FECHA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text5" Left="94.5" Top="28.35" Width="75.6" Height="28.35" Text="FOLIO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text52" Left="614.25" Top="28.35" Width="113.4" Height="18.9" Text="TOTAL" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="481.95" Top="28.35" Width="122.85" Height="28.35" Text="USUARIO CREACION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="737.1" Top="28.35" Width="151.2" Height="28.35" Text="FECHA CANCELACION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text16" Left="179.55" Top="28.35" Width="292.95" Height="18.9" Text="CLIENTE/PROVEEDOR" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text54" Left="907.2" Top="28.35" Width="132.3" Height="28.35" Text="USUARIO CANCELACION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text55" Width="226.8" Height="18.9" Text="TIPO DOCUMENTO" Font="Arial, 9pt, style=Bold, Italic, Underline"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="253.7" Width="1047.06" Height="28.35" Condition="[Table.TIPODOCTOID]">
+      <TextObject Name="Text12" Width="226.8" Height="18.9" Text="[Table.TIPODOCTONOMBRE]" Font="Arial, 10pt, style=Italic, Underline"/>
+      <DataBand Name="Data1" Top="286.05" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+        <TextObject Name="Text1" Left="18.9" Width="66.15" Height="18.9" Text="[Table.DOCTOFECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+        <TextObject Name="Text3" Left="94.5" Width="75.6" Height="18.9" Text="[Table.DOCTOSERIE][Table.DOCTOFOLIO]"/>
+        <TextObject Name="Text4" Left="179.55" Width="94.5" Height="18.9" Text="[Table.PERSONACLAVE]"/>
+        <TextObject Name="Text6" Left="283.5" Width="189" Height="18.9" Text="[Table.PERSONANOMBRE]"/>
+        <TextObject Name="Text7" Left="614.25" Width="113.4" Height="18.9" Text="[Table.DOCTOTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text9" Left="481.95" Width="122.85" Height="18.9" Text="[Table.VORIGENNOMBRE]"/>
+        <TextObject Name="Text11" Left="737.1" Width="151.2" Height="18.9" Text="[Table.CANCELACIONFECHA]" Format="Date" Format.Format="d"/>
+        <TextObject Name="Text13" Left="907.2" Width="132.3" Height="18.9" Text="[Table.VCANCNOMBRE]"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="308.95" Width="1047.06" Height="28.35">
+        <TextObject Name="Text14" Left="614.25" Top="9.45" Width="113.4" Height="18.9" Text="[Total]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 9pt, style=Bold, Italic, Underline"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="341.3" Width="1047.06" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <ReportPage Name="Page2" Landscape="true" PaperWidth="550" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle2" Width="2003.4" Height="160.65">
+      <TextObject Name="Text66" Left="9.45" Top="9.45" Width="378" Height="18.9" Text="Cancelaciones de abonos de clientes" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text67" Left="718.2" Top="18.9" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text68" Left="9.45" Top="28.35" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text69" Left="103.95" Top="47.25" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text70" Left="9.45" Top="47.25" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text71" Left="481.95" Top="56.7" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text72" Left="567" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text73" Left="103.95" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text74" Left="567" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text75" Left="9.45" Top="66.15" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text76" Left="481.95" Top="75.6" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text60" Left="9.45" Top="85.05" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text77" Left="103.95" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text78" Left="481.95" Top="94.5" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text79" Left="567" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text61" Left="103.95" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text62" Left="9.45" Top="103.95" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text63" Left="481.95" Top="113.4" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text64" Left="567" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text65" Left="103.95" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text80" Left="9.45" Top="122.85" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text81" Left="9.45" Top="141.75" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text82" Left="529.2" Top="141.75" Width="75.6" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text83" Left="122.85" Top="141.75" Width="94.5" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text84" Left="614.25" Top="141.75" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader2" Top="164.65" Width="2003.4" Height="18.9">
+      <TextObject Name="Text85" Left="94.5" Width="94.5" Height="18.9" Text="FOLIO PAGO" Font="Arial, 8pt"/>
+      <TextObject Name="Text86" Width="94.5" Height="18.9" Text="CONSECUTIVO" Font="Arial, 8pt"/>
+      <TextObject Name="Text87" Left="189" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt"/>
+      <TextObject Name="Text88" Left="406.35" Width="94.5" Height="18.9" Text="FOLIO VENTA" Font="Arial, 8pt"/>
+      <TextObject Name="Text89" Left="500.85" Width="94.5" Height="18.9" Text="FOLIO SAT" Font="Arial, 8pt"/>
+      <TextObject Name="Text90" Left="595.35" Width="94.5" Height="18.9" Text="CLIENTE CLAVE" Font="Arial, 8pt"/>
+      <TextObject Name="Text91" Left="689.85" Width="255.15" Height="18.9" Text="CLIENTE NOMBRES" Font="Arial, 8pt"/>
+      <TextObject Name="Text92" Left="945" Width="217.35" Height="18.9" Text="CAJERO ORIGINAL" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="1162.35" Width="217.35" Height="18.9" Text="CAJERO REVERSION" Font="Arial, 8pt"/>
+      <TextObject Name="Text26" Left="283.5" Width="122.85" Height="18.9" Text="TIPO DOC. PAGADO" Font="Arial, 8pt"/>
+      <TextObject Name="Text100" Left="1379.7" Width="94.5" Height="18.9" Text="IMPORTE" Font="Arial, 8pt"/>
+      <TextObject Name="Text22" Left="1474.2" Width="170.1" Height="18.9" Text="FORMA PAGO" Font="Arial, 8pt"/>
+      <TextObject Name="Text101" Left="1644.3" Width="349.65" Height="18.9" Text="NOTAS" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data2" Top="187.55" Width="2003.4" Height="22.9" DataSource="Table2">
+      <TextObject Name="Text93" Left="94.5" Top="4" Width="94.5" Height="18.9" Text="[ReversionAbonosClientes.FOLIOPAGO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text94" Top="4" Width="94.5" Height="18.9" Text="[ReversionAbonosClientes.ID]" Font="Arial, 8pt"/>
+      <TextObject Name="Text95" Left="189" Top="4" Width="94.5" Height="18.9" Text="[ReversionAbonosClientes.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text96" Left="406.35" Top="4" Width="94.5" Height="18.9" Text="[ReversionAbonosClientes.FOLIOVENTA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text97" Left="500.85" Top="4" Width="94.5" Height="18.9" Text="[ReversionAbonosClientes.FOLIOSAT]" Font="Arial, 8pt"/>
+      <TextObject Name="Text98" Left="595.35" Top="4" Width="94.5" Height="18.9" Text="[ReversionAbonosClientes.CLIENTECLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text99" Left="689.85" Top="4" Width="255.15" Height="18.9" Text="[ReversionAbonosClientes.CLIENTENOMBRES]" Font="Arial, 8pt"/>
+      <TextObject Name="Text15" Left="945" Top="4" Width="217.35" Height="18.9" Text="[ReversionAbonosClientes.CAJEROORIGNOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text17" Left="1162.35" Top="4" Width="217.35" Height="18.9" Text="[ReversionAbonosClientes.CAJERONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text25" Left="283.5" Top="4" Width="122.85" Height="18.9" Text="[ReversionAbonosClientes.TIPODOCTONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text19" Left="1379.7" Top="4" Width="94.5" Height="18.9" Text="[ReversionAbonosClientes.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text102" Left="1474.2" Top="4" Width="170.1" Height="18.9" Text="[ReversionAbonosClientes.FORMAPAGONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text23" Left="1644.3" Top="4" Width="349.65" Height="18.9" Text="[ReversionAbonosClientes.NOTAS]" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter2" Top="214.45" Width="2003.4" Height="18.9">
+      <TextObject Name="Text56" Left="141.75" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text57" Left="207.9" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text58" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text59" Left="359.1" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <ReportPage Name="Page3" Landscape="true" PaperWidth="550" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle3" Width="2003.4" Height="179.55">
+      <TextObject Name="Text109" Left="9.45" Top="9.45" Width="378" Height="18.9" Text="Cancelaciones de abonos de proveedores" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text110" Left="718.2" Top="18.9" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text111" Left="9.45" Top="37.8" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text112" Left="103.95" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text113" Left="9.45" Top="56.7" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text114" Left="481.95" Top="66.15" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text115" Left="567" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text116" Left="103.95" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text118" Left="9.45" Top="75.6" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text117" Left="567" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text119" Left="481.95" Top="94.5" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text103" Left="9.45" Top="94.5" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text104" Left="103.95" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text105" Left="9.45" Top="113.4" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text120" Left="103.95" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text121" Left="481.95" Top="113.4" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text122" Left="567" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text106" Left="481.95" Top="132.3" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text107" Left="567" Top="132.3" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text108" Left="103.95" Top="132.3" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text123" Left="9.45" Top="132.3" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text124" Left="9.45" Top="160.65" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text125" Left="529.2" Top="160.65" Width="75.6" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text126" Left="122.85" Top="160.65" Width="94.5" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text127" Left="614.25" Top="160.65" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader3" Top="183.55" Width="2003.4" Height="18.9">
+      <TextObject Name="Text132" Left="94.5" Width="94.5" Height="18.9" Text="FOLIO PAGO" Font="Arial, 8pt"/>
+      <TextObject Name="Text133" Width="94.5" Height="18.9" Text="CONSECUTIVO" Font="Arial, 8pt"/>
+      <TextObject Name="Text134" Left="189" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt"/>
+      <TextObject Name="Text135" Left="406.35" Width="94.5" Height="18.9" Text="FOLIO VENTA" Font="Arial, 8pt"/>
+      <TextObject Name="Text136" Left="500.85" Width="94.5" Height="18.9" Text="FOLIO SAT" Font="Arial, 8pt"/>
+      <TextObject Name="Text137" Left="595.35" Width="94.5" Height="18.9" Text="CLIENTE CLAVE" Font="Arial, 8pt"/>
+      <TextObject Name="Text138" Left="689.85" Width="255.15" Height="18.9" Text="CLIENTE NOMBRES" Font="Arial, 8pt"/>
+      <TextObject Name="Text139" Left="945" Width="217.35" Height="18.9" Text="CAJERO ORIGINAL" Font="Arial, 8pt"/>
+      <TextObject Name="Text140" Left="1162.35" Width="217.35" Height="18.9" Text="CAJERO REVERSION" Font="Arial, 8pt"/>
+      <TextObject Name="Text141" Left="283.5" Width="122.85" Height="18.9" Text="TIPO DOC. PAGADO" Font="Arial, 8pt"/>
+      <TextObject Name="Text152" Left="1389.15" Width="94.5" Height="18.9" Text="IMPORTE" Font="Arial, 8pt"/>
+      <TextObject Name="Text153" Left="1483.65" Width="170.1" Height="18.9" Text="FORMA PAGO" Font="Arial, 8pt"/>
+      <TextObject Name="Text154" Left="1653.75" Width="349.65" Height="18.9" Text="NOTAS" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data3" Top="206.45" Width="2003.4" Height="17.45" DataSource="Table3">
+      <TextObject Name="Text142" Left="94.5" Top="-1.45" Width="94.5" Height="18.9" Text="[ReversionAbonosProvee.FOLIOPAGO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text143" Top="-1.45" Width="94.5" Height="18.9" Text="[ReversionAbonosProvee.ID]" Font="Arial, 8pt"/>
+      <TextObject Name="Text144" Left="189" Top="-1.45" Width="94.5" Height="18.9" Text="[ReversionAbonosProvee.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text145" Left="406.35" Top="-1.45" Width="94.5" Height="18.9" Text="[ReversionAbonosProvee.FOLIOVENTA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text146" Left="500.85" Top="-1.45" Width="94.5" Height="18.9" Text="[ReversionAbonosProvee.FOLIOSAT]" Font="Arial, 8pt"/>
+      <TextObject Name="Text147" Left="595.35" Top="-1.45" Width="94.5" Height="18.9" Text="[ReversionAbonosProvee.CLIENTECLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text148" Left="689.85" Top="-1.45" Width="255.15" Height="18.9" Text="[ReversionAbonosProvee.CLIENTENOMBRES]" Font="Arial, 8pt"/>
+      <TextObject Name="Text149" Left="945" Top="-1.45" Width="217.35" Height="18.9" Text="[ReversionAbonosProvee.CAJEROORIGNOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text150" Left="1162.35" Top="-1.45" Width="217.35" Height="18.9" Text="[ReversionAbonosProvee.CAJERONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text151" Left="283.5" Top="-1.45" Width="122.85" Height="18.9" Text="[ReversionAbonosProvee.TIPODOCTONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text155" Left="1389.15" Top="-1.45" Width="94.5" Height="18.9" Text="[ReversionAbonosProvee.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text156" Left="1483.65" Top="-1.45" Width="170.1" Height="18.9" Text="[ReversionAbonosProvee.FORMAPAGONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text157" Left="1653.75" Top="-1.45" Width="349.65" Height="18.9" Text="[ReversionAbonosProvee.NOTAS]" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter3" Top="227.9" Width="2003.4" Height="18.9">
+      <TextObject Name="Text130" Left="66.15" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text128" Left="207.9" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text129" Left="274.05" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text131" Left="425.25" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

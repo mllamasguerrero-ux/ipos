@@ -1,0 +1,179 @@
+﻿id;sat_clave;sat_descripcion;sat_decimales;sat_variacion
+1;AED;Dirham de EAU;2;5
+2;AFN;Afghani;2;5
+3;ALL;Lek;2;5
+4;AMD;Dram armenio;2;5
+5;ANG;Florín antillano neerlandés;2;5
+6;AOA;Kwanza;2;5
+7;ARS;Peso Argentino;2;5
+8;AUD;Dólar Australiano;2;5
+9;AWG;Aruba Florin;2;5
+10;AZN;Azerbaijanian Manat;2;5
+11;BAM;Convertibles marca;2;5
+12;BBD;Dólar de Barbados;2;5
+13;BDT;Taka;2;5
+14;BGN;Lev búlgaro;2;5
+15;BHD;Dinar de Bahrein;3;5
+16;BIF;Burundi Franc;0;5
+17;BMD;Dólar de Bermudas;2;5
+18;BND;Dólar de Brunei;2;5
+19;BOB;Boliviano;2;5
+20;BOV;Mvdol;2;5
+21;BRL;Real brasileño;2;5
+22;BSD;Dólar de las Bahamas;2;5
+23;BTN;Ngultrum;2;5
+24;BWP;Pula;2;5
+25;BYR;Rublo bielorruso;0;5
+26;BZD;Dólar de Belice;2;5
+27;CAD;Dolar Canadiense;2;5
+28;CDF;Franco congoleño;2;5
+29;CHE;WIR Euro;2;5
+30;CHF;Franco Suizo;2;5
+31;CHW;Franc WIR;2;5
+32;CLF;Unidad de Fomento;4;5
+33;CLP;Peso chileno;0;5
+34;CNY;Yuan Renminbi;2;5
+35;COP;Peso Colombiano;2;5
+36;COU;Unidad de Valor real;2;5
+37;CRC;Colón costarricense;2;5
+38;CUC;Peso Convertible;2;5
+39;CUP;Peso Cubano;2;5
+40;CVE;Cabo Verde Escudo;2;5
+41;CZK;Corona checa;2;5
+42;DJF;Franco de Djibouti;0;5
+43;DKK;Corona danesa;2;5
+44;DOP;Peso Dominicano;2;5
+45;DZD;Dinar argelino;2;5
+46;EGP;Libra egipcia;2;5
+47;ERN;Nakfa;2;5
+48;ETB;Birr etíope;2;5
+49;EUR;Euro;2;5
+50;FJD;Dólar de Fiji;2;5
+51;FKP;Libra malvinense;2;5
+52;GBP;Libra Esterlina;2;5
+53;GEL;Lari;2;5
+54;GHS;Cedi de Ghana;2;5
+55;GIP;Libra de Gibraltar;2;5
+56;GMD;Dalasi;2;5
+57;GNF;Franco guineano;0;5
+58;GTQ;Quetzal;2;5
+59;GYD;Dólar guyanés;2;5
+60;HKD;Dolar De Hong Kong;2;5
+61;HNL;Lempira;2;5
+62;HRK;Kuna;2;5
+63;HTG;Gourde;2;5
+64;HUF;Florín;2;5
+65;IDR;Rupia;2;5
+66;ILS;Nuevo Shekel Israelí;2;5
+67;INR;Rupia india;2;5
+68;IQD;Dinar iraquí;3;5
+69;IRR;Rial iraní;2;5
+70;ISK;Corona islandesa;0;5
+71;JMD;Dólar Jamaiquino;2;5
+72;JOD;Dinar jordano;3;5
+73;JPY;Yen;0;5
+74;KES;Chelín keniano;2;5
+75;KGS;Som;2;5
+76;KHR;Riel;2;5
+77;KMF;Franco Comoro;0;5
+78;KPW;Corea del Norte ganó;2;5
+79;KRW;Won;0;5
+80;KWD;Dinar kuwaití;3;5
+81;KYD;Dólar de las Islas Caimán;2;5
+82;KZT;Tenge;2;5
+83;LAK;Kip;2;5
+84;LBP;Libra libanesa;2;5
+85;LKR;Rupia de Sri Lanka;2;5
+86;LRD;Dólar liberiano;2;5
+87;LSL;Loti;2;5
+88;LYD;Dinar libio;3;5
+89;MAD;Dirham marroquí;2;5
+90;MDL;Leu moldavo;2;5
+91;MGA;Ariary malgache;2;5
+92;MKD;Denar;2;5
+93;MMK;Kyat;2;5
+94;MNT;Tugrik;2;5
+95;MOP;Pataca;2;5
+96;MRO;Ouguiya;2;5
+97;MUR;Rupia de Mauricio;2;5
+98;MVR;Rupia;2;5
+99;MWK;Kwacha;2;5
+100;MXN;Peso Mexicano;2;5
+101;MXV;México Unidad de Inversión (UDI);2;5
+102;MYR;Ringgit malayo;2;5
+103;MZN;Mozambique Metical;2;5
+104;NAD;Dólar de Namibia;2;5
+105;NGN;Naira;2;5
+106;NIO;Córdoba Oro;2;5
+107;NOK;Corona noruega;2;5
+108;NPR;Rupia nepalí;2;5
+109;NZD;Dólar de Nueva Zelanda;2;5
+110;OMR;Rial omaní;3;5
+111;PAB;Balboa;2;5
+112;PEN;Nuevo Sol;2;5
+113;PGK;Kina;2;5
+114;PHP;Peso filipino;2;5
+115;PKR;Rupia de Pakistán;2;5
+116;PLN;Zloty;2;5
+117;PYG;Guaraní;0;5
+118;QAR;Qatar Rial;2;5
+119;RON;Leu rumano;2;5
+120;RSD;Dinar serbio;2;5
+121;RUB;Rublo ruso;2;5
+122;RWF;Franco ruandés;0;5
+123;SAR;Riyal saudí;2;5
+124;SBD;Dólar de las Islas Salomón;2;5
+125;SCR;Rupia de Seychelles;2;5
+126;SDG;Libra sudanesa;2;5
+127;SEK;Corona sueca;2;5
+128;SGD;Dolar De Singapur;2;5
+129;SHP;Libra de Santa Helena;2;5
+130;SLL;Leona;2;5
+131;SOS;Chelín somalí;2;5
+132;SRD;Dólar de Suriname;2;5
+133;SSP;Libra sudanesa Sur;2;5
+134;STD;Dobra;2;5
+135;SVC;Colon El Salvador;2;5
+136;SYP;Libra Siria;2;5
+137;SZL;Lilangeni;2;5
+138;THB;Baht;2;5
+139;TJS;Somoni;2;5
+140;TMT;Turkmenistán nuevo manat;2;5
+141;TND;Dinar tunecino;3;5
+142;TOP;Paanga;2;5
+143;TRY;Lira turca;2;5
+144;TTD;Dólar de Trinidad y Tobago;2;5
+145;TWD;Nuevo dólar de Taiwán;2;5
+146;TZS;Shilling tanzano;2;5
+147;UAH;Hryvnia;2;5
+148;UGX;Shilling de Uganda;0;5
+149;USD;Dolar americano;2;5
+150;USN;Dólar estadounidense (día siguie;2;5
+151;UYI;Peso Uruguay en Unidades Indexad;0;5
+152;UYU;Peso Uruguayo;2;5
+153;UZS;Uzbekistán Sum;2;5
+154;VEF;Bolívar;2;5
+155;VND;Dong;0;5
+156;VUV;Vatu;0;5
+157;WST;Tala;2;5
+158;XAF;Franco CFA BEAC;0;5
+159;XAG;Plata;0;5
+160;XAU;Oro;0;5
+161;XBA;Unidad de Mercados de Bonos Unid;0;5
+162;XBB;Unidad Monetaria de Bonos de Mer;0;5
+163;XBC;Mercados de Bonos Unidad Europea;0;5
+164;XBD;Mercados de Bonos Unidad Europea;0;5
+165;XCD;Dólar del Caribe Oriental;2;5
+166;XDR;DEG (Derechos Especiales de Giro;0;5
+167;XOF;Franco CFA BCEAO;0;5
+168;XPD;Paladio;0;5
+169;XPF;Franco CFP;0;5
+170;XPT;Platino;0;5
+171;XSU;Sucre;0;5
+172;XTS;Códigos reservados específicamen;0;
+173;XUA;Unidad ADB de Cuenta;0;5
+174;XXX;Los códigos asignados para las t;0;
+175;YER;Rial yemení;2;5
+176;ZAR;Rand;2;5
+177;ZMW;Kwacha zambiano;2;5
+178;ZWL;Zimbabwe Dólar;2;5

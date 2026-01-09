@@ -1,0 +1,147 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <PlatformTarget>x86</PlatformTarget>
+    <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\a11.ico" />
+    <None Remove="Resources\active-search-2-xxl.png" />
+    <None Remove="Resources\atm-money-icon.png" />
+    <None Remove="Resources\binocular-flat.png" />
+    <None Remove="Resources\Cash-register-icon.png" />
+    <None Remove="Resources\cashier_icon-icons.com_53629.png" />
+    <None Remove="Resources\client-icon.png" />
+    <None Remove="Resources\close.png" />
+    <None Remove="Resources\crossword.png" />
+    <None Remove="Resources\document.png" />
+    <None Remove="Resources\document_add.png" />
+    <None Remove="Resources\document_delete.png" />
+    <None Remove="Resources\document_edit.png" />
+    <None Remove="Resources\document_search.png" />
+    <None Remove="Resources\emblemimportant_103451.png" />
+    <None Remove="Resources\exit.png" />
+    <None Remove="Resources\export-flat.png" />
+    <None Remove="Resources\eye-1103593_960_720.png" />
+    <None Remove="Resources\flexible-product-icon.png" />
+    <None Remove="Resources\fondo main 1.jpg" />
+    <None Remove="Resources\fondo main ipos 1.jpg" />
+    <None Remove="Resources\fondo main ipos 2.jpg" />
+    <None Remove="Resources\fondo main small.jpg" />
+    <None Remove="Resources\Good_or_Tick.png" />
+    <None Remove="Resources\google-web-search-256.png" />
+    <None Remove="Resources\i-pos.ico" />
+    <None Remove="Resources\icon-import-export.png" />
+    <None Remove="Resources\Icono__Facturacion.png" />
+    <None Remove="Resources\Icon_WriteArticles.png" />
+    <None Remove="Resources\information_info.png" />
+    <None Remove="Resources\login ipos 2.png" />
+    <None Remove="Resources\LOGIN.png" />
+    <None Remove="Resources\logo ipos2.png" />
+    <None Remove="Resources\logo-ipos-v2.png" />
+    <None Remove="Resources\low_contrast_linen.png" />
+    <None Remove="Resources\meili-snow-mountain-2.jpg" />
+    <None Remove="Resources\Online-Shopping-icon.png" />
+    <None Remove="Resources\product icon.png" />
+    <None Remove="Resources\Product-sale-report-icon.png" />
+    <None Remove="Resources\ps_subtle-patterns.jpg" />
+    <None Remove="Resources\retiro.png" />
+    <None Remove="Resources\Save-icon.png" />
+    <None Remove="Resources\Seo-orange-search-engine-icon.png" />
+    <None Remove="Resources\snowleopard.ico" />
+    <None Remove="Resources\snowleopard.jpg" />
+    <None Remove="Resources\stardust.png" />
+    <None Remove="Resources\texrura-metal-deviantart-wallpaper-vegardhw-texture-linen-grey-textured-wallpapers.jpg" />
+    <None Remove="Resources\WALL IPOS copy.png" />
+    <None Remove="Resources\warning_10828.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LogicModel\LogicModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Syncfusion.Data.WPF">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.Data.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfGrid.WPF">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfGrid.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfHubTile.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfHubTile.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfInput.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfInput.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfShared.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfShared.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.Shared.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Tools.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.Tools.WPF.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\a11.ico" />
+    <Resource Include="Resources\active-search-2-xxl.png" />
+    <Resource Include="Resources\atm-money-icon.png" />
+    <Resource Include="Resources\binocular-flat.png" />
+    <Resource Include="Resources\Cash-register-icon.png" />
+    <Resource Include="Resources\cashier_icon-icons.com_53629.png" />
+    <Resource Include="Resources\client-icon.png" />
+    <Resource Include="Resources\close.png" />
+    <Resource Include="Resources\crossword.png" />
+    <Resource Include="Resources\document.png" />
+    <Resource Include="Resources\document_add.png" />
+    <Resource Include="Resources\document_delete.png" />
+    <Resource Include="Resources\document_edit.png" />
+    <Resource Include="Resources\document_search.png" />
+    <Resource Include="Resources\emblemimportant_103451.png" />
+    <Resource Include="Resources\exit.png" />
+    <Resource Include="Resources\export-flat.png" />
+    <Resource Include="Resources\eye-1103593_960_720.png" />
+    <Resource Include="Resources\flexible-product-icon.png" />
+    <Resource Include="Resources\fondo main 1.jpg" />
+    <Resource Include="Resources\fondo main ipos 1.jpg" />
+    <Resource Include="Resources\fondo main ipos 2.jpg" />
+    <Resource Include="Resources\fondo main small.jpg" />
+    <Resource Include="Resources\Good_or_Tick.png" />
+    <Resource Include="Resources\google-web-search-256.png" />
+    <Resource Include="Resources\i-pos.ico" />
+    <Resource Include="Resources\icon-import-export.png" />
+    <Resource Include="Resources\Icono__Facturacion.png" />
+    <Resource Include="Resources\Icon_WriteArticles.png" />
+    <Resource Include="Resources\information_info.png" />
+    <Resource Include="Resources\login ipos 2.png" />
+    <Resource Include="Resources\LOGIN.png" />
+    <Resource Include="Resources\logo ipos2.png" />
+    <Resource Include="Resources\logo-ipos-v2.png" />
+    <Resource Include="Resources\low_contrast_linen.png" />
+    <Resource Include="Resources\meili-snow-mountain-2.jpg" />
+    <Resource Include="Resources\Online-Shopping-icon.png" />
+    <Resource Include="Resources\product icon.png" />
+    <Resource Include="Resources\Product-sale-report-icon.png" />
+    <Resource Include="Resources\ps_subtle-patterns.jpg" />
+    <Resource Include="Resources\retiro.png" />
+    <Resource Include="Resources\Save-icon.png" />
+    <Resource Include="Resources\Seo-orange-search-engine-icon.png" />
+    <Resource Include="Resources\snowleopard.ico" />
+    <Resource Include="Resources\snowleopard.jpg" />
+    <Resource Include="Resources\stardust.png" />
+    <Resource Include="Resources\texrura-metal-deviantart-wallpaper-vegardhw-texture-linen-grey-textured-wallpapers.jpg" />
+    <Resource Include="Resources\WALL IPOS copy.png" />
+    <Resource Include="Resources\warning_10828.png" />
+  </ItemGroup>
+
+</Project>

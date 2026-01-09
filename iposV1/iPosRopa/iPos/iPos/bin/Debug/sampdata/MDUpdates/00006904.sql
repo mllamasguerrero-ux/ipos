@@ -1,0 +1,16 @@
+CREATE TABLE VERIFONECAJACONFIG (
+    ID                       D_PK NOT NULL /* D_PK = BIGINT NOT NULL */,
+    ACTIVO                   D_BOOLCN /* D_BOOLCN = CHAR(1) DEFAULT 'N' NOT NULL CHECK (VALUE IN ('S', 'N')) */,
+    CREADO                   D_TIMESTAMP /* D_TIMESTAMP = TIMESTAMP default current_timestamp NOT NULL */,
+    CREADOPOR_USERID         D_FK /* D_FK = BIGINT */,
+    MODIFICADO               D_TIMESTAMP /* D_TIMESTAMP = TIMESTAMP default current_timestamp NOT NULL */,
+    MODIFICADOPOR_USERID     D_FK /* D_FK = BIGINT */,
+    CAJAID                   D_FK /* D_FK = BIGINT */,
+    USERID                   D_STDTEXT_64 /* D_STDTEXT_64 = VARCHAR(64) */,
+    CONTRASENA               D_STDTEXT_64 /* D_STDTEXT_64 = VARCHAR(64) */,
+    SHIFTNUMBER              D_STDTEXT_64 /* D_STDTEXT_64 = VARCHAR(64) */,
+    MERCHANTID               D_STDTEXT_64 /* D_STDTEXT_64 = VARCHAR(64) */,
+    OPERATORLOCALE           D_STDTEXT_64 /* D_STDTEXT_64 = VARCHAR(64) */,
+    DEVICECONNECTIONTYPEKEY  D_STDTEXT_64 /* D_STDTEXT_64 = VARCHAR(64) */,
+    DEVICEADDRESSKEY         D_STDTEXT_64 /* D_STDTEXT_64 = VARCHAR(64) */
+);

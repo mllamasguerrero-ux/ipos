@@ -1,0 +1,1003 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DSInventarioFisico2" targetNamespace="http://tempuri.org/DSInventarioFisico2.xsd" xmlns:mstns="http://tempuri.org/DSInventarioFisico2.xsd" xmlns="http://tempuri.org/DSInventarioFisico2.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="ConnectionIpos" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionIpos (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.iPos.Properties.Settings.GlobalReference.Default.ConnectionIpos" Provider="FirebirdSql.Data.FirebirdClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GET_INVFIS_LISTADETALLES_PTableAdapter" GeneratorDataComponentClassName="GET_INVFIS_LISTADETALLES_PTableAdapter" Name="GET_INVFIS_LISTADETALLES_P" UserDataComponentName="GET_INVFIS_LISTADETALLES_PTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        0 AS numero, producto.id AS productoid, producto.nombre AS productonombre, producto.descripcion1 AS productodescripcion, movto.lote AS productolote, movto.fechavence, 
+                         SUM(CASE WHEN (inventario.cantidad IS NULL) THEN 0 ELSE inventario.cantidad END) AS cantidadteorica, (CASE WHEN (movto.cantidadsurtida IS NULL) THEN 0 ELSE movto.cantidadsurtida END) 
+                         AS cantidadfisica, (CASE WHEN (movto.cantidadsurtida IS NULL) THEN 0 ELSE movto.cantidadsurtida END) - SUM(CASE WHEN (inventario.cantidad IS NULL) THEN 0 ELSE inventario.cantidad END) 
+                         AS cantidaddiferencia, movto.id AS movtoid, movto.doctoid, 0 AS errorcode, producto.clave AS productoclave, 0.00 AS cajas, 0.00 AS piezas, producto.pzacaja, movto.lote, movto.fechavence AS Expr1, 
+                         DOCTO.ALMACENID, almacen.nombre,
+           c.texto1, 
+     c.texto2,
+     c.texto3,
+     c.texto4,
+     c.texto5,
+     c.texto6,
+     c.numero1,
+     c.numero2, 
+     c.numero3,
+     c.numero4,
+     c.fecha1, 
+     c.fecha2
+
+FROM            producto LEFT OUTER JOIN
+                         movto ON movto.productoid = producto.id AND movto.doctoid = @DOCTOID LEFT OUTER JOIN
+                         DOCTO ON DOCTO.ID = movto.doctoid LEFT OUTER JOIN inventario 
+ON inventario.productoid = movto.productoid AND (CASE WHEN (inventario.lote IS NULL) THEN '' ELSE inventario.lote END) = (CASE WHEN (movto.lote IS NULL) THEN '' ELSE movto.lote END) AND 
+                         (CASE WHEN (inventario.fechavence IS NULL) THEN CURRENT_DATE ELSE inventario.fechavence END) = (CASE WHEN (movto.fechavence IS NULL) THEN CURRENT_DATE ELSE movto.fechavence END) AND 
+                         (CASE WHEN inventario.almacenid IS NULL THEN 0 ELSE INVENTARIO.ALMACENID END) = CASE WHEN DOCTO.ALMACENID IS NULL THEN 0 ELSE DOCTO.ALMACENID END LEFT OUTER JOIN
+                         almacen ON DOCTO.ALMACENID = almacen.id
+
+          LEFT JOIN PRODUCTOCARACTERISTICAS c ON c.productoid = PRODUCTO.ID
+
+
+WHERE        (@TODOSLOSPRODUCTOS = 1) AND (producto.inventariable = 'S') OR
+                         (movto.doctoid = @DOCTOID) AND (producto.inventariable = 'S')
+GROUP BY movto.id, movto.doctoid, producto.id, producto.nombre, producto.descripcion1, movto.lote, movto.fechavence, movto.cantidadsurtida, producto.clave, producto.pzacaja, movto.lote, movto.fechavence, 
+                         DOCTO.ALMACENID, almacen.nombre,
+
+           c.texto1, 
+     c.texto2,
+     c.texto3,
+     c.texto4,
+     c.texto5,
+     c.texto6,
+     c.numero1,
+     c.numero2, 
+     c.numero3,
+     c.numero4,
+     c.fecha1, 
+     c.fecha2</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="DOCTOID" ColumnName="doctoid" DataSourceName="" DataTypeServer="unknown" DbType="Int64" Direction="Input" ParameterName="@DOCTOID" Precision="0" Scale="0" Size="1024" SourceColumn="doctoid" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="TODOSLOSPRODUCTOS" ColumnName="" DataSourceName="" DataTypeServer="unknown" DbType="Int16" Direction="Input" ParameterName="@TODOSLOSPRODUCTOS" Precision="0" Scale="0" Size="1024" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="NUMERO" DataSetColumn="NUMERO" />
+              <Mapping SourceColumn="PRODUCTOID" DataSetColumn="PRODUCTOID" />
+              <Mapping SourceColumn="FECHAVENCE" DataSetColumn="FECHAVENCE" />
+              <Mapping SourceColumn="CANTIDADTEORICA" DataSetColumn="CANTIDADTEORICA" />
+              <Mapping SourceColumn="CANTIDADFISICA" DataSetColumn="CANTIDADFISICA" />
+              <Mapping SourceColumn="CANTIDADDIFERENCIA" DataSetColumn="CANTIDADDIFERENCIA" />
+              <Mapping SourceColumn="ERRORCODE" DataSetColumn="ERRORCODE" />
+              <Mapping SourceColumn="DOCTOID" DataSetColumn="DOCTOID" />
+              <Mapping SourceColumn="PRODUCTONOMBRE" DataSetColumn="PRODUCTONOMBRE" />
+              <Mapping SourceColumn="PRODUCTODESCRIPCION" DataSetColumn="PRODUCTODESCRIPCION" />
+              <Mapping SourceColumn="PRODUCTOLOTE" DataSetColumn="PRODUCTOLOTE" />
+              <Mapping SourceColumn="MOVTOID" DataSetColumn="MOVTOID" />
+              <Mapping SourceColumn="PRODUCTOCLAVE" DataSetColumn="PRODUCTOCLAVE" />
+              <Mapping SourceColumn="CAJAS" DataSetColumn="CAJAS" />
+              <Mapping SourceColumn="PIEZAS" DataSetColumn="PIEZAS" />
+              <Mapping SourceColumn="PZACAJA" DataSetColumn="PZACAJA" />
+              <Mapping SourceColumn="LOTE" DataSetColumn="LOTE" />
+              <Mapping SourceColumn="EXPR1" DataSetColumn="EXPR1" />
+              <Mapping SourceColumn="ALMACENID" DataSetColumn="ALMACENID" />
+              <Mapping SourceColumn="NOMBRE" DataSetColumn="NOMBRE" />
+              <Mapping SourceColumn="TEXTO1" DataSetColumn="TEXTO1" />
+              <Mapping SourceColumn="TEXTO2" DataSetColumn="TEXTO2" />
+              <Mapping SourceColumn="TEXTO3" DataSetColumn="TEXTO3" />
+              <Mapping SourceColumn="TEXTO4" DataSetColumn="TEXTO4" />
+              <Mapping SourceColumn="TEXTO5" DataSetColumn="TEXTO5" />
+              <Mapping SourceColumn="TEXTO6" DataSetColumn="TEXTO6" />
+              <Mapping SourceColumn="NUMERO1" DataSetColumn="NUMERO1" />
+              <Mapping SourceColumn="NUMERO2" DataSetColumn="NUMERO2" />
+              <Mapping SourceColumn="NUMERO3" DataSetColumn="NUMERO3" />
+              <Mapping SourceColumn="NUMERO4" DataSetColumn="NUMERO4" />
+              <Mapping SourceColumn="FECHA1" DataSetColumn="FECHA1" />
+              <Mapping SourceColumn="FECHA2" DataSetColumn="FECHA2" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GET_INVFIS_COMPLETOTableAdapter" GeneratorDataComponentClassName="GET_INVFIS_COMPLETOTableAdapter" Name="GET_INVFIS_COMPLETO" UserDataComponentName="GET_INVFIS_COMPLETOTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectName="&quot;GET_INVFIS_COMPLETO&quot;" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
+                    <CommandText>"GET_INVFIS_COMPLETO"</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int64" Direction="Input" ParameterName="DOCTOID" Precision="0" Scale="0" Size="8" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="PRODUCTOID" DataSetColumn="PRODUCTOID" />
+              <Mapping SourceColumn="PRODUCTONOMBRE" DataSetColumn="PRODUCTONOMBRE" />
+              <Mapping SourceColumn="PRODUCTODESCRIPCION" DataSetColumn="PRODUCTODESCRIPCION" />
+              <Mapping SourceColumn="PRODUCTOLOTE" DataSetColumn="PRODUCTOLOTE" />
+              <Mapping SourceColumn="FECHAVENCE" DataSetColumn="FECHAVENCE" />
+              <Mapping SourceColumn="CANTIDADTEORICA" DataSetColumn="CANTIDADTEORICA" />
+              <Mapping SourceColumn="CANTIDADFISICA" DataSetColumn="CANTIDADFISICA" />
+              <Mapping SourceColumn="CANTIDADDIFERENCIA" DataSetColumn="CANTIDADDIFERENCIA" />
+              <Mapping SourceColumn="MOVTOID" DataSetColumn="MOVTOID" />
+              <Mapping SourceColumn="ERRORCODE" DataSetColumn="ERRORCODE" />
+              <Mapping SourceColumn="DIFERNECIACOSTOINVENTARIO" DataSetColumn="DIFERNECIACOSTOINVENTARIO" />
+              <Mapping SourceColumn="COSTOPRECIOMANEJADO" DataSetColumn="COSTOPRECIOMANEJADO" />
+              <Mapping SourceColumn="TEXTO1" DataSetColumn="TEXTO1" />
+              <Mapping SourceColumn="TEXTO2" DataSetColumn="TEXTO2" />
+              <Mapping SourceColumn="TEXTO3" DataSetColumn="TEXTO3" />
+              <Mapping SourceColumn="TEXTO4" DataSetColumn="TEXTO4" />
+              <Mapping SourceColumn="TEXTO5" DataSetColumn="TEXTO5" />
+              <Mapping SourceColumn="TEXTO6" DataSetColumn="TEXTO6" />
+              <Mapping SourceColumn="NUMERO1" DataSetColumn="NUMERO1" />
+              <Mapping SourceColumn="NUMERO2" DataSetColumn="NUMERO2" />
+              <Mapping SourceColumn="NUMERO3" DataSetColumn="NUMERO3" />
+              <Mapping SourceColumn="NUMERO4" DataSetColumn="NUMERO4" />
+              <Mapping SourceColumn="FECHA1" DataSetColumn="FECHA1" />
+              <Mapping SourceColumn="FECHA2" DataSetColumn="FECHA2" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GET_INVFIS_FINEDICIONTableAdapter" GeneratorDataComponentClassName="GET_INVFIS_FINEDICIONTableAdapter" Name="GET_INVFIS_FINEDICION" UserDataComponentName="GET_INVFIS_FINEDICIONTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectName="&quot;GET_INVFIS_FINEDICION&quot;" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
+                    <CommandText>"GET_INVFIS_FINEDICION"</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int64" Direction="Input" ParameterName="DOCTOID" Precision="0" Scale="0" Size="8" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int16" Direction="Input" ParameterName="SOLODIFERENCIAS" Precision="0" Scale="0" Size="2" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int16" Direction="Input" ParameterName="TODOSLOSPRODUCTOS" Precision="0" Scale="0" Size="2" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="PRODUCTOID" DataSetColumn="PRODUCTOID" />
+              <Mapping SourceColumn="PRODUCTONOMBRE" DataSetColumn="PRODUCTONOMBRE" />
+              <Mapping SourceColumn="PRODUCTODESCRIPCION" DataSetColumn="PRODUCTODESCRIPCION" />
+              <Mapping SourceColumn="PRODUCTOLOTE" DataSetColumn="PRODUCTOLOTE" />
+              <Mapping SourceColumn="FECHAVENCE" DataSetColumn="FECHAVENCE" />
+              <Mapping SourceColumn="CANTIDADTEORICA" DataSetColumn="CANTIDADTEORICA" />
+              <Mapping SourceColumn="CANTIDADFISICA" DataSetColumn="CANTIDADFISICA" />
+              <Mapping SourceColumn="CANTIDADDIFERENCIA" DataSetColumn="CANTIDADDIFERENCIA" />
+              <Mapping SourceColumn="MOVTOID" DataSetColumn="MOVTOID" />
+              <Mapping SourceColumn="ERRORCODE" DataSetColumn="ERRORCODE" />
+              <Mapping SourceColumn="DIFERNECIACOSTOINVENTARIO" DataSetColumn="DIFERNECIACOSTOINVENTARIO" />
+              <Mapping SourceColumn="COSTOPRECIOMANEJADO" DataSetColumn="COSTOPRECIOMANEJADO" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GET_INVFIS_LISTADETALLES_PXLOCTableAdapter" GeneratorDataComponentClassName="GET_INVFIS_LISTADETALLES_PXLOCTableAdapter" Name="GET_INVFIS_LISTADETALLES_PXLOC" UserDataComponentName="GET_INVFIS_LISTADETALLES_PXLOCTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectName="SELECT 0 AS numero, producto.id AS productoid, producto.nombre AS productonombre, producto.descripcion1 AS productodescripcion, movto.lote AS productolote, movto.fechavence, SUM(CASE WHEN (movto.cantidadsurtida IS NULL) THEN 0 ELSE movto.cantidadsurtida END) AS cantidadfisica, 0 AS movtoid, movto.doctoid, 0 AS errorcode, producto.clave AS productoclave, SUM((CASE WHEN (movto.cajas IS NULL) THEN 0 ELSE movto.cajas END)) AS cajas, SUM((CASE WHEN (movto.piezas IS NULL) THEN 0 ELSE movto.piezas END)) AS piezas, producto.pzacaja , DOCTO.ALMACENID, almacen.nombre almacennombre FROM producto LEFT OUTER JOIN movto ON movto.productoid = producto.id AND movto.doctoid = @DOCTOID LEFT OUTER JOIN DOCTO ON DOCTO.ID = movto.doctoid LEFT OUTER JOIN almacen ON DOCTO.ALMACENID = almacen.id WHERE (@TODOSLOSPRODUCTOS = 1) OR (movto.doctoid = @DOCTOID) GROUP BY movto.doctoid, producto.id, producto.nombre, producto.descripcion1, movto.lote, movto.fechavence, producto.clave, producto.existencia, producto.existenciaapartado, producto.pzacaja ,DOCTO.ALMACENID, almacen.nombre" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT m.numero, m.productoid, m.productonombre, m.productodescripcion, m.productolote,
+                         m.fechavence,
+                         SUM(CASE WHEN (inventario.cantidad IS NULL) THEN 0 ELSE inventario.cantidad END) AS cantidadteorica,
+                         m.cantidadfisica,
+                         m.cantidadfisica - SUM(CASE WHEN (inventario.cantidad IS NULL) THEN 0 ELSE inventario.cantidad END) cantidaddiferencia,
+                         m.movtoid, m.doctoid,
+                         m.errorcode,
+                         m.productoclave,
+                         m.cajas,
+                         m.piezas,
+                         m.pzacaja ,
+                         m.ALMACENID,
+                         m.almacennombre
+
+from
+(
+SELECT        0 AS numero, producto.id AS productoid, producto.nombre AS productonombre, producto.descripcion1 AS productodescripcion, movto.lote AS productolote, 
+                         movto.fechavence,
+                        SUM(CASE WHEN (movto.cantidadsurtida IS NULL) THEN 0 ELSE movto.cantidadsurtida END)
+                         AS cantidadfisica,
+                         0 AS movtoid, movto.doctoid,
+                         0 AS errorcode,
+                         producto.clave AS productoclave,
+                         SUM((CASE WHEN (movto.cajas IS NULL) THEN 0 ELSE movto.cajas END)) AS cajas,
+                         SUM((CASE WHEN (movto.piezas IS NULL) THEN 0 ELSE movto.piezas END)) AS piezas,
+                         producto.pzacaja ,
+                         DOCTO.ALMACENID,
+                         almacen.nombre almacennombre
+FROM            producto LEFT OUTER JOIN
+                         movto ON movto.productoid = producto.id AND movto.doctoid = @DOCTOID LEFT OUTER JOIN
+                         DOCTO ON DOCTO.ID = movto.doctoid  LEFT OUTER JOIN
+                         almacen ON DOCTO.ALMACENID = almacen.id 
+
+WHERE        (@TODOSLOSPRODUCTOS = 1) OR
+                         (movto.doctoid = @DOCTOID)
+GROUP BY movto.doctoid, producto.id, producto.nombre, producto.descripcion1, movto.lote, movto.fechavence, producto.clave, producto.existencia, 
+                         producto.existenciaapartado, producto.pzacaja ,DOCTO.ALMACENID, almacen.nombre
+ )  m
+ LEFT OUTER JOIN inventario
+ON inventario.productoid = m.productoid AND (CASE WHEN (inventario.lote IS NULL) THEN '' ELSE inventario.lote END) = (CASE WHEN (m.productolote IS NULL) THEN '' ELSE m.productolote END) AND
+                         (CASE WHEN (inventario.fechavence IS NULL) THEN CURRENT_DATE ELSE inventario.fechavence END) = (CASE WHEN (m.fechavence IS NULL) THEN CURRENT_DATE ELSE m.fechavence END) AND
+                         (CASE WHEN inventario.almacenid IS NULL THEN 0 ELSE INVENTARIO.ALMACENID END) = CASE WHEN m.ALMACENID IS NULL THEN 0 ELSE m.ALMACENID END
+
+group by m.numero, m.productoid, m.productonombre, m.productodescripcion, m.productolote,
+                         m.fechavence,m.cantidadfisica,
+                         m.movtoid, m.doctoid,
+                         m.errorcode,
+                         m.productoclave,
+                         m.cajas,
+                         m.piezas,
+                         m.pzacaja ,
+                         m.ALMACENID,
+                         m.almacennombre</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="DOCTOID" ColumnName="" DataSourceName="" DataTypeServer="unknown" DbType="Int64" Direction="Input" ParameterName="@DOCTOID" Precision="0" Scale="0" Size="1024" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="TODOSLOSPRODUCTOS" ColumnName="" DataSourceName="" DataTypeServer="unknown" DbType="Int32" Direction="Input" ParameterName="@TODOSLOSPRODUCTOS" Precision="0" Scale="0" Size="1024" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="NUMERO" DataSetColumn="NUMERO" />
+              <Mapping SourceColumn="PRODUCTOID" DataSetColumn="PRODUCTOID" />
+              <Mapping SourceColumn="FECHAVENCE" DataSetColumn="FECHAVENCE" />
+              <Mapping SourceColumn="CANTIDADTEORICA" DataSetColumn="CANTIDADTEORICA" />
+              <Mapping SourceColumn="CANTIDADFISICA" DataSetColumn="CANTIDADFISICA" />
+              <Mapping SourceColumn="CANTIDADDIFERENCIA" DataSetColumn="CANTIDADDIFERENCIA" />
+              <Mapping SourceColumn="ERRORCODE" DataSetColumn="ERRORCODE" />
+              <Mapping SourceColumn="DOCTOID" DataSetColumn="DOCTOID" />
+              <Mapping SourceColumn="PRODUCTONOMBRE" DataSetColumn="PRODUCTONOMBRE" />
+              <Mapping SourceColumn="PRODUCTODESCRIPCION" DataSetColumn="PRODUCTODESCRIPCION" />
+              <Mapping SourceColumn="PRODUCTOLOTE" DataSetColumn="PRODUCTOLOTE" />
+              <Mapping SourceColumn="PRODUCTOCLAVE" DataSetColumn="PRODUCTOCLAVE" />
+              <Mapping SourceColumn="MOVTOID" DataSetColumn="MOVTOID" />
+              <Mapping SourceColumn="CAJAS" DataSetColumn="CAJAS" />
+              <Mapping SourceColumn="PIEZAS" DataSetColumn="PIEZAS" />
+              <Mapping SourceColumn="PZACAJA" DataSetColumn="PZACAJA" />
+              <Mapping SourceColumn="ALMACENID" DataSetColumn="ALMACENID" />
+              <Mapping SourceColumn="ALMACENNOMBRE" DataSetColumn="ALMACENNOMBRE" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GET_INVFIS_FINEDICION_XLOCTableAdapter" GeneratorDataComponentClassName="GET_INVFIS_FINEDICION_XLOCTableAdapter" Name="GET_INVFIS_FINEDICION_XLOC" UserDataComponentName="GET_INVFIS_FINEDICION_XLOCTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectName="&quot;GET_INVFIS_FINEDICION_XLOC&quot;" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
+                    <CommandText>"GET_INVFIS_FINEDICION_XLOC"</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int64" Direction="Input" ParameterName="DOCTOID" Precision="0" Scale="0" Size="8" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int16" Direction="Input" ParameterName="SOLODIFERENCIAS" Precision="0" Scale="0" Size="2" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int16" Direction="Input" ParameterName="TODOSLOSPRODUCTOS" Precision="0" Scale="0" Size="2" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ANAQUEL" DataSetColumn="ANAQUEL" />
+              <Mapping SourceColumn="LOCALIDAD" DataSetColumn="LOCALIDAD" />
+              <Mapping SourceColumn="PRODUCTOID" DataSetColumn="PRODUCTOID" />
+              <Mapping SourceColumn="PRODUCTONOMBRE" DataSetColumn="PRODUCTONOMBRE" />
+              <Mapping SourceColumn="PRODUCTODESCRIPCION" DataSetColumn="PRODUCTODESCRIPCION" />
+              <Mapping SourceColumn="PRODUCTOLOTE" DataSetColumn="PRODUCTOLOTE" />
+              <Mapping SourceColumn="FECHAVENCE" DataSetColumn="FECHAVENCE" />
+              <Mapping SourceColumn="CANTIDADTEORICA" DataSetColumn="CANTIDADTEORICA" />
+              <Mapping SourceColumn="CANTIDADFISICA" DataSetColumn="CANTIDADFISICA" />
+              <Mapping SourceColumn="CANTIDADDIFERENCIA" DataSetColumn="CANTIDADDIFERENCIA" />
+              <Mapping SourceColumn="MOVTOID" DataSetColumn="MOVTOID" />
+              <Mapping SourceColumn="ERRORCODE" DataSetColumn="ERRORCODE" />
+              <Mapping SourceColumn="CANTIDADCAJAS" DataSetColumn="CANTIDADCAJAS" />
+              <Mapping SourceColumn="CANTIDADPIEZAS" DataSetColumn="CANTIDADPIEZAS" />
+              <Mapping SourceColumn="DIFERNECIACOSTOINVENTARIO" DataSetColumn="DIFERNECIACOSTOINVENTARIO" />
+              <Mapping SourceColumn="COSTOPRECIOMANEJADO" DataSetColumn="COSTOPRECIOMANEJADO" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GET_INVFIS_COMPLETO_XLOCTableAdapter" GeneratorDataComponentClassName="GET_INVFIS_COMPLETO_XLOCTableAdapter" Name="GET_INVFIS_COMPLETO_XLOC" UserDataComponentName="GET_INVFIS_COMPLETO_XLOCTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectName="&quot;GET_INVFIS_COMPLETO_XLOC&quot;" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
+                    <CommandText>"GET_INVFIS_COMPLETO_XLOC"</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int64" Direction="Input" ParameterName="DOCTOID" Precision="0" Scale="0" Size="8" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ANAQUEL" DataSetColumn="ANAQUEL" />
+              <Mapping SourceColumn="LOCALIDAD" DataSetColumn="LOCALIDAD" />
+              <Mapping SourceColumn="PRODUCTOID" DataSetColumn="PRODUCTOID" />
+              <Mapping SourceColumn="PRODUCTONOMBRE" DataSetColumn="PRODUCTONOMBRE" />
+              <Mapping SourceColumn="PRODUCTODESCRIPCION" DataSetColumn="PRODUCTODESCRIPCION" />
+              <Mapping SourceColumn="PRODUCTOLOTE" DataSetColumn="PRODUCTOLOTE" />
+              <Mapping SourceColumn="FECHAVENCE" DataSetColumn="FECHAVENCE" />
+              <Mapping SourceColumn="CANTIDADTEORICA" DataSetColumn="CANTIDADTEORICA" />
+              <Mapping SourceColumn="CANTIDADFISICA" DataSetColumn="CANTIDADFISICA" />
+              <Mapping SourceColumn="CANTIDADDIFERENCIA" DataSetColumn="CANTIDADDIFERENCIA" />
+              <Mapping SourceColumn="MOVTOID" DataSetColumn="MOVTOID" />
+              <Mapping SourceColumn="ERRORCODE" DataSetColumn="ERRORCODE" />
+              <Mapping SourceColumn="CANTIDADCAJAS" DataSetColumn="CANTIDADCAJAS" />
+              <Mapping SourceColumn="CANTIDADPIEZAS" DataSetColumn="CANTIDADPIEZAS" />
+              <Mapping SourceColumn="DIFERNECIACOSTOINVENTARIO" DataSetColumn="DIFERNECIACOSTOINVENTARIO" />
+              <Mapping SourceColumn="COSTOPRECIOMANEJADO" DataSetColumn="COSTOPRECIOMANEJADO" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="R_LISTALOTESINVENTARIOTableAdapter" GeneratorDataComponentClassName="R_LISTALOTESINVENTARIOTableAdapter" Name="R_LISTALOTESINVENTARIO" UserDataComponentName="R_LISTALOTESINVENTARIOTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectName="&quot;R_LISTALOTESINVENTARIO&quot;" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
+                    <CommandText>"R_LISTALOTESINVENTARIO"</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int64" Direction="Input" ParameterName="DOCTOID" Precision="0" Scale="0" Size="8" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int64" Direction="Input" ParameterName="PRODUCTOID" Precision="0" Scale="0" Size="8" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="SOLOCONEXISTENCIA" Precision="0" Scale="0" Size="1" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="LOTE" DataSetColumn="LOTE" />
+              <Mapping SourceColumn="FECHAVENCE" DataSetColumn="FECHAVENCE" />
+              <Mapping SourceColumn="VALOR" DataSetColumn="VALOR" />
+              <Mapping SourceColumn="NUMERO" DataSetColumn="NUMERO" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GET_INVFIS_LISTADETALLES_PKITTableAdapter" GeneratorDataComponentClassName="GET_INVFIS_LISTADETALLES_PKITTableAdapter" Name="GET_INVFIS_LISTADETALLES_PKIT" UserDataComponentName="GET_INVFIS_LISTADETALLES_PKITTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectName="&quot;GET_INVFIS_LISTA_P_KIT&quot;" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
+                    <CommandText>"GET_INVFIS_LISTA_P_KIT"</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int64" Direction="Input" ParameterName="DOCTOID" Precision="0" Scale="0" Size="8" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int16" Direction="Input" ParameterName="TODOSLOSPRODUCTOS" Precision="0" Scale="0" Size="2" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="NUMERO" DataSetColumn="NUMERO" />
+              <Mapping SourceColumn="PRODUCTOID" DataSetColumn="PRODUCTOID" />
+              <Mapping SourceColumn="FECHAVENCE" DataSetColumn="FECHAVENCE" />
+              <Mapping SourceColumn="CANTIDADTEORICA" DataSetColumn="CANTIDADTEORICA" />
+              <Mapping SourceColumn="CANTIDADFISICA" DataSetColumn="CANTIDADFISICA" />
+              <Mapping SourceColumn="CANTIDADDIFERENCIA" DataSetColumn="CANTIDADDIFERENCIA" />
+              <Mapping SourceColumn="ERRORCODE" DataSetColumn="ERRORCODE" />
+              <Mapping SourceColumn="PRODUCTONOMBRE" DataSetColumn="PRODUCTONOMBRE" />
+              <Mapping SourceColumn="PRODUCTODESCRIPCION" DataSetColumn="PRODUCTODESCRIPCION" />
+              <Mapping SourceColumn="PRODUCTOLOTE" DataSetColumn="PRODUCTOLOTE" />
+              <Mapping SourceColumn="MOVTOID" DataSetColumn="MOVTOID" />
+              <Mapping SourceColumn="PRODUCTOCLAVE" DataSetColumn="PRODUCTOCLAVE" />
+              <Mapping SourceColumn="CAJAS" DataSetColumn="CAJAS" />
+              <Mapping SourceColumn="PIEZAS" DataSetColumn="PIEZAS" />
+              <Mapping SourceColumn="PZACAJA" DataSetColumn="PZACAJA" />
+              <Mapping SourceColumn="ALMACENID" DataSetColumn="ALMACENID" />
+              <Mapping SourceColumn="TEXTO1" DataSetColumn="TEXTO1" />
+              <Mapping SourceColumn="TEXTO2" DataSetColumn="TEXTO2" />
+              <Mapping SourceColumn="TEXTO3" DataSetColumn="TEXTO3" />
+              <Mapping SourceColumn="TEXTO4" DataSetColumn="TEXTO4" />
+              <Mapping SourceColumn="TEXTO5" DataSetColumn="TEXTO5" />
+              <Mapping SourceColumn="TEXTO6" DataSetColumn="TEXTO6" />
+              <Mapping SourceColumn="NUMERO1" DataSetColumn="NUMERO1" />
+              <Mapping SourceColumn="NUMERO2" DataSetColumn="NUMERO2" />
+              <Mapping SourceColumn="NUMERO3" DataSetColumn="NUMERO3" />
+              <Mapping SourceColumn="NUMERO4" DataSetColumn="NUMERO4" />
+              <Mapping SourceColumn="FECHA1" DataSetColumn="FECHA1" />
+              <Mapping SourceColumn="FECHA2" DataSetColumn="FECHA2" />
+              <Mapping SourceColumn="ALMACENNOMBRE" DataSetColumn="ALMACENNOMBRE" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GET_INVFIS_LISTADETALLES_PXLOC_KITTableAdapter" GeneratorDataComponentClassName="GET_INVFIS_LISTADETALLES_PXLOC_KITTableAdapter" Name="GET_INVFIS_LISTADETALLES_PXLOC_KIT" UserDataComponentName="GET_INVFIS_LISTADETALLES_PXLOC_KITTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectName="&quot;GET_INVFIS_LISTA_PXLOC_KIT&quot;" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
+                    <CommandText>"GET_INVFIS_LISTA_PXLOC_KIT"</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int64" Direction="Input" ParameterName="DOCTOID" Precision="0" Scale="0" Size="8" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int16" Direction="Input" ParameterName="TODOSLOSPRODUCTOS" Precision="0" Scale="0" Size="2" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="NUMERO" DataSetColumn="NUMERO" />
+              <Mapping SourceColumn="PRODUCTOID" DataSetColumn="PRODUCTOID" />
+              <Mapping SourceColumn="PRODUCTONOMBRE" DataSetColumn="PRODUCTONOMBRE" />
+              <Mapping SourceColumn="PRODUCTODESCRIPCION" DataSetColumn="PRODUCTODESCRIPCION" />
+              <Mapping SourceColumn="PRODUCTOLOTE" DataSetColumn="PRODUCTOLOTE" />
+              <Mapping SourceColumn="FECHAVENCE" DataSetColumn="FECHAVENCE" />
+              <Mapping SourceColumn="CANTIDADTEORICA" DataSetColumn="CANTIDADTEORICA" />
+              <Mapping SourceColumn="CANTIDADFISICA" DataSetColumn="CANTIDADFISICA" />
+              <Mapping SourceColumn="CANTIDADDIFERENCIA" DataSetColumn="CANTIDADDIFERENCIA" />
+              <Mapping SourceColumn="ERRORCODE" DataSetColumn="ERRORCODE" />
+              <Mapping SourceColumn="PRODUCTOCLAVE" DataSetColumn="PRODUCTOCLAVE" />
+              <Mapping SourceColumn="CAJAS" DataSetColumn="CAJAS" />
+              <Mapping SourceColumn="PIEZAS" DataSetColumn="PIEZAS" />
+              <Mapping SourceColumn="PZACAJA" DataSetColumn="PZACAJA" />
+              <Mapping SourceColumn="MOVTOID" DataSetColumn="MOVTOID" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DSInventarioFisico2" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DSInventarioFisico2" msprop:Generator_UserDSName="DSInventarioFisico2">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="GET_INVFIS_LISTADETALLES_P" msprop:Generator_UserTableName="GET_INVFIS_LISTADETALLES_P" msprop:Generator_RowEvArgName="GET_INVFIS_LISTADETALLES_PRowChangeEvent" msprop:Generator_TableVarName="tableGET_INVFIS_LISTADETALLES_P" msprop:Generator_TablePropName="GET_INVFIS_LISTADETALLES_P" msprop:Generator_RowDeletingName="GET_INVFIS_LISTADETALLES_PRowDeleting" msprop:Generator_RowChangingName="GET_INVFIS_LISTADETALLES_PRowChanging" msprop:Generator_RowDeletedName="GET_INVFIS_LISTADETALLES_PRowDeleted" msprop:Generator_RowEvHandlerName="GET_INVFIS_LISTADETALLES_PRowChangeEventHandler" msprop:Generator_TableClassName="GET_INVFIS_LISTADETALLES_PDataTable" msprop:Generator_RowChangedName="GET_INVFIS_LISTADETALLES_PRowChanged" msprop:Generator_RowClassName="GET_INVFIS_LISTADETALLES_PRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NUMERO" msprop:Generator_ColumnVarNameInTable="columnNUMERO" msprop:Generator_ColumnPropNameInRow="NUMERO" msprop:Generator_ColumnPropNameInTable="NUMEROColumn" msprop:Generator_UserColumnName="NUMERO" type="xs:int" />
+              <xs:element name="PRODUCTOID" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOID" msprop:Generator_ColumnPropNameInRow="PRODUCTOID" msprop:Generator_ColumnPropNameInTable="PRODUCTOIDColumn" msprop:Generator_UserColumnName="PRODUCTOID" type="xs:long" />
+              <xs:element name="FECHAVENCE" msprop:Generator_ColumnVarNameInTable="columnFECHAVENCE" msprop:Generator_ColumnPropNameInRow="FECHAVENCE" msprop:Generator_ColumnPropNameInTable="FECHAVENCEColumn" msprop:Generator_UserColumnName="FECHAVENCE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CANTIDADTEORICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADTEORICA" msprop:Generator_ColumnPropNameInRow="CANTIDADTEORICA" msprop:Generator_ColumnPropNameInTable="CANTIDADTEORICAColumn" msprop:Generator_UserColumnName="CANTIDADTEORICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADFISICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADFISICA" msprop:Generator_ColumnPropNameInRow="CANTIDADFISICA" msprop:Generator_ColumnPropNameInTable="CANTIDADFISICAColumn" msprop:Generator_UserColumnName="CANTIDADFISICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADDIFERENCIA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInRow="CANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInTable="CANTIDADDIFERENCIAColumn" msprop:Generator_UserColumnName="CANTIDADDIFERENCIA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ERRORCODE" msprop:Generator_ColumnVarNameInTable="columnERRORCODE" msprop:Generator_ColumnPropNameInRow="ERRORCODE" msprop:Generator_ColumnPropNameInTable="ERRORCODEColumn" msprop:Generator_UserColumnName="ERRORCODE" type="xs:int" />
+              <xs:element name="DOCTOID" msprop:Generator_ColumnVarNameInTable="columnDOCTOID" msprop:Generator_ColumnPropNameInRow="DOCTOID" msprop:Generator_ColumnPropNameInTable="DOCTOIDColumn" msprop:Generator_UserColumnName="DOCTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="PRODUCTONOMBRE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTONOMBRE" msprop:Generator_ColumnPropNameInRow="PRODUCTONOMBRE" msprop:Generator_ColumnPropNameInTable="PRODUCTONOMBREColumn" msprop:Generator_UserColumnName="PRODUCTONOMBRE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTODESCRIPCION" msprop:Generator_ColumnVarNameInTable="columnPRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInRow="PRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInTable="PRODUCTODESCRIPCIONColumn" msprop:Generator_UserColumnName="PRODUCTODESCRIPCION" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOLOTE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOLOTE" msprop:Generator_ColumnPropNameInRow="PRODUCTOLOTE" msprop:Generator_ColumnPropNameInTable="PRODUCTOLOTEColumn" msprop:Generator_UserColumnName="PRODUCTOLOTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MOVTOID" msprop:Generator_ColumnVarNameInTable="columnMOVTOID" msprop:Generator_ColumnPropNameInRow="MOVTOID" msprop:Generator_ColumnPropNameInTable="MOVTOIDColumn" msprop:Generator_UserColumnName="MOVTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="PRODUCTOCLAVE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOCLAVE" msprop:Generator_ColumnPropNameInRow="PRODUCTOCLAVE" msprop:Generator_ColumnPropNameInTable="PRODUCTOCLAVEColumn" msprop:Generator_UserColumnName="PRODUCTOCLAVE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CAJAS" msprop:Generator_ColumnVarNameInTable="columnCAJAS" msprop:Generator_ColumnPropNameInRow="CAJAS" msprop:Generator_ColumnPropNameInTable="CAJASColumn" msprop:Generator_UserColumnName="CAJAS" type="xs:decimal" />
+              <xs:element name="PIEZAS" msprop:Generator_ColumnVarNameInTable="columnPIEZAS" msprop:Generator_ColumnPropNameInRow="PIEZAS" msprop:Generator_ColumnPropNameInTable="PIEZASColumn" msprop:Generator_UserColumnName="PIEZAS" type="xs:decimal" />
+              <xs:element name="PZACAJA" msprop:Generator_ColumnVarNameInTable="columnPZACAJA" msprop:Generator_ColumnPropNameInRow="PZACAJA" msprop:Generator_ColumnPropNameInTable="PZACAJAColumn" msprop:Generator_UserColumnName="PZACAJA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="LOTE" msprop:Generator_ColumnVarNameInTable="columnLOTE" msprop:Generator_ColumnPropNameInRow="LOTE" msprop:Generator_ColumnPropNameInTable="LOTEColumn" msprop:Generator_UserColumnName="LOTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="EXPR1" msprop:Generator_ColumnVarNameInTable="columnEXPR1" msprop:Generator_ColumnPropNameInRow="EXPR1" msprop:Generator_ColumnPropNameInTable="EXPR1Column" msprop:Generator_UserColumnName="EXPR1" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ALMACENID" msprop:Generator_ColumnVarNameInTable="columnALMACENID" msprop:Generator_ColumnPropNameInRow="ALMACENID" msprop:Generator_ColumnPropNameInTable="ALMACENIDColumn" msprop:Generator_UserColumnName="ALMACENID" type="xs:long" minOccurs="0" />
+              <xs:element name="NOMBRE" msprop:Generator_ColumnVarNameInTable="columnNOMBRE" msprop:Generator_ColumnPropNameInRow="NOMBRE" msprop:Generator_ColumnPropNameInTable="NOMBREColumn" msprop:Generator_UserColumnName="NOMBRE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO1" msprop:Generator_ColumnVarNameInTable="columnTEXTO1" msprop:Generator_ColumnPropNameInRow="TEXTO1" msprop:Generator_ColumnPropNameInTable="TEXTO1Column" msprop:Generator_UserColumnName="TEXTO1" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO2" msprop:Generator_ColumnVarNameInTable="columnTEXTO2" msprop:Generator_ColumnPropNameInRow="TEXTO2" msprop:Generator_ColumnPropNameInTable="TEXTO2Column" msprop:Generator_UserColumnName="TEXTO2" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO3" msprop:Generator_ColumnVarNameInTable="columnTEXTO3" msprop:Generator_ColumnPropNameInRow="TEXTO3" msprop:Generator_ColumnPropNameInTable="TEXTO3Column" msprop:Generator_UserColumnName="TEXTO3" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO4" msprop:Generator_ColumnVarNameInTable="columnTEXTO4" msprop:Generator_ColumnPropNameInRow="TEXTO4" msprop:Generator_ColumnPropNameInTable="TEXTO4Column" msprop:Generator_UserColumnName="TEXTO4" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO5" msprop:Generator_ColumnVarNameInTable="columnTEXTO5" msprop:Generator_ColumnPropNameInRow="TEXTO5" msprop:Generator_ColumnPropNameInTable="TEXTO5Column" msprop:Generator_UserColumnName="TEXTO5" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO6" msprop:Generator_ColumnVarNameInTable="columnTEXTO6" msprop:Generator_ColumnPropNameInRow="TEXTO6" msprop:Generator_ColumnPropNameInTable="TEXTO6Column" msprop:Generator_UserColumnName="TEXTO6" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NUMERO1" msprop:Generator_ColumnVarNameInTable="columnNUMERO1" msprop:Generator_ColumnPropNameInRow="NUMERO1" msprop:Generator_ColumnPropNameInTable="NUMERO1Column" msprop:Generator_UserColumnName="NUMERO1" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NUMERO2" msprop:Generator_ColumnVarNameInTable="columnNUMERO2" msprop:Generator_ColumnPropNameInRow="NUMERO2" msprop:Generator_ColumnPropNameInTable="NUMERO2Column" msprop:Generator_UserColumnName="NUMERO2" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NUMERO3" msprop:Generator_ColumnVarNameInTable="columnNUMERO3" msprop:Generator_ColumnPropNameInRow="NUMERO3" msprop:Generator_ColumnPropNameInTable="NUMERO3Column" msprop:Generator_UserColumnName="NUMERO3" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NUMERO4" msprop:Generator_ColumnVarNameInTable="columnNUMERO4" msprop:Generator_ColumnPropNameInRow="NUMERO4" msprop:Generator_ColumnPropNameInTable="NUMERO4Column" msprop:Generator_UserColumnName="NUMERO4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="FECHA1" msprop:Generator_ColumnVarNameInTable="columnFECHA1" msprop:Generator_ColumnPropNameInRow="FECHA1" msprop:Generator_ColumnPropNameInTable="FECHA1Column" msprop:Generator_UserColumnName="FECHA1" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="FECHA2" msprop:Generator_ColumnVarNameInTable="columnFECHA2" msprop:Generator_ColumnPropNameInRow="FECHA2" msprop:Generator_ColumnPropNameInTable="FECHA2Column" msprop:Generator_UserColumnName="FECHA2" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="GET_INVFIS_COMPLETO" msprop:Generator_TableClassName="GET_INVFIS_COMPLETODataTable" msprop:Generator_RowEvArgName="GET_INVFIS_COMPLETORowChangeEvent" msprop:Generator_TableVarName="tableGET_INVFIS_COMPLETO" msprop:Generator_TablePropName="GET_INVFIS_COMPLETO" msprop:Generator_RowDeletingName="GET_INVFIS_COMPLETORowDeleting" msprop:Generator_RowChangingName="GET_INVFIS_COMPLETORowChanging" msprop:Generator_RowDeletedName="GET_INVFIS_COMPLETORowDeleted" msprop:Generator_RowEvHandlerName="GET_INVFIS_COMPLETORowChangeEventHandler" msprop:Generator_RowChangedName="GET_INVFIS_COMPLETORowChanged" msprop:Generator_UserTableName="GET_INVFIS_COMPLETO" msprop:Generator_RowClassName="GET_INVFIS_COMPLETORow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PRODUCTOID" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOID" msprop:Generator_ColumnPropNameInRow="PRODUCTOID" msprop:Generator_ColumnPropNameInTable="PRODUCTOIDColumn" msprop:Generator_UserColumnName="PRODUCTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="PRODUCTONOMBRE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTONOMBRE" msprop:Generator_ColumnPropNameInRow="PRODUCTONOMBRE" msprop:Generator_ColumnPropNameInTable="PRODUCTONOMBREColumn" msprop:Generator_UserColumnName="PRODUCTONOMBRE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTODESCRIPCION" msprop:Generator_ColumnVarNameInTable="columnPRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInRow="PRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInTable="PRODUCTODESCRIPCIONColumn" msprop:Generator_UserColumnName="PRODUCTODESCRIPCION" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOLOTE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOLOTE" msprop:Generator_ColumnPropNameInRow="PRODUCTOLOTE" msprop:Generator_ColumnPropNameInTable="PRODUCTOLOTEColumn" msprop:Generator_UserColumnName="PRODUCTOLOTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FECHAVENCE" msprop:Generator_ColumnVarNameInTable="columnFECHAVENCE" msprop:Generator_ColumnPropNameInRow="FECHAVENCE" msprop:Generator_ColumnPropNameInTable="FECHAVENCEColumn" msprop:Generator_UserColumnName="FECHAVENCE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CANTIDADTEORICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADTEORICA" msprop:Generator_ColumnPropNameInRow="CANTIDADTEORICA" msprop:Generator_ColumnPropNameInTable="CANTIDADTEORICAColumn" msprop:Generator_UserColumnName="CANTIDADTEORICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADFISICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADFISICA" msprop:Generator_ColumnPropNameInRow="CANTIDADFISICA" msprop:Generator_ColumnPropNameInTable="CANTIDADFISICAColumn" msprop:Generator_UserColumnName="CANTIDADFISICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADDIFERENCIA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInRow="CANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInTable="CANTIDADDIFERENCIAColumn" msprop:Generator_UserColumnName="CANTIDADDIFERENCIA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="MOVTOID" msprop:Generator_ColumnVarNameInTable="columnMOVTOID" msprop:Generator_ColumnPropNameInRow="MOVTOID" msprop:Generator_ColumnPropNameInTable="MOVTOIDColumn" msprop:Generator_UserColumnName="MOVTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="ERRORCODE" msprop:Generator_ColumnVarNameInTable="columnERRORCODE" msprop:Generator_ColumnPropNameInRow="ERRORCODE" msprop:Generator_ColumnPropNameInTable="ERRORCODEColumn" msprop:Generator_UserColumnName="ERRORCODE" type="xs:int" minOccurs="0" />
+              <xs:element name="DIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnVarNameInTable="columnDIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnPropNameInRow="DIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnPropNameInTable="DIFERNECIACOSTOINVENTARIOColumn" msprop:Generator_UserColumnName="DIFERNECIACOSTOINVENTARIO" type="xs:decimal" minOccurs="0" />
+              <xs:element name="COSTOPRECIOMANEJADO" msprop:Generator_ColumnVarNameInTable="columnCOSTOPRECIOMANEJADO" msprop:Generator_ColumnPropNameInRow="COSTOPRECIOMANEJADO" msprop:Generator_ColumnPropNameInTable="COSTOPRECIOMANEJADOColumn" msprop:Generator_UserColumnName="COSTOPRECIOMANEJADO" type="xs:decimal" minOccurs="0" />
+              <xs:element name="TEXTO1" msprop:Generator_ColumnVarNameInTable="columnTEXTO1" msprop:Generator_ColumnPropNameInRow="TEXTO1" msprop:Generator_ColumnPropNameInTable="TEXTO1Column" msprop:Generator_UserColumnName="TEXTO1" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO2" msprop:Generator_ColumnVarNameInTable="columnTEXTO2" msprop:Generator_ColumnPropNameInRow="TEXTO2" msprop:Generator_ColumnPropNameInTable="TEXTO2Column" msprop:Generator_UserColumnName="TEXTO2" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO3" msprop:Generator_ColumnVarNameInTable="columnTEXTO3" msprop:Generator_ColumnPropNameInRow="TEXTO3" msprop:Generator_ColumnPropNameInTable="TEXTO3Column" msprop:Generator_UserColumnName="TEXTO3" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO4" msprop:Generator_ColumnVarNameInTable="columnTEXTO4" msprop:Generator_ColumnPropNameInRow="TEXTO4" msprop:Generator_ColumnPropNameInTable="TEXTO4Column" msprop:Generator_UserColumnName="TEXTO4" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO5" msprop:Generator_ColumnVarNameInTable="columnTEXTO5" msprop:Generator_ColumnPropNameInRow="TEXTO5" msprop:Generator_ColumnPropNameInTable="TEXTO5Column" msprop:Generator_UserColumnName="TEXTO5" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO6" msprop:Generator_ColumnVarNameInTable="columnTEXTO6" msprop:Generator_ColumnPropNameInRow="TEXTO6" msprop:Generator_ColumnPropNameInTable="TEXTO6Column" msprop:Generator_UserColumnName="TEXTO6" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NUMERO1" msprop:Generator_ColumnVarNameInTable="columnNUMERO1" msprop:Generator_ColumnPropNameInRow="NUMERO1" msprop:Generator_ColumnPropNameInTable="NUMERO1Column" msprop:Generator_UserColumnName="NUMERO1" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NUMERO2" msprop:Generator_ColumnVarNameInTable="columnNUMERO2" msprop:Generator_ColumnPropNameInRow="NUMERO2" msprop:Generator_ColumnPropNameInTable="NUMERO2Column" msprop:Generator_UserColumnName="NUMERO2" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NUMERO3" msprop:Generator_ColumnVarNameInTable="columnNUMERO3" msprop:Generator_ColumnPropNameInRow="NUMERO3" msprop:Generator_ColumnPropNameInTable="NUMERO3Column" msprop:Generator_UserColumnName="NUMERO3" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NUMERO4" msprop:Generator_ColumnVarNameInTable="columnNUMERO4" msprop:Generator_ColumnPropNameInRow="NUMERO4" msprop:Generator_ColumnPropNameInTable="NUMERO4Column" msprop:Generator_UserColumnName="NUMERO4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="FECHA1" msprop:Generator_ColumnVarNameInTable="columnFECHA1" msprop:Generator_ColumnPropNameInRow="FECHA1" msprop:Generator_ColumnPropNameInTable="FECHA1Column" msprop:Generator_UserColumnName="FECHA1" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="FECHA2" msprop:Generator_ColumnVarNameInTable="columnFECHA2" msprop:Generator_ColumnPropNameInRow="FECHA2" msprop:Generator_ColumnPropNameInTable="FECHA2Column" msprop:Generator_UserColumnName="FECHA2" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="GET_INVFIS_FINEDICION" msprop:Generator_TableClassName="GET_INVFIS_FINEDICIONDataTable" msprop:Generator_TableVarName="tableGET_INVFIS_FINEDICION" msprop:Generator_RowChangedName="GET_INVFIS_FINEDICIONRowChanged" msprop:Generator_TablePropName="GET_INVFIS_FINEDICION" msprop:Generator_RowDeletingName="GET_INVFIS_FINEDICIONRowDeleting" msprop:Generator_RowChangingName="GET_INVFIS_FINEDICIONRowChanging" msprop:Generator_RowEvHandlerName="GET_INVFIS_FINEDICIONRowChangeEventHandler" msprop:Generator_RowDeletedName="GET_INVFIS_FINEDICIONRowDeleted" msprop:Generator_RowClassName="GET_INVFIS_FINEDICIONRow" msprop:Generator_UserTableName="GET_INVFIS_FINEDICION" msprop:Generator_RowEvArgName="GET_INVFIS_FINEDICIONRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PRODUCTOID" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOID" msprop:Generator_ColumnPropNameInRow="PRODUCTOID" msprop:Generator_ColumnPropNameInTable="PRODUCTOIDColumn" msprop:Generator_UserColumnName="PRODUCTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="PRODUCTONOMBRE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTONOMBRE" msprop:Generator_ColumnPropNameInRow="PRODUCTONOMBRE" msprop:Generator_ColumnPropNameInTable="PRODUCTONOMBREColumn" msprop:Generator_UserColumnName="PRODUCTONOMBRE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTODESCRIPCION" msprop:Generator_ColumnVarNameInTable="columnPRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInRow="PRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInTable="PRODUCTODESCRIPCIONColumn" msprop:Generator_UserColumnName="PRODUCTODESCRIPCION" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOLOTE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOLOTE" msprop:Generator_ColumnPropNameInRow="PRODUCTOLOTE" msprop:Generator_ColumnPropNameInTable="PRODUCTOLOTEColumn" msprop:Generator_UserColumnName="PRODUCTOLOTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FECHAVENCE" msprop:Generator_ColumnVarNameInTable="columnFECHAVENCE" msprop:Generator_ColumnPropNameInRow="FECHAVENCE" msprop:Generator_ColumnPropNameInTable="FECHAVENCEColumn" msprop:Generator_UserColumnName="FECHAVENCE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CANTIDADTEORICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADTEORICA" msprop:Generator_ColumnPropNameInRow="CANTIDADTEORICA" msprop:Generator_ColumnPropNameInTable="CANTIDADTEORICAColumn" msprop:Generator_UserColumnName="CANTIDADTEORICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADFISICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADFISICA" msprop:Generator_ColumnPropNameInRow="CANTIDADFISICA" msprop:Generator_ColumnPropNameInTable="CANTIDADFISICAColumn" msprop:Generator_UserColumnName="CANTIDADFISICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADDIFERENCIA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInRow="CANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInTable="CANTIDADDIFERENCIAColumn" msprop:Generator_UserColumnName="CANTIDADDIFERENCIA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="MOVTOID" msprop:Generator_ColumnVarNameInTable="columnMOVTOID" msprop:Generator_ColumnPropNameInRow="MOVTOID" msprop:Generator_ColumnPropNameInTable="MOVTOIDColumn" msprop:Generator_UserColumnName="MOVTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="ERRORCODE" msprop:Generator_ColumnVarNameInTable="columnERRORCODE" msprop:Generator_ColumnPropNameInRow="ERRORCODE" msprop:Generator_ColumnPropNameInTable="ERRORCODEColumn" msprop:Generator_UserColumnName="ERRORCODE" type="xs:int" minOccurs="0" />
+              <xs:element name="DIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnVarNameInTable="columnDIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnPropNameInRow="DIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnPropNameInTable="DIFERNECIACOSTOINVENTARIOColumn" msprop:Generator_UserColumnName="DIFERNECIACOSTOINVENTARIO" type="xs:decimal" minOccurs="0" />
+              <xs:element name="COSTOPRECIOMANEJADO" msprop:Generator_ColumnVarNameInTable="columnCOSTOPRECIOMANEJADO" msprop:Generator_ColumnPropNameInRow="COSTOPRECIOMANEJADO" msprop:Generator_ColumnPropNameInTable="COSTOPRECIOMANEJADOColumn" msprop:Generator_UserColumnName="COSTOPRECIOMANEJADO" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="GET_INVFIS_LISTADETALLES_PXLOC" msprop:Generator_TableClassName="GET_INVFIS_LISTADETALLES_PXLOCDataTable" msprop:Generator_TableVarName="tableGET_INVFIS_LISTADETALLES_PXLOC" msprop:Generator_RowChangedName="GET_INVFIS_LISTADETALLES_PXLOCRowChanged" msprop:Generator_TablePropName="GET_INVFIS_LISTADETALLES_PXLOC" msprop:Generator_RowDeletingName="GET_INVFIS_LISTADETALLES_PXLOCRowDeleting" msprop:Generator_RowChangingName="GET_INVFIS_LISTADETALLES_PXLOCRowChanging" msprop:Generator_RowEvHandlerName="GET_INVFIS_LISTADETALLES_PXLOCRowChangeEventHandler" msprop:Generator_RowDeletedName="GET_INVFIS_LISTADETALLES_PXLOCRowDeleted" msprop:Generator_RowClassName="GET_INVFIS_LISTADETALLES_PXLOCRow" msprop:Generator_UserTableName="GET_INVFIS_LISTADETALLES_PXLOC" msprop:Generator_RowEvArgName="GET_INVFIS_LISTADETALLES_PXLOCRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NUMERO" msprop:Generator_ColumnVarNameInTable="columnNUMERO" msprop:Generator_ColumnPropNameInRow="NUMERO" msprop:Generator_ColumnPropNameInTable="NUMEROColumn" msprop:Generator_UserColumnName="NUMERO" type="xs:int" />
+              <xs:element name="PRODUCTOID" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOID" msprop:Generator_ColumnPropNameInRow="PRODUCTOID" msprop:Generator_ColumnPropNameInTable="PRODUCTOIDColumn" msprop:Generator_UserColumnName="PRODUCTOID" type="xs:long" />
+              <xs:element name="FECHAVENCE" msprop:Generator_ColumnVarNameInTable="columnFECHAVENCE" msprop:Generator_ColumnPropNameInRow="FECHAVENCE" msprop:Generator_ColumnPropNameInTable="FECHAVENCEColumn" msprop:Generator_UserColumnName="FECHAVENCE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CANTIDADTEORICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADTEORICA" msprop:Generator_ColumnPropNameInRow="CANTIDADTEORICA" msprop:Generator_ColumnPropNameInTable="CANTIDADTEORICAColumn" msprop:Generator_UserColumnName="CANTIDADTEORICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADFISICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADFISICA" msprop:Generator_ColumnPropNameInRow="CANTIDADFISICA" msprop:Generator_ColumnPropNameInTable="CANTIDADFISICAColumn" msprop:Generator_UserColumnName="CANTIDADFISICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADDIFERENCIA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInRow="CANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInTable="CANTIDADDIFERENCIAColumn" msprop:Generator_UserColumnName="CANTIDADDIFERENCIA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ERRORCODE" msprop:Generator_ColumnVarNameInTable="columnERRORCODE" msprop:Generator_ColumnPropNameInRow="ERRORCODE" msprop:Generator_ColumnPropNameInTable="ERRORCODEColumn" msprop:Generator_UserColumnName="ERRORCODE" type="xs:int" />
+              <xs:element name="DOCTOID" msprop:Generator_ColumnVarNameInTable="columnDOCTOID" msprop:Generator_ColumnPropNameInRow="DOCTOID" msprop:Generator_ColumnPropNameInTable="DOCTOIDColumn" msprop:Generator_UserColumnName="DOCTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="PRODUCTONOMBRE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTONOMBRE" msprop:Generator_ColumnPropNameInRow="PRODUCTONOMBRE" msprop:Generator_ColumnPropNameInTable="PRODUCTONOMBREColumn" msprop:Generator_UserColumnName="PRODUCTONOMBRE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTODESCRIPCION" msprop:Generator_ColumnVarNameInTable="columnPRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInRow="PRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInTable="PRODUCTODESCRIPCIONColumn" msprop:Generator_UserColumnName="PRODUCTODESCRIPCION" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOLOTE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOLOTE" msprop:Generator_ColumnPropNameInRow="PRODUCTOLOTE" msprop:Generator_ColumnPropNameInTable="PRODUCTOLOTEColumn" msprop:Generator_UserColumnName="PRODUCTOLOTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOCLAVE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOCLAVE" msprop:Generator_ColumnPropNameInRow="PRODUCTOCLAVE" msprop:Generator_ColumnPropNameInTable="PRODUCTOCLAVEColumn" msprop:Generator_UserColumnName="PRODUCTOCLAVE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MOVTOID" msprop:Generator_ColumnVarNameInTable="columnMOVTOID" msprop:Generator_ColumnPropNameInRow="MOVTOID" msprop:Generator_ColumnPropNameInTable="MOVTOIDColumn" msprop:Generator_UserColumnName="MOVTOID" type="xs:int" />
+              <xs:element name="CAJAS" msprop:Generator_ColumnVarNameInTable="columnCAJAS" msprop:Generator_ColumnPropNameInRow="CAJAS" msprop:Generator_ColumnPropNameInTable="CAJASColumn" msprop:Generator_UserColumnName="CAJAS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="PIEZAS" msprop:Generator_ColumnVarNameInTable="columnPIEZAS" msprop:Generator_ColumnPropNameInRow="PIEZAS" msprop:Generator_ColumnPropNameInTable="PIEZASColumn" msprop:Generator_UserColumnName="PIEZAS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="PZACAJA" msprop:Generator_ColumnVarNameInTable="columnPZACAJA" msprop:Generator_ColumnPropNameInRow="PZACAJA" msprop:Generator_ColumnPropNameInTable="PZACAJAColumn" msprop:Generator_UserColumnName="PZACAJA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ALMACENID" msprop:Generator_ColumnVarNameInTable="columnALMACENID" msprop:Generator_ColumnPropNameInRow="ALMACENID" msprop:Generator_ColumnPropNameInTable="ALMACENIDColumn" msprop:Generator_UserColumnName="ALMACENID" type="xs:long" minOccurs="0" />
+              <xs:element name="ALMACENNOMBRE" msprop:Generator_ColumnVarNameInTable="columnALMACENNOMBRE" msprop:Generator_ColumnPropNameInRow="ALMACENNOMBRE" msprop:Generator_ColumnPropNameInTable="ALMACENNOMBREColumn" msprop:Generator_UserColumnName="ALMACENNOMBRE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="GET_INVFIS_FINEDICION_XLOC" msprop:Generator_TableClassName="GET_INVFIS_FINEDICION_XLOCDataTable" msprop:Generator_TableVarName="tableGET_INVFIS_FINEDICION_XLOC" msprop:Generator_RowChangedName="GET_INVFIS_FINEDICION_XLOCRowChanged" msprop:Generator_TablePropName="GET_INVFIS_FINEDICION_XLOC" msprop:Generator_RowDeletingName="GET_INVFIS_FINEDICION_XLOCRowDeleting" msprop:Generator_RowChangingName="GET_INVFIS_FINEDICION_XLOCRowChanging" msprop:Generator_RowEvHandlerName="GET_INVFIS_FINEDICION_XLOCRowChangeEventHandler" msprop:Generator_RowDeletedName="GET_INVFIS_FINEDICION_XLOCRowDeleted" msprop:Generator_RowClassName="GET_INVFIS_FINEDICION_XLOCRow" msprop:Generator_UserTableName="GET_INVFIS_FINEDICION_XLOC" msprop:Generator_RowEvArgName="GET_INVFIS_FINEDICION_XLOCRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ANAQUEL" msprop:Generator_ColumnVarNameInTable="columnANAQUEL" msprop:Generator_ColumnPropNameInRow="ANAQUEL" msprop:Generator_ColumnPropNameInTable="ANAQUELColumn" msprop:Generator_UserColumnName="ANAQUEL" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="25" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LOCALIDAD" msprop:Generator_ColumnVarNameInTable="columnLOCALIDAD" msprop:Generator_ColumnPropNameInRow="LOCALIDAD" msprop:Generator_ColumnPropNameInTable="LOCALIDADColumn" msprop:Generator_UserColumnName="LOCALIDAD" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="25" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOID" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOID" msprop:Generator_ColumnPropNameInRow="PRODUCTOID" msprop:Generator_ColumnPropNameInTable="PRODUCTOIDColumn" msprop:Generator_UserColumnName="PRODUCTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="PRODUCTONOMBRE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTONOMBRE" msprop:Generator_ColumnPropNameInRow="PRODUCTONOMBRE" msprop:Generator_ColumnPropNameInTable="PRODUCTONOMBREColumn" msprop:Generator_UserColumnName="PRODUCTONOMBRE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTODESCRIPCION" msprop:Generator_ColumnVarNameInTable="columnPRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInRow="PRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInTable="PRODUCTODESCRIPCIONColumn" msprop:Generator_UserColumnName="PRODUCTODESCRIPCION" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOLOTE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOLOTE" msprop:Generator_ColumnPropNameInRow="PRODUCTOLOTE" msprop:Generator_ColumnPropNameInTable="PRODUCTOLOTEColumn" msprop:Generator_UserColumnName="PRODUCTOLOTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FECHAVENCE" msprop:Generator_ColumnVarNameInTable="columnFECHAVENCE" msprop:Generator_ColumnPropNameInRow="FECHAVENCE" msprop:Generator_ColumnPropNameInTable="FECHAVENCEColumn" msprop:Generator_UserColumnName="FECHAVENCE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CANTIDADTEORICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADTEORICA" msprop:Generator_ColumnPropNameInRow="CANTIDADTEORICA" msprop:Generator_ColumnPropNameInTable="CANTIDADTEORICAColumn" msprop:Generator_UserColumnName="CANTIDADTEORICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADFISICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADFISICA" msprop:Generator_ColumnPropNameInRow="CANTIDADFISICA" msprop:Generator_ColumnPropNameInTable="CANTIDADFISICAColumn" msprop:Generator_UserColumnName="CANTIDADFISICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADDIFERENCIA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInRow="CANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInTable="CANTIDADDIFERENCIAColumn" msprop:Generator_UserColumnName="CANTIDADDIFERENCIA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="MOVTOID" msprop:Generator_ColumnVarNameInTable="columnMOVTOID" msprop:Generator_ColumnPropNameInRow="MOVTOID" msprop:Generator_ColumnPropNameInTable="MOVTOIDColumn" msprop:Generator_UserColumnName="MOVTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="ERRORCODE" msprop:Generator_ColumnVarNameInTable="columnERRORCODE" msprop:Generator_ColumnPropNameInRow="ERRORCODE" msprop:Generator_ColumnPropNameInTable="ERRORCODEColumn" msprop:Generator_UserColumnName="ERRORCODE" type="xs:int" minOccurs="0" />
+              <xs:element name="CANTIDADCAJAS" msprop:Generator_ColumnVarNameInTable="columnCANTIDADCAJAS" msprop:Generator_ColumnPropNameInRow="CANTIDADCAJAS" msprop:Generator_ColumnPropNameInTable="CANTIDADCAJASColumn" msprop:Generator_UserColumnName="CANTIDADCAJAS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADPIEZAS" msprop:Generator_ColumnVarNameInTable="columnCANTIDADPIEZAS" msprop:Generator_ColumnPropNameInRow="CANTIDADPIEZAS" msprop:Generator_ColumnPropNameInTable="CANTIDADPIEZASColumn" msprop:Generator_UserColumnName="CANTIDADPIEZAS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="DIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnVarNameInTable="columnDIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnPropNameInRow="DIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnPropNameInTable="DIFERNECIACOSTOINVENTARIOColumn" msprop:Generator_UserColumnName="DIFERNECIACOSTOINVENTARIO" type="xs:decimal" minOccurs="0" />
+              <xs:element name="COSTOPRECIOMANEJADO" msprop:Generator_ColumnVarNameInTable="columnCOSTOPRECIOMANEJADO" msprop:Generator_ColumnPropNameInRow="COSTOPRECIOMANEJADO" msprop:Generator_ColumnPropNameInTable="COSTOPRECIOMANEJADOColumn" msprop:Generator_UserColumnName="COSTOPRECIOMANEJADO" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="GET_INVFIS_COMPLETO_XLOC" msprop:Generator_TableClassName="GET_INVFIS_COMPLETO_XLOCDataTable" msprop:Generator_TableVarName="tableGET_INVFIS_COMPLETO_XLOC" msprop:Generator_RowChangedName="GET_INVFIS_COMPLETO_XLOCRowChanged" msprop:Generator_TablePropName="GET_INVFIS_COMPLETO_XLOC" msprop:Generator_RowDeletingName="GET_INVFIS_COMPLETO_XLOCRowDeleting" msprop:Generator_RowChangingName="GET_INVFIS_COMPLETO_XLOCRowChanging" msprop:Generator_RowEvHandlerName="GET_INVFIS_COMPLETO_XLOCRowChangeEventHandler" msprop:Generator_RowDeletedName="GET_INVFIS_COMPLETO_XLOCRowDeleted" msprop:Generator_RowClassName="GET_INVFIS_COMPLETO_XLOCRow" msprop:Generator_UserTableName="GET_INVFIS_COMPLETO_XLOC" msprop:Generator_RowEvArgName="GET_INVFIS_COMPLETO_XLOCRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ANAQUEL" msprop:Generator_ColumnVarNameInTable="columnANAQUEL" msprop:Generator_ColumnPropNameInRow="ANAQUEL" msprop:Generator_ColumnPropNameInTable="ANAQUELColumn" msprop:Generator_UserColumnName="ANAQUEL" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="25" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LOCALIDAD" msprop:Generator_ColumnVarNameInTable="columnLOCALIDAD" msprop:Generator_ColumnPropNameInRow="LOCALIDAD" msprop:Generator_ColumnPropNameInTable="LOCALIDADColumn" msprop:Generator_UserColumnName="LOCALIDAD" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="25" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOID" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOID" msprop:Generator_ColumnPropNameInRow="PRODUCTOID" msprop:Generator_ColumnPropNameInTable="PRODUCTOIDColumn" msprop:Generator_UserColumnName="PRODUCTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="PRODUCTONOMBRE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTONOMBRE" msprop:Generator_ColumnPropNameInRow="PRODUCTONOMBRE" msprop:Generator_ColumnPropNameInTable="PRODUCTONOMBREColumn" msprop:Generator_UserColumnName="PRODUCTONOMBRE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTODESCRIPCION" msprop:Generator_ColumnVarNameInTable="columnPRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInRow="PRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInTable="PRODUCTODESCRIPCIONColumn" msprop:Generator_UserColumnName="PRODUCTODESCRIPCION" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOLOTE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOLOTE" msprop:Generator_ColumnPropNameInRow="PRODUCTOLOTE" msprop:Generator_ColumnPropNameInTable="PRODUCTOLOTEColumn" msprop:Generator_UserColumnName="PRODUCTOLOTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FECHAVENCE" msprop:Generator_ColumnVarNameInTable="columnFECHAVENCE" msprop:Generator_ColumnPropNameInRow="FECHAVENCE" msprop:Generator_ColumnPropNameInTable="FECHAVENCEColumn" msprop:Generator_UserColumnName="FECHAVENCE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CANTIDADTEORICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADTEORICA" msprop:Generator_ColumnPropNameInRow="CANTIDADTEORICA" msprop:Generator_ColumnPropNameInTable="CANTIDADTEORICAColumn" msprop:Generator_UserColumnName="CANTIDADTEORICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADFISICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADFISICA" msprop:Generator_ColumnPropNameInRow="CANTIDADFISICA" msprop:Generator_ColumnPropNameInTable="CANTIDADFISICAColumn" msprop:Generator_UserColumnName="CANTIDADFISICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADDIFERENCIA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInRow="CANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInTable="CANTIDADDIFERENCIAColumn" msprop:Generator_UserColumnName="CANTIDADDIFERENCIA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="MOVTOID" msprop:Generator_ColumnVarNameInTable="columnMOVTOID" msprop:Generator_ColumnPropNameInRow="MOVTOID" msprop:Generator_ColumnPropNameInTable="MOVTOIDColumn" msprop:Generator_UserColumnName="MOVTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="ERRORCODE" msprop:Generator_ColumnVarNameInTable="columnERRORCODE" msprop:Generator_ColumnPropNameInRow="ERRORCODE" msprop:Generator_ColumnPropNameInTable="ERRORCODEColumn" msprop:Generator_UserColumnName="ERRORCODE" type="xs:int" minOccurs="0" />
+              <xs:element name="CANTIDADCAJAS" msprop:Generator_ColumnVarNameInTable="columnCANTIDADCAJAS" msprop:Generator_ColumnPropNameInRow="CANTIDADCAJAS" msprop:Generator_ColumnPropNameInTable="CANTIDADCAJASColumn" msprop:Generator_UserColumnName="CANTIDADCAJAS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADPIEZAS" msprop:Generator_ColumnVarNameInTable="columnCANTIDADPIEZAS" msprop:Generator_ColumnPropNameInRow="CANTIDADPIEZAS" msprop:Generator_ColumnPropNameInTable="CANTIDADPIEZASColumn" msprop:Generator_UserColumnName="CANTIDADPIEZAS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="DIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnVarNameInTable="columnDIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnPropNameInRow="DIFERNECIACOSTOINVENTARIO" msprop:Generator_ColumnPropNameInTable="DIFERNECIACOSTOINVENTARIOColumn" msprop:Generator_UserColumnName="DIFERNECIACOSTOINVENTARIO" type="xs:decimal" minOccurs="0" />
+              <xs:element name="COSTOPRECIOMANEJADO" msprop:Generator_ColumnVarNameInTable="columnCOSTOPRECIOMANEJADO" msprop:Generator_ColumnPropNameInRow="COSTOPRECIOMANEJADO" msprop:Generator_ColumnPropNameInTable="COSTOPRECIOMANEJADOColumn" msprop:Generator_UserColumnName="COSTOPRECIOMANEJADO" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="R_LISTALOTESINVENTARIO" msprop:Generator_TableClassName="R_LISTALOTESINVENTARIODataTable" msprop:Generator_TableVarName="tableR_LISTALOTESINVENTARIO" msprop:Generator_RowChangedName="R_LISTALOTESINVENTARIORowChanged" msprop:Generator_TablePropName="R_LISTALOTESINVENTARIO" msprop:Generator_RowDeletingName="R_LISTALOTESINVENTARIORowDeleting" msprop:Generator_RowChangingName="R_LISTALOTESINVENTARIORowChanging" msprop:Generator_RowEvHandlerName="R_LISTALOTESINVENTARIORowChangeEventHandler" msprop:Generator_RowDeletedName="R_LISTALOTESINVENTARIORowDeleted" msprop:Generator_RowClassName="R_LISTALOTESINVENTARIORow" msprop:Generator_UserTableName="R_LISTALOTESINVENTARIO" msprop:Generator_RowEvArgName="R_LISTALOTESINVENTARIORowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="LOTE" msprop:Generator_ColumnVarNameInTable="columnLOTE" msprop:Generator_ColumnPropNameInRow="LOTE" msprop:Generator_ColumnPropNameInTable="LOTEColumn" msprop:Generator_UserColumnName="LOTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FECHAVENCE" msprop:Generator_ColumnVarNameInTable="columnFECHAVENCE" msprop:Generator_ColumnPropNameInRow="FECHAVENCE" msprop:Generator_ColumnPropNameInTable="FECHAVENCEColumn" msprop:Generator_UserColumnName="FECHAVENCE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="VALOR" msprop:Generator_ColumnVarNameInTable="columnVALOR" msprop:Generator_ColumnPropNameInRow="VALOR" msprop:Generator_ColumnPropNameInTable="VALORColumn" msprop:Generator_UserColumnName="VALOR" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NUMERO" msprop:Generator_ColumnVarNameInTable="columnNUMERO" msprop:Generator_ColumnPropNameInRow="NUMERO" msprop:Generator_ColumnPropNameInTable="NUMEROColumn" msprop:Generator_UserColumnName="NUMERO" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="GET_INVFIS_LISTADETALLES_PKIT" msprop:Generator_TableClassName="GET_INVFIS_LISTADETALLES_PKITDataTable" msprop:Generator_TableVarName="tableGET_INVFIS_LISTADETALLES_PKIT" msprop:Generator_RowChangedName="GET_INVFIS_LISTADETALLES_PKITRowChanged" msprop:Generator_TablePropName="GET_INVFIS_LISTADETALLES_PKIT" msprop:Generator_RowDeletingName="GET_INVFIS_LISTADETALLES_PKITRowDeleting" msprop:Generator_RowChangingName="GET_INVFIS_LISTADETALLES_PKITRowChanging" msprop:Generator_RowEvHandlerName="GET_INVFIS_LISTADETALLES_PKITRowChangeEventHandler" msprop:Generator_RowDeletedName="GET_INVFIS_LISTADETALLES_PKITRowDeleted" msprop:Generator_RowClassName="GET_INVFIS_LISTADETALLES_PKITRow" msprop:Generator_UserTableName="GET_INVFIS_LISTADETALLES_PKIT" msprop:Generator_RowEvArgName="GET_INVFIS_LISTADETALLES_PKITRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NUMERO" msprop:Generator_ColumnVarNameInTable="columnNUMERO" msprop:Generator_ColumnPropNameInRow="NUMERO" msprop:Generator_ColumnPropNameInTable="NUMEROColumn" msprop:Generator_UserColumnName="NUMERO" type="xs:int" minOccurs="0" />
+              <xs:element name="PRODUCTOID" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOID" msprop:Generator_ColumnPropNameInRow="PRODUCTOID" msprop:Generator_ColumnPropNameInTable="PRODUCTOIDColumn" msprop:Generator_UserColumnName="PRODUCTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="FECHAVENCE" msprop:Generator_ColumnVarNameInTable="columnFECHAVENCE" msprop:Generator_ColumnPropNameInRow="FECHAVENCE" msprop:Generator_ColumnPropNameInTable="FECHAVENCEColumn" msprop:Generator_UserColumnName="FECHAVENCE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CANTIDADTEORICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADTEORICA" msprop:Generator_ColumnPropNameInRow="CANTIDADTEORICA" msprop:Generator_ColumnPropNameInTable="CANTIDADTEORICAColumn" msprop:Generator_UserColumnName="CANTIDADTEORICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADFISICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADFISICA" msprop:Generator_ColumnPropNameInRow="CANTIDADFISICA" msprop:Generator_ColumnPropNameInTable="CANTIDADFISICAColumn" msprop:Generator_UserColumnName="CANTIDADFISICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADDIFERENCIA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInRow="CANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInTable="CANTIDADDIFERENCIAColumn" msprop:Generator_UserColumnName="CANTIDADDIFERENCIA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ERRORCODE" msprop:Generator_ColumnVarNameInTable="columnERRORCODE" msprop:Generator_ColumnPropNameInRow="ERRORCODE" msprop:Generator_ColumnPropNameInTable="ERRORCODEColumn" msprop:Generator_UserColumnName="ERRORCODE" type="xs:int" minOccurs="0" />
+              <xs:element name="PRODUCTONOMBRE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTONOMBRE" msprop:Generator_ColumnPropNameInRow="PRODUCTONOMBRE" msprop:Generator_ColumnPropNameInTable="PRODUCTONOMBREColumn" msprop:Generator_UserColumnName="PRODUCTONOMBRE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTODESCRIPCION" msprop:Generator_ColumnVarNameInTable="columnPRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInRow="PRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInTable="PRODUCTODESCRIPCIONColumn" msprop:Generator_UserColumnName="PRODUCTODESCRIPCION" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOLOTE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOLOTE" msprop:Generator_ColumnPropNameInRow="PRODUCTOLOTE" msprop:Generator_ColumnPropNameInTable="PRODUCTOLOTEColumn" msprop:Generator_UserColumnName="PRODUCTOLOTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MOVTOID" msprop:Generator_ColumnVarNameInTable="columnMOVTOID" msprop:Generator_ColumnPropNameInRow="MOVTOID" msprop:Generator_ColumnPropNameInTable="MOVTOIDColumn" msprop:Generator_UserColumnName="MOVTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="PRODUCTOCLAVE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOCLAVE" msprop:Generator_ColumnPropNameInRow="PRODUCTOCLAVE" msprop:Generator_ColumnPropNameInTable="PRODUCTOCLAVEColumn" msprop:Generator_UserColumnName="PRODUCTOCLAVE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CAJAS" msprop:Generator_ColumnVarNameInTable="columnCAJAS" msprop:Generator_ColumnPropNameInRow="CAJAS" msprop:Generator_ColumnPropNameInTable="CAJASColumn" msprop:Generator_UserColumnName="CAJAS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="PIEZAS" msprop:Generator_ColumnVarNameInTable="columnPIEZAS" msprop:Generator_ColumnPropNameInRow="PIEZAS" msprop:Generator_ColumnPropNameInTable="PIEZASColumn" msprop:Generator_UserColumnName="PIEZAS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="PZACAJA" msprop:Generator_ColumnVarNameInTable="columnPZACAJA" msprop:Generator_ColumnPropNameInRow="PZACAJA" msprop:Generator_ColumnPropNameInTable="PZACAJAColumn" msprop:Generator_UserColumnName="PZACAJA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ALMACENID" msprop:Generator_ColumnVarNameInTable="columnALMACENID" msprop:Generator_ColumnPropNameInRow="ALMACENID" msprop:Generator_ColumnPropNameInTable="ALMACENIDColumn" msprop:Generator_UserColumnName="ALMACENID" type="xs:long" minOccurs="0" />
+              <xs:element name="TEXTO1" msprop:Generator_ColumnVarNameInTable="columnTEXTO1" msprop:Generator_ColumnPropNameInRow="TEXTO1" msprop:Generator_ColumnPropNameInTable="TEXTO1Column" msprop:Generator_UserColumnName="TEXTO1" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO2" msprop:Generator_ColumnVarNameInTable="columnTEXTO2" msprop:Generator_ColumnPropNameInRow="TEXTO2" msprop:Generator_ColumnPropNameInTable="TEXTO2Column" msprop:Generator_UserColumnName="TEXTO2" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO3" msprop:Generator_ColumnVarNameInTable="columnTEXTO3" msprop:Generator_ColumnPropNameInRow="TEXTO3" msprop:Generator_ColumnPropNameInTable="TEXTO3Column" msprop:Generator_UserColumnName="TEXTO3" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO4" msprop:Generator_ColumnVarNameInTable="columnTEXTO4" msprop:Generator_ColumnPropNameInRow="TEXTO4" msprop:Generator_ColumnPropNameInTable="TEXTO4Column" msprop:Generator_UserColumnName="TEXTO4" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="64" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO5" msprop:Generator_ColumnVarNameInTable="columnTEXTO5" msprop:Generator_ColumnPropNameInRow="TEXTO5" msprop:Generator_ColumnPropNameInTable="TEXTO5Column" msprop:Generator_UserColumnName="TEXTO5" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TEXTO6" msprop:Generator_ColumnVarNameInTable="columnTEXTO6" msprop:Generator_ColumnPropNameInRow="TEXTO6" msprop:Generator_ColumnPropNameInTable="TEXTO6Column" msprop:Generator_UserColumnName="TEXTO6" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NUMERO1" msprop:Generator_ColumnVarNameInTable="columnNUMERO1" msprop:Generator_ColumnPropNameInRow="NUMERO1" msprop:Generator_ColumnPropNameInTable="NUMERO1Column" msprop:Generator_UserColumnName="NUMERO1" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NUMERO2" msprop:Generator_ColumnVarNameInTable="columnNUMERO2" msprop:Generator_ColumnPropNameInRow="NUMERO2" msprop:Generator_ColumnPropNameInTable="NUMERO2Column" msprop:Generator_UserColumnName="NUMERO2" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NUMERO3" msprop:Generator_ColumnVarNameInTable="columnNUMERO3" msprop:Generator_ColumnPropNameInRow="NUMERO3" msprop:Generator_ColumnPropNameInTable="NUMERO3Column" msprop:Generator_UserColumnName="NUMERO3" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NUMERO4" msprop:Generator_ColumnVarNameInTable="columnNUMERO4" msprop:Generator_ColumnPropNameInRow="NUMERO4" msprop:Generator_ColumnPropNameInTable="NUMERO4Column" msprop:Generator_UserColumnName="NUMERO4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="FECHA1" msprop:Generator_ColumnVarNameInTable="columnFECHA1" msprop:Generator_ColumnPropNameInRow="FECHA1" msprop:Generator_ColumnPropNameInTable="FECHA1Column" msprop:Generator_UserColumnName="FECHA1" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="FECHA2" msprop:Generator_ColumnVarNameInTable="columnFECHA2" msprop:Generator_ColumnPropNameInRow="FECHA2" msprop:Generator_ColumnPropNameInTable="FECHA2Column" msprop:Generator_UserColumnName="FECHA2" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ALMACENNOMBRE" msprop:Generator_ColumnVarNameInTable="columnALMACENNOMBRE" msprop:Generator_ColumnPropNameInRow="ALMACENNOMBRE" msprop:Generator_ColumnPropNameInTable="ALMACENNOMBREColumn" msprop:Generator_UserColumnName="ALMACENNOMBRE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="GET_INVFIS_LISTADETALLES_PXLOC_KIT" msprop:Generator_TableClassName="GET_INVFIS_LISTADETALLES_PXLOC_KITDataTable" msprop:Generator_TableVarName="tableGET_INVFIS_LISTADETALLES_PXLOC_KIT" msprop:Generator_TablePropName="GET_INVFIS_LISTADETALLES_PXLOC_KIT" msprop:Generator_RowDeletingName="GET_INVFIS_LISTADETALLES_PXLOC_KITRowDeleting" msprop:Generator_RowChangingName="GET_INVFIS_LISTADETALLES_PXLOC_KITRowChanging" msprop:Generator_RowEvHandlerName="GET_INVFIS_LISTADETALLES_PXLOC_KITRowChangeEventHandler" msprop:Generator_RowDeletedName="GET_INVFIS_LISTADETALLES_PXLOC_KITRowDeleted" msprop:Generator_UserTableName="GET_INVFIS_LISTADETALLES_PXLOC_KIT" msprop:Generator_RowChangedName="GET_INVFIS_LISTADETALLES_PXLOC_KITRowChanged" msprop:Generator_RowEvArgName="GET_INVFIS_LISTADETALLES_PXLOC_KITRowChangeEvent" msprop:Generator_RowClassName="GET_INVFIS_LISTADETALLES_PXLOC_KITRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NUMERO" msprop:Generator_ColumnVarNameInTable="columnNUMERO" msprop:Generator_ColumnPropNameInRow="NUMERO" msprop:Generator_ColumnPropNameInTable="NUMEROColumn" msprop:Generator_UserColumnName="NUMERO" type="xs:int" minOccurs="0" />
+              <xs:element name="PRODUCTOID" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOID" msprop:Generator_ColumnPropNameInRow="PRODUCTOID" msprop:Generator_ColumnPropNameInTable="PRODUCTOIDColumn" msprop:Generator_UserColumnName="PRODUCTOID" type="xs:long" minOccurs="0" />
+              <xs:element name="PRODUCTONOMBRE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTONOMBRE" msprop:Generator_ColumnPropNameInRow="PRODUCTONOMBRE" msprop:Generator_ColumnPropNameInTable="PRODUCTONOMBREColumn" msprop:Generator_UserColumnName="PRODUCTONOMBRE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTODESCRIPCION" msprop:Generator_ColumnVarNameInTable="columnPRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInRow="PRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInTable="PRODUCTODESCRIPCIONColumn" msprop:Generator_UserColumnName="PRODUCTODESCRIPCION" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PRODUCTOLOTE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOLOTE" msprop:Generator_ColumnPropNameInRow="PRODUCTOLOTE" msprop:Generator_ColumnPropNameInTable="PRODUCTOLOTEColumn" msprop:Generator_UserColumnName="PRODUCTOLOTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FECHAVENCE" msprop:Generator_ColumnVarNameInTable="columnFECHAVENCE" msprop:Generator_ColumnPropNameInRow="FECHAVENCE" msprop:Generator_ColumnPropNameInTable="FECHAVENCEColumn" msprop:Generator_UserColumnName="FECHAVENCE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CANTIDADTEORICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADTEORICA" msprop:Generator_ColumnPropNameInRow="CANTIDADTEORICA" msprop:Generator_ColumnPropNameInTable="CANTIDADTEORICAColumn" msprop:Generator_UserColumnName="CANTIDADTEORICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADFISICA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADFISICA" msprop:Generator_ColumnPropNameInRow="CANTIDADFISICA" msprop:Generator_ColumnPropNameInTable="CANTIDADFISICAColumn" msprop:Generator_UserColumnName="CANTIDADFISICA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CANTIDADDIFERENCIA" msprop:Generator_ColumnVarNameInTable="columnCANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInRow="CANTIDADDIFERENCIA" msprop:Generator_ColumnPropNameInTable="CANTIDADDIFERENCIAColumn" msprop:Generator_UserColumnName="CANTIDADDIFERENCIA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ERRORCODE" msprop:Generator_ColumnVarNameInTable="columnERRORCODE" msprop:Generator_ColumnPropNameInRow="ERRORCODE" msprop:Generator_ColumnPropNameInTable="ERRORCODEColumn" msprop:Generator_UserColumnName="ERRORCODE" type="xs:int" minOccurs="0" />
+              <xs:element name="PRODUCTOCLAVE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOCLAVE" msprop:Generator_ColumnPropNameInRow="PRODUCTOCLAVE" msprop:Generator_ColumnPropNameInTable="PRODUCTOCLAVEColumn" msprop:Generator_UserColumnName="PRODUCTOCLAVE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CAJAS" msprop:Generator_ColumnVarNameInTable="columnCAJAS" msprop:Generator_ColumnPropNameInRow="CAJAS" msprop:Generator_ColumnPropNameInTable="CAJASColumn" msprop:Generator_UserColumnName="CAJAS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="PIEZAS" msprop:Generator_ColumnVarNameInTable="columnPIEZAS" msprop:Generator_ColumnPropNameInRow="PIEZAS" msprop:Generator_ColumnPropNameInTable="PIEZASColumn" msprop:Generator_UserColumnName="PIEZAS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="PZACAJA" msprop:Generator_ColumnVarNameInTable="columnPZACAJA" msprop:Generator_ColumnPropNameInRow="PZACAJA" msprop:Generator_ColumnPropNameInTable="PZACAJAColumn" msprop:Generator_UserColumnName="PZACAJA" type="xs:decimal" minOccurs="0" />
+              <xs:element name="MOVTOID" msprop:Generator_ColumnVarNameInTable="columnMOVTOID" msprop:Generator_ColumnPropNameInRow="MOVTOID" msprop:Generator_ColumnPropNameInTable="MOVTOIDColumn" msprop:Generator_UserColumnName="MOVTOID" type="xs:long" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

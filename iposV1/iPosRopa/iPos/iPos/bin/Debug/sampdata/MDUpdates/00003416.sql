@@ -1,0 +1,1 @@
+insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (230, 'Informe Ultima Venta MultiSucursal');

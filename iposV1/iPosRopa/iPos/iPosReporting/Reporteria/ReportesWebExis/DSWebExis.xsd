@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DSWebExis" targetNamespace="http://tempuri.org/DSWebExis.xsd" xmlns:mstns="http://tempuri.org/DSWebExis.xsd" xmlns="http://tempuri.org/DSWebExis.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="iPosString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="iPosString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.iPosReporting.Properties.Settings.GlobalReference.Default.iPosString" Provider="FirebirdSql.Data.FirebirdClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="EXISTENCIAWEBEXISTableAdapter" GeneratorDataComponentClassName="EXISTENCIAWEBEXISTableAdapter" Name="EXISTENCIAWEBEXIS" UserDataComponentName="EXISTENCIAWEBEXISTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="iPosString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>select producto.clave,
+max(producto.descripcion1) descripcion1,
+0.00 existencia  
+from producto
+where producto.activo = 'S' and producto.clave &lt;&gt; '' 
+group by producto.clave</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="CLAVE" DataSetColumn="CLAVE" />
+              <Mapping SourceColumn="DESCRIPCION1" DataSetColumn="DESCRIPCION1" />
+              <Mapping SourceColumn="EXISTENCIA" DataSetColumn="EXISTENCIA" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DSWebExis" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DSWebExis" msprop:Generator_UserDSName="DSWebExis">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="EXISTENCIAWEBEXIS" msprop:Generator_TableClassName="EXISTENCIAWEBEXISDataTable" msprop:Generator_TableVarName="tableEXISTENCIAWEBEXIS" msprop:Generator_RowChangedName="EXISTENCIAWEBEXISRowChanged" msprop:Generator_TablePropName="EXISTENCIAWEBEXIS" msprop:Generator_RowDeletingName="EXISTENCIAWEBEXISRowDeleting" msprop:Generator_RowChangingName="EXISTENCIAWEBEXISRowChanging" msprop:Generator_RowEvHandlerName="EXISTENCIAWEBEXISRowChangeEventHandler" msprop:Generator_RowDeletedName="EXISTENCIAWEBEXISRowDeleted" msprop:Generator_RowClassName="EXISTENCIAWEBEXISRow" msprop:Generator_UserTableName="EXISTENCIAWEBEXIS" msprop:Generator_RowEvArgName="EXISTENCIAWEBEXISRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CLAVE" msprop:Generator_ColumnVarNameInTable="columnCLAVE" msprop:Generator_ColumnPropNameInRow="CLAVE" msprop:Generator_ColumnPropNameInTable="CLAVEColumn" msprop:Generator_UserColumnName="CLAVE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DESCRIPCION1" msprop:Generator_ColumnVarNameInTable="columnDESCRIPCION1" msprop:Generator_ColumnPropNameInRow="DESCRIPCION1" msprop:Generator_ColumnPropNameInTable="DESCRIPCION1Column" msprop:Generator_UserColumnName="DESCRIPCION1" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="EXISTENCIA" msprop:Generator_ColumnVarNameInTable="columnEXISTENCIA" msprop:Generator_ColumnPropNameInRow="EXISTENCIA" msprop:Generator_ColumnPropNameInTable="EXISTENCIAColumn" msprop:Generator_UserColumnName="EXISTENCIA" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/08/2014 19:23:29" ReportInfo.Modified="08/10/2016 13:13:11" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    private void ImprimeFilas(ref int iCount, string strConexion)
+    {
+      Report.Dictionary.Connections[0].ConnectionString = strConexion;
+                                                 
+      DataSourceBase rowDataSuc1 = Report.GetDataSource(&quot;Table&quot;); 
+      rowDataSuc1.ForceLoadData = true;
+      rowDataSuc1.Init();
+      
+      rowDataSuc1.First();
+      FastReport.Table.TableCell tc = null;
+      Table01.PrintRow(0);
+              
+      while (rowDataSuc1.HasMoreRows)
+      {                             
+        FastReport.Table.TableRow tr =  new FastReport.Table.TableRow();
+          
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Text = (string)Report.GetColumnValue(&quot;Table.SUCURSALCLAVE&quot;); 
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Text = (string)Report.GetColumnValue(&quot;Table.SUCURSALNOMBRE&quot;); 
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{                                                  
+          tc.Text = ((DateTime)Report.GetColumnValue(&quot;Table.ULTIMAFECHAVENTA&quot;)).ToString(&quot;dd/MM/yyyy&quot;) ;   
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+            
+        
+                                  
+                  
+        iCount++;
+        Table01.Rows.Add(tr);            
+        Table01.PrintRow(iCount);
+        Table01.PrintColumns();
+                                    
+        rowDataSuc1.Next();
+           
+        
+      }    
+      
+    }
+
+    private void Table01_ManualBuild(object sender, EventArgs e)
+    {                                                     
+      
+      int iCount = 0; 
+      string strCadenasConexion = ((String)Report.GetParameterValue(&quot;conexiones&quot;));//TextBox1.Text;//&quot;initial catalog=C:\\IposProject\\iPosRopa\\iPos\\iPos\\bin\\Debug\\sampdata\\IPOSDB.fdb;user id=sysdba;password=masterkey|initial catalog=C:\\IPOSTHINGS\\fama\\fama.fdb;user id=sysdba;password=masterkey&quot;;
+      
+      string[] cadenasConexion  = strCadenasConexion.Split(new string[] { &quot;masterkey&quot; }, StringSplitOptions.None); //strCadenasConexion.Split('|');
+      
+      foreach(string strCadena in cadenasConexion)
+      {                                         
+        if(strCadena.Trim().Length == 0)
+          continue;
+                        
+        //MessageBox.Show(strCadena + &quot;masterkey&quot;);
+        ImprimeFilas( ref iCount,  strCadena + &quot;masterkey&quot;);
+      
+      }
+      
+      
+      
+                                        
+      
+    }
+
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29iylxlz281QHEmEGuYLY19gtpAFwwXrDVuSZpfKeuv4EoDZ4ZlSRmuDjITIitE70kBo=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select sucursal.clave sucursalclave, sucursal.nombre sucursalnombre,&#13;&#10;  max(docto.fecha) ultimafechaventa&#13;&#10;from docto left join sucursal on sucursal.id = docto.sucursalid&#13;&#10; where docto.tipodoctoid = 21 and docto.estatusdoctoid = 1&#13;&#10; group by  sucursal.clave, sucursal.nombre&#13;&#10;&#13;&#10;">
+        <Column Name="SUCURSALCLAVE" DataType="System.String"/>
+        <Column Name="SUCURSALNOMBRE" DataType="System.String"/>
+        <Column Name="ULTIMAFECHAVENTA" DataType="System.DateTime"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="conexiones" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="279.4" PaperHeight="215.9" RawPaperSize="1" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="980.53" Height="75.6">
+      <TextObject Name="Text47" Left="179.55" Top="9.45" Width="774.9" Height="37.8" Text="ULTIMA VENTA " Font="Arial, 22pt, style=Bold"/>
+      <TextObject Name="Text48" Left="926.1" Top="56.7" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="79.6" Width="980.53" Height="37.8">
+      <TextObject Name="Text1" Left="9.45" Width="217.35" Height="18.9" Text="CLAVE SUCURSAL"/>
+      <TextObject Name="Text50" Left="226.8" Width="274.05" Height="18.9" Text="NOMBRE SUCURSAL"/>
+      <TextObject Name="Text2" Left="500.85" Width="189" Height="18.9" Text="FECHA DE ULTIMA VENTA"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="121.4" Width="980.53" Height="37.8" CanGrow="true">
+      <TableObject Name="Table01" Left="9.45" Width="678.03" Height="18.9" ManualBuildEvent="Table01_ManualBuild">
+        <TableColumn Name="Column44" Width="219.71"/>
+        <TableColumn Name="Column45" Width="276.41"/>
+        <TableColumn Name="Column46" Width="181.91"/>
+        <TableRow Name="Row2">
+          <TableCell Name="Cell76" Text="CLAVE SUCURSAL" Font="Arial, 8pt"/>
+          <TableCell Name="Cell77" Text="NOMBRE SUCURSAL" Font="Arial, 8pt"/>
+          <TableCell Name="Cell78" Text="FECHA DE ULTIMA VENTA " Font="Arial, 8pt"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="163.2" Width="980.53" Height="28.35">
+      <TextObject Name="Text49" Left="926.1" Width="94.5" Height="18.9" Text="[Page]"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

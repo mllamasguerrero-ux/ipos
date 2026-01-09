@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 11:45:50" ReportInfo.Modified="07/03/2016 23:59:14" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+   
+
+    
+
+    private void ComboBox1_Click(object sender, EventArgs e)
+    {
+       
+    }
+
+    private void CheckBox1_CheckedChanged(object sender, EventArgs e)
+    {
+      TextBox1.Text =  CheckBox1.Checked ? &quot;S&quot; : &quot;N&quot;;
+    }
+
+    private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+         NumericUpDown3.Value = ComboBox1.SelectedIndex ;
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls38CxK5rM2JUqm3ogTrw0Jju0eUBINQr9jMQwBo8+7jP05WmCOeSQwvu02JciycDTGVxElMZmCF9hu0LvgKawYM=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT * FROM  TTL_REP_PROD_TODOS_COMPARACION (&#13;&#10;    @ANIO1,&#13;&#10;    @ANIO2 ,&#13;&#10;   @INCLUIRTRASL  ,&#13;&#10;   @MES_P )">
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION1" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION2" DataType="System.String"/>
+        <Column Name="PRECIOPROMEDIOANIO1" DataType="System.Decimal"/>
+        <Column Name="PRECIOPROMEDIOANIO2" DataType="System.Decimal"/>
+        <Column Name="MES" DataType="System.String"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="CANTIDADANIO1" DataType="System.Int32"/>
+        <Column Name="TOTALANIO1" DataType="System.Decimal"/>
+        <Column Name="CANTIDADANIO2" DataType="System.Int32"/>
+        <Column Name="TOTALANIO2" DataType="System.Decimal"/>
+        <Column Name="DIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="PORCENTAJEDIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="ACUMULADODIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="PORCACUMULADODIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="REQUIERERECETA" DataType="System.String"/>
+        <CommandParameter Name="ANIO1" DataType="1" Expression="[anioini]" DefaultValue="0"/>
+        <CommandParameter Name="ANIO2" DataType="1" Expression="[aniofin]" DefaultValue="0"/>
+        <CommandParameter Name="INCLUIRTRASL" DataType="16" Expression="[incluirtrasl]" DefaultValue="S"/>
+        <CommandParameter Name="MES_P" DataType="1" Expression="[mes]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="mes" DataType="System.Decimal"/>
+    <Parameter Name="anioini" DataType="System.Decimal"/>
+    <Parameter Name="aniofin" DataType="System.Decimal"/>
+    <Parameter Name="incluirtrasl" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="500" PaperHeight="210" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1814.4" Height="207.9">
+      <TextObject Name="Text31" Left="18.9" Top="85.05" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text45" Left="113.4" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="18.9" Top="103.95" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="491.4" Top="113.4" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text46" Left="576.45" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="113.4" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="18.9" Width="378" Height="18.9" Text="Estadisticos venta de productos" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text24" Left="727.65" Top="9.45" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Left="18.9" Top="28.35" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="113.4" Top="47.25" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="18.9" Top="47.25" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="491.4" Top="56.7" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="576.45" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="113.4" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="576.45" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="18.9" Top="66.15" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="491.4" Top="75.6" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="113.4" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text36" Left="491.4" Top="94.5" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="576.45" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="18.9" Top="122.85" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text49" Left="18.9" Top="151.2" Width="94.5" Height="18.9" Text="Año 1:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Left="18.9" Top="179.55" Width="94.5" Height="18.9" Text="Incluir trasl." Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text15" Left="122.85" Top="151.2" Width="292.95" Height="18.9" Text="[anioini]" Font="Arial, 8pt"/>
+      <TextObject Name="Text58" Left="491.4" Top="151.2" Width="75.6" Height="18.9" Text="Año 2:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text59" Left="576.45" Top="151.2" Width="302.4" Height="18.9" Text="[aniofin]" Font="Arial, 8pt"/>
+      <TextObject Name="Text20" Left="122.85" Top="179.55" Width="292.95" Height="18.9" Text="[incluirtrasl]" Font="Arial, 8pt"/>
+      <TextObject Name="Text21" Left="576.45" Top="179.55" Width="94.5" Height="18.9" Text="[mes]" Font="Arial, 8pt"/>
+      <TextObject Name="Text60" Left="491.4" Top="179.55" Width="75.6" Height="18.9" Text="Mes:" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="211.9" Width="1814.4" Height="37.8">
+      <TextObject Name="Text2" Left="9.45" Width="94.5" Height="28.35" Text="PRODUCTO CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text4" Left="103.95" Width="151.2" Height="28.35" Text="PRODUCTO DESCRIPCION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="255.15" Width="160.65" Height="28.35" Text="PRODUCTO DESCRIPCION1" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="415.8" Width="179.55" Height="28.35" Text="PRODUCTO DESCRIPCION2" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="595.35" Width="94.5" Height="28.35" Text="REQUIE RERECETA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="689.85" Width="94.5" Height="28.35" Text="MES" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text14" Left="784.35" Width="94.5" Height="28.35" Text="CANTIDAD ANIO 1" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text17" Left="973.35" Width="94.5" Height="28.35" Text="TOTAL AÑO 1" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text19" Left="878.85" Width="94.5" Height="37.8" Text="PRECIO PROMEDIO AÑO 1" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text23" Left="1067.85" Width="94.5" Height="28.35" Text="CANTIDAD AÑO 2" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text26" Left="1162.35" Width="94.5" Height="37.8" Text="PRECIO PROMEDIO AÑO 2" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text29" Left="1256.85" Width="94.5" Height="28.35" Text="TOTAL AÑO 2" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text53" Left="1351.35" Width="94.5" Height="28.35" Text="% DIF." Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text55" Left="1445.85" Width="94.5" Height="28.35" Text="ACUMULADO DIF." Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text57" Left="1540.35" Width="94.5" Height="28.35" Text="% ACUM. DIFERENCIA" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="253.7" Width="1814.4" Height="28.35" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Left="9.45" Width="94.5" Height="18.9" Text="[Table.PRODUCTOCLAVE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="103.95" Width="151.2" Height="18.9" Text="[Table.PRODUCTODESCRIPCION]" Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="255.15" Width="160.65" Height="18.9" Text="[Table.PRODUCTODESCRIPCION1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text7" Left="415.8" Width="179.55" Height="18.9" Text="[Table.PRODUCTODESCRIPCION2]" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="595.35" Width="94.5" Height="18.9" Text="[Table.REQUIERERECETA]" Font="Arial, 9pt"/>
+      <TextObject Name="Text11" Left="689.85" Width="94.5" Height="18.9" Text="[Table.MES]" Font="Arial, 9pt"/>
+      <TextObject Name="Text13" Left="784.35" Width="94.5" Height="18.9" Text="[Table.CANTIDADANIO1]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 9pt"/>
+      <TextObject Name="Text16" Left="973.35" Width="94.5" Height="18.9" Text="[Table.TOTALANIO1]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text18" Left="878.85" Width="94.5" Height="18.9" Text="[Table.PRECIOPROMEDIOANIO1]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text22" Left="1067.85" Width="94.5" Height="18.9" Text="[Table.CANTIDADANIO2]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 9pt"/>
+      <TextObject Name="Text25" Left="1162.35" Width="94.5" Height="18.9" Text="[Table.PRECIOPROMEDIOANIO2]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text28" Left="1256.85" Width="94.5" Height="18.9" Text="[Table.TOTALANIO2]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text52" Left="1351.35" Width="94.5" Height="18.9" Text="[Table.PORCENTAJEDIFERENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text54" Left="1445.85" Width="94.5" Height="18.9" Text="[Table.ACUMULADODIFERENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text56" Left="1540.35" Width="94.5" Height="18.9" Text="[Table.PORCACUMULADODIFERENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="286.05" Width="1814.4" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="330" Height="318" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="158" Top="242" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="241" Top="242" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <NumericUpDownControl Name="NumericUpDown1" Left="32" Top="80" Font="Tahoma, 8pt" TabIndex="2" Text="2015" ReportParameter="anioini" FilterOperation="GreaterThanOrEqual" Maximum="1000000" Value="2015"/>
+    <LabelControl Name="Label1" Left="32" Top="64" Width="35" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Año 1"/>
+    <NumericUpDownControl Name="NumericUpDown2" Left="168" Top="80" Font="Tahoma, 8pt" TabIndex="4" Text="2016" ReportParameter="aniofin" FilterOperation="LessThanOrEqual" Maximum="100000" Value="2016"/>
+    <LabelControl Name="Label2" Left="168" Top="64" Width="35" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Año 2"/>
+    <NumericUpDownControl Name="NumericUpDown3" Left="32" Top="192" Visible="false" Font="Tahoma, 8pt" TabIndex="6" ReportParameter="mes" FilterOperation="LessThanOrEqual" Minimum="-100"/>
+    <TextBoxControl Name="TextBox1" Left="172" Top="192" Visible="false" Font="Tahoma, 8pt" TabIndex="8" Text="S" ReportParameter="incluirtrasl"/>
+    <ComboBoxControl Name="ComboBox1" Left="32" Top="132" Font="Tahoma, 8pt" TabIndex="9" Text="Todos" ClickEvent="ComboBox1_Click" ItemHeight="13" ItemsText="Todos&#13;&#10;Enero&#13;&#10;Febrero&#13;&#10;Marzo&#13;&#10;Abril&#13;&#10;Mayo&#13;&#10;Junio&#13;&#10;Julio&#13;&#10;Agosto&#13;&#10;Septiembre&#13;&#10;Octubre&#13;&#10;Noviembre&#13;&#10;Diciembre" SelectedIndexChangedEvent="ComboBox1_SelectedIndexChanged"/>
+    <LabelControl Name="Label3" Left="32" Top="116" Width="26" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Mes"/>
+    <CheckBoxControl Name="CheckBox1" Left="168" Top="136" Width="102" Height="17" Font="Tahoma, 8pt" TabIndex="10" Text="Incluir traslados" Checked="true" CheckState="Checked" CheckedChangedEvent="CheckBox1_CheckedChanged"/>
+    <LabelControl Name="Label4" Left="28" Top="16" Width="177" Height="16" Font="Tahoma, 9.75pt, style=Bold" TabIndex="3" Text="ESTADISTICOS PRODUCTOS"/>
+  </DialogPage>
+</Report>

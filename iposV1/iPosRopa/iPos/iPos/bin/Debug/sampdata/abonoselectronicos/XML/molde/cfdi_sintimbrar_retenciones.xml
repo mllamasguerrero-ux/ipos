@@ -1,0 +1,27 @@
+<CiberSAT5 PAC="[nombrepac]" emisor="[rfcemisor]" usuario="[usuariopac]">
+      <cfdi:Comprobante xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3                           http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd                           http://www.sat.gob.mx/TimbreFiscalDigital                           http://www.sat.gob.mx/sitio_internet/TimbreFiscalDigital/TimbreFiscalDigital.xsd" version="3.2" serie="[serie]" folio="[folio]" fecha="[fecha]" sello="" formaDePago="[formadepago]" noCertificado="01234567890123456789" certificado="" condicionesDePago="[condicionesdepago]" subTotal="[subtotal]" descuento="[descuento]" motivoDescuento="[motivodescuento]" TipoCambio="[tipocambio]" Moneda="[moneda]" total="[total]" metodoDePago="[metododepago]" LugarExpedicion="[LugarExpedicion]" NumCtaPago="[NumCtaPago]" tipoDeComprobante="[tipocomprobante] FolioFiscalOrig="[FolioOrigen]" SerieFolioFiscalOrig="[SerieOrigen]" FechaFolioFiscalOrig="[FechaOrigen]" MontoFolioFiscalOrig="[MontoOrigen]"" >
+        <cfdi:Emisor rfc="[rfcemisor]" nombre="[emisornombre]">
+          <cfdi:DomicilioFiscal calle="[emisorcalle]" noExterior="[emisornoexterior]" noInterior="[emisornointerior]" colonia="[emisorcolonia]" localidad="[emisorlocalidad]" referencia="[emisorreferencia]" municipio="[emisormunicipio]" estado="[emisorestado]" pais="[emisorpais]" codigoPostal="[emisorcodigopostal]" />
+          <cfdi:ExpedidoEn calle="[expedidocalle]" noExterior="[expedidonoexterior]" noInterior="[expedidonointerior]" colonia="[expedidocolonia]" localidad="[expedidolocalidad]" referencia="[expedidoreferencia]" municipio="[expedidomunicipio]" estado="[expedidoestado]" pais="[expedidopais]" codigoPostal="[expedidocodigopostal]" />
+        <cfdi:RegimenFiscal Regimen="[Regimen]" />
+        </cfdi:Emisor>
+        <cfdi:Receptor rfc="[receptorrfc]" nombre="[receptornombre]">
+          <cfdi:Domicilio calle="[receptorcalle]" noExterior="[receptornoexterior]" noInterior="[receptornointerior]" colonia="[receptorcolonia]" localidad="[receptorlocalidad]" referencia="[receptorreferencia]" municipio="[receptormunicipio]" estado="[receptorestado]" pais="[receptorpais]" codigoPostal="[receptorcodigopostal]" />
+        </cfdi:Receptor>
+        <cfdi:Conceptos>
+          <cfdi:Concepto cantidad="[cantidad]" unidad="[unidad]" noIdentificacion="[noidentificacion]" descripcion="[descripcion]" valorUnitario="[valorunitario]" importe="[importe]"></cfdi:Concepto>
+        </cfdi:Conceptos>
+        <cfdi:Impuestos totalImpuestosRetenidos="[totalimpuestosretenidos]" totalImpuestosTrasladados="[totalimpuestostrasladados]">
+        <cfdi:Retenciones>
+            <cfdi:Retencion impuesto="IVA" importe="[retencionIVA]" />
+            <cfdi:Retencion impuesto="ISR" importe="[retencionISR]" />
+         </cfdi:Retenciones>
+         <cfdi:Traslados>
+           <cfdi:Traslado impuesto="[trasladoimpuesto]" tasa="[trasladotasa]" importe="[trasladoimporte]" />
+         </cfdi:Traslados>
+        </cfdi:Impuestos>
+        <cfdi:Complemento>
+          <tfd:TimbreFiscalDigital version="1.0" UUID="00000000-0000-0000-0000-000000000000" FechaTimbrado="2011-01-01T00:00:00" selloCFD="" noCertificadoSAT="12345678901234567890" selloSAT="" />
+        </cfdi:Complemento>
+      </cfdi:Comprobante>
+</CiberSAT5>

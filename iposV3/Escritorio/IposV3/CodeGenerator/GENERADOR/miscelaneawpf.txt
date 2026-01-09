@@ -1,0 +1,166 @@
+|||||100+++++
+|||||200+++++
+                typeof ((nombreTabla)ListViewModel).Assembly,
+                typeof ((nombreTabla)ListView).Assembly,
+|||||300+++++
+
+|||||400+++++
+            container.Register(Castle.MicroKernel.Registration.AllTypes.FromAssembly(typeof((nombreTabla)ListViewModel).Assembly)
+                .Where(x => x.Name.EndsWith("ViewModel"))
+                .Configure(x => x.LifeStyle.Is(LifestyleType.Transient)));
+|||||500+++++
+
+|||||600+++++
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)AddViewModel",
+                @"IposV3.Views.(nombreTabla)AddEditView");
+
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)EditViewModel",
+                @"IposV3.Views.(nombreTabla)AddEditView");
+
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)ShowViewModel",
+                @"IposV3.Views.(nombreTabla)AddEditView");
+|||||700+++++
+
+|||||710+++++
+
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)ListSubViewModel",
+                @"IposV3.Views.(nombreTabla)ListSubView");
+
+
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)ObtainItemSubViewModel",
+                @"IposV3.Views.(nombreTabla)AddEditSubView");
+
+
+|||||720+++++
+
+|||||730+++++
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)ListCommandViewModel",
+                @"IposV3.Views.(nombreTabla)ListCommandView");
+
+
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)ObtainItemCommandViewModel",
+                @"IposV3.Views.(nombreTabla)AddEditCommandView");
+|||||740+++++
+
+|||||800+++++
+                Component.For<(nombreTabla)Controller>()
+                    .ImplementedBy<(nombreTabla)Controller>(),
+|||||900+++++
+
+|||||1000+++++
+        private IDaoSelectorProvider<(nombreTabla), (nombreTabla)Param> (nombreTablaMinPrimeraLetra)Dao;|||||1100+++++
+|||||1200+++++
+IDaoSelectorProvider<(nombreTabla), (nombreTabla)Param> (nombreTablaMinPrimeraLetra)Dao|||||1300+++++
+
+|||||1400+++++
+            this.(nombreTablaMinPrimeraLetra)Dao = (nombreTablaMinPrimeraLetra)Dao;|||||1500+++++
+
+|||||1600+++++
+                case "(nombreTabla)":
+                    param = ((BaseParam?)catalogDef.CatalogParam ?? defaultParam);
+                    lstBase = _applicationDbContext.(nombreTabla)
+                            .Where(x => x.EmpresaId == param!.P_empresaid && x.SucursalId == param!.P_sucursalid )
+                            .Select(x => new BaseSelector(x.EmpresaId, x.SucursalId, x.Id, x.Clave, x.Nombre))
+                            .ToList();
+
+                    break;
+|||||1700+++++
+
+
+
+
+|||||1800+++++
+                case "(nombreTabla)":
+                    auxParam = ((BaseParam?)catalogDef.CatalogParam ?? defaultParam);
+                    ret = _applicationDbContext.(nombreTabla)
+                            .Where(x => x.EmpresaId == auxParam!.P_empresaid && x.SucursalId == auxParam!.P_sucursalid && (x.Clave.ToLower() == claveToLower))
+                            .Select(x => new BaseSelector(x.EmpresaId, x.SucursalId, x.Id, x.Clave, x.Nombre))
+                            .FirstOrDefault();
+                    break;
+
+|||||1900+++++
+
+
+
+|||||1910+++++
+                case "(nombreTabla)":
+                    auxParam = (BaseParam?)catalogDef.CatalogParam;
+                    ret = _applicationDbContext.(nombreTabla)
+                            .Where(x => x.EmpresaId == auxParam!.P_empresaid && x.SucursalId == auxParam!.P_sucursalid && (x.Id == itemId))
+                            .Select(x => new BaseSelector(x.EmpresaId, x.SucursalId, x.Id, x.Clave, x.Nombre))
+                            .FirstOrDefault();
+                    break;
+
+|||||1920+++++
+
+
+|||||2000+++++
+                Component.For<IDaoSelectorProvider<(nombreTabla), (nombreTabla)Param>>()
+                    .ImplementedBy<(nombreTabla)SelectorDao>()
+                    .DependsOn(Dependency.OnValue<Func<string>>(getGeneralConnectionStringPtr)),
+|||||2100+++++
+
+|||||2200+++++
+winManager.ShowDialog(IoC.Get<(nombreTabla)ListViewModel>(),null, CreateWinSettings("(nombreTabla)", 0.75));
+|||||2300+++++
+
+
+|||||2400+++++            //CurrentContent = IoC.Get<(nombreTabla)ListViewModel>();
+                            case "(nombreTabla)List":
+                                {
+                                    contentHistory.Clear();
+                                    screen = IoC.Get<(nombreTabla)ListViewModel>();
+                                    screen.MainWindowCommProvider = this;
+                                    CurrentContent = screen;
+                                    LeftMenuShowed = false;
+                                    break;
+                                }
+                                
+|||||2410+++++            
+            services.AddScoped<(nombreTabla)Controller>();
+|||||2420+++++           
+                Component.For<(nombreTabla)WebController>()
+                .ImplementedBy<(nombreTabla)WebController>(),
+|||||2500+++++
+
+!!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+200;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+300;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+400;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+500;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+600;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;subview,subproc
+700;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+710;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;subview;IGNORAR
+720;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+730;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;subproc;IGNORAR;
+740;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+800;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;subview,subproc
+900;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1000;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1200;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1300;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1400;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1500;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1600;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1700;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1800;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1900;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1910;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+1920;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+2000;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+2100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+2200;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+2300;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+2400;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+2410;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+2420;3;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0
+2500;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

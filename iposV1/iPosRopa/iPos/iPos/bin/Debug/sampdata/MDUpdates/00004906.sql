@@ -1,0 +1,1 @@
+delete from perfil_der where PD_DERECHO in (10121,10122);

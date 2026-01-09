@@ -1,0 +1,33 @@
+create or alter procedure RETIRO_CAJA_DELETEPENDIENTES (
+    CORTEID D_PK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable ESTATUSDOCTOID D_FK;
+declare variable MONTOBILLETESID D_FK;
+declare variable DOCTOID D_FK;
+BEGIN
+
+
+    FOR SELECT ID FROM DOCTO WHERE CORTEID = :CORTEID  AND ESTATUSDOCTOID = 0 AND TIPODOCTOID = 62
+         INTO :DOCTOID
+    DO
+    BEGIN
+        SELECT ERRORCODE FROM RETIRO_CAJA_DELETE(:DOCTOID) INTO :ERRORCODE;
+        
+        IF (:ERRORCODE > 0) THEN
+        BEGIN
+            SUSPEND;
+             EXIT;
+        END
+    END
+
+   
+   SUSPEND;
+   
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1006;
+      SUSPEND;
+   END
+END

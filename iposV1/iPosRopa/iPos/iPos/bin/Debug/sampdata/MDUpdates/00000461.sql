@@ -1,0 +1,1 @@
+insert into derechos (dr_derecho, dr_descripcion) values (10006,'Descuento en compra');

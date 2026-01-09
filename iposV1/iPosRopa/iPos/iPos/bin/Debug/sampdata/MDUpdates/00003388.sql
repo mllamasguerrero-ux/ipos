@@ -1,0 +1,1 @@
+insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10060, 'Ver ventas cerradas y pendientes de un corte anterior');

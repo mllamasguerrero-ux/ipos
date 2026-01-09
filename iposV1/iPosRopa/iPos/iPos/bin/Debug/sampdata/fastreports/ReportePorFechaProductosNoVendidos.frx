@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/29/2016 17:38:59" ReportInfo.Modified="06/29/2016 20:25:06" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      TextBox1.Text = &quot;initial catalog=&quot; + ComboBox1.Text + &quot;;user id=sysdba;password=masterkey&quot;;
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9ug7iMvdF2FDN4g4BlbSpWFg=" ConnectionStringExpression="[conexion]">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select producto.id,&#13;&#10;producto.clave,&#13;&#10;producto.descripcion, &#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2, &#13;&#10;producto.existencia&#13;&#10;&#13;&#10;from producto&#13;&#10;  left join&#13;&#10;(&#13;&#10;select movto.productoid , sum(case when docto.tipodoctoid = 21 then coalesce(movto.cantidad,0) else coalesce(movto.cantidad,0) * -1 end) cantidad&#13;&#10; from docto&#13;&#10;inner join movto on docto.id = movto.doctoid&#13;&#10;where docto.fecha &gt;= @fechainicio and docto.fecha &lt;= @fechafin&#13;&#10;and docto.estatusdoctoid = 1&#13;&#10;and docto.tipodoctoid in (21,22) &#13;&#10;and coalesce(docto.subtipodoctoid,0) not in (7,8)&#13;&#10;group by movto.productoid&#13;&#10;having sum(case when docto.tipodoctoid = 21 then coalesce(movto.cantidad,0) else coalesce(movto.cantidad,0) * -1 end) &gt; 0&#13;&#10;)  t on producto.id = t.productoid&#13;&#10;where t.productoid is null  and coalesce(producto.existencia,0) &gt; 0&#13;&#10;&#13;&#10;&#13;&#10;group by&#13;&#10;producto.id,&#13;&#10;producto.clave,&#13;&#10;producto.descripcion, &#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2, &#13;&#10;producto.existencia&#13;&#10;&#13;&#10;order by producto.id">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="ID" DataType="System.Int64"/>
+        <CommandParameter Name="fechainicio" DataType="5" Expression="[fechainicio]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="conexion" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="CLAVE"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Text="DESCRIPCION"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Text="DESCRIPCION1"/>
+      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="18.9" Text="DESCRIPCION2"/>
+      <TextObject Name="Text10" Left="378" Width="94.5" Height="18.9" Text="EXISTENCIA"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="74.15" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.CLAVE]"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Text="[Table.DESCRIPCION]"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" Text="[Table.DESCRIPCION1]"/>
+      <TextObject Name="Text7" Left="283.5" Width="94.5" Height="18.9" Text="[Table.DESCRIPCION2]"/>
+      <TextObject Name="Text9" Left="378" Width="94.5" Height="18.9" Text="[Table.EXISTENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="97.05" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="514" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="342" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="425" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="36" Top="40" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fechainicio" FilterOperation="GreaterThanOrEqual" Value="06/29/2016 17:46:13"/>
+    <LabelControl Name="Label1" Left="36" Top="24" Width="57" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="fechainicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="36" Top="100" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="06/29/2016 17:46:17"/>
+    <LabelControl Name="Label2" Left="36" Top="84" Width="46" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="fechafin"/>
+    <LabelControl Name="Label3" Left="36" Top="144" Width="30" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="Ruta"/>
+    <ComboBoxControl Name="ComboBox1" Left="32" Top="164" Width="185" Font="Tahoma, 8pt" TabIndex="8" DropDownWidth="185" ItemHeight="13" ItemsText="C:\IposProject\iPosRopa\iPos\iPos\bin\Debug\sampdata\IPOSDB.fdb" SelectedIndexChangedEvent="ComboBox1_SelectedIndexChanged"/>
+    <TextBoxControl Name="TextBox1" Left="32" Top="200" Width="420" Visible="false" Font="Tahoma, 8pt" TabIndex="9" ReportParameter="conexion"/>
+  </DialogPage>
+</Report>

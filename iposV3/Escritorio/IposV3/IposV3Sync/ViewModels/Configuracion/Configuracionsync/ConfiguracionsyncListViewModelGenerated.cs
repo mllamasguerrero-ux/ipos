@@ -1,0 +1,57 @@
+
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Configuration;
+using System.Dynamic;
+using System.Net.Mime;
+using System.Windows;
+using System.Windows.Input;
+using BindingModels;
+using IposV3.Model;
+using IposV3.Model.Syncr;
+using Caliburn.Micro;
+using Controllers;
+using Controllers.Controller;
+using IposV3Sync.Controllers.Controller;
+using DataAccess;
+using Models;
+using ViewModels.BaseScreen;
+
+namespace IposV3Sync.ViewModels
+{
+
+    public class ConfiguracionsyncListViewModelGenerated : BaseListViewModel<ConfiguracionsyncBindingModel, IConfiguracionsyncControllerProvider, ConfiguracionsyncItemVMInitialParameters, ConfiguracionsyncListVMEventParameters, ConfiguracionsyncParam>
+    {
+
+
+        public ConfiguracionsyncListViewModelGenerated(IConfiguracionsyncControllerProvider provider, SelectorWebController selectorProvider, IWindowManager winManager, IEventAggregator aggregator, IMessageBoxService messageBoxService) :
+                            base(provider, selectorProvider, winManager, aggregator, messageBoxService)
+        {
+        }
+
+
+
+
+        protected override void preconfigureSearchParams()
+        {
+            KendoParams = new KendoParams("", "");
+        }
+
+        protected override object EditViewModel()
+        {
+            return IoC.Get<ConfiguracionsyncEditViewModel>();
+        }
+
+        protected override object ShowViewModel()
+        {
+            return IoC.Get<ConfiguracionsyncShowViewModel>();
+        }
+
+
+        protected override object AddViewModel()
+        {
+            return IoC.Get<ConfiguracionsyncAddViewModel>();
+        }
+    }
+}

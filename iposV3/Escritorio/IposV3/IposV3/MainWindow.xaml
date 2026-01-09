@@ -1,0 +1,56 @@
+﻿<Window x:Class="IposV3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IposV3"
+            xmlns:localCommon="clr-namespace:UICommon;assembly=UICommon"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="empresaViewSource"/>
+        <CollectionViewSource x:Key="sucursalesViewSource" 
+                              Source="{Binding Sucursales, Source={StaticResource empresaViewSource}}"/>
+    </Window.Resources>
+    <Grid>
+
+        <DataGrid x:Name="empresaDataGrid" AutoGenerateColumns="False" 
+          EnableRowVirtualization="True" 
+          ItemsSource="{Binding Source={StaticResource empresaViewSource}}" 
+          Margin="13,13,43,229" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Id}"
+                            Header="Empresa Id" Width="SizeToHeader"
+                            IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Clave}" Header="Clave" 
+                            Width="*"/>
+                <DataGridTextColumn Binding="{Binding Nombre}" Header="Nombre" 
+                            Width="*"/>
+                <DataGridTextColumn Binding="{Binding Descripcion}" Header="Descripcion" 
+                            Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="sucursalesDataGrid" AutoGenerateColumns="False" 
+          EnableRowVirtualization="True" 
+          ItemsSource="{Binding Source={StaticResource sucursalesViewSource}}" 
+          Margin="13,205,43,108" RowDetailsVisibilityMode="VisibleWhenSelected" 
+          RenderTransformOrigin="0.488,0.251">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding EmpresaId}" 
+                            Header="Empresa Id" Width="SizeToHeader"
+                            IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Id}" Header="Sucursal Id" 
+                            Width="SizeToHeader" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Clave}" Header="Clave" 
+                            Width="*"/>
+                <DataGridTextColumn Binding="{Binding Nombre}" Header="Nombre" 
+                            Width="*"/>
+                <DataGridTextColumn Binding="{Binding Descripcion}" Header="Descripcion" 
+                            Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Save" HorizontalAlignment="Center" Margin="0,240,0,0" 
+        Click="Button_Click" Height="20" Width="123"/>
+
+    </Grid>
+</Window>

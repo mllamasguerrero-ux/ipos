@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="Vb" DoublePass="true" ReportInfo.Created="08/28/2019 22:55:39" ReportInfo.Modified="04/19/2020 19:07:34" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>Imports System
+Imports System.Collections
+Imports System.Collections.Generic
+Imports System.ComponentModel
+Imports System.Windows.Forms
+Imports System.Drawing
+Imports Microsoft.VisualBasic
+Imports FastReport
+Imports FastReport.Data
+Imports FastReport.Dialog
+Imports FastReport.Table
+Imports FastReport.Barcode
+Imports FastReport.Utils
+
+Namespace FastReport
+  Public Class ReportScript
+
+
+    Private Sub Label1_Click(ByVal sender As object, ByVal e As EventArgs)
+      
+    End Sub
+  End Class
+End Namespace
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQqm2wB2cdmuGZUG0v6cod1M4=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;    sum(coalesce(cantidad,0)) cantidad,&#13;&#10;    clave,&#13;&#10;    descripcion1,&#13;&#10;&#13;&#10;    case&#13;&#10;        when  unidad = 'KG' then&#13;&#10;          cast(sum(cast(cantidad as numeric(18,3))) as varchar(20) )  || ' KG'&#13;&#10;        when unidad &lt;&gt; 'PZA' and unidad &lt;&gt; 'KG' then&#13;&#10;        cast(sum(cast(cantidad as numeric(18,2))) as varchar(20) )&#13;&#10;        when ( coalesce(pzacaja,0) = 0 or  coalesce(pzacaja,0) = 1 ) then&#13;&#10;         cast(sum(cast(cantidad as numeric(18,2))) as varchar(20) ) || ' PZAS'&#13;&#10;        else&#13;&#10;        cast(trunc( coalesce( sum(cast(cantidad as numeric(18,2))),0)/coalesce(pzacaja,1)) as varchar(20)) || ' cajas ' ||  cast(mod(coalesce(    sum(cast(cantidad as numeric(18,2)))   ,0),coalesce(pzacaja,1)) as varchar(10)) || ' piezas '&#13;&#10;    end   descpzacaja&#13;&#10;&#13;&#10;from&#13;&#10;(&#13;&#10;&#13;&#10;    select&#13;&#10;        cast(((case when d.tipodoctoid = 21 then 1 else -1 end) * COALESCE(movto.cantidad,0) * coalesce(kv.cantidadparte,1)) as numeric(18,4)) cantidad,&#13;&#10;        pkp.clave clave,&#13;&#10;        pkp.descripcion1 descripcion1,&#13;&#10;        pkp.unidad unidad   ,&#13;&#10;        pkp.pzacaja pzacaja&#13;&#10;    from movto&#13;&#10;        join producto p on movto.productoid =p.id&#13;&#10;        left join docto d on movto.doctoid = d.id&#13;&#10;        join guiadetalle on d.id = guiadetalle.doctoid&#13;&#10;        left join KITSUNNIVEL_VIEW  kv  on kv.productokitid = p.id   &#13;&#10;        left join producto  pkp  on kv.PRODUCTOPARTEID = pkp.id&#13;&#10;        where  movto.cantidad &gt; 0 and d.tipodoctoid in (21,22) and d.estatusdoctoid = 1 and guiadetalle.guiaid = @guia&#13;&#10;            AND coalesce(p.eskit,'N') = 'S'&#13;&#10;&#13;&#10;&#13;&#10;     union all&#13;&#10;&#13;&#10;     select&#13;&#10;        cast(((case when d.tipodoctoid = 21 then 1 else -1 end) * COALESCE(movto.cantidad,0) ) as numeric(18,4)) cantidad,&#13;&#10;        p.clave clave,&#13;&#10;        p.descripcion1 descripcion1,&#13;&#10;        p.unidad unidad   ,&#13;&#10;        p.pzacaja pzacaja&#13;&#10;    from movto&#13;&#10;        join producto p on movto.productoid =p.id&#13;&#10;        left join docto d on movto.doctoid = d.id&#13;&#10;        join guiadetalle on d.id = guiadetalle.doctoid&#13;&#10;    where  movto.cantidad &gt; 0 and d.tipodoctoid in (21,22) and d.estatusdoctoid = 1 and guiadetalle.guiaid = @guia&#13;&#10;        AND coalesce(p.eskit,'N') = 'N'&#13;&#10;&#13;&#10;   ) q&#13;&#10;   &#13;&#10;  group by&#13;&#10;  q.clave, q.descripcion1 , q.unidad,  q.pzacaja&#13;&#10;">
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCPZACAJA" DataType="System.String"/>
+        <CommandParameter Name="guia" DataType="1" Expression="[guia]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="guia" DataType="System.Int64"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text7" Width="94.5" Height="18.9" Text="Reporte de Guia" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text9" Left="94.5" Width="94.5" Height="18.9" Text="[guia]" Font="Arial, 8pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="718.2" Height="28.35">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Width="453.6" Height="18.9" Text="DESCRIPCION1" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="548.1" Width="132.3" Height="18.9" Text="DESCPZACAJA" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="74.15" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text3" Left="94.5" Width="453.6" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text5" Left="548.1" Width="132.3" Height="18.9" Text="[Table.DESCPZACAJA]" Font="Arial, 8pt, style=Bold"/>
+      <Sort>
+        <Sort Expression="[Table.DESCRIPCION1]"/>
+      </Sort>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="97.05" Width="718.2" Height="18.9">
+      <TextObject Name="Text8" Left="548.1" Width="132.3" Height="18.9" Text="[Page]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="62" Top="170" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="145" Top="170" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="2" Text="Cancelar" DialogResult="Cancel"/>
+    <LabelControl Name="Label1" Left="44" Top="60" Width="28" Height="13" Font="Tahoma, 8pt" TabIndex="2" Text="Guia" ClickEvent="Label1_Click"/>
+    <TextBoxControl Name="TextBox1" Left="80" Top="56" Font="Tahoma, 8pt" TabIndex="0" ReportParameter="guia" AcceptsReturn="true" AcceptsTab="true"/>
+  </DialogPage>
+</Report>

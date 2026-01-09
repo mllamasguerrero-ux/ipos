@@ -1,0 +1,791 @@
+
+<UserControl x:Class="IposV3.Views.ParametroListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+                xmlns:SfExt="clr-namespace:SyncfusionExt;assembly=UICommon"
+            xmlns:local="clr-namespace:IposV3"
+            xmlns:localCommon="clr-namespace:UICommon;assembly=UICommon"
+            xmlns:localCont="clr-namespace:Controls;assembly=UICommon"
+            xmlns:localConv="clr-namespace:Converters;assembly=UICommon"
+              xmlns:cbind="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ac="clr-namespace:AdornedControl;assembly=AdornedControl"
+             mc:Ignorable="d"
+             Name="CurrentUserControl"
+            Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.75'}" 
+            Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.75'}"
+             >
+
+    <UserControl.Resources>
+
+        <Style x:Key="customCellStyle" TargetType="Syncfusion:VirtualizingCellsControl">
+            <Setter Property="cal:Message.Attach" Value="[Event MouseDoubleClick] = [Action SelectItemByCell($dataContext)]"/>
+        </Style>
+
+        <Style x:Key="filterControlStyle" TargetType="Syncfusion:GridFilterControl">
+            <Setter Property="FilterMode" Value="AdvancedFilter" />
+        </Style>
+
+
+    </UserControl.Resources>
+
+    <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+        <StackPanel Name="ForePanel"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"   >
+            <localCont:MessageBoxV2 MessageToUser="{Binding MessageToUser}"  Width="10"  HorizontalAlignment="Right"/>
+            <ScrollViewer x:Name="ScrollViewerWrap" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" 
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=14*x/60}" MinHeight="50">
+                <WrapPanel Name="MainPanel"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" MinWidth="100" MinHeight="100" >
+                    <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"    >
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}">Parametro</TextBlock>
+                    </StackPanel>
+                    <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="Auto"  >
+                        <Label  Style="{DynamicResource LabelPanelHeaderTemplate}" VerticalAlignment="Top" Margin="10,1,10,0">Palabras Claves:</Label>
+                        <TextBox x:Name="TSTPalabrasClave" Margin="10,0,10,3" TextWrapping="Wrap" VerticalAlignment="Top"  Height="25"  Text="{Binding KendoParams.GeneralFilter.Value}"
+                         localCommon:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
+                          cal:Message.Attach="[Event KeyDown] = [Action TSTPalabrasClaveKeyDown($pressedKey)]"/>
+
+                    </StackPanel>
+                    <WrapPanel  MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"   >
+                        <Button x:Name="TSBBuscar" VerticalAlignment="Top" Width="43"  Height="30" Margin="10,30,10,0" Style="{StaticResource MaterialDesignIconButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="FileDocumentBoxSearchOutline"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="AddItem"   VerticalAlignment="Top" Width="43"  Margin="0,30,0,0" Height="30" 
+                                Style="{StaticResource MaterialDesignIconButton}"  Visibility="{cbind:Binding Path=AllowAdd}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Add"/>
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
+
+                </WrapPanel>
+            </ScrollViewer>
+
+
+
+            <ac:AdornedControl IsAdornerVisible="{Binding IsBusy}"
+		        >
+             <ac:AdornedControl.AdornerContent>
+                    <localCont:LoadingWait></localCont:LoadingWait>
+             </ac:AdornedControl.AdornerContent>
+
+             <Syncfusion:SfDataGrid x:Name="SfTableDataGridView" 
+                      ItemsSource="{Binding Items}" 
+                      RowStyle="{StaticResource customCellStyle}"
+                       AllowFiltering="True"
+                       FilterPopupStyle="{StaticResource filterControlStyle}"
+                      Margin="2,2,2,2"  AutoGenerateColumns="False" Background="#FFFFFFFF" IsReadOnly="True"  RowHeight="35" HorizontalAlignment="Left"   
+                                   MinWidth="100" Width="{Binding ElementName=MainScrollViewer, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=42*x/60}" MinHeight="150"  >
+
+                    <Syncfusion:SfDataGrid.Resources>
+                        <SfExt:BindingProxy x:Key="ProxyElement" Data="{Binding}"/>
+                    </Syncfusion:SfDataGrid.Resources>
+                 
+                    <Syncfusion:SfDataGrid.Columns>
+
+                        <Syncfusion:GridTemplateColumn  AllowFocus="False"  Width="50" IsHidden="{cbind:Binding Source={StaticResource ProxyElement}, Path=!Data.AllowShow}">
+                        <Syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="35" cal:Message.Attach="[Event Click]=[ShowItem($dataContext)]"  Style="{StaticResource MaterialDesignIconButton}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Eye"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </Syncfusion:GridTemplateColumn.CellTemplate>
+                    </Syncfusion:GridTemplateColumn>
+                        <Syncfusion:GridTemplateColumn  AllowFocus="False" Width="50" IsHidden="{cbind:Binding Source={StaticResource ProxyElement}, Path=!Data.AllowEdit}" >
+                        <Syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="35"  cal:Message.Attach="[Event Click]=[Edititem($dataContext)]" Style="{StaticResource MaterialDesignIconButton}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Edit"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </Syncfusion:GridTemplateColumn.CellTemplate>
+                    </Syncfusion:GridTemplateColumn>
+
+
+                    <Syncfusion:GridTextColumn  MappingName="Lista_precio_def" HeaderText="Lista precio" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Imp_prod_def" HeaderText="Impuesto" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Estado_def" HeaderText="Estado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fechaultima" HeaderText="Ultima fecha" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Id_dosletras" HeaderText="Id Pedidos" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habilitar_impexp_aut" HeaderText="Hab. Imp. Exp, Aut." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cambiarprecio" HeaderText="Cambiar precio" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Hab_sel_cliente" HeaderText="Hab. Sel. cliente" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Hab_impr_cotizacion" HeaderText="Imprimir cotizacion" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Mostrar_exis_suc" HeaderText="Mostrar exist. suc." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Req_aprobacion_inv" HeaderText="Req. Aprobacion inventario" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Reabrircortes" HeaderText="Reabrir cortes" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Imp_prod_total" HeaderText="Imp. Total de prod." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Prefijobascula" HeaderText="Prefijo bascula" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Longprodbascula" HeaderText="Long. Prod. Bascula" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Longpesobascula" HeaderText="Long. Peso bascula" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listaprecioinimayo" HeaderText="Lista mayoreo X peso" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listaprecioinimayo_Clave" HeaderText="Lista mayoreo X peso clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listaprecioinimayo_Nombre" HeaderText="Lista mayoreo X peso nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Hayvendedorpiso" HeaderText="Hay vendedor piso" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Envioautomaticoexistencias" HeaderText="Envio Aut. Existencias" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cortepormail" HeaderText="Corte por mail" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Preguntarrazonpreciomenor" HeaderText="Preg. X precio bajo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutaimagenesproducto" HeaderText="Ruta imágenes" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Mostrarimagenenventa" HeaderText="Mostrar foto prod." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Prefijocliente" HeaderText="Prefijo cliente" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Dividir_rem_fact" HeaderText="Dividir rem de factura" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Minutilidad" HeaderText="Utilidad minima" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejasuperlistaprecio" HeaderText="Super lista de precios" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejaalmacen" HeaderText="Maneja almacen" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Tipodescuentoprodid" HeaderText="Manejo desc. Prod." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="TipodescuentoprodClave" HeaderText="Manejo desc. Prod. Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="TipodescuentoprodNombre" HeaderText="Manejo desc. Prod. Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejareceta" HeaderText="Maneja receta" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habilitarlog" HeaderText="Hab. Bitacora" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Preguntacancelacotizacion" HeaderText="Preg. Cancelar cotiz. Al salir de venta" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ventasxcorteemail" HeaderText="Ventas de corte por mail" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habventasafuturo" HeaderText="Hab. Ventas a futuro" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Agrupacionventaid" HeaderText="Agrupacion en la venta" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="AgrupacionventaClave" HeaderText="Agrupacion en la venta Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="AgrupacionventaNombre" HeaderText="Agrupacion en la venta Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Soloabonoaplicado" HeaderText="Cheques postfechados" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habfondodinamico" HeaderText="Corte con fondo dinamico" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habventaclisuc" HeaderText="Ventas directas a clientes de suc" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ftphost" HeaderText="Ftp host" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ftpusuario" HeaderText="Ftp usuario" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ftppassword" HeaderText="Ftp password" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Smtphost" HeaderText="Smtp host" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Smtpusuario" HeaderText="Smtp usuario" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Smtppassword" HeaderText="Smtp password" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Smtpport" HeaderText="Smtp port" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Smtpmailfrom" HeaderText="Mail fuente" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Smtpmailto" HeaderText="Mail destino" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ftpfolder" HeaderText="FTP Carpeta" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ftpfolderpass" HeaderText="FTP Carpeta serial" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutareportes" HeaderText="Ruta reportes pers." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Smtpssl" HeaderText="SMTP SSL" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fact_elect_folder" HeaderText="Ruta factura electronica" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Pedidos_folder" HeaderText="Ruta pedidos" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Webservice" HeaderText="Webservice" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Localftphost" HeaderText="Local host" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Localwebservice" HeaderText="Local webservice" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Usarconexionlocal" HeaderText="Usar conexión local" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Mailtoinventario" HeaderText="Mail inventario" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutarespaldoszip" HeaderText="Ruta respaldos movil" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habilitarrepl" HeaderText="Replicacion activa" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Bdlocalrepl" HeaderText="Conexion BD replicacion local" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutareportessistema" HeaderText="Ruta reportes sistemas" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutarespaldo" HeaderText="Ruta respaldo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Mailejecutivo" HeaderText="Mail ejecutivo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutaarchivosadjuntos" HeaderText="Ruta archivos adjuntos" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habmensajeria" HeaderText="Hab. Mensajeria" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Wsmensajeria" HeaderText="WS. Mensajeria" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Unicavisitapordocto" HeaderText="Unica visita por DOCTO" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutadbfexistenciasuc" HeaderText="Ruta DBF Existencias suc." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Hab_devoluciontraslado" HeaderText="Hab. Envio devo. Trasla." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Hab_devolucionsurtidosuc" HeaderText="Hab. Envio devo. PM." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Versionwsexistencias" HeaderText="Version ws existencias" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Wsespecialexistmatriz" HeaderText="Webservice Esp. Matriz" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutareplicadorexe" HeaderText="Ruta replicador .EXE" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutacatalogosupd" HeaderText="Ruta importacion catalogo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutaimportadatos" HeaderText="Ruta importacion traslados" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Header" HeaderText="Texto encabezado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Footer" HeaderText="Texto al pie" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Footerventaapartado" HeaderText="Texto footer venta apartado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Imprimirnumeropiezas" HeaderText="Imprimir cantidad total" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Doblecopiacredito" HeaderText="# de tickets Cred" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Doblecopiatraslado" HeaderText="# de tickets en traslados" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Recibolargoconfactura" HeaderText="Ticket junto con factura?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Recibolargoprinter" HeaderText="Impresora ticket largo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Recibolargopreview" HeaderText="Mostrar previo (ticket largo)" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Preguntardatosentrega" HeaderText="Preguntar datos de entrega?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Mostrarmontoahorro" HeaderText="Mostrar monto de ahorro" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Mostrardescuentofactura" HeaderText="Mostrar descuent en fact" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Uiventaconcantidad" HeaderText="UI Ingresar cantidad en la venta" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Mostrarpzacajaenfactura" HeaderText="Mostrar pza/caja en fact." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ordenimpresion" HeaderText="Orden impresion" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Promoenticket" HeaderText="Promocion en ticket?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Tamanoletraticket" HeaderText="Letra en ticket?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Pendmaxdias" HeaderText="Dias de ventas pendientes" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Reqautcancelarcoti" HeaderText="Req. Aut. Cancelar coti." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Reqautelimdetallecoti" HeaderText="Req. Aut. Elim. Detalle Coti." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Abrircajonalfincorte" HeaderText="Abrir cajon al cierre corte" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Doblecopiaremision" HeaderText="Doble impr. remision (r. largo)?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Reimpresionesconmarca" HeaderText="Reimpr. r. largo con marca?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habimpresioncortecajero" HeaderText="Cualquier cajero imprime su corte" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habtrasladoporautorizacion" HeaderText="Hab traslado por autorizacion" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habventasmostrador" HeaderText="Hab ventas mostrador" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Precioajustedifinv" HeaderText="Precio ajuste de diferencias invent." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ticketespecial" HeaderText="Ticket especial" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ticketdefaultprinter" HeaderText="Impresora default ticket" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Recargasdefaultprinter" HeaderText="Impresora default recargas" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Piezacajaenticket" HeaderText="Mostrar pza/caja en ticket" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Numticketsabono" HeaderText="Copias por ticket de abono" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Imprimircopiaalmacen" HeaderText="Imprimir copia almacen" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Doblecopiacontado" HeaderText="# de tickets en contado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Imprimirbancoscorte" HeaderText="Imp. Bancos en corte caja" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Pagotarjmenorpreciolistaall" HeaderText="Imp. canc de remisiones" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Imprformaventatrasl" HeaderText="Formato venta en traslado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Recibolargocotiprinter" HeaderText="Imp. ticket cotizacion largo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Doblecopiatarjeta" HeaderText="# de tickets tarj" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cantticketretiro" HeaderText="# de tickets retiro" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cantticketabrircorte" HeaderText="# de tickets abrir corte" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cantticketcompras" HeaderText="# de tickets compras" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cantticketfondocaja" HeaderText="# de tickets fondo caja" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cantticketgastos" HeaderText="# de tickets gastos" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cantticketdepositos" HeaderText="# de tickets deposito" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cantticketcierrecorte" HeaderText="# de tickets cierre corte" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cantticketcierrebilletes" HeaderText="# de tickets cierre billetes" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ticket_desc_vale_al_final" HeaderText="Descuento Vale hasta el final" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ticket_impr_desc2" HeaderText="Ticket impr descripcion 2" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Comisionmedico" HeaderText="Comision medico" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Comisiondependiente" HeaderText="Comision dependiente" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Encargadoid" HeaderText="Encargado de la tienda" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EncargadoClave" HeaderText="Encargado de la tienda clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EncargadoNombre" HeaderText="Encargado de la tienda nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Porc_comisionencargado" HeaderText="Porc. Comision encargado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Porc_comisionvendedor" HeaderText="Porc. Comision vendedor" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cambiarprecioxuempaque" HeaderText="C.Precio X Empaque" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cambiarprecioxpzacaja" HeaderText="C. precio X Pieza caja" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listaprecioxuempaque" HeaderText="C.Precio X Empaque Lista precio" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listaprecioxuempaque_Clave" HeaderText="C.Precio X Empaque Lista precio Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listaprecioxuempaque_Nombre" HeaderText="C.Precio X Empaque Lista precio Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listaprecioxpzacaja" HeaderText="C. precio X Pieza caja Lista Precio" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listaprecioxpzacaja_Clave" HeaderText="C. precio X Pieza caja Lista Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listaprecioxpzacaja_Nombre" HeaderText="C. precio X Pieza caja Lista Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Tipoutilidadid" HeaderText="Tipo utilidad" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="TipoutilidadClave" HeaderText="Tipo utilidad clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="TipoutilidadNombre" HeaderText="Tipo utilidad nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejaquota" HeaderText="Maneja Quota" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejarretirodecaja" HeaderText="Maneja retiros de caja" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Montoretirocaja" HeaderText="Monto para retiro de caja" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Aplicarmayoreoporlinea" HeaderText="Mayoreo por linea" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Comisionportarjeta" HeaderText="Comision por pago con tarjeta (afecta precios)" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Piezasigualesmediomayoreo" HeaderText="Piezas iguales medio mayoreo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Piezasdifmediomayoreo" HeaderText="Piezas dif. Medio mayoreo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Piezasigualesmayoreo" HeaderText="Piezas iguales mayoreo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Piezasdifmayoreo" HeaderText="Piezas diferentes mayoreo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Comisiontarjetaempresa" HeaderText="Comision pago con tarj/cred(afecta poliza)" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ivacomisiontarjetaempresa" HeaderText="IVA X Comision tarjeta (afecta poliza)" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Montomaxsaldomenor" HeaderText="Maximo P/Saldar saldos menores" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Preguntarsiesacredito" HeaderText="Preguntar si la venta es a credito durante captura" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Intentosretirocaja" HeaderText="Intentos aut. Retiros caja" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Pago_tarjmenorpreciolista" HeaderText="C/tarj. &lt; prec. Lista" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Retirocajaalcerrarcorte" HeaderText="Preguntar si se hace retiro de caja en corte" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Preguntarservdom" HeaderText="Preguntar si es serv. dom." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Versioncomisionid" HeaderText="Version comision" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Maxcomisionxcliente" HeaderText="Max. comision x cliente" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Comisiondebtarjetaempresa" HeaderText="Comision pago con tarj/deb(afecta poliza)" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Comisiondebportarjeta" HeaderText="Com. por pago con tarjeta Deb. ( af. prec)" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Factconsmaxpor" HeaderText="Max. % fact. cons." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listapreciominimo" HeaderText="Precio minimo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listapreciominimo_Clave" HeaderText="Precio minimo clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Listapreciominimo_Nombre" HeaderText="Precio minimo nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cortacaducidad" HeaderText="Dias para considerar caducidad proxima" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Autocompprod" HeaderText="Autocomplete" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cajasbotellas" HeaderText="Cajas/Botellas" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Precionetoenpv" HeaderText="Precio neto en venta?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Mostrarflash" HeaderText="Mostrar animacion" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Autocompcliente" HeaderText="Autocomplete clientes" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Precioxcajaenpv" HeaderText="Precio x caja en venta?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejakits" HeaderText="Maneja kits" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rebajaespecial" HeaderText="Maneja rebaja por nota de credito" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Recalcularcambiocliente" HeaderText="Recalcular venta al cambiar cliente" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habsurtidopostpuesto" HeaderText="Permitir surtido en almacen" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habverificacioncxc" HeaderText="Verificar CXC antes de surtido" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habpromoxmontomin" HeaderText="Hab. promo. x linea x monto min" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Preciosordenados" HeaderText="Precios de producto orden descendente" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Decimalesencantidad" HeaderText="Numero de decimales en cantidad" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Eanpuederepetirse" HeaderText="Permitir codigo de barras repetido" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Hab_precioscliente" HeaderText="Permitir precio por cliente" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cxcvalidartraslados" HeaderText="Verificar CXC para traslados" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Caducidadminima" HeaderText="Caducidad mínima para compra" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Plazoxproducto" HeaderText="Plazos por producto" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Autocompleteconexisenventa" HeaderText="AutoComplete con existencia" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Almacenrecepcionid" HeaderText="Almacen recepcion traslados" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="AlmacenrecepcionClave" HeaderText="Almacen recepcion traslados Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="AlmacenrecepcionNombre" HeaderText="Almacen recepcion traslados Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Aplicarcambiosprecauto" HeaderText="Actualizar precios automaticamente" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Numcancelactauto" HeaderText="Cancelaciones por actualizacion de catalogos" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Precionetoengrids" HeaderText="Precio neto en grids?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Busquedatipo2" HeaderText="Busqueda Tipo 2" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Versiontopeid" HeaderText="Version rebaja por nota de credito" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habrevisionfinal" HeaderText="Hab. revision final" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejautilidadprecios" HeaderText="Maneja util/prec" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habmultplazocompra" HeaderText="Hab. Plazos Compra" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Costorepoigualcostoult" HeaderText="Costo repo = Costo ult?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habsurtidoprevio" HeaderText="Hab. Surtido previo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fiscalcalle" HeaderText="Calle" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fiscalnumerointerior" HeaderText="#I" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fiscalnumeroexterior" HeaderText="#E" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fiscalcolonia" HeaderText="Colonia" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fiscalmunicipio" HeaderText="Municipio" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fiscalestado" HeaderText="Estado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fiscalcodigopostal" HeaderText="C.P" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Certificadocsd" HeaderText="Cert. CSD" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Timbradouser" HeaderText="Tim. Usuario" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Timbradopassword" HeaderText="Cert. Pass." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Timbradoarchivocertificado" HeaderText="Archivo cer" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Timbradoarchivokey" HeaderText="Archivo key" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Timbradokey" HeaderText="Tim. Key" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fiscalnombre" HeaderText="Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Seriesat" HeaderText="Serie facturas" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Usarfiscalesenexpedicion" HeaderText="Usar datos fiscales como datos de expedicion en factura electronica" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Hab_facturaelectronica" HeaderText="Hab. Factura electronica" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Seriesatdevolucion" HeaderText="Serie devoluciones" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Pacnombre" HeaderText="Nombre pac" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Pacusuario" HeaderText="Usuario pac" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fiscalregimen" HeaderText="Regimen" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Retencioniva" HeaderText="Retencion IVA" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Retencionisr" HeaderText="Retencion ISR" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Arrendatario" HeaderText="Es arrendatario?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Desgloseieps" HeaderText="Maneja IEPS" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Cuentaieps" HeaderText="Cuenta IEPS" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Clienteconsolidadoid" HeaderText="Cliente cons." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="ClienteconsolidadoClave" HeaderText="Cliente cons. Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="ClienteconsolidadoNombre" HeaderText="Cliente cons. Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Seriesatabono" HeaderText="Serie abonos" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Formatofactelect" HeaderText="Formato F.E." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Sat_metodopagoid" HeaderText="Metodo pago" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Sat_metodopagoClave" HeaderText="Metodo pago clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Sat_metodopagoNombre" HeaderText="Metodo pago nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Sat_regimenfiscalid" HeaderText="Regimen" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Sat_regimenfiscalClave" HeaderText="Regimen clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Sat_regimenfiscalNombre" HeaderText="Regimen nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Versioncfdi" HeaderText="Version CFDI" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Pagoservconsolidado" HeaderText="Incluir pago de servicios en consolidado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Generarfe" HeaderText="Generar Factura Electronica por Default" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Desgloseiepsfactura" HeaderText="Desglosar IEPS en fact consolidada" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Fiscalfechacancelacion2" HeaderText="Fecha ultimo esquema" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Seriecomprtraslsat" HeaderText="Serie compr. trasl." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Descuentovale" HeaderText="% Descuento vale" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Monederomontominimo" HeaderText="Monto minimo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Monederoaplicar" HeaderText="Habilitar promociones en monedero" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Monederocaducidad" HeaderText="Dias de vigencia" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Multipletipovale" HeaderText="Permitir otros descuentos" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Descuentotipo1texto" HeaderText="Otros descuentos 1" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Descuentotipo1porc" HeaderText="Otros descuentos 1 porc" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Descuentotipo2texto" HeaderText="Otros descuentos 2" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Descuentotipo2porc" HeaderText="Otros descuentos 2 porc" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Descuentotipo3texto" HeaderText="Otros descuentos 3" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Descuentotipo3porc" HeaderText="Otros descuentos 3 porc" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Descuentotipo4texto" HeaderText="Otros descuentos 4" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Descuentotipo4porc" HeaderText="Otros descuentos 3 porc" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Bancomerhabpinpad" HeaderText="Bancomer Habilitar PinPad" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habdesclineapersona" HeaderText="Descuento Linea Persona" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejarloteimportacion" HeaderText="Manejar lote importacion" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejagastosadic" HeaderText="Maneja gastos adicionales" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habbotonpagovale" HeaderText="Habilitar Boton Pago con Vale" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejacupones" HeaderText="Maneja Cupones" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Manejaproductospromocion" HeaderText="Maneja promocion de productos" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Tiposeleccioncatalogosat" HeaderText="Filtrar productos SAT por" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Hab_consolidadoautomatico" HeaderText="Facturacion consolidada automatica" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Consfactomitirvales" HeaderText="Omitir vales en facturacion autom." ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutapolizapdf" HeaderText="Ruta de exportacion poliza pdf" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Monederolistaprecioid" HeaderText="Lista precio min. Monedero" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="MonederolistaprecioClave" HeaderText="Lista precio min. Monedero Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="MonederolistaprecioNombre" HeaderText="Lista precio min. Monedero Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Monederocamporef" HeaderText="Campo promo monedero" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Camposcustomalimportar" HeaderText="Al importar ver campos personalizados" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Exportcatalogoaux" HeaderText="Exportar catalogos junto a los pedidos y traslados?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habtotalizados" HeaderText="Habilitar totalizacion para reporteo" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Mostrarinvinfoadicprod" HeaderText="Mostrar datos adicionales de producto en inventario?" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Pvcolorear" HeaderText="Modo alerta en punto de venta" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Porcutilidadlistado" HeaderText="% utilidad en listado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Touch" HeaderText="Touch" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Esvendedormovil" HeaderText="Es vendedor movil" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Tiposyncmovil" HeaderText="Tipo sync movil" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Pendmovilantesventa" HeaderText="(Movil) Enviar pendientes antes de venta" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Preciosmovilantesventa" HeaderText="(Movil) Actualizar precios antes de venta" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Bdserverws" HeaderText="Conexión BD en webservice movil" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Bdmatrizmovil" HeaderText="Conexión BD a la matriz" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Movilverificarventa" HeaderText="Verificar venta móvil (Default)" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Vendedormovilclave" HeaderText="Vendedor asociado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Movil_tienevendedores" HeaderText="Tiene vendedores moviles" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Movil3_preimportar" HeaderText="Movil3 Pre-Importar" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Destinobdvenmov" HeaderText="Destino Movil3 Pre-Importar" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habsurtidopostmovil" HeaderText="Permitir surtido en almacen (movil)" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Serviciosemida" HeaderText="Emida recargas" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Timeoutpindistsale" HeaderText="TimeOut PinDistSale" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Timeoutlookup" HeaderText="TimeOut LookUp" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Timeoutpindistsaleserv" HeaderText="TimeOut PinDistSale Servicios" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habpagoservemida" HeaderText="Emida pago de servicios" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Emidarecargalineaid" HeaderText="Linea recarga" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidarecargalineaClave" HeaderText="Linea recarga Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidarecargalineaNombre" HeaderText="Linea recarga Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Emidarecargamarcaid" HeaderText="Marca recarga" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidarecargamarcaClave" HeaderText="Marca recarga Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidarecargamarcaNombre" HeaderText="Marca recarga Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Emidarecargaproveedorid" HeaderText="Proveedor recarga" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidarecargaproveedorClave" HeaderText="Proveedor recarga Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidarecargaproveedorNombre" HeaderText="Proveedor recarga Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Emidaserviciolineaid" HeaderText="Linea servicio" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidaserviciolineaClave" HeaderText="Linea servicio Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidaserviciolineaNombre" HeaderText="Linea servicio Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Emidaserviciomarcaid" HeaderText="Marca servicio" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidaserviciomarcaClave" HeaderText="Marca servicio Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidaserviciomarcaNombre" HeaderText="Marca servicio Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Emidaservicioproveedorid" HeaderText="Proveedor servicio" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidaservicioproveedorClave" HeaderText="Proveedor servicio Clave" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="EmidaservicioproveedorNombre" HeaderText="Proveedor servicio Nombre" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Emidaporcutilidadrecargas" HeaderText="% Utilidad recargas" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Emidautilidadpagoservicios" HeaderText="Utilidad pago servicio" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Ipwebserviceappinv" HeaderText="IP APP Inventario" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Rutabdappinventaro" HeaderText="RUTA BD APP Inventario" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habppc" HeaderText="Habilitar Pago Por Proveedor Centralizado" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Segundoscicloftp" HeaderText="Numero de segundos de espera envio" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Diasmaxexpftp" HeaderText="Dias maximo registros exportar" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Diasmaximpftp" HeaderText="Dias maximo registros importar" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Wsdbf" HeaderText="Webservice" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Habwsdbf" HeaderText="Habilitar envio por webservice" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Numticketscomanda" HeaderText="# copias comanda" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Recibopreviewcomanda" HeaderText="Vista previa comanda" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Impresoracomanda" HeaderText="Impresora default comanda" ColumnSizer="SizeToHeader"/>
+
+                </Syncfusion:SfDataGrid.Columns>
+              </Syncfusion:SfDataGrid>
+            </ac:AdornedControl>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

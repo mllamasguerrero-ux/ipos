@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/23/2017 11:31:37" ReportInfo.Modified="09/03/2017 16:00:22" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary/>
+  <ReportPage Name="Page1" PaperWidth="160">
+    <ReportTitleBand Name="Title" Width="529.2"/>
+    <PageHeaderBand Name="Header" Top="4" Width="529.2">
+      <ChildBand Name="Child01" Top="8" Width="529.2" Height="122.85">
+        <TextObject Name="Text4" Left="-9.45" Top="103.95" Width="529.2" Height="18.9" />
+        <TextObject Name="Text14" Left="179.55" Top="66.15" Width="340.2" Height="37.8" Text="[nombreSucursal]" Font="Arial, 28pt, style=Bold"/>
+        <TextObject Name="Text29" Left="-9.45" Top="47.25" Width="529.2" Height="18.9" />
+        <TextObject Name="headerReportText" Left="9.45" Width="189" Height="47.25" Text="IMAGEN" HorzAlign="Center" Font="Comic Sans MS, 28pt, style=Underline"/>
+        <ChildBand Name="Child2" Top="134.85" Width="529.2" Height="94.5">
+          <TextObject Name="Text15" Left="9.45" Top="75.6" Width="122.85" Height="18.9" Text="Atendido por" Font="Arial, 14pt"/>
+          <TextObject Name="Text17" Left="160.65" Top="75.6" Width="122.85" Height="18.9" Text="[3]"/>
+          <TextObject Name="headerPageText" Left="9.45" Top="37.8" Width="122.85" Height="18.9" Text="Fecha" Font="Arial, 14pt"/>
+          <TextObject Name="Text16" Left="160.65" Top="37.8" Width="122.85" Height="18.9" Text="[2]"/>
+          <TextObject Name="Text18" Left="311.85" Top="37.8" Width="122.85" Height="18.9" Text="Hora" Font="Arial, 14pt"/>
+          <TextObject Name="Text19" Left="453.6" Top="37.8" Width="122.85" Height="18.9" Text="[4]"/>
+          <TextObject Name="detailText" Left="9.45" Width="122.85" Height="18.9" Text="Tienda" Font="Arial, 14pt"/>
+          <TextObject Name="footerText" Left="160.65" Width="122.85" Height="18.9" Text="[1]"/>
+          <ChildBand Name="Child1_0M0listaDetalles" Top="233.35" Width="529.2" Height="56.7">
+            <TextObject Name="Text1" Left="9.45" Top="28.35" Width="122.85" Height="18.9" Text="[cantidad]"/>
+            <TextObject Name="Text2" Left="170.1" Top="28.35" Width="349.65" Height="18.9" Text="[descripcion]"/>
+            <TextObject Name="Text3" Left="9.45" Width="122.85" Height="18.9" Text="[codigo]" HorzAlign="Right" Font="Arial, 10pt, style=Bold"/>
+            <TextObject Name="Text20" Left="170.1" Width="122.85" Height="18.9" Text="[precio1]"/>
+            <TextObject Name="Text21" Left="311.85" Width="103.95" Height="18.9" Text="[precio2]"/>
+            <ChildBand Name="Child3" Top="294.05" Width="529.2" Height="255.15">
+              <TextObject Name="Text13" Left="274.05" Top="236.25" Width="122.85" Height="18.9" Text="[14]"/>
+              <TextObject Name="Text6" Left="56.7" Top="207.9" Width="122.85" Height="18.9" Text="[12]"/>
+              <TextObject Name="Text11" Left="274.05" Top="207.9" Width="122.85" Height="18.9" Text="[13]"/>
+              <TextObject Name="Text27" Left="56.7" Top="170.1" Width="122.85" Height="18.9" Text="Cambio"/>
+              <TextObject Name="Text28" Left="274.05" Top="170.1" Width="122.85" Height="18.9" Text="[10]"/>
+              <TextObject Name="Text25" Left="56.7" Top="132.3" Width="179.55" Height="18.9" Text="Dinero recibido"/>
+              <TextObject Name="Text26" Left="274.05" Top="132.3" Width="122.85" Height="18.9" Text="[9]"/>
+              <TextObject Name="Text23" Left="56.7" Top="94.5" Width="122.85" Height="18.9" Text="Descuento"/>
+              <TextObject Name="Text24" Left="274.05" Top="94.5" Width="122.85" Height="18.9" Text="[8]"/>
+              <TextObject Name="Text5" Left="56.7" Top="66.15" Width="122.85" Height="18.9" Text="Total"/>
+              <TextObject Name="Text22" Left="274.05" Top="66.15" Width="122.85" Height="18.9" Text="[7]"/>
+              <TextObject Name="Text9" Left="56.7" Top="37.8" Width="122.85" Height="18.9" Text="IVA"/>
+              <TextObject Name="Text10" Left="274.05" Top="37.8" Width="122.85" Height="18.9" Text="[6]"/>
+              <TextObject Name="Text7" Left="56.7" Top="9.45" Width="122.85" Height="18.9" Text="Subtotal" HorzAlign="Right"/>
+              <TextObject Name="Text8" Left="274.05" Top="9.45" Width="122.85" Height="18.9" Text="[5]"/>
+            </ChildBand>
+          </ChildBand>
+        </ChildBand>
+      </ChildBand>
+    </PageHeaderBand>
+    <DataBand Name="Data" Top="553.2" Width="529.2"/>
+    <PageFooterBand Name="Footer" Top="557.2" Width="529.2"/>
+  </ReportPage>
+</Report>

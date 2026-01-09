@@ -1,0 +1,18 @@
+CREATE INDEX SAT_ADUANA_IDX1
+ON SAT_ADUANA (SAT_CLAVEADUANA)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

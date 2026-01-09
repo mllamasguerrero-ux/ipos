@@ -1,0 +1,685 @@
+create or alter procedure KIT_OBTENREFERENCIA (
+    DOCTOIDPARALLENAR D_FK,
+    MOVTOIDPARALLENAR D_FK)
+returns (
+    DETALLEKITCANTIDAD D_CANTIDAD,
+    DETALLEKITTASAIVA D_PORCENTAJE,
+    DETALLEKITTASAIEPS D_PORCENTAJE,
+    DETALLEKITTASAIMPUESTO D_PORCENTAJE,
+    DETALLEKITTOTAL D_PRECIO,
+    DETALLEKITSUBTOTAL D_PRECIO,
+    DETALLEKITIVA D_PRECIO,
+    DETALLEKITIEPS D_PRECIO,
+    DETALLEKITPRECIO D_PRECIO,
+    DETALLEKITPRECIOLISTA D_PRECIO,
+    DETALLEKITPRODUCTOID D_FK,
+    DETALLEKITBASEIVA D_PRECIO,
+    DETALLEKITBASEIEPS D_PRECIO,
+    PRORRATEO numeric(18,4),
+    TASAIEPSPARTE D_DECIMAL_EXACT,
+    TASAIVAPARTE D_DECIMAL_EXACT,
+    TASACOSTOTOTALPARTE D_DECIMAL_EXACT,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable DOCTOIDFORKIT D_FK;
+declare variable MOVTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable CAJAID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PRODUCTOID D_FK;
+declare variable LOTE D_LOTE;
+declare variable FECHAVENCE D_FECHAVENCE;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable CANTIDADSURTIDA D_CANTIDAD;
+declare variable CANTIDADFALTANTE D_CANTIDAD;
+declare variable CANTIDADDIFERENCIA D_CANTIDAD;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable FALTANTES integer;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable COSTO D_COSTO;
+declare variable SUCURSALTID D_FK;
+declare variable ALMACENTID D_FK;
+declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable PERSONAID D_FK;
+declare variable VENDEDORID D_FK;
+declare variable DESCRIPCION1 D_STDTEXT_64;
+declare variable DESCRIPCION2 D_STDTEXT_64;
+declare variable DESCRIPCION3 D_STDTEXT_64;
+declare variable TIPODOCTOIDFORKIT D_FK;
+declare variable ORIGENFISCALID D_FK;
+declare variable MOVTOREFID D_FK;
+declare variable CUENTAKITS integer;
+declare variable CANTIDADFINAL D_CANTIDAD;
+declare variable SUMATOTALCOSTOCONIMPUESTO D_PORCENTAJE;
+declare variable TOTAL D_PRECIO;
+declare variable SUBTOTAL D_PRECIO;
+declare variable DOCTOREFID D_FK;
+declare variable DOCTOREFKITID D_FK;
+declare variable MOVTOPARENTREFID D_FK;
+declare variable DOCTOKITPARENTREFID D_FK;
+declare variable SENTIDOINVENTARIO D_SENTIDO;
+declare variable LOTEIMPORTADO D_FK;
+declare variable SUMACOSTOTOTALSINIMPUESTO D_DECIMAL_EXACT;
+declare variable EXTKITSUBTOTAL D_DECIMAL_EXACT;
+declare variable EXENTOIVA D_BOOLCN;
+declare variable DOCTOKITCURRENTREFID D_FK;
+declare variable SUMACANTIDADPARTE D_CANTIDAD;
+declare variable SUMAIEPS D_PRECIO;
+declare variable SUMAIVA D_PRECIO;
+declare variable TOTALCALCULADO D_PRECIO;
+declare variable MAXIEPS D_PRECIO;
+declare variable MAXIVA D_PRECIO;
+declare variable DIFCALCULADO D_PRECIO;
+declare variable IEPSTOAJUSTAR D_PRECIO;
+declare variable IVATOAJUSTAR D_PRECIO;
+declare variable IMPUESTOAJUSTADO D_BOOLCN;
+declare variable TOTALPRECALCULADO D_PRECIO;
+declare variable TASAIEPSEXT D_DECIMAL_EXACT;
+declare variable TASAIVAEXT D_DECIMAL_EXACT;
+declare variable DESGLOSEIEPS D_BOOLCN;
+BEGIN
+
+   ERRORCODE = 0;
+   MOVTOPARENTREFID = 0;
+   DOCTOKITPARENTREFID = 0;
+
+
+   SELECT TIPODOCTOID, ESTATUSDOCTOID  , ALMACENID, SUCURSALID, CAJAID, PERSONAID  ,VENDEDORID, ORIGENFISCALID , TIPODOCTO.sentidoinventario
+   FROM DOCTO LEFT JOIN TIPODOCTO ON DOCTO.TIPODOCTOID = TIPODOCTO.ID
+   WHERE DOCTO.ID = :DOCTOIDPARALLENAR
+   INTO :TIPODOCTOID, :ESTATUSDOCTOID ,:ALMACENID, :SUCURSALID, :CAJAID, :PERSONAID, :VENDEDORID, :ORIGENFISCALID, :SENTIDOINVENTARIO;
+
+   
+   IF ((:DOCTOIDPARALLENAR IS NULL) OR (:DOCTOIDPARALLENAR = 0)) THEN
+   BEGIN
+      ERRORCODE = 1073;
+      --SUSPEND;
+      EXIT;
+   END
+
+
+
+   -- Interceptar docto no existente
+   IF ((:TIPODOCTOID IS NULL) OR (:ESTATUSDOCTOID IS NULL)) THEN
+   BEGIN
+      ERRORCODE = 10710;
+      --SUSPEND;
+      EXIT;
+   END
+
+
+
+   -- Solo admitir TipoDocto = 50, captura de inventario fisico.
+   IF ( COALESCE(:SENTIDOINVENTARIO,0) = 0 or :TIPODOCTOID IN (501,502,503,504)  /*:TIPODOCTOID NOT IN (11,21,25,31,41,321 , 12,13, 15,22,23,24,26,32,33,42,43,322,323, 211,213)*/) THEN
+   BEGIN
+      ERRORCODE = 4007;
+      --SUSPEND;
+      EXIT;
+   END          
+
+
+   -- Solo admitir EstatusDocto = 0, Borrador.
+   --IF (:ESTATUSDOCTOID != 1 ) THEN
+   --BEGIN
+   --   ERRORCODE = 1072;
+   --   SUSPEND;
+   --   EXIT;
+   --END
+
+
+        
+     -- CHECAR SI HAY KITS A REFERENCIAR
+   SELECT COUNT(*)
+    FROM MOVTO M
+     LEFT JOIN DOCTO D
+       ON D.ID = M.DOCTOID
+       LEFT JOIN PRODUCTO ON PRODUCTO.id = M.PRODUCTOID
+   WHERE M.DOCTOID = :DOCTOIDPARALLENAR  AND COALESCE(PRODUCTO.ESKIT, 'N') = 'S'
+      AND (M.CANTIDAD > 0)
+    INTO :CUENTAKITS;
+
+    IF(coalesce(:CUENTAKITS,0) <= 0) THEN
+    BEGIN
+      ERRORCODE = 0;
+      --SUSPEND;
+      EXIT;
+    END
+
+
+
+
+   -- Inicializara para primer registro de movto
+   DOCTOIDFORKIT = 0;
+   TIPODOCTOIDFORKIT = 505;
+                  
+
+
+   prorrateo = 0;
+   TASACOSTOTOTALPARTE = 0;
+   TASAIEPSPARTE = 0;
+   TASAIVAPARTE  = 0;
+
+
+   SELECT PARAMETRO.desgloseieps FROM PARAMETRO INTO :DESGLOSEIEPS;
+
+
+   -- Agrega un MOVTO para cada registro con diferencia
+   -- entre CANTIDAD y CANTIDADSURTIDA
+   FOR SELECT
+      M.PRODUCTOID,
+      M.LOTE,
+      M.FECHAVENCE,
+      COALESCE(M.CANTIDAD,0)  ,
+      0,
+      0,
+      M.COSTO,
+      M.TIPODIFERENCIAINVENTARIOID,
+      D.PERSONAID  ,
+      D.VENDEDORID ,
+      M.DESCRIPCION1,
+      M.DESCRIPCION2,
+      M.DESCRIPCION3  ,
+      M.id  ,
+      M.total,
+      M.subtotal ,
+      D.DOCTOREFID ,
+      M.movtorefid ,
+      M.LOTEIMPORTADO,
+      round((M.SUBTOTAL  * cast( (1.0000 + ( (CASE WHEN COALESCE(:desgloseieps,'N') = 'S' THEN PRODUCTO.TASAIEPSEXT ELSE 0.0000 END) /100.00)) * (1.00 + (PRODUCTO.TASAIVAEXT/100.00)) as numeric(18,8))),2) TOTALPRECALCULADO
+
+   FROM MOVTO M
+     LEFT JOIN DOCTO D
+       ON D.ID = M.DOCTOID
+       LEFT JOIN PRODUCTO ON PRODUCTO.id = M.PRODUCTOID
+   WHERE M.DOCTOID = :DOCTOIDPARALLENAR  AND COALESCE(PRODUCTO.ESKIT, 'N') = 'S'
+      AND (M.CANTIDAD > 0) AND (M.ID = :MOVTOIDPARALLENAR  or :MOVTOIDPARALLENAR  = 0 )
+      ORDER BY M.partida
+   INTO
+      :PRODUCTOID, :LOTE, :FECHAVENCE,
+      :CANTIDAD, :CANTIDADSURTIDA, :CANTIDADFALTANTE,
+      :COSTO, :TIPODIFERENCIAINVENTARIOID, :PERSONAID , :VENDEDORID  , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , :MOVTOREFID ,
+      :TOTAL, :SUBTOTAL, :DOCTOREFID , :MOVTOPARENTREFID, :LOTEIMPORTADO,
+      :TOTALPRECALCULADO
+   DO
+   BEGIN
+
+
+   
+        IEPSTOAJUSTAR = 0.0;
+        IVATOAJUSTAR = 0.0;
+        IMPUESTOAJUSTADO = 'N';
+
+
+    SELECT DOCTO.doctokitrefid FROM DOCTO WHERE ID = :DOCTOIDPARALLENAR INTO  :DOCTOKITCURRENTREFID;
+
+    --DOCTOKITCURRENTREFID = 0;
+
+    IF(COALESCE(:DOCTOKITCURRENTREFID,0) = 0) THEN
+    BEGIN
+
+
+
+       --INSERT INTO TRAZA(VALOR) VALUES('dref11: ' || cast(COALESCE(:DOCTOREFID,0) AS VARCHAR(10)) || ' dllena: ' || cast(COALESCE(:DOCTOIDPARALLENAR,0) AS VARCHAR(10)));
+       IF (:TIPODOCTOID IN (12,13, 15,22,23,24,26,32,33,42,43,322,323)) THEN
+       BEGIN
+
+            SELECT DOCTO.doctokitrefid FROM DOCTO WHERE ID = :DOCTOREFID INTO :DOCTOKITPARENTREFID;
+          
+            IF(COALESCE(:MOVTOPARENTREFID,0) = 0 ) THEN
+            BEGIN
+                SELECT FIRST 1 MOVTO.ID FROM MOVTO WHERE MOVTO.DOCTOID = :DOCTOREFID AND MOVTO.PRODUCTOID = :PRODUCTOID INTO :MOVTOPARENTREFID;
+            END
+
+        END
+
+     IF (:TIPODOCTOID IN (11,21,25,31,41,321) OR COALESCE(:MOVTOPARENTREFID,0) = 0 OR COALESCE(:DOCTOKITPARENTREFID,0) = 0) THEN
+     BEGIN
+
+        SELECT PERSONA.EXENTOIVA FROM PERSONA WHERE ID = :personaid INTO :EXENTOIVA;
+        EXENTOIVA = COALESCE(:EXENTOIVA,'N');
+
+        SELECT  SUM(COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0)) AS SUMACOSTOTOTALSINIMPUESTO ,
+                SUM(
+                         COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0)
+                         + COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0) * (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN COALESCE(PRODUCTO.TASAIEPS,0) / 100.00 ELSE
+                          0 END)
+                         + (COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0) * (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN 1 + (COALESCE(PRODUCTO.TASAIEPS,0) / 100.00)
+                          ELSE 1 END)) * (CASE WHEN :EXENTOIVA = 'S' THEN 0.0 ELSE COALESCE(PRODUCTO.TASAIVA,0) END / 100.00)
+                          ),
+                SUM( COALESCE(KITDEFINICION.CANTIDADPARTE,0)) AS SUMACANTIDADPARTE
+
+        FROM            KITDEFINICION LEFT OUTER JOIN
+                         PRODUCTO ON PRODUCTO.ID = KITDEFINICION.PRODUCTOPARTEID INNER JOIN
+                         PARAMETRO ON 1 = 1
+        WHERE        (KITDEFINICION.PRODUCTOKITID = :PRODUCTOID)
+        INTO :SUMACOSTOTOTALSINIMPUESTO, :SUMATOTALCOSTOCONIMPUESTO, :SUMACANTIDADPARTE;
+
+
+
+        SELECT
+                       sum(cast( COALESCE(:SUBTOTAL, 0.0) *
+                            (CASE WHEN COALESCE(:SUMACOSTOTOTALSINIMPUESTO,0) > 0 THEN
+                                cast((cast(COALESCE(KITDEFINICION.COSTOPARTE,0.00) * COALESCE(KITDEFINICION.CANTIDADPARTE,0.00) / COALESCE(:SUMACOSTOTOTALSINIMPUESTO, 0.0) as d_decimal_exact) ) *
+                                    (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN COALESCE(PRODUCTO.TASAIEPS/100.00,0)  ELSE 0.00 END) as d_decimal_exact)
+                                    
+                                WHEN  COALESCE(:SUMACANTIDADPARTE,0.00) > 0.00 THEN
+                                     
+                                    cast((cast( COALESCE(KITDEFINICION.CANTIDADPARTE,0.00) / COALESCE(:SUMACANTIDADPARTE,0.00)   as d_decimal_exact) ) *
+                                    (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN COALESCE(PRODUCTO.TASAIEPS/100.00,0)  ELSE 0.00 END) as d_decimal_exact)
+                                ELSE
+                                    0.00
+                                END)  as numeric(18,2)
+                            ))  AS IEPSPARTE,
+
+                         sum(cast( COALESCE(:SUBTOTAL, 0.0) * (CASE WHEN COALESCE(:SUMACOSTOTOTALSINIMPUESTO,0.00) > 0.00 THEN
+                            cast((cast(COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0) / COALESCE(:SUMACOSTOTOTALSINIMPUESTO, 0.0) as d_decimal_exact)) *
+                            (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN 1 + (COALESCE(PRODUCTO.TASAIEPS,0) / 100.00) ELSE 1 END) * (CASE WHEN :EXENTOIVA = 'S' THEN 0.0 ELSE COALESCE(PRODUCTO.TASAIVA,0) END / 100.00) as d_decimal_exact)
+                         
+                            WHEN  COALESCE(:SUMACANTIDADPARTE,0.00) > 0.00 THEN
+                                cast((cast( COALESCE(KITDEFINICION.CANTIDADPARTE,0) / COALESCE(:SUMACANTIDADPARTE, 0.0)  as d_decimal_exact)) *
+                                (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN 1 + (COALESCE(PRODUCTO.TASAIEPS,0) / 100.00) ELSE 1 END) * (CASE WHEN :EXENTOIVA = 'S' THEN 0.0 ELSE COALESCE(PRODUCTO.TASAIVA,0) END / 100.00) as d_decimal_exact)
+                            ELSE
+                                0.00
+                         END) as numeric(18,2)
+                         )) AS IVAPARTE ,
+
+
+                       MAX(cast( COALESCE(:SUBTOTAL, 0.0) *
+                            (CASE WHEN COALESCE(:SUMACOSTOTOTALSINIMPUESTO,0) > 0 THEN
+                                cast((cast(COALESCE(KITDEFINICION.COSTOPARTE,0.00) * COALESCE(KITDEFINICION.CANTIDADPARTE,0.00) / COALESCE(:SUMACOSTOTOTALSINIMPUESTO, 0.0) as d_decimal_exact) ) *
+                                    (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN COALESCE(PRODUCTO.TASAIEPS/100.00,0)  ELSE 0.00 END) as d_decimal_exact)
+                                    
+                                WHEN  COALESCE(:SUMACANTIDADPARTE,0.00) > 0.00 THEN
+                                     
+                                    cast((cast( COALESCE(KITDEFINICION.CANTIDADPARTE,0.00) / COALESCE(:SUMACANTIDADPARTE,0.00)   as d_decimal_exact) ) *
+                                    (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN COALESCE(PRODUCTO.TASAIEPS/100.00,0)  ELSE 0.00 END) as d_decimal_exact)
+                                ELSE
+                                    0.00
+                                END)  as numeric(18,2)
+                            ))  AS MAXIEPS,
+
+                         MAX(cast( COALESCE(:SUBTOTAL, 0.0) * (CASE WHEN COALESCE(:SUMACOSTOTOTALSINIMPUESTO,0.00) > 0.00 THEN
+                            cast((cast(COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0) / COALESCE(:SUMACOSTOTOTALSINIMPUESTO, 0.0) as d_decimal_exact)) *
+                            (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN 1 + (COALESCE(PRODUCTO.TASAIEPS,0) / 100.00) ELSE 1 END) * (CASE WHEN :EXENTOIVA = 'S' THEN 0.0 ELSE COALESCE(PRODUCTO.TASAIVA,0) END / 100.00) as d_decimal_exact)
+                         
+                            WHEN  COALESCE(:SUMACANTIDADPARTE,0.00) > 0.00 THEN
+                                cast((cast( COALESCE(KITDEFINICION.CANTIDADPARTE,0) / COALESCE(:SUMACANTIDADPARTE, 0.0)  as d_decimal_exact)) *
+                                (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN 1 + (COALESCE(PRODUCTO.TASAIEPS,0) / 100.00) ELSE 1 END) * (CASE WHEN :EXENTOIVA = 'S' THEN 0.0 ELSE COALESCE(PRODUCTO.TASAIVA,0) END / 100.00) as d_decimal_exact)
+                            ELSE
+                                0.00
+                         END) as numeric(18,2)
+                         )) AS MAXIVA
+
+        FROM            KITDEFINICION LEFT OUTER JOIN
+                         PRODUCTO ON PRODUCTO.ID = KITDEFINICION.PRODUCTOPARTEID INNER JOIN
+                         PARAMETRO ON 1 = 1
+        WHERE        (KITDEFINICION.PRODUCTOKITID = :PRODUCTOID) 
+        INTO  :SUMAIEPS,  :SUMAIVA, :MAXIEPS, :MAXIVA;
+
+
+
+
+         TOTALCALCULADO = COALESCE(:SUBTOTAL,0.0) + COALESCE(:SUMAIEPS, 0.0)  + COALESCE(:sumaiva,  0.0);
+         DIFCALCULADO =  COALESCE(:TOTALPRECALCULADO, 0.0) - COALESCE(:TOTALCALCULADO, 0.0);
+         
+         
+
+
+         IF( ABS(COALESCE(:DIFCALCULADO, 0.0)) <= 0.5 AND COALESCE(:DIFCALCULADO, 0.0) <> 0.0 ) THEN
+         BEGIN
+
+                IF(COALESCE(:MAXIEPS,0.0) >  COALESCE(:MAXIVA,  0.0)) THEN
+                BEGIN    
+                        IEPSTOAJUSTAR = COALESCE(:MAXIEPS,0.0);
+                END
+                ELSE
+                BEGIN 
+                        IVATOAJUSTAR = COALESCE(:MAXIVA,0.0);
+                END
+         END
+
+
+
+            FOR SELECT
+                        CASE WHEN COALESCE(:SUMACOSTOTOTALSINIMPUESTO,0.00) >  0.00  THEN
+                            (( COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0)
+                                + COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0) * (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN COALESCE(PRODUCTO.TASAIEPS,0) / 100.00 ELSE
+                                0 END)
+                            + (COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0) * (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN 1 + (COALESCE(PRODUCTO.TASAIEPS,0) / 100.00)
+                                ELSE 1 END)) * (CASE WHEN :EXENTOIVA = 'S' THEN 0.0 ELSE COALESCE(PRODUCTO.TASAIVA,0) END / 100.00) ) / :SUMATOTALCOSTOCONIMPUESTO )
+
+
+                          WHEN  COALESCE(:SUMACANTIDADPARTE,0.00) > 0.00 THEN
+                            ((  COALESCE(KITDEFINICION.CANTIDADPARTE,0)
+                                +  COALESCE(KITDEFINICION.CANTIDADPARTE,0) * (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN COALESCE(PRODUCTO.TASAIEPS,0) / 100.00 ELSE
+                                0 END)
+                            + ( COALESCE(KITDEFINICION.CANTIDADPARTE,0) * (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN 1 + (COALESCE(PRODUCTO.TASAIEPS,0) / 100.00)
+                                ELSE 1 END)) * (CASE WHEN :EXENTOIVA = 'S' THEN 0.0 ELSE COALESCE(PRODUCTO.TASAIVA,0) END / 100.00) ) / :SUMACANTIDADPARTE )
+                            ELSE
+                             0.0
+                          END PRORRATEO ,
+
+                        CASE WHEN COALESCE(:SUMACOSTOTOTALSINIMPUESTO,0.00) > 0.00 THEN
+                            (cast(COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0)  / COALESCE(:SUMACOSTOTOTALSINIMPUESTO, 0.0) as d_decimal_exact))
+
+                            WHEN  COALESCE(:SUMACANTIDADPARTE,0.00) > 0.00 THEN   
+                                (cast( COALESCE(KITDEFINICION.CANTIDADPARTE,0) / COALESCE(:SUMACANTIDADPARTE, 0.0)   as d_decimal_exact))
+
+                            ELSE
+                                0.00
+                        END  TASACOSTOTOTALPARTE,
+
+
+                        CASE WHEN COALESCE(:SUMACOSTOTOTALSINIMPUESTO,0) > 0 THEN
+                            cast((cast(COALESCE(KITDEFINICION.COSTOPARTE,0.00) * COALESCE(KITDEFINICION.CANTIDADPARTE,0.00) / COALESCE(:SUMACOSTOTOTALSINIMPUESTO, 0.0) as d_decimal_exact) ) *
+                                    (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN COALESCE(PRODUCTO.TASAIEPS/100.00,0)  ELSE 0.00 END) as d_decimal_exact)
+                                    
+                            WHEN  COALESCE(:SUMACANTIDADPARTE,0.00) > 0.00 THEN
+                                     
+                                cast((cast( COALESCE(KITDEFINICION.CANTIDADPARTE,0.00) / COALESCE(:SUMACANTIDADPARTE,0.00)   as d_decimal_exact) ) *
+                                    (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN COALESCE(PRODUCTO.TASAIEPS/100.00,0)  ELSE 0.00 END) as d_decimal_exact)
+                            ELSE
+                                    0.00
+                        END AS TASAIEPSPARTE,
+
+                         CASE WHEN COALESCE(:SUMACOSTOTOTALSINIMPUESTO,0.00) > 0.00 THEN
+                            cast((cast(COALESCE(KITDEFINICION.COSTOPARTE,0) * COALESCE(KITDEFINICION.CANTIDADPARTE,0) / COALESCE(:SUMACOSTOTOTALSINIMPUESTO, 0.0) as d_decimal_exact)) *
+                            (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN 1 + (COALESCE(PRODUCTO.TASAIEPS,0) / 100.00) ELSE 1 END) * (CASE WHEN :EXENTOIVA = 'S' THEN 0.0 ELSE COALESCE(PRODUCTO.TASAIVA,0) END / 100.00) as d_decimal_exact)
+                         
+                            WHEN  COALESCE(:SUMACANTIDADPARTE,0.00) > 0.00 THEN
+                                cast((cast( COALESCE(KITDEFINICION.CANTIDADPARTE,0) / COALESCE(:SUMACANTIDADPARTE, 0.0)  as d_decimal_exact)) *
+                                (CASE WHEN PARAMETRO.DESGLOSEIEPS = 'S' THEN 1 + (COALESCE(PRODUCTO.TASAIEPS,0) / 100.00) ELSE 1 END) * (CASE WHEN :EXENTOIVA = 'S' THEN 0.0 ELSE COALESCE(PRODUCTO.TASAIVA,0) END / 100.00) as d_decimal_exact)
+                            ELSE
+                                0.00
+                         END AS TASAIVAPARTE,
+
+                         COALESCE(KITDEFINICION.cantidadparte, 0) * COALESCE(:CANTIDAD ,0) CANTIDADFINAL,
+                         PRODUCTO.TASAIVA TASAIVA,
+                        PRODUCTO.TASAIEPS TASAIEPS,
+                        PRODUCTO.tasaimpuesto TASAIMPUESTO,
+                        PRODUCTO.precio1 PRECIOLISTA  ,
+                        KITDEFINICION.PRODUCTOPARTEID
+
+
+        FROM                KITDEFINICION LEFT OUTER JOIN
+                         PRODUCTO ON PRODUCTO.ID = KITDEFINICION.PRODUCTOPARTEID INNER JOIN
+                         PARAMETRO ON 1 = 1
+        WHERE        (KITDEFINICION.PRODUCTOKITID = :PRODUCTOID)
+        INTO
+            :prorrateo,
+            :TASACOSTOTOTALPARTE,
+            :TASAIEPSPARTE,
+            :TASAIVAPARTE,
+            :CANTIDADFINAL ,
+            :DETALLEKITTASAIVA ,
+            :DETALLEKITTASAIEPS ,
+            :DETALLEKITTASAIMPUESTO,
+            :DETALLEKITPRECIOLISTA ,
+            :DETALLEKITPRODUCTOID
+
+
+
+        DO
+        BEGIN
+   
+
+            COSTO = 0;
+            SUCURSALTID = 0;
+            ALMACENTID = 0;
+
+            EXTKITSUBTOTAL = cast(:SUBTOTAL * (:TASACOSTOTOTALPARTE) as numeric(18,2));
+            DETALLEKITIEPS = cast(:SUBTOTAL * (:TASAIEPSPARTE) as numeric(18,2));
+            DETALLEKITIVA = cast(:SUBTOTAL * (:TASAIVAPARTE) as numeric(18,2));
+            DETALLEKITSUBTOTAL = cast(COALESCE(:EXTKITSUBTOTAL,0.0) as numeric(18,2) );
+            DETALLEKITPRECIO = cast(:DETALLEKITSUBTOTAL / :CANTIDADFINAL as numeric(18,2));
+            DETALLEKITTOTAL =  cast(:DETALLEKITSUBTOTAL + :DETALLEKITIEPS + :DETALLEKITIVA as numeric(18,2)) ;
+
+
+            
+            IF( COALESCE(:IMPUESTOAJUSTADO, 'S') = 'N' AND
+                COALESCE(:DETALLEKITIEPS, 0.0) = COALESCE(:IEPSTOAJUSTAR, 0.0) AND
+                 COALESCE(:IEPSTOAJUSTAR, 0.0) > 0 AND
+                 COALESCE(:DIFCALCULADO, 0.0) <= COALESCE(:DETALLEKITIEPS, 0.0)) THEN
+            BEGIN
+                
+                 DETALLEKITIEPS = COALESCE(:DETALLEKITIEPS,0) + COALESCE(:DIFCALCULADO, 0.0) ;  
+                 IF(COALESCE(:SUBTOTAL,0) > 0) THEN
+                 BEGIN
+                    TASAIEPSPARTE = COALESCE(:DETALLEKITIEPS,0) / COALESCE(:SUBTOTAL, 1.0);
+                 END
+                 IMPUESTOAJUSTADO = 'S';
+            END
+            
+            IF( COALESCE(:IMPUESTOAJUSTADO, 'S') = 'N' AND
+                COALESCE(:DETALLEKITIVA, 0.0) = COALESCE(:IVATOAJUSTAR, 0.0) AND
+                 COALESCE(:IVATOAJUSTAR, 0.0) > 0 AND
+                 COALESCE(:DIFCALCULADO, 0.0) <= COALESCE(:DETALLEKITIVA, 0.0)) THEN
+            BEGIN
+                 
+                 DETALLEKITIVA = COALESCE(:DETALLEKITIVA,0) + COALESCE(:DIFCALCULADO, 0.0) ;
+                 IF(COALESCE(:SUBTOTAL,0) > 0) THEN
+                 BEGIN
+                    TASAIVAPARTE = COALESCE(:DETALLEKITIVA,0.0) / COALESCE(:SUBTOTAL, 1.0);
+                 END
+                 IMPUESTOAJUSTADO = 'S';
+
+            END
+
+
+            DETALLEKITCANTIDAD = :CANTIDADFINAL;
+
+            IF(COALESCE(:DETALLEKITTASAIVA,0 ) > 0) THEN
+            BEGIN
+                DETALLEKITBASEIVA =  CAST((100.00 * :DETALLEKITIVA) /  :DETALLEKITTASAIVA AS NUMERIC(18,2));
+            END
+            ELSE
+            BEGIN 
+                DETALLEKITBASEIVA = 0.0;
+            END
+                 
+            IF(COALESCE(:DETALLEKITTASAIEPS,0 ) > 0) THEN
+            BEGIN
+                DETALLEKITBASEIEPS =  CAST( (100.00 * :DETALLEKITIEPS) /  :DETALLEKITTASAIEPS AS NUMERIC(18,2));
+            END
+            ELSE
+            BEGIN
+                DETALLEKITBASEIEPS = 0.0;
+            END
+
+
+            SUSPEND;
+        END
+
+       END
+       ELSE IF (:TIPODOCTOID IN (12,13, 15,22,23,24,26,32,33,42,43,322,323) AND COALESCE(:MOVTOPARENTREFID,0) <> 0 AND COALESCE(:DOCTOKITPARENTREFID,0) <> 0) THEN
+       BEGIN
+
+          
+        FOR SELECT
+
+               MK.cantidadsurtida  PRORRATEO,
+            (COALESCE(MK.CANTIDAD, 0) / COALESCE(MP.CANTIDAD, 1)) * COALESCE(:CANTIDAD ,0) CANTIDADFINAL,
+            PRODUCTO.TASAIVA TASAIVA,
+            PRODUCTO.TASAIEPS TASAIEPS,
+            PRODUCTO.tasaimpuesto TASAIMPUESTO,
+            PRODUCTO.precio1 PRECIOLISTA  ,
+             MK.PRODUCTOID,
+             MK.iva DETALLEKITIVA,
+             MK.IEPS DETALLEKITIEPS ,
+             MK.subtotal DETALLEKITSUBTOTAL,
+             MK.total DETALLEKITTOTAL,
+             MK.TASAIEPSPARTE ,
+             MK.tasaivaparte,
+             MK.tasasubtotalparte
+
+
+        FROM MOVTO MK
+        INNER JOIN MOVTO MP ON MP.ID = MK.movtorefid
+        INNER JOIN PRODUCTO  ON PRODUCTO.ID = MK.PRODUCTOID
+        INNER JOIN PARAMETRO ON 1 = 1
+        WHERE MK.DOCTOID = :DOCTOKITPARENTREFID AND MK.movtorefid = :MOVTOPARENTREFID  AND COALESCE(MP.cantidad,0) > 0
+        INTO
+            :PRORRATEO,
+            :CANTIDADFINAL ,
+            :DETALLEKITTASAIVA ,
+            :DETALLEKITTASAIEPS ,
+            :DETALLEKITTASAIMPUESTO,
+            :DETALLEKITPRECIOLISTA ,
+            :DETALLEKITPRODUCTOID ,
+            :DETALLEKITIVA,
+            :DETALLEKITIEPS,
+            :DETALLEKITSUBTOTAL ,
+            :DETALLEKITTOTAL ,
+            :TASAIEPSPARTE,
+            :TASAIVAPARTE,
+            :TASACOSTOTOTALPARTE
+
+        DO
+        BEGIN
+
+
+
+            
+            EXTKITSUBTOTAL = cast(:SUBTOTAL * (:TASACOSTOTOTALPARTE) as numeric(18,2));
+            DETALLEKITIEPS = cast(:SUBTOTAL * (:TASAIEPSPARTE) as numeric(18,2));
+            DETALLEKITIVA = cast(:SUBTOTAL * (:TASAIVAPARTE) as numeric(18,2));
+            DETALLEKITSUBTOTAL = cast(COALESCE(:EXTKITSUBTOTAL,0.0) as numeric(18,2) );
+            DETALLEKITPRECIO = cast(:DETALLEKITSUBTOTAL / :CANTIDADFINAL as numeric(18,2));
+            DETALLEKITTOTAL =  cast(:DETALLEKITSUBTOTAL + :DETALLEKITIEPS + :DETALLEKITIVA as numeric(18,2)) ;
+
+            DETALLEKITCANTIDAD = :CANTIDADFINAL;
+
+            IF(COALESCE(:DETALLEKITTASAIVA,0 ) > 0) THEN
+            BEGIN
+                DETALLEKITBASEIVA =  CAST((100.00 * :DETALLEKITIVA) /  :DETALLEKITTASAIVA AS NUMERIC(18,2));
+            END
+            ELSE
+            BEGIN 
+                DETALLEKITBASEIVA = 0.0;
+            END
+                 
+            IF(COALESCE(:DETALLEKITTASAIEPS,0 ) > 0) THEN
+            BEGIN
+                DETALLEKITBASEIEPS =  CAST( (100.00 * :DETALLEKITIEPS) /  :DETALLEKITTASAIEPS AS NUMERIC(18,2));
+            END
+            ELSE
+            BEGIN
+                DETALLEKITBASEIEPS = 0.0;
+            END
+
+
+
+            SUSPEND;
+        END
+
+       END
+  
+    END
+    ELSE
+    BEGIN
+
+           
+        FOR SELECT
+
+               MK.cantidadsurtida  PRORRATEO,
+            COALESCE(MK.CANTIDAD, 0) CANTIDADFINAL,
+            PRODUCTO.TASAIVA TASAIVA,
+            PRODUCTO.TASAIEPS TASAIEPS,
+            PRODUCTO.tasaimpuesto TASAIMPUESTO,
+            PRODUCTO.precio1 PRECIOLISTA  ,
+             MK.PRODUCTOID,
+             MK.iva DETALLEKITIVA,
+             MK.IEPS DETALLEKITIEPS ,
+             MK.subtotal DETALLEKITSUBTOTAL,
+             MK.total DETALLEKITTOTAL,
+             MK.TASAIEPSPARTE ,
+             MK.tasaivaparte,
+             MK.tasasubtotalparte
+
+
+        FROM MOVTO MK
+        INNER JOIN PRODUCTO  ON PRODUCTO.ID = MK.PRODUCTOID
+        INNER JOIN PARAMETRO ON 1 = 1
+        WHERE MK.DOCTOID = :DOCTOKITCURRENTREFID AND MK.movtorefid = :MOVTOREFID  AND COALESCE(MK.cantidad,0) > 0
+        INTO
+            :PRORRATEO,
+            :CANTIDADFINAL ,
+            :DETALLEKITTASAIVA ,
+            :DETALLEKITTASAIEPS ,
+            :DETALLEKITTASAIMPUESTO,
+            :DETALLEKITPRECIOLISTA ,
+            :DETALLEKITPRODUCTOID ,
+            :DETALLEKITIVA,
+            :DETALLEKITIEPS,
+            :DETALLEKITSUBTOTAL ,
+            :DETALLEKITTOTAL ,
+            :TASAIEPSPARTE,
+            :TASAIVAPARTE,
+            :TASACOSTOTOTALPARTE
+
+        DO
+        BEGIN
+
+
+
+            
+            EXTKITSUBTOTAL = cast(:SUBTOTAL * (:TASACOSTOTOTALPARTE) as numeric(18,2));
+            DETALLEKITIEPS = cast(:SUBTOTAL * (:TASAIEPSPARTE) as numeric(18,2));
+            DETALLEKITIVA = cast(:SUBTOTAL * (:TASAIVAPARTE) as numeric(18,2));
+            DETALLEKITSUBTOTAL = cast(COALESCE(:EXTKITSUBTOTAL,0.0) as numeric(18,2) );
+            DETALLEKITPRECIO = cast(:DETALLEKITSUBTOTAL / :CANTIDADFINAL as numeric(18,2));
+            DETALLEKITTOTAL =  cast(:DETALLEKITSUBTOTAL + :DETALLEKITIEPS + :DETALLEKITIVA as numeric(18,2)) ;
+
+            DETALLEKITCANTIDAD = :CANTIDADFINAL;
+
+            IF(COALESCE(:DETALLEKITTASAIVA,0 ) > 0) THEN
+            BEGIN
+                DETALLEKITBASEIVA =  CAST((100.00 * :DETALLEKITIVA) /  :DETALLEKITTASAIVA AS NUMERIC(18,2));
+            END
+            ELSE
+            BEGIN 
+                DETALLEKITBASEIVA = 0.0;
+            END
+                 
+            IF(COALESCE(:DETALLEKITTASAIEPS,0 ) > 0) THEN
+            BEGIN
+                DETALLEKITBASEIEPS =  CAST( (100.00 * :DETALLEKITIEPS) /  :DETALLEKITTASAIEPS AS NUMERIC(18,2));
+            END
+            ELSE
+            BEGIN
+                DETALLEKITBASEIEPS = 0.0;
+            END
+
+
+
+            SUSPEND;
+        END
+
+
+    END
+
+   END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   --ERRORCODE = 0;
+   --SUSPEND;
+   
+   --WHEN ANY DO
+   --BEGIN
+   -- ERRORCODE = 1076;
+   --  SUSPEND;
+   --END
+END

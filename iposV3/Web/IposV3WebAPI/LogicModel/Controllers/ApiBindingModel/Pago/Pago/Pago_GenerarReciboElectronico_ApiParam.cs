@@ -1,0 +1,53 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using IposV3.Model;
+using MvvmFramework;
+using System.Xml.Serialization;
+
+namespace ApiParam
+{
+    [XmlRoot]
+    
+    public class Pago_GenerarReciboElectronico_ApiParam
+    
+    {
+        
+        #pragma warning disable 8618
+        public Pago_GenerarReciboElectronico_ApiParam()
+        {
+        }
+        #pragma warning restore 8618
+
+
+        private Int64? _EmpresaId;
+        [XmlAttribute]
+        public Int64? EmpresaId { get => _EmpresaId; set { _EmpresaId = value;  } } 
+
+        private Int64? _SucursalId;
+        [XmlAttribute]
+        public Int64? SucursalId { get => _SucursalId; set { _SucursalId = value;  } } 
+
+        private Int64? _PagoId;
+        [XmlAttribute]
+        public Int64? PagoId { get => _PagoId; set { _PagoId = value;  } } 
+
+        private Int64? _VendedorId;
+        [XmlAttribute]
+        public Int64? VendedorId { get => _VendedorId; set { _VendedorId = value;  } } 
+
+        //private out Int64? _ReciboElectronicoId;
+        //[XmlAttribute]
+        //public out Int64? ReciboElectronicoId { get => _ReciboElectronicoId; set { _ReciboElectronicoId = value;  } } 
+
+
+
+
+
+    }
+}
+

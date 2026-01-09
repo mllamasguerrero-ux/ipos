@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/02/2014 11:45:37" ReportInfo.Modified="11/15/2018 08:56:19" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    int numReg = 1;
+    decimal sumaCantidad = 0;
+    
+    public string claveVendedor = &quot;TODOS&quot;;
+    
+    private void Text21_BeforePrint(object sender, EventArgs e)
+    {
+         Text21.Text = numReg.ToString();
+      numReg++;
+      
+    }
+
+    private void Text23_BeforePrint(object sender, EventArgs e)
+    {
+          Text23.Text = sumaCantidad.ToString(&quot;N2&quot;);
+    }
+
+    private void Text8_BeforePrint(object sender, EventArgs e)
+    {
+      sumaCantidad +=  ((Decimal)Report.GetColumnValue(&quot;Table.CANTIDAD&quot;));
+    }
+
+    private void CBVendedor_TextChanged(object sender, EventArgs e)
+    {
+      
+      string[] split = CBVendedor.Text.Split(new string[] { &quot;# Vend.: &quot; }, StringSplitOptions.None);
+      string strCveVendedor = &quot;TODOS&quot;;
+      if(split.Length &gt; 1)     
+        strCveVendedor = split[1];
+      
+      try
+      {
+        claveVendedor = strCveVendedor;
+        Report.SetParameterValue(&quot;itemClave&quot;, claveVendedor);
+      }
+      catch{
+      }
+    }
+
+    private void DateTimePicker1_Click(object sender, EventArgs e)
+    {
+      
+    }
+
+    private void NumericUpDown2_Click(object sender, EventArgs e)
+    {
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQqpfzyLDqmxljuAe9Vf84QqY=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;        &#13;&#10;         ABONO.IDPAGO,&#13;&#10;         ABONO.FOLIODOCTO,&#13;&#10;         ABONO.TIPODOCTONOMBRE,&#13;&#10;         ABONO.DOCTOFECHA,&#13;&#10;         ABONO.DOCTOSUBTOTAL,&#13;&#10;         ABONO.DOCTOTOTAL,&#13;&#10;         ABONO.PAGOFECHA,&#13;&#10;         ABONO.CLIENTECLAVE,&#13;&#10;         ABONO.CLIENTENOMBRE,&#13;&#10;         ABONO.CLIENTEDIASPLAZO,&#13;&#10;         ABONO.ABONO  ,&#13;&#10;         ABONO.FORMADEPAGO,&#13;&#10;         ABONO.BANCONOMBRE,&#13;&#10;         ABONO.referenciabancaria,&#13;&#10;         &#13;&#10;        ABONO.PAGOMES,&#13;&#10;        ABONO.PAGOANIO,&#13;&#10;        ABONO.PAGOANIOMES,&#13;&#10;&#13;&#10;         ABONO.vendedorclienteid  ,&#13;&#10;         ABONO.vendedorclienteclave  ,&#13;&#10;         ABONO.vendedorclientenombre  ,&#13;&#10;         ABONO.PORCENTAJECOMISION,&#13;&#10;         ABONO.COMISION    ,&#13;&#10;         ABONO.COMISIONTIPO2,&#13;&#10;         ABONO.DIASPAGO,&#13;&#10;         ABONO.FECHAELABORACION,&#13;&#10;         ABONO.utilidad,&#13;&#10;         SUM( COALESCE(DOCTO.TOTAL,0)) TOTALVENTAS&#13;&#10;&#13;&#10;         FROM&#13;&#10;  ( SELECT&#13;&#10;         DOCTOPAGO.ID IDPAGO,&#13;&#10;         DOCTO.folio FOLIODOCTO,&#13;&#10;         TIPODOCTO.NOMBRE TIPODOCTONOMBRE,&#13;&#10;         DOCTO.FECHA DOCTOFECHA,&#13;&#10;         DOCTO.SUBTOTAL DOCTOSUBTOTAL,&#13;&#10;         DOCTO.TOTAL DOCTOTOTAL,&#13;&#10;         coalesce(DOCTOPAGO.FECHARECEPCION,doctopago.fecha) PAGOFECHA,&#13;&#10;         PERSONA.CLAVE CLIENTECLAVE,&#13;&#10;         PERSONA.NOMBRE CLIENTENOMBRE,&#13;&#10;         PERSONA.dias CLIENTEDIASPLAZO,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;         coalesce((DOCTOPAGO.importe *&#13;&#10;          (CASE WHEN ((DOCTOPAGO.TIPOPAGOID = 1 AND DOCTOPAGO.FORMAPAGOID IN (1,2,3,5,6,14,15,16,18)) or (TIPOPAGOID = 2 AND FORMAPAGOID IN (7,19)))  THEN 1&#13;&#10;                when ((DOCTOPAGO.TIPOPAGOID = 1 AND DOCTOPAGO.FORMAPAGOID IN (7,19)) or (DOCTOPAGO.TIPOPAGOID = 2 AND FORMAPAGOID IN (6,18))) THEN -1&#13;&#10;                ELSE 0 END)&#13;&#10;          ),0) as ABONO  ,&#13;&#10;          FORMAPAGO.nombre FORMADEPAGO,&#13;&#10;          BANCOS.NOMBRE BANCONOMBRE,&#13;&#10;          DOCTOPAGO.referenciabancaria,&#13;&#10;          EXTRACT(MONTH FROM DOCTOPAGO.FECHARECEPCION) PAGOMES ,&#13;&#10;          EXTRACT(YEAR FROM DOCTOPAGO.FECHARECEPCION) PAGOANIO ,&#13;&#10;          (EXTRACT(YEAR FROM DOCTOPAGO.FECHARECEPCION) * 100 )  +  EXTRACT(MONTH FROM DOCTOPAGO.FECHARECEPCION) PAGOANIOMES ,&#13;&#10;&#13;&#10;                                         &#13;&#10;          vendedorcliente.id vendedorclienteid  ,&#13;&#10;          vendedorcliente.clave vendedorclienteclave  ,&#13;&#10;          vendedorcliente.nombre vendedorclientenombre  ,&#13;&#10;          1.00 PORCENTAJECOMISION,&#13;&#10;          CASE WHEN COALESCE(DOCTO.TOTAL,0) &gt; 0  THEN  COALESCE(DOCTO.SUBTOTAL,0) / COALESCE(DOCTO.TOTAL ,1) ELSE 0.00 END FACTOR_SINIMPUESTOS,&#13;&#10;          CAST(DOCTOPAGO.importe *&#13;&#10;             CAST(CASE WHEN COALESCE(DOCTO.TOTAL,0) &gt; 0  THEN  COALESCE(DOCTO.SUBTOTAL,0) / COALESCE(DOCTO.TOTAL ,1) ELSE 0.00 END AS D_PRECIO) *&#13;&#10;             (1.00 / 100.00) AS D_PRECIO) COMISION ,&#13;&#10;&#13;&#10;&#13;&#10;           SUM(CASE WHEN (COALESCE(DOCTO.TOTAL ,0) = 0)  THEN 0.00&#13;&#10;             ELSE&#13;&#10;                CAST(DOCTOPAGO.importe *&#13;&#10;                   /*CAST*/(&#13;&#10;                        CAST((COALESCE(MOVTO.CANTIDAD,0.00) - COALESCE(MOVTO.CANTIDADDEVUELTA,0.00)) * COALESCE(MOVTO.COMISIONXUNIDAD,0.00)  AS D_PRECIO) /&#13;&#10;                        COALESCE(DOCTO.TOTAL ,0)&#13;&#10;                     /*AS D_PRECIO*/)&#13;&#10;                AS D_PRECIO)&#13;&#10;           END) COMISIONTIPO2 ,&#13;&#10;&#13;&#10;          DATEDIFF(day, docto.fecha, DOCTOPAGO.fecha) DIASPAGO,&#13;&#10;&#13;&#10;     DOCTOPAGO.FECHA FECHAELABORACION ,&#13;&#10;&#13;&#10;     (case when movto.tipodoctoid = 22 then -1 else 1 end) *  (&#13;&#10;      SUM((( case when coalesce(movto.estadorebaja,0) in (1,2) then coalesce(movto.precioconrebaja,0) else  coalesce(movto.precio,0) end )&#13;&#10;       -  coalesce(movto.costoreposicion,0)) *  coalesce(movto.cantidad,0) ))   utilidad&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;          FROM DOCTO inner join DOCTOPAGO ON DOCTOPAGO.doctoid = DOCTO.ID&#13;&#10;          LEFT JOIN movto ON movto.doctoID = DOCTO.id&#13;&#10;          LEFT JOIN PERSONA ON PERSONA.ID = DOCTO.PERSONAID&#13;&#10;          LEFT JOIN PERSONA VENDEDORCLIENTE ON VENDEDORCLIENTE.ID =  COALESCE(DOCTO.vendedorejecutivoid, coalesce(persona.vendedorid,0) )&#13;&#10;          LEFT JOIN TIPODOCTO ON TIPODOCTO.ID = DOCTO.TIPODOCTOID&#13;&#10;          LEFT JOIN FORMAPAGO ON FORMAPAGO.ID = DOCTOPAGO.FORMAPAGOID&#13;&#10;          LEFT JOIN BANCOS ON BANCOS.ID = DOCTOPAGO.banco&#13;&#10;&#13;&#10;&#13;&#10;           WHERE COALESCE(DOCTOPAGO.FECHARECEPCION, DOCTOPAGO.FECHA) &gt;= @FECHAINICIO AND COALESCE(DOCTOPAGO.FECHARECEPCION, DOCTOPAGO.FECHA) &lt;= @FECHAFIN AND DOCTO.TIPODOCTOID = 21  AND COALESCE(DOCTO.subtipodoctoid,0) NOT IN (7,8)  AND DOCTO.ESTATUSDOCTOID = 1&#13;&#10;           and  coalesce((DOCTOPAGO.importe *&#13;&#10;          (CASE WHEN ((DOCTOPAGO.TIPOPAGOID = 1 AND DOCTOPAGO.FORMAPAGOID IN (1,2,3,5,14,15,16)))  THEN 1&#13;&#10;                ELSE 0 END)&#13;&#10;          ),0) &lt;&gt; 0&#13;&#10;           AND COALESCE(DOCTOPAGO.revertido,'N') = 'N' AND COALESCE(DOCTOPAGO.tipoabonoid,2) &lt;&gt; 3&#13;&#10;           AND DATEDIFF(day, docto.fecha, DOCTOPAGO.fecha) &lt; @diasplazo&#13;&#10;           AND (VENDEDORCLIENTE.CLAVE = @VENDEDORCLAVE OR  @VENDEDORCLAVE = 'TODOS' )&#13;&#10;&#13;&#10;           GROUP BY&#13;&#10;        IDPAGO,&#13;&#10;        FOLIODOCTO,&#13;&#10;        TIPODOCTONOMBRE,&#13;&#10;        DOCTOFECHA,&#13;&#10;        DOCTOSUBTOTAL,&#13;&#10;        DOCTOTOTAL,&#13;&#10;        PAGOFECHA,&#13;&#10;        CLIENTECLAVE,&#13;&#10;        CLIENTENOMBRE,&#13;&#10;        CLIENTEDIASPLAZO,&#13;&#10;        ABONO  ,&#13;&#10;        FORMADEPAGO,&#13;&#10;        BANCONOMBRE,&#13;&#10;        referenciabancaria,&#13;&#10;        PAGOMES,&#13;&#10;        PAGOANIO,&#13;&#10;        PAGOANIOMES,&#13;&#10;        vendedorclienteid  ,&#13;&#10;        vendedorclienteclave  ,&#13;&#10;        vendedorclientenombre  ,&#13;&#10;        PORCENTAJECOMISION,&#13;&#10;&#13;&#10;        COMISION,&#13;&#10;        DIASPAGO,&#13;&#10;        FECHAELABORACION,&#13;&#10;        MOVTO.tipodoctoid&#13;&#10;&#13;&#10;&#13;&#10;         )  ABONO&#13;&#10;&#13;&#10;&#13;&#10;         LEFT JOIN PERSONA ON PERSONA.VENDEDORID =  ABONO.vendedorclienteid&#13;&#10;         LEFT JOIN DOCTO ON DOCTO.PERSONAID = PERSONA.ID AND DOCTO.TIPODOCTOID = 21 AND DOCTO.ESTATUSDOCTOID = 1 AND DOCTO.fecha  &gt;= @FECHAINICIO AND DOCTO.FECHA &lt;= @FECHAFIN&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;         GROUP BY&#13;&#10;                  &#13;&#10;         ABONO.IDPAGO,&#13;&#10;         ABONO.FOLIODOCTO,&#13;&#10;         ABONO.TIPODOCTONOMBRE,&#13;&#10;         ABONO.DOCTOFECHA,&#13;&#10;         ABONO.DOCTOSUBTOTAL,&#13;&#10;         ABONO.DOCTOTOTAL,&#13;&#10;         ABONO.PAGOFECHA,&#13;&#10;         ABONO.CLIENTECLAVE,&#13;&#10;         ABONO.CLIENTENOMBRE,&#13;&#10;         ABONO.CLIENTEDIASPLAZO,&#13;&#10;         ABONO.ABONO  ,&#13;&#10;         ABONO.FORMADEPAGO,&#13;&#10;         ABONO.BANCONOMBRE,&#13;&#10;         ABONO.referenciabancaria,&#13;&#10;        PAGOMES,&#13;&#10;        PAGOANIO,&#13;&#10;        PAGOANIOMES,&#13;&#10;         ABONO.vendedorclienteid  ,&#13;&#10;         ABONO.vendedorclienteclave  ,&#13;&#10;         ABONO.vendedorclientenombre  ,&#13;&#10;         ABONO.PORCENTAJECOMISION,&#13;&#10;         ABONO.COMISION,&#13;&#10;         ABONO.COMISIONTIPO2,&#13;&#10;         ABONO.DIASPAGO,&#13;&#10;         ABONO.FECHAELABORACION ,&#13;&#10;         ABONO.UTILIDAD&#13;&#10;&#13;&#10;         HAVING SUM( COALESCE(DOCTO.TOTAL,0)) &gt;= @MINIMOVENTA">
+        <Column Name="IDPAGO" DataType="System.Int64"/>
+        <Column Name="FOLIODOCTO" DataType="System.Int64"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <Column Name="DOCTOFECHA" DataType="System.DateTime"/>
+        <Column Name="PAGOFECHA" DataType="System.DateTime"/>
+        <Column Name="CLIENTECLAVE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="ABONO" DataType="System.Decimal"/>
+        <Column Name="FORMADEPAGO" DataType="System.String"/>
+        <Column Name="BANCONOMBRE" DataType="System.String"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="DOCTOSUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="DOCTOTOTAL" DataType="System.Decimal"/>
+        <Column Name="CLIENTEDIASPLAZO" DataType="System.Int32"/>
+        <Column Name="VENDEDORCLIENTEID" DataType="System.Int64"/>
+        <Column Name="VENDEDORCLIENTECLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORCLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="PORCENTAJECOMISION" DataType="System.Decimal"/>
+        <Column Name="COMISION" DataType="System.Decimal"/>
+        <Column Name="TOTALVENTAS" DataType="System.Decimal"/>
+        <Column Name="DIASPAGO" DataType="System.Int64"/>
+        <Column Name="FECHAELABORACION" DataType="System.DateTime"/>
+        <Column Name="PAGOMES" DataType="System.Int16"/>
+        <Column Name="PAGOANIO" DataType="System.Int16"/>
+        <Column Name="PAGOANIOMES" DataType="System.Int64"/>
+        <Column Name="UTILIDAD" DataType="System.Decimal"/>
+        <Column Name="COMISIONTIPO2" DataType="System.Decimal"/>
+        <CommandParameter Name="FECHAINICIO" DataType="5" Expression="[fechaInicio]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[fechaFin]" DefaultValue="01/01/2020"/>
+        <CommandParameter Name="VENDEDORCLAVE" DataType="16" Size="31" Expression="[itemClave]" DefaultValue="CAB"/>
+        <CommandParameter Name="DIASPLAZO" DataType="10" Expression="[diasPlazo]" DefaultValue="45"/>
+        <CommandParameter Name="MINIMOVENTA" DataType="6" Expression="[minimoVenta]" DefaultValue="100000"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Vendedores" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Vend.: TODOS' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Vend.: ' || clave nombre from persona where tipopersonaid = 22&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="itemClave" DataType="System.String" Expression="&quot;CAB&quot;"/>
+    <Parameter Name="fechaInicio" DataType="System.DateTime"/>
+    <Parameter Name="fechaFin" DataType="System.DateTime"/>
+    <Parameter Name="diasPlazo" DataType="System.Decimal"/>
+    <Parameter Name="minimoVenta" DataType="System.Decimal"/>
+    <Total Name="TotalAbono" Expression="[Table.ABONO]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="TotalAbonoGeneral" Expression="[Table.ABONO]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="TotalComision" Expression="[Table.COMISION]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="TotalComisionGeneral" Expression="[Table.COMISION]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="430" PaperHeight="210" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1549.8" Height="160.65">
+      <TextObject Name="Text2" Left="368.55" Top="66.15" Width="378" Height="18.9" Text="[itemClave]" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="302.4" Top="66.15" Width="66.15" Height="18.9" Text="Vendedor:" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text4" Left="302.4" Top="85.05" Width="66.15" Height="18.9" Text="Inicio" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="368.55" Top="85.05" Width="378" Height="18.9" Text="[fechaInicio]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text27" Left="368.55" Top="9.45" Width="378" Height="18.9" Text="COMISION DE VENDEDOR POR ABONO" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text39" Left="368.55" Top="47.25" Width="378" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text38" Left="368.55" Top="28.35" Width="378" Height="18.9" Text="Datos de la empresa:" HorzAlign="Center" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text50" Left="302.4" Top="103.95" Width="66.15" Height="18.9" Text="Fin:" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text69" Left="368.55" Top="122.85" Width="378" Height="18.9" Text="[diasPlazo]" Font="Arial, 9pt"/>
+      <TextObject Name="Text70" Left="302.4" Top="122.85" Width="66.15" Height="18.9" Text="Dias plazo:" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text71" Left="368.55" Top="141.75" Width="378" Height="18.9" Text="[minimoVenta]" Font="Arial, 9pt"/>
+      <TextObject Name="Text72" Left="302.4" Top="141.75" Width="66.15" Height="18.9" Text="Minimo venta:" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text73" Left="368.55" Top="103.95" Width="378" Height="18.9" Text="[fechaFin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="164.65" Width="1549.8" Height="56.7" Condition="[Table.VENDEDORCLIENTEID]">
+      <TextObject Name="Text31" Left="302.4" Width="66.15" Height="18.9" Text="[Table.VENDEDORCLIENTECLAVE]" Font="Arial, 10pt, style=Italic, Underline"/>
+      <TextObject Name="Text5" Left="368.55" Width="378" Height="18.9" Text="[Table.VENDEDORCLIENTENOMBRE]" Font="Arial, 10pt, style=Italic, Underline"/>
+      <TextObject Name="Text22" Left="746.55" Top="28.35" Width="85.05" Height="18.9" Text="ABONO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="18.9" Top="28.35" Width="56.7" Height="18.9" Text="PAGO&#13;&#10;" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="75.6" Top="28.35" Width="56.7" Height="18.9" Text="VENTA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text14" Left="217.35" Top="28.35" Width="85.05" Height="18.9" Text=" APLICADO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text16" Left="132.3" Top="28.35" Width="85.05" Height="18.9" Text="RECEPCION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text18" Left="302.4" Top="28.35" Width="66.15" Height="18.9" Text="CLIENTE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text25" Left="831.6" Top="28.35" Width="103.95" Height="18.9" Text="METODO PAGO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text29" Left="935.55" Top="28.35" Width="160.65" Height="18.9" Text="BANCO " Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text52" Left="1096.2" Top="28.35" Width="85.05" Height="18.9" Text="#REF" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text54" Left="1219.05" Top="28.35" Width="66.15" Height="18.9" Text="PLAZO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text56" Left="1285.2" Top="28.35" Width="75.6" Height="18.9" Text="COMISION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text58" Left="1181.25" Top="28.35" Width="37.8" Height="18.9" Text="DIAS" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text59" Left="831.6" Width="103.95" Height="18.9" Text="[Table.TOTALVENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text60" Left="746.55" Width="85.05" Height="18.9" Text="Total" Format="Currency" Format.UseLocale="true" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="368.55" Top="28.35" Width="378" Height="18.9" Text="NOMBRE CLIENTE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text74" Left="1436.4" Top="28.35" Width="66.15" Height="18.9" Text="UTILIDAD" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text75" Left="1360.8" Top="28.35" Width="75.6" Height="28.35" Text="COMISION TIPO 2" Font="Arial, 9pt, style=Bold"/>
+      <DataBand Name="Data1" Top="225.35" Width="1549.8" Height="18.9" DataSource="Table">
+        <TextObject Name="Text7" Left="18.9" Width="56.7" Height="18.9" Text="[Table.IDPAGO]" Font="Arial, 8pt"/>
+        <TextObject Name="Text9" Left="75.6" Width="56.7" Height="18.9" Text="[Table.FOLIODOCTO]" Font="Arial, 8pt"/>
+        <TextObject Name="Text13" Left="217.35" Width="85.05" Height="18.9" Text="[Table.DOCTOFECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+        <TextObject Name="Text15" Left="132.3" Width="85.05" Height="18.9" Text="[Table.PAGOFECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+        <TextObject Name="Text17" Left="302.4" Width="66.15" Height="18.9" Text="[Table.CLIENTECLAVE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text19" Left="368.55" Width="378" Height="18.9" Text="[Table.CLIENTENOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text21" Left="746.55" Width="85.05" Height="18.9" Text="[Table.ABONO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text23" Left="831.6" Width="103.95" Height="18.9" Text="[Table.FORMADEPAGO]" Font="Arial, 8pt"/>
+        <TextObject Name="Text28" Left="935.55" Width="160.65" Height="18.9" Text="[Table.BANCONOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text30" Left="1096.2" Width="85.05" Height="18.9" Text="[Table.REFERENCIABANCARIA]" Font="Arial, 8pt"/>
+        <TextObject Name="Text53" Left="1219.05" Width="66.15" Height="18.9" Text="[Table.CLIENTEDIASPLAZO]" Font="Arial, 8pt"/>
+        <TextObject Name="Text55" Left="1285.2" Width="75.6" Height="18.9" Text="[Table.COMISION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text57" Left="1181.25" Width="37.8" Height="18.9" Text="[Table.DIASPAGO]" Font="Arial, 8pt"/>
+        <TextObject Name="Text1" Left="1436.4" Width="66.15" Height="18.9" Text="[Table.UTILIDAD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text11" Left="1360.8" Width="75.6" Height="18.9" Text="[Table.COMISIONTIPO2]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <DataFooterBand Name="DataFooter1" Top="248.25" Width="1549.8"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="252.25" Width="1549.8" Height="18.9">
+        <TextObject Name="Text61" Left="746.55" Width="85.05" Height="18.9" Text="[TotalAbono]" Font="Arial, 9pt, style=Bold"/>
+        <TextObject Name="Text62" Left="1285.2" Width="75.6" Height="18.9" Text="[TotalComision]" Font="Arial, 9pt, style=Bold"/>
+        <TextObject Name="Text65" Left="368.55" Width="378" Height="18.9" Text="Total abonos vendedor" HorzAlign="Right" Font="Arial, 9pt"/>
+        <TextObject Name="Text67" Left="1181.25" Width="103.95" Height="18.9" CanBreak="false" Text="Total com x vend" HorzAlign="Right" Font="Arial, 9pt"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="275.15" Width="1549.8" Height="18.9">
+      <TextObject Name="Text63" Left="746.55" Width="85.05" Height="18.9" Text="[TotalAbonoGeneral]" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text64" Left="1285.2" Width="75.6" Height="18.9" Text="[TotalComisionGeneral]" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text68" Left="1181.25" Width="103.95" Height="18.9" CanBreak="false" Text="Total comision" HorzAlign="Right" Font="Arial, 9pt"/>
+      <TextObject Name="Text66" Left="368.55" Width="378" Height="18.9" Text="Total abonos" HorzAlign="Right" Font="Arial, 9pt"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="298.05" Width="1549.8" Height="28.35">
+      <TextObject Name="Text26" Left="1219.05" Top="9.45" Width="94.5" Height="18.9" Text="[Page]" Font="Arial, 9pt"/>
+    </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="334" Height="350" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="66" Top="274" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="149" Top="274" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <LabelControl Name="Label1" Left="48" Top="20" Width="53" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Vendedor"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="48" Top="84" Width="124" Font="Tahoma, 8pt" TabIndex="4" ClickEvent="DateTimePicker1_Click" ReportParameter="fechaInicio" FilterOperation="GreaterThanOrEqual" Format="Short" Value="2018-04-01"/>
+    <LabelControl Name="Label2" Left="48" Top="68" Width="64" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha Inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="52" Top="132" Width="120" Font="Tahoma, 8pt" TabIndex="6" ReportParameter="fechaFin" FilterOperation="LessThanOrEqual" Format="Short" Value="2018-04-30"/>
+    <LabelControl Name="Label3" Left="52" Top="116" Width="53" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="Fecha Fin"/>
+    <NumericUpDownControl Name="NumericUpDown1" Left="52" Top="184" Font="Tahoma, 8pt" TabIndex="8" Text="45" ReportParameter="diasPlazo" FilterOperation="GreaterThanOrEqual" Maximum="1000" Value="45"/>
+    <LabelControl Name="Label4" Left="52" Top="168" Width="51" Height="13" Font="Tahoma, 8pt" TabIndex="9" Text="diasPlazo"/>
+    <NumericUpDownControl Name="NumericUpDown2" Left="52" Top="236" Font="Tahoma, 8pt" TabIndex="10" ClickEvent="NumericUpDown2_Click" ReportParameter="minimoVenta" FilterOperation="LessThanOrEqual" Maximum="1000000"/>
+    <LabelControl Name="Label5" Left="52" Top="220" Width="67" Height="13" Font="Tahoma, 8pt" TabIndex="11" Text="minimoVenta"/>
+    <ComboBoxControl Name="CBVendedor" Left="52" Top="40" Width="173" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Vend.: TODOS" TextChangedEvent="CBVendedor_TextChanged" DataColumn="Vendedores.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+  </DialogPage>
+</Report>

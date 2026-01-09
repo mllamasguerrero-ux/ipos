@@ -1,0 +1,67 @@
+create or alter procedure KIT_ACTUALIZARIMPCONTIENEPROD (
+    PRODUCTOPARTEID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRODUCTOKITID D_FK;
+declare variable MANEJAKIT D_BOOLCN;
+declare variable ESKIT D_BOOLCN;
+BEGIN
+
+    ERRORCODE = 0;
+
+    
+    SELECT FIRST 1 MANEJAKITS FROM PARAMETRO WHERE 1 = 1 INTO :MANEJAKIT;
+    IF(COALESCE(:MANEJAKIT, 'N') <> 'S') THEN
+    BEGIN
+        ERRORCODE = -2;
+        SUSPEND;  
+        EXIT;
+    END
+
+    
+
+    SELECT ESKIT
+        FROM PRODUCTO
+        WHERE ID = :PRODUCTOPARTEID
+        INTO :ESKIT;
+     IF(COALESCE(:ESKIT, 'N') = 'S') THEN
+    BEGIN
+        ERRORCODE = -1;
+        SUSPEND;
+        EXIT;
+    END
+
+    
+   FOR SELECT KD.productokitid FROM KITDEFINICION KD
+   WHERE KD.productoparteid = :PRODUCTOPARTEID GROUP BY KD.PRODUCTOKITID
+   INTO
+      :PRODUCTOKITID
+   DO
+   BEGIN
+
+      SELECT ERRORCODE FROM KIT_ACTUALIZARIMPUESTOKIT (:PRODUCTOKITID) INTO :ERRORCODE;
+      
+      IF (:ERRORCODE > 0) THEN
+      BEGIN
+
+         SUSPEND;
+         EXIT;
+      END
+   END
+
+
+
+
+
+
+    ERRORCODE = 0;
+    SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+     ERRORCODE = 4006;
+     SUSPEND;
+   END
+
+END

@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 11:45:50" ReportInfo.Modified="11/30/2016 05:00:10" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class DatosReporte
+  {
+    private string claveGasto;
+    public string ClaveGasto
+    {
+      get
+      {
+        return this.claveGasto;
+      }
+      set
+      {
+        this.claveGasto = value;
+      }
+    }
+    
+    private string nombreGasto;
+    public string NombreGasto
+    {
+      get
+      {
+        return this.nombreGasto;
+      }
+      set
+      {
+        this.nombreGasto = value;
+      }
+    }
+    
+    private decimal total;
+    public decimal Total
+    {
+      get
+      {
+        return this.total;
+      }
+      set
+      {
+        this.total = value;
+      }
+    }
+    
+    private string sucursal;
+    public string Sucursal
+    {
+      get
+      {
+        return this.sucursal;
+      }
+      set
+      {
+        this.sucursal = value;
+      }
+    }
+    
+    
+  }
+  public class ReportScript
+  {
+    private void ImprimirRegistros(System.Collections.Generic.Dictionary&lt;string, DatosReporte&gt; datosP, List&lt;DatosReporte&gt; datos)
+    {
+      int contReg = 1;
+      FastReport.Table.TableCell tc = null;
+      FastReport.Table.TableRow tr =  new FastReport.Table.TableRow();
+      Table2.PrintRow(0);
+      
+        if(((Boolean)Report.GetParameterValue(&quot;totalizado&quot;)))
+        {
+          foreach(KeyValuePair&lt;string, DatosReporte&gt; entry in datosP)
+          {
+            tr =  new FastReport.Table.TableRow();
+            DatosReporte dr = entry.Value;
+        
+            tc = new FastReport.Table.TableCell();
+            tc.Text = dr.ClaveGasto;
+            tr.AddChild(tc);
+        
+            tc = new FastReport.Table.TableCell();
+            tc.Text = dr.NombreGasto;
+            tr.AddChild(tc);
+        
+            tc = new FastReport.Table.TableCell();
+            tc.Text = dr.Total.ToString();
+            tc.HorzAlign= FastReport.HorzAlign.Right;
+            tc.Format = new FastReport.Format.CurrencyFormat();
+            tr.AddChild(tc);
+          
+            tc = new FastReport.Table.TableCell();
+            tc.Text = dr.Sucursal;
+            tr.AddChild(tc);
+       
+            Table2.Rows.Add(tr);
+            Table2.PrintRow(contReg); 
+            Table2.PrintColumns();
+            contReg++;
+          }
+        }
+        else
+        {
+        foreach(DatosReporte dr in datos)
+        {
+          tr =  new FastReport.Table.TableRow();
+        
+          tc = new FastReport.Table.TableCell();
+          tc.Text = dr.ClaveGasto;
+          tr.AddChild(tc);
+          
+          tc = new FastReport.Table.TableCell();
+          tc.Text = dr.NombreGasto;
+          tr.AddChild(tc);
+          
+          tc = new FastReport.Table.TableCell();
+          tc.Text = dr.Total.ToString();
+          tc.HorzAlign= FastReport.HorzAlign.Right;
+          tc.Format = new FastReport.Format.CurrencyFormat();
+          tr.AddChild(tc);
+          
+          tc = new FastReport.Table.TableCell();
+          tc.Text = dr.Sucursal;
+          tr.AddChild(tc);
+          
+          Table2.Rows.Add(tr);
+          Table2.PrintRow(contReg); 
+          Table2.PrintColumns();
+          contReg++;
+        }
+        }
+    }  
+    
+    private void ImprimeFilas(ref int iCount, string strConexion, ref System.Collections.Generic.Dictionary&lt;string, DatosReporte&gt; datosP, ref List&lt;DatosReporte&gt; datos)
+    {
+      Report.Dictionary.Connections[0].ConnectionString = strConexion;
+                                                 
+      DataSourceBase rowDataSuc1 = Report.GetDataSource(&quot;Table&quot;); 
+      rowDataSuc1.ForceLoadData = true;
+      rowDataSuc1.Init();
+      
+      rowDataSuc1.First();
+      
+      DataSourceBase rowDataSuc2 = Report.GetDataSource(&quot;Suc&quot;); 
+      rowDataSuc2.ForceLoadData = true;
+      rowDataSuc2.Init();
+      
+      rowDataSuc2.First();
+      
+      if(((String)Report.GetParameterValue(&quot;succlave&quot;)) != &quot;&quot; &amp;&amp; ((String)Report.GetParameterValue(&quot;succlave&quot;)) != null)
+      {
+        
+        if(((String)Report.GetParameterValue(&quot;succlave&quot;)).Equals(((String)Report.GetColumnValue(&quot;Suc.CLAVE&quot;))))
+        {
+          while(rowDataSuc1.HasMoreRows)
+          {
+            DatosReporte dr = new DatosReporte();
+            dr.ClaveGasto = ((String)Report.GetColumnValue(&quot;Table.CLAVEGASTO&quot;));
+            dr.NombreGasto = ((String)Report.GetColumnValue(&quot;Table.NOMBREGASTO&quot;));
+            dr.Total = ((Decimal)Report.GetColumnValue(&quot;Table.TOTAL&quot;));
+            dr.Sucursal = ((String)Report.GetColumnValue(&quot;Suc.NOMBRE&quot;));
+            datos.Add(dr); 
+        
+            rowDataSuc1.Next();
+          }
+        }
+      }
+      else
+      {
+        if(((Boolean)Report.GetParameterValue(&quot;totalizado&quot;)))
+        {
+          DatosReporte dr = new DatosReporte();
+          while (rowDataSuc1.HasMoreRows /*&amp;&amp; rowDataSuc2.HasMoreRows*/)
+          {                             
+            dr = new DatosReporte();
+            if(datosP.ContainsKey(((String)Report.GetColumnValue(&quot;Table.CLAVEGASTO&quot;))))
+            {
+              dr = datosP[((String)Report.GetColumnValue(&quot;Table.CLAVEGASTO&quot;))];
+              try{
+                dr.Total += ((Decimal)Report.GetColumnValue(&quot;Table.TOTAL&quot;));
+              }
+              catch(Exception ex)
+              {
+              
+              } 
+            }
+            else
+            {
+              try{
+                dr.ClaveGasto = ((String)Report.GetColumnValue(&quot;Table.CLAVEGASTO&quot;)); 
+              }
+              catch(Exception ex)
+              {
+                dr.ClaveGasto = &quot;&quot;;
+              }
+              
+              try{
+                dr.NombreGasto = ((String)Report.GetColumnValue(&quot;Table.NOMBREGASTO&quot;));
+              }
+              catch(Exception ex)
+              {
+                dr.NombreGasto = &quot;&quot;;
+              }
+              
+              try{
+                dr.Total = ((Decimal)Report.GetColumnValue(&quot;Table.TOTAL&quot;));
+              }
+              catch(Exception ex)
+              {
+                dr.Total = 0;
+              }
+              
+              try{
+                dr.Sucursal = &quot;TODAS&quot;;
+              }
+              catch(Exception ex)
+              {
+                dr.Sucursal = &quot;&quot;;
+              }
+              
+              
+              datosP.Add(((String)Report.GetColumnValue(&quot;Table.CLAVEGASTO&quot;)), dr);
+            }
+            rowDataSuc1.Next();
+          }
+        }
+        else
+        {
+          while(rowDataSuc1.HasMoreRows)
+          {
+            DatosReporte dr = new DatosReporte();
+            dr.ClaveGasto = ((String)Report.GetColumnValue(&quot;Table.CLAVEGASTO&quot;));
+            dr.NombreGasto = ((String)Report.GetColumnValue(&quot;Table.NOMBREGASTO&quot;));
+            dr.Total = ((Decimal)Report.GetColumnValue(&quot;Table.TOTAL&quot;));
+            dr.Sucursal = ((String)Report.GetColumnValue(&quot;Suc.NOMBRE&quot;));
+            datos.Add(dr); 
+        
+            rowDataSuc1.Next();
+          }
+        }
+          
+      }
+    }
+
+    private void Table2_ManualBuild(object sender, EventArgs e)
+    {
+      int iCount = 0; 
+      string strCadenasConexion = ((String)Report.GetParameterValue(&quot;conexiones&quot;));//TextBox1.Text;//&quot;initial catalog=C:\\IposProject\\iPosRopa\\iPos\\iPos\\bin\\Debug\\sampdata\\IPOSDB.fdb;user id=sysdba;password=masterkey|initial catalog=C:\\IPOSTHINGS\\fama\\fama.fdb;user id=sysdba;password=masterkey&quot;;
+      
+      string[] cadenasConexion  = strCadenasConexion.Split(new string[] { &quot;masterkey&quot; }, StringSplitOptions.None); //strCadenasConexion.Split('|');
+      
+      System.Collections.Generic.Dictionary&lt;string, DatosReporte&gt; datosP = new System.Collections.Generic.Dictionary&lt;string, DatosReporte&gt;(); // string seria la clave de producto
+      List&lt;DatosReporte&gt; datos = new List&lt;DatosReporte&gt;();
+      
+      foreach(string strCadena in cadenasConexion)
+      {                                         
+        if(strCadena.Trim().Length == 0)
+          continue;
+                        
+        //MessageBox.Show(strCadena + &quot;masterkey&quot;);
+       
+        ImprimeFilas( ref iCount,  strCadena + &quot;masterkey&quot;, ref datosP, ref datos);
+      }
+      
+      ImprimirRegistros(datosP, datos);
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2ele+haaJ6TC3B51PRM8Lz8=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;  gasto.clave clavegasto,&#13;&#10;   gasto.nombre nombregasto,&#13;&#10;   sum(coalesce(movtogasto.total,0)) total&#13;&#10;from docto&#13;&#10;left join movtogasto on movtogasto.doctoid = docto.id&#13;&#10;left join gasto on gasto.id = movtogasto.gastoid&#13;&#10;&#13;&#10;where&#13;&#10;docto.tipodoctoid = 63 and&#13;&#10;docto.estatusdoctoid = 1 and&#13;&#10;docto.fecha &gt;= @fechaini and docto.fecha &lt;= @fechafin&#13;&#10;and (gasto.clave = @gastoclave or @gastoclave = 'T' )&#13;&#10;&#13;&#10;group by gasto.clave, gasto.nombre">
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="CLAVEGASTO" DataType="System.String"/>
+        <Column Name="NOMBREGASTO" DataType="System.String"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+        <CommandParameter Name="gastoclave" DataType="16" Expression="[gastoclave]" DefaultValue="T"/>
+      </TableDataSource>
+      <TableDataSource Name="Table3" Alias="Suc" DataType="System.Int32" Enabled="true" SelectCommand="select first 1 sucursal.clave, sucursal.nombre&#13;&#10;from parametro&#13;&#10;left join sucursal on sucursal.id = parametro.sucursalid">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="gastoclave" DataType="System.String"/>
+    <Parameter Name="cajeronombre" DataType="System.String"/>
+    <Parameter Name="gastonombre" DataType="System.String"/>
+    <Parameter Name="conexiones" DataType="System.String"/>
+    <Parameter Name="totalizado" DataType="System.Boolean"/>
+    <Parameter Name="succlave" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="113.4">
+      <TextObject Name="Text27" Left="18.9" Top="9.45" Width="510.3" Height="28.35" Text="Reporte de gastos detallado MultiSucursal" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text50" Left="18.9" Top="85.05" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text51" Left="491.4" Top="85.05" Width="75.6" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="132.3" Top="85.05" Width="236.25" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="595.35" Top="85.05" Width="207.9" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text52" Left="18.9" Top="56.7" Width="94.5" Height="18.9" Text="Tipo gasto:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text2" Left="132.3" Top="56.7" Width="94.5" Height="18.9" Text="[gastonombre]"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="117.4" Width="1047.06" Height="28.35">
+      <TextObject Name="Text8" Left="37.8" Width="160.65" Height="18.9" Text="CLAVE GASTO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="198.45" Width="255.15" Height="18.9" Text="NOMBRE GASTO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="453.6" Width="122.85" Height="18.9" Text="TOTAL" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text53" Left="576.45" Width="160.65" Height="18.9" Text="SUCURSAL" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="149.75" Width="1047.06" Height="37.8" CanGrow="true">
+      <TableObject Name="Table2" Left="37.8" Top="9.45" Width="699.36" Height="18.9" ManualBuildEvent="Table2_ManualBuild">
+        <TableColumn Name="Column1" Width="165.39"/>
+        <TableColumn Name="Column2" Width="250.44"/>
+        <TableColumn Name="Column3" Width="127.59"/>
+        <TableColumn Name="Column4" Width="155.94"/>
+        <TableRow Name="Row1">
+          <TableCell Name="Cell1"/>
+          <TableCell Name="Cell2"/>
+          <TableCell Name="Cell3"/>
+          <TableCell Name="Cell4"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="191.55" Width="1047.06" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

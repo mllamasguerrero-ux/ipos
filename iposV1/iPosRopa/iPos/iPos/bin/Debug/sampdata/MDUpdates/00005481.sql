@@ -1,0 +1,569 @@
+create or alter procedure ASIGNARPEDIMENTO_DOCTO (
+    DOCTOID D_FK,
+    COMPLETARDOCTO D_BOOLCN)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable MOVTOID D_FK;
+declare variable PRODUCTOID D_FK;
+declare variable CANTIDADINVENTARIO D_CANTIDAD;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable ORDEN D_ORDEN;
+declare variable LOTE D_LOTE;
+declare variable CUENTA integer;
+declare variable FECHAVENCE D_FECHAVENCE;
+declare variable PRECIO D_PRECIO;
+declare variable COSTO D_COSTO;
+declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable CANTIDADDEFACTURA D_CANTIDAD;
+declare variable CANTIDADDEREMISION D_CANTIDAD;
+declare variable CANTIDADDEINDEFINIDO D_CANTIDAD;
+declare variable NEWMOVTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PERSONAID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable CANTIDADSUMARIZADA D_CANTIDAD;
+declare variable CANTIDADRESTANTE D_CANTIDAD;
+declare variable CANTIDADASIGNAR D_CANTIDAD;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable REFERENCIAS varchar(255);
+declare variable EXISTENCIA D_CANTIDAD;
+declare variable DESCRIPCION1 D_STDTEXT_64;
+declare variable DESCRIPCION2 D_STDTEXT_64;
+declare variable DESCRIPCION3 D_STDTEXT_64;
+declare variable LOTEIMPORTADO D_FK;
+declare variable MANEJARLOTEIMPORTACION D_BOOLCN;
+declare variable TIPODISTLOTEIMPORTADOID D_FK;
+declare variable LOTEIMPORTADODOCTOID D_FK;
+declare variable TIPODOCTOID_LOTEIMPORTADO D_FK;
+declare variable SENTIDOINVENTARIO D_SENTIDO;
+declare variable SUBTIPODOCTOID D_FK;
+declare variable DOCTOREFID D_FK;
+declare variable MOVTOREFIMPORTADOID D_FK;
+declare variable DOCTOREFLOTEIMPORTADOID D_FK;
+declare variable MOVTOINICIALLOTEIMPORTADOID D_FK;
+declare variable MOVTOLOTEIMPORTADOREFID D_FK;
+declare variable VENDEDORID D_FK;
+declare variable DATENULLALT D_FECHA;
+declare variable CONTADOR integer;
+declare variable ESTATUSDOCTOLOTEIMPO D_FK;
+BEGIN
+
+
+
+    ERRORCODE = 0;
+    LOTEIMPORTADODOCTOID = 0;
+    DATENULLALT = CAST('30.12.1899' AS D_FECHA);
+
+
+
+
+
+
+
+    SELECT FIRST 1 MANEJARLOTEIMPORTACION FROM PARAMETRO INTO :MANEJARLOTEIMPORTACION;
+
+    IF(COALESCE(:MANEJARLOTEIMPORTACION ,'N') = 'N') THEN
+    BEGIN
+            ERRORCODE = 3012;
+            SUSPEND;
+            EXIT;
+        
+    END
+
+
+    SELECT  ALMACENID, SUCURSALID, TIPODOCTOID, PERSONAID , REFERENCIA, REFERENCIAS , SUBTIPODOCTOID , DOCTOREFID, VENDEDORID
+    from DOCTO
+    where id = :doctoid
+    INTO :ALMACENID, :SUCURSALID, :TIPODOCTOID, :PERSONAID, :REFERENCIA, :REFERENCIAS, :SUBTIPODOCTOID, :DOCTOREFID, :VENDEDORID;
+
+
+    IF(COALESCE(:TIPODOCTOID,0) IN (31,81) AND COALESCE(:SUBTIPODOCTOID,0) IN (7,8)) THEN
+    BEGIN
+            ERRORCODE = 0;
+            SUSPEND;
+            EXIT;
+    END
+
+
+    SELECT TIPODISTLOTEIMPORTADOID , SENTIDOINVENTARIO
+    FROM TIPODOCTO
+    WHERE ID = :TIPODOCTOID
+    INTO :TIPODISTLOTEIMPORTADOID, :SENTIDOINVENTARIO;
+
+
+
+    IF(COALESCE(:SENTIDOINVENTARIO,0) = 1) THEN
+    BEGIN
+       TIPODOCTOID_LOTEIMPORTADO = 902;
+    END
+    ELSE
+    BEGIN  
+       TIPODOCTOID_LOTEIMPORTADO = 901;
+    END
+
+
+
+
+
+    
+    -- si ya existe el docto de loteimportado relacionado salte
+
+    IF(COALESCE(:TIPODOCTOID,0) NOT IN (901,902)) THEN
+    BEGIN
+     SELECT LOTEIMPORTADODOCTOID FROM DOCTO WHERE ID = :DOCTOID INTO :LOTEIMPORTADODOCTOID;
+     IF(COALESCE(:LOTEIMPORTADODOCTOID,0) <> 0) THEN
+     BEGIN
+         -- asegurarse de que existe el registro
+       SELECT COUNT(*) FROM DOCTO WHERE ID = :loteimportadodoctoid  INTO :CONTADOR;
+       IF(COALESCE(:contador, 0) > 0) THEN
+       BEGIN
+           -- si la opcion de completar docto esta activa.. ver si el regsitro existente esta como borrador y si es asi completarlo
+           IF(COALESCE(:COMPLETARDOCTO,'N') = 'S') THEN
+            BEGIN
+               SELECT ESTATUSDOCTOID FROM DOCTO WHERE ID = :loteimportadodoctoid  INTO :ESTATUSDOCTOLOTEIMPO;
+               IF(COALESCE(:ESTATUSDOCTOLOTEIMPO,0) = 0) THEN
+               BEGIN
+                        
+                    SELECT ERRORCODE FROM DOCTO_SAVE(:LOTEIMPORTADODOCTOID) INTO :ERRORCODE;
+                    IF(:ERRORCODE > 0) THEN
+                    BEGIN
+                        SUSPEND;
+                        EXIT;
+                    END
+               END
+
+            END
+
+
+          
+            ERRORCODE = 0;
+            SUSPEND;
+            EXIT;
+       END
+
+
+
+
+     END
+    END
+
+
+     LOTEIMPORTADODOCTOID = 0;
+
+
+    
+    IF(COALESCE(:TIPODISTLOTEIMPORTADOID ,0) = 1) THEN
+    BEGIN
+
+     CUENTA = 0;
+    
+     FOR SELECT
+      M.ID, M.PRODUCTOID,
+      case when M.TIPODOCTOID = 41 THEN M.CANTIDADSURTIDA ELSE M.CANTIDAD END AS CANTIDAD,
+      M.PRECIO, M.COSTO,
+      M.TIPODIFERENCIAINVENTARIOID  , M.CANTIDADDEFACTURA, M.CANTIDADDEREMISION, M.CANTIDADDEINDEFINIDO , M.DESCRIPCION1, M.DESCRIPCION2, M.DESCRIPCION3,M.LOTEIMPORTADO  , M.lote,  M.FECHAVENCE
+     FROM MOVTO M
+     inner join PRODUCTO P ON M.PRODUCTOID = P.ID
+     WHERE M.DOCTOID = :DOCTOID AND P.MANEJALOTEIMPORTADO = 'S'
+     INTO
+        :MOVTOID, :PRODUCTOID,  :CANTIDAD, :PRECIO, :COSTO,
+        :TIPODIFERENCIAINVENTARIOID , :CANTIDADDEFACTURA, :CANTIDADDEREMISION, :CANTIDADDEINDEFINIDO , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , :LOTEIMPORTADO , :LOTE, :FECHAVENCE
+     DO
+     BEGIN
+           
+                SELECT ERRORCODE,MOVTOID, DOCTOID
+                FROM MOVTO_INSERT (
+                :LOTEIMPORTADODOCTOID, 0, :ALMACENID, :SUCURSALID, :TIPODOCTOID_LOTEIMPORTADO, 0, 0, :PERSONAID, :VENDEDORID, 1,
+                0, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, 0, 0, 0, 0, :PRECIO, 0,
+                :REFERENCIA, :REFERENCIAS, :COSTO, :SUCURSALID, :ALMACENID, 'N', 
+                :TIPODIFERENCIAINVENTARIOID, CURRENT_DATE, CURRENT_DATE, 0.00 ,NULL,NULL,NULL,NULL,NULL , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , NULL  , :LOTEIMPORTADO , 'N','N'
+                ) INTO :ERRORCODE,:NEWMOVTOID, :LOTEIMPORTADODOCTOID;
+                
+              CUENTA = :CUENTA + 1;
+
+     END
+      
+       IF(COALESCE(:CUENTA,0) > 0) THEN
+       BEGIN
+     
+        UPDATE DOCTO SET LOTEIMPORTADODOCTOID = :LOTEIMPORTADODOCTOID WHERE ID = :DOCTOID; 
+        UPDATE DOCTO SET LOTEIMPORTADODOCTOID = :DOCTOID WHERE ID = :LOTEIMPORTADODOCTOID;
+
+        IF(COALESCE(:COMPLETARDOCTO,'N') = 'S') THEN
+        BEGIN
+            SELECT ERRORCODE FROM DOCTO_SAVE(:LOTEIMPORTADODOCTOID) INTO :ERRORCODE;
+            IF(:ERRORCODE > 0) THEN
+            BEGIN
+                    SUSPEND;
+                    EXIT;
+            END
+         END
+       END
+    END
+
+
+
+
+
+    ELSE IF(COALESCE(:TIPODISTLOTEIMPORTADOID ,0) = 2) THEN
+    BEGIN
+
+
+
+    
+     FOR SELECT
+      M.ID, M.PRODUCTOID,
+      case when M.TIPODOCTOID = 41 THEN M.CANTIDADSURTIDA ELSE M.CANTIDAD END AS CANTIDAD ,
+      M.PRECIO, M.COSTO,
+      M.TIPODIFERENCIAINVENTARIOID  , M.CANTIDADDEFACTURA, M.CANTIDADDEREMISION, M.CANTIDADDEINDEFINIDO , M.DESCRIPCION1, M.DESCRIPCION2, M.DESCRIPCION3,M.LOTEIMPORTADO
+     FROM MOVTO M
+     inner join PRODUCTO P ON M.PRODUCTOID = P.ID
+     WHERE M.DOCTOID = :DOCTOID AND P.MANEJALOTEIMPORTADO = 'S'
+     INTO
+        :MOVTOID, :PRODUCTOID,  :CANTIDAD, :PRECIO, :COSTO,
+        :TIPODIFERENCIAINVENTARIOID , :CANTIDADDEFACTURA, :CANTIDADDEREMISION, :CANTIDADDEINDEFINIDO , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , :LOTEIMPORTADO
+     DO
+     BEGIN
+
+
+        CUENTA = 0;
+        CANTIDADSUMARIZADA = 0;
+        CANTIDADRESTANTE = :CANTIDAD;
+        CANTIDADASIGNAR = 0;
+
+
+
+        SELECT SUM(coalesce(CANTIDAD,0)) FROM INVENTARIO
+        WHERE PRODUCTOID =:PRODUCTOID
+        into :EXISTENCIA;
+
+        IF(:EXISTENCIA < :CANTIDAD ) THEN
+        begin
+            ERRORCODE = CAST(:DOCTOID AS INTEGER);
+            SUSPEND;
+            EXIT;
+
+        end 
+
+
+        CUENTA = 0;
+
+        FOR SELECT
+            FECHAVENCE, LOTE, coalesce(CANTIDAD,0), LOTEIMPORTADO
+        FROM INVENTARIO
+        where PRODUCTOID = :PRODUCTOID  and coalesce(cantidad,0) > 0
+        order by ID
+        INTO
+            :FECHAVENCE, :LOTE, :CANTIDADINVENTARIO , :LOTEIMPORTADO
+        DO
+        BEGIN
+                --insert into traza values(cast(:cantidad as varchar(10)));
+
+
+
+           IF(:CANTIDADRESTANTE <= 0) THEN
+           BEGIN
+             BREAK;
+           END
+
+            IF( :CANTIDADINVENTARIO > :CANTIDADRESTANTE ) THEN
+            BEGIN
+                 CANTIDADSUMARIZADA = :CANTIDADSUMARIZADA + :CANTIDADRESTANTE;
+                 CANTIDADASIGNAR = :CANTIDADRESTANTE;
+                 CANTIDADRESTANTE = 0;
+                 
+                --insert into traza values('paso1');
+            END
+            ELSE
+            BEGIN    
+                 CANTIDADSUMARIZADA = :CANTIDADSUMARIZADA + :CANTIDADINVENTARIO;   
+                 CANTIDADASIGNAR = :CANTIDADINVENTARIO;
+                 CANTIDADRESTANTE = :CANTIDADRESTANTE - :CANTIDADINVENTARIO;
+                 
+                --insert into traza values('paso2');
+            END
+
+
+
+
+                SELECT ERRORCODE,MOVTOID, DOCTOID
+                FROM MOVTO_INSERT (
+                :LOTEIMPORTADODOCTOID, 0, :ALMACENID, :SUCURSALID, :TIPODOCTOID_LOTEIMPORTADO, 0, 0, :PERSONAID, :VENDEDORID, 1,
+                0, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDADASIGNAR, 0, 0, 0, 0, :PRECIO, 0,
+                :REFERENCIA, :REFERENCIAS, :COSTO, :SUCURSALID, :ALMACENID, 'N', 
+                :TIPODIFERENCIAINVENTARIOID, CURRENT_DATE, CURRENT_DATE, 0.00 ,NULL,NULL,NULL,NULL,NULL , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , NULL  , :LOTEIMPORTADO, 'N','N'
+                ) INTO :ERRORCODE,:NEWMOVTOID, :LOTEIMPORTADODOCTOID;
+                     
+
+              --  insert into traza values('paso4');
+
+                if(:errorcode <> 0) then
+                begin
+
+
+                 suspend;
+                 exit;
+                end
+
+
+                
+              --  insert into traza values('paso5');
+
+
+
+
+              
+               -- insert into traza values('paso6');
+
+              CUENTA = :CUENTA + 1;
+        END
+
+
+
+
+       END
+
+          
+       IF(COALESCE(:CUENTA,0) > 0) THEN
+       BEGIN
+
+
+
+
+        UPDATE DOCTO SET LOTEIMPORTADODOCTOID = :LOTEIMPORTADODOCTOID WHERE ID = :DOCTOID; 
+        UPDATE DOCTO SET LOTEIMPORTADODOCTOID = :DOCTOID WHERE ID = :LOTEIMPORTADODOCTOID;
+        
+        
+        IF(COALESCE(:COMPLETARDOCTO,'N') = 'S') THEN
+        BEGIN
+            SELECT ERRORCODE FROM DOCTO_SAVE(:LOTEIMPORTADODOCTOID) INTO :ERRORCODE;
+            IF(:ERRORCODE > 0) THEN
+            BEGIN
+                    SUSPEND;
+                    EXIT;
+            END
+         END
+
+       END
+    END
+
+
+
+
+
+
+    ELSE IF(COALESCE(:TIPODISTLOTEIMPORTADOID ,0) IN (3,4,5)) THEN
+    BEGIN
+
+    
+
+         
+     FOR SELECT
+      M.ID, M.PRODUCTOID,
+      case when M.TIPODOCTOID = 41 THEN M.CANTIDADSURTIDA ELSE M.CANTIDAD END AS CANTIDAD,
+       M.PRECIO, M.COSTO,
+      M.TIPODIFERENCIAINVENTARIOID  , M.CANTIDADDEFACTURA, M.CANTIDADDEREMISION, M.CANTIDADDEINDEFINIDO , M.DESCRIPCION1, M.DESCRIPCION2, M.DESCRIPCION3,M.LOTEIMPORTADO  , M.lote,  M.FECHAVENCE
+     FROM MOVTO M
+     inner join PRODUCTO P ON M.PRODUCTOID = P.ID
+     WHERE M.DOCTOID = :DOCTOID AND P.MANEJALOTEIMPORTADO = 'S'
+     INTO
+        :MOVTOID, :PRODUCTOID,  :CANTIDAD, :PRECIO, :COSTO,
+        :TIPODIFERENCIAINVENTARIOID , :CANTIDADDEFACTURA, :CANTIDADDEREMISION, :CANTIDADDEINDEFINIDO , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , :LOTEIMPORTADO , :LOTE, :FECHAVENCE
+     DO
+     BEGIN
+
+
+        CUENTA = 0;
+        CANTIDADSUMARIZADA = 0;
+        CANTIDADRESTANTE = :CANTIDAD;
+        CANTIDADASIGNAR = 0;
+
+
+
+
+
+
+
+        FOR SELECT MOVTO.ID, coalesce(CASE WHEN DOCTO.TIPODOCTOID = 41 THEN MOVTO.cantidadsurtida ELSE MOVTO.CANTIDAD END,0) - coalesce(MOVTO.CANTIDADDEVUELTA,0),
+        MOVTO.LOTEIMPORTADO
+        FROM DOCTO
+        LEFT JOIN DOCTO DLOTEIMPO ON DOCTO.loteimportadodoctoid = DLOTEIMPO.ID
+        LEFT JOIN MOVTO ON MOVTO.DOCTOID = DLOTEIMPO.ID
+        where DOCTO.ID = :DOCTOREFID AND  MOVTO.PRODUCTOID = :PRODUCTOID  and
+           coalesce(CASE WHEN DOCTO.TIPODOCTOID = 41 THEN MOVTO.cantidadsurtida ELSE MOVTO.CANTIDAD END,0) - coalesce(MOVTO.CANTIDADDEVUELTA,0) > 0
+           AND MOVTO.PRECIO = :PRECIO
+           AND COALESCE(MOVTO.lote,'') = COALESCE(:LOTE,'') --AND COALESCE(MOVTO.FECHAVENCE, :DATENULLALT) = COALESCE(:FECHAVENCE, :DATENULLALT)
+        order by MOVTO.ID
+        INTO
+             :MOVTOREFIMPORTADOID, :CANTIDADINVENTARIO , :LOTEIMPORTADO
+        DO
+        BEGIN
+
+
+        
+
+
+                --insert into traza values(cast(:cantidad as varchar(10)));
+
+           IF(:CANTIDADRESTANTE <= 0) THEN
+           BEGIN
+             BREAK;
+           END
+
+            IF( :CANTIDADINVENTARIO > :CANTIDADRESTANTE ) THEN
+            BEGIN
+                 CANTIDADSUMARIZADA = :CANTIDADSUMARIZADA + :CANTIDADRESTANTE;
+                 CANTIDADASIGNAR = :CANTIDADRESTANTE;
+                 CANTIDADRESTANTE = 0;
+                 
+                --insert into traza values('paso1');
+            END
+            ELSE
+            BEGIN    
+                 CANTIDADSUMARIZADA = :CANTIDADSUMARIZADA + :CANTIDADINVENTARIO;   
+                 CANTIDADASIGNAR = :CANTIDADINVENTARIO;
+                 CANTIDADRESTANTE = :CANTIDADRESTANTE - :CANTIDADINVENTARIO;
+                 
+                --insert into traza values('paso2');
+            END
+
+
+
+                SELECT ERRORCODE,MOVTOID, DOCTOID
+                FROM MOVTO_INSERT (
+                :LOTEIMPORTADODOCTOID, 0, :ALMACENID, :SUCURSALID, :TIPODOCTOID_LOTEIMPORTADO, 0, 0, :PERSONAID, :VENDEDORID, 1,
+                0, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDADASIGNAR, 0, 0, 0, 0, :PRECIO, 0,
+                :REFERENCIA, :REFERENCIAS, :COSTO, :SUCURSALID, :ALMACENID, 'N', 
+                :TIPODIFERENCIAINVENTARIOID, CURRENT_DATE, CURRENT_DATE, 0.00 ,NULL,NULL,NULL,NULL,NULL , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , NULL  , :LOTEIMPORTADO , 'N','N'
+                ) INTO :ERRORCODE,:NEWMOVTOID, :LOTEIMPORTADODOCTOID;
+                     
+              --  insert into traza values('paso4');
+
+                if(:errorcode <> 0) then
+                begin
+                 suspend;
+                 exit;
+                end
+
+
+                
+                UPDATE MOVTO SET MOVTOLOTEIMPORTADOREFID = :MOVTOREFIMPORTADOID WHERE ID = :NEWMOVTOID;
+                
+                IF(COALESCE(:TIPODISTLOTEIMPORTADOID ,0) = 3) THEN
+                BEGIN
+
+                    UPDATE MOVTO SET CANTIDADDEVUELTA = CANTIDADDEVUELTA + :CANTIDADASIGNAR WHERE ID = :MOVTOREFIMPORTADOID;
+
+                END
+
+                
+                IF(COALESCE(:TIPODISTLOTEIMPORTADOID ,0) = 5) THEN
+                BEGIN
+                  SELECT MOVTOLOTEIMPORTADOREFID FROM  MOVTO WHERE ID = :MOVTOREFIMPORTADOID INTO :MOVTOINICIALLOTEIMPORTADOID ;
+
+                  update MOVTO SET CANTIDADDEVUELTA = CANTIDADDEVUELTA - :CANTIDADASIGNAR WHERE ID = :MOVTOINICIALLOTEIMPORTADOID;
+                END
+
+
+              --  insert into traza values('paso5');
+
+
+
+
+              
+               -- insert into traza values('paso6');
+
+              CUENTA = :CUENTA + 1;
+        END
+
+         
+        IF(COALESCE(:TIPODISTLOTEIMPORTADOID ,0) IN (4,5)) THEN
+        BEGIN
+
+                IF(COALESCE(:CANTIDADRESTANTE,0) > 0 ) THEN
+                BEGIN
+                   ERRORCODE = 9877;
+                   SUSPEND;
+                   EXIT;
+                END
+         END
+         ELSE
+         BEGIN
+            
+                IF(COALESCE(:CANTIDADRESTANTE,0) > 0 ) THEN
+                BEGIN
+                    LOTEIMPORTADO = NULL;
+                   
+                    SELECT ERRORCODE,MOVTOID, DOCTOID
+                    FROM MOVTO_INSERT (
+                    :LOTEIMPORTADODOCTOID, 0, :ALMACENID, :SUCURSALID, :TIPODOCTOID_LOTEIMPORTADO, 0, 0, :PERSONAID, :VENDEDORID, 1,
+                    0, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDADASIGNAR, 0, 0, 0, 0, :PRECIO, 0,
+                    :REFERENCIA, :REFERENCIAS, :COSTO, :SUCURSALID, :ALMACENID, 'N', 
+                    :TIPODIFERENCIAINVENTARIOID, CURRENT_DATE, CURRENT_DATE, 0.00 ,NULL,NULL,NULL,NULL,NULL , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3 , NULL  , :LOTEIMPORTADO , 'N','N'
+                    ) INTO :ERRORCODE,:NEWMOVTOID, :LOTEIMPORTADODOCTOID;
+                    
+
+
+                END
+                
+                CUENTA = :CUENTA + 1;
+          END
+
+
+       END
+
+
+
+
+       IF(COALESCE(:CUENTA,0) > 0) THEN
+       BEGIN
+
+         
+            IF(COALESCE(:TIPODISTLOTEIMPORTADOID ,0) IN (4,5)) THEN
+            BEGIN
+
+
+                SELECT DOCTO.loteimportadodoctoid FROM DOCTO WHERE ID = :DOCTOREFID INTO :DOCTOREFLOTEIMPORTADOID ;
+
+                IF(COALESCE(:DOCTOREFLOTEIMPORTADOID,0) > 0 ) THEN
+                BEGIN
+                    
+                    UPDATE DOCTO SET DOCTO.estatusdoctoid = 2 WHERE ID = :DOCTOREFLOTEIMPORTADOID;
+                    UPDATE MOVTO SET ESTATUSMOVTOID = 2 WHERE DOCTOID = :DOCTOREFLOTEIMPORTADOID;
+                END
+            END
+
+
+
+                UPDATE DOCTO SET LOTEIMPORTADODOCTOID = :LOTEIMPORTADODOCTOID WHERE ID = :DOCTOID; 
+                UPDATE DOCTO SET LOTEIMPORTADODOCTOID = :DOCTOID WHERE ID = :LOTEIMPORTADODOCTOID;
+
+                
+                IF(COALESCE(:COMPLETARDOCTO,'N') = 'S') THEN
+                BEGIN
+                    SELECT ERRORCODE FROM DOCTO_SAVE(:LOTEIMPORTADODOCTOID) INTO :ERRORCODE;
+                    IF(:ERRORCODE > 0) THEN
+                    BEGIN
+                        SUSPEND;
+                        EXIT;
+                    END
+                END
+       END
+
+    END
+
+
+
+
+   
+   ERRORCODE = 0;
+   SUSPEND;
+   
+   /*WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1012;
+      SUSPEND;
+   END  */
+END

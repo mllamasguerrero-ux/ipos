@@ -1,0 +1,677 @@
+﻿1;Catalogos
+2;Clientes - Consulta
+3;Vendedores - Consulta
+4;Operaciones - Consulta
+5;Entradas - Consulta
+6;Notas de credito - Consulta
+7;Otras entradas - Consulta
+8;Salidas - Consulta
+9;Punto de Venta - Consulta
+10;Dev. a proveedor - Consulta
+11;Otras Salidas - Consulta
+12;Procesos - Consulta
+13;Importaciones - Consulta
+14;Exportaciones FTP - Consulta
+15;Tickets - Consulta
+16;Compras - Consulta
+17;Salidas - Consulta
+18;Proveedores - Consulta
+19;Linea - Consulta
+20;Marcas - Consulta
+21;Productos - Consulta
+22;Administracion - Consulta
+23;Usuarios - Consulta
+24;Perfiles - Consulta
+25;Cambio de password - Consulta
+26;Reportes - Consulta
+27;Clientes - Consulta
+28;Kardex - Consulta
+29;Empresa - Consulta
+30;Cerrar Corte - Consulta
+31;Rec. Otras Compras - Consulta
+50;Cambios de Precios - Consulta
+51;Inventario Fisico - Consulta
+52;Abrir Corte - Consulta
+53;Cargar Inventario Inicial - Consulta
+55;Comisiones - Consulta
+56;Ventas - Consulta
+57;Detalle de Ventas - Consulta
+58;Compras - Consulta
+59;Detalle de Compras - Consulta
+60;Stock Faltante - Consulta
+61;Perfiles de Usuario - Consulta
+62;Importaciones Excel
+63;Exportaciones Excel
+64;Kardex resumido
+65;Inventario costeado
+66;Documentos por forma de pago
+67;Cortes del dia
+68;Localizacion de Productos
+69;Retiros
+70;Devoluciones de venta
+72;Aplicacion de saldos
+74;Aplicacion de saldos compras devoluciones
+75;Devoluciones de compras
+76;Proveedores
+77;Clientes
+78;Abonos a proveedores
+79;Abonos de clientes
+80;Timbres cancelados
+81;Tasa Iva
+82;Monedas
+83;Bancos
+84;Matriz ( solo opciones para matriz)
+85;Procesar pedidos de sucursales
+86;Actualizar precios en sucursales
+87;Inventario x localidad
+88;Catalogos sucursales
+89;Catalogos grupos de sucursal
+90;Stock de productos
+91;Anaqueles
+92;Reporte Testing
+93;Impresion de etiquetas
+94;Estado
+95;Unidades
+96;Monedero
+97;Promociones
+98;Aplicacion
+99;Sucursales
+100;Reimpresion de documentos
+101;Reimpresion de factura electronica
+102;Productos
+103;Clientes
+104;Vendedores
+105;Proveedores
+106;Productos
+107;Lineas
+108;Marcas
+109;Entradas
+110;Salidas
+111;Flujo
+112;Factura Electronica
+113;Estados de cuenta
+114;Clientes por producto
+115;Clientes por marcas
+116;Clientes por lineas
+117;Catalogo de vendedores
+118;Catalogo de proveedores
+119;Cuentas Por Pagar
+120;Catalogo de productos
+121;Lista de precios
+122;Productos por linea
+123;Ventas por linea
+124;Productos por marca
+125;Ventas por marca
+126;Compras por producto
+127;Compras por marca
+128;Compras por linea
+129;Notas de credito
+130;Recepcion de traslados sucursales
+131;Ventas por cliente
+132;Ventas por linea
+133;Ventas por marca
+134;Ventas por proveedor
+135;Ventas por vendedor
+136;Traslados sucursales
+137;Corte de operaciones
+138;Tipo ticket
+139;Reportes personalizados
+140;Corte del dia con ajuste
+141;Corte del dia sumarizado con ajuste
+142;Otros reportes
+143;Reporte de descuentos hechos por cajeros
+144;Recepcion de orden de compra
+145;Reporte de Ventas con saldo
+146;Ventas x vendedor asignado del cliente
+147;Anticipos de proveedores
+148;Anticipos de clientes
+149;Reporte de clientes por vendedor asignado
+150;Reporte inventario x almacen
+151;Quotas de vendedores
+152;Reporte de cuotas
+153;Reasignacion de utilidades por vendedor
+154;Inicializacion movil
+155;vendedor movil
+156;Estado de sincronizacion movil
+157;Finalizacion movil
+158;Reporte producto por stock
+159;Reporte de corte de caja por cajero
+160;Reporte de cobranza aplicada por cajero
+161;Reporte de cartera vencida
+162;Ventas por corte
+163;Detalle de ventas por corte
+164;Cobranza movil
+165;Pagos movil
+166;Reportes cobranza movil
+167;Conexion movil local
+168;Inventario por fecha
+169;Cambio de precios de productos movil
+170;Reporte inventario costeado general
+171;Detalle inventarios por fecha
+172;Resument inventarios por fecha
+173;Cancelacion de documentos por proceso
+174;Mejoras de productos
+175;Importar producto precio y existencia movil
+176;Registro de visita
+177;Historial de lote
+178;Corte por Fecha
+179;Reporte de receta
+180;Reporte de ventas por dia por utilidad
+181;Reporte productos corta caducidad
+182;Procesos de kits
+183;Ensamble de kits
+184;Desensamble de kits
+185;Cancelacion de apartados
+186;Cambiar vencimiento venta
+187;Autorizacion rebaja x NC
+188;Reporte de autorizaciones de rebajas por nc
+189;Movimientos de anaqueles
+190;Cobranza general
+191;Bitacora de cobranza
+192;Solicitar archivos remotos (vendedor movil)
+193;Nuevos precios
+194;Contrarecibos
+195;Surtido de pedidos moviles
+196;Facturas moviles con error
+197;Pedidos moviles por autorizar
+198;Surtir pedidos pendientes
+199;Ventas con error de surtido
+200;Intercambio de lotes
+201;Consolidados
+202;Surtido
+203;Consolidacion de facturas
+204;Consulta de consolidados
+205;Reimpresiones de pendientes de orden de compra por recibir
+206;Estadisticos totalizados
+207;Estadisticos por producto venta
+208;Estadisticos por producto compra
+209;Estadisticos por venta cliente
+210;Estadisticos por proveedor compra
+211;Bitacora de cambios
+212;Entradas/Salidas Productos que requieren receta
+213;Catalogo de grupos de usuario
+214;Descomprimir respaldos sucursales
+215;Reporte de saldos de proveedores
+216;Catalogo de gastos
+217;Catalogo de cuentas
+218;Contabilidad
+219;Retiros de caja
+220;Gastos
+221;Informe Productos Mula
+222;Estadistico por venta de todos los productos
+223;Generar Polizas
+224;Otras entradas
+225;Otras salidas
+226;Catalogo de tipos de transaccion
+227;Aprobacion surtido CXC
+228;Ventas por Dia Con Utilidad MultiSucursal
+229;Traslados Sucursal (MultiSucursal)
+230;Informe Ultima Venta MultiSucursal
+231;Consolidados
+232;Catalogo de cajas
+233;Catalogo de terminales de pago de servicios
+234;Aplicar ventas a futuro
+235;Impresion de Precios Por Localidad
+236;Reporte de recargas Emida
+237;Reporte de Ventas con Subtotales
+238;Rutas de Embarque
+242;Contenidos de producto
+243;Clasificacion adicional de producto
+244;Rutas
+245;Ventas por Ruta de Embarque
+246;Motivos de devolucion
+247;Reporte de Concentrado de Ruta
+248;Reporte de Conciliacion Servicios Emida
+249;Reporte de Conciliacion Emida
+250;Merchant Pago Servicios
+251;Clerk Pago Servicios
+252;Clerk Pago Servicios
+253;Estados de Cuenta
+254;Abono a Proveedores
+255;Inventario Costeado MultiSucursal
+256;Ventas por Proveedor MultiSucursal
+257;Diario de Compras MultiSucursal
+258;Editar Corte
+259;Faltante de Ordenes de Compra
+262;Informe de gastos
+263;Menu Utilerias
+264;Utilerias - Procesos
+265;Utilerias - Reportes
+266;Procesos Utilerias - Pago a Proveedores por Fecha
+267;Procesos Utilerias - Baja Saldos Menores
+268;Reportes Utilerias - Pago por Proceso
+270;Gastos Sumarizado MultiSucursal
+271;Catalogos - Encargados de Guias
+272;Control de embarques
+273;Guias - Proceso
+274;Menu Utilerias Emida
+275;Submenu reajustar campos de productos emida
+276;Submenu Recalcular utilidades transacciones Emida
+277;Exportar datos para inventario
+278;Utilerias Bancomer
+279;Cargado de Llaves Bancomer
+280;Reporte de prueba Bancomer
+281;Consulta de puntos
+282;Mensajeria
+283;Buzon de Mensajes
+284;Crear Mensajes
+285;Mensajes Enviados
+286;Areas
+287;Utilerias Sistema
+288;Importacion de Clientes desde Excel
+289;Catalogo Gastos Adicionales
+290;Reporte Inventario por Lotes
+291;Reporte de apertura y cierre de cortes
+292;Catalogo - Almacenes
+293;Reporte de Transacciones Bancomers
+295;Catalogo - Plazos
+296;Importacion de Saldos Clientes desde Excel
+297;Informe facturas y notas de credito fiscales
+298;Pedidos por Existencia
+299;Devoluciones de pedidos y traslados en matriz
+300;Stock Por Almacenes
+301;Catalogo Cuentas PVC
+302;Reporte de existencia por proveedor y sucusal
+303;Importacion de ventas/nc/otros
+304;Ajuste Catalogos SAT
+305;Traslado a productos promocion
+306;Traslado de promocion a producto base
+307;Existencias por proveedor por sucursal
+308;Productos promocion
+309;Traslado a productos promocion
+310;Traslado de promocion a producto base
+311;Reporte de traslados promocion por proveedor
+312;Reporte de Abonos de intercambio de mercancia
+313;Importacion de Saldos Proveedores desde Excel
+314;Depositos
+315;Reporte de ventas con autorizacion por precio bajo
+316;Bloquear clientes con ventas vencidas
+317;Generar poliza formato PDF
+318;Reasignar notas de credito
+319;Importar inventario movil
+320;Submenu Vendedor Movil Procesos de matriz/sucursal
+321;Bitacora de cobranza Vendedor Movil
+322;Importacion de ventas de vendedor movil
+323;Generar datos para vendedor movil
+324;Procesar Pagos Por Vendedor Movil
+325;Ventas moviles con errores de facturacion
+326;Reporte de faltantes de vendedor movil
+327;Reporte de Corte detallado
+328;Catalogo de Uso CFDI SAT Operativos
+329;Catalogo de cuentas de banco
+330;Pagos de clientes
+331;Reporte de Recuperacion de cobranza por mes
+332;Reporte de Lista Precio mas vendidos
+333;Reporte de comisiones por cajero
+334;Ajuste de Clave SAT en Productos
+335;Asignacion Clave SAT Productos
+336;Listas de precios especiales
+337;Maximos de facturacion por dia
+340;Reasignacion valores sin vale
+341;Fondeo de caja
+342;Reasignar cancelaciones
+343;Reporte de ventas por hora
+344;Reporte de ventas con servicio a domicilio
+345;Abonos a proveedores de sucursales
+346;Pagos a proveedores de sucursales
+347;Facturas originales compras
+348;Aplicacion de Cheques postfechados
+349;Motivos de cambio de fecha de aplicacion
+350;Reporte de comisiones version 2
+351;Reporte de compras de sucursal
+352;Reporte de diferencia facturas originales
+353;Reporte Diario General 1
+354;Utilerias eliminacion de  ventas pendientes
+355;Reporte de reversion de abonos
+356;Revision Final
+357;Reporte de Incidencias de revision
+358;Catalogo de tipos de cliente
+359;Exportar para cubo
+360;Reporte de consulta de compras x producto
+361;Autorizacion topes movil
+362;CXC Autorizacion Movil
+363;Solicitar mercancia
+364;Corte Recoleccion
+365;Reporte de recoleccion de cortes
+366;Encargado de corte
+367;Reporte de abonos con la misma referencia
+1,001;Catбlogos - Edicion
+1,002;Clientes - Edicion
+1,003;Vendedores - Edicion
+1,004;Operaciones - Edicion
+1,005;Entradas - Edicion
+1,006;Notas de credito - Edicion
+1,007;Otras entradas - Edicion
+1,008;Salidas - Edicion
+1,009;Punto de Venta - Edicion
+1,010;Dev. a proveedor - Edicion
+1,011;Otras Salidas - Edicion
+1,012;Procesos - Edicion
+1,013;Importaciones - Edicion
+1,014;Exportaciones FTP - Edicion
+1,015;Tickets - Edicion
+1,016;Compras - Edicion
+1,017;Salidas - Edicion
+1,018;Proveedores - Edicion
+1,019;Linea - Edicion
+1,020;Marcas - Edicion
+1,021;Productos - Edicion
+1,022;Administracion - Edicion
+1,023;Usuarios - Edicion
+1,024;Perfiles - Edicion
+1,025;Cambio de password - Edicion
+1,026;Reportes - Edicion
+1,027;Clientes - Edicion
+1,028;Kardex - Edicion
+1,029;Empresa - Edicion
+1,030;Cerrar Corte - Edicion
+1,031;Rec. Otras Compras - Edicion
+1,050;Cambios de Precios - Edicion
+1,051;Inventario Fisico - Edicion
+1,052;Abrir Corte - Edicion
+1,053;Cargar Inventario Inicial - Edicion
+1,055;Comisiones - Edicion
+1,056;Ventas - Edicion
+1,057;Detalle de Ventas - Edicion
+1,058;Compras - Edicion
+1,059;Detalle de Compras - Edicion
+1,060;Stock Faltante - Edicion
+1,061;Perfiles de Usuario - Edicion
+1,081;Tasa Iva - Edicion
+1,082;Moneda - Edicion
+1,083;Banco - Edicion
+1,088;Sucursales - Edicion
+1,089;Grupos de sucursal - Edicion
+1,091;Anaqueles - Edicion
+1,094;Estados - Edicion
+1,095;Unidades - Edicion
+1,097;Promociones - Edicion
+1,098;Promociones - Activar/Desactivar
+1,216;Gastos - Edicion
+1,238;Rutas de Embarque - Edicion
+1,242;Contenidos de producto - Edicion
+1,243;Clasificacion adicional de producto  - Edicion
+1,246;Motivos de devolucion - Edicion
+1,250;Merchant Pago Servicios - Edicion
+1,251;Clerk Pago Servicios - Edicion
+1,289;Gastos Adicionales - Edicion
+1,295;Plazo edicion
+1,329;Catalogo de cuentas de banco - Edicion
+1,364;Corte Recoleccion - Edicion
+2,001;Catalogos - Eliminacion
+2,002;Clientes - Eliminacion
+2,003;Vendedores - Eliminacion
+2,004;Operaciones - Eliminacion
+2,005;Entradas - Eliminacion
+2,006;Notas de credito - Eliminacion
+2,007;Otras entradas - Eliminacion
+2,008;Salidas - Eliminacion
+2,009;Punto de Venta - Eliminacion
+2,010;Dev. a proveedor - Eliminacion
+2,011;Otras Salidas - Eliminacion
+2,012;Procesos - Eliminacion
+2,013;Importaciones - Eliminacion
+2,014;Exportaciones FTP - Eliminacion
+2,015;Tickets - Eliminacion
+2,016;Compras - Eliminacion
+2,017;Salidas - Eliminacion
+2,018;Proveedores - Eliminacion
+2,019;Linea - Eliminacion
+2,020;Marcas - Eliminacion
+2,021;Productos - Eliminacion
+2,022;Administracion - Eliminacion
+2,023;Usuarios - Eliminacion
+2,024;Perfiles - Eliminacion
+2,025;Cambio de password - Eliminacion
+2,026;Reportes - Eliminacion
+2,027;Clientes - Eliminacion
+2,028;Kardex - Eliminacion
+2,029;Empresa - Eliminacion
+2,030;Cerrar Corte - Eliminacion
+2,031;Rec. Otras Compras - Eliminacion
+2,050;Cambios de Precios - Eliminacion
+2,051;Inventario Fisico - Eliminacion
+2,052;Abrir Corte - Eliminacion
+2,053;Cargar Inventario Inicial - Eliminacion
+2,055;Comisiones - Eliminacion
+2,056;Ventas - Eliminacion
+2,057;Detalle de Ventas - Eliminacion
+2,058;Compras - Eliminacion
+2,059;Detalle de Compras - Eliminacion
+2,060;Stock Faltante - Eliminacion
+2,061;Perfiles de Usuario - Eliminacion
+2,081;Tasa Iva - Eliminacion
+2,082;Moneda - Eliminacion
+2,083;Banco - Eliminacion
+2,088;Sucursales - Eliminacion
+2,089;Grupos de sucursal - Eliminacion
+2,091;Anaqueles - Eliminacion
+2,094;Estados - Eliminacion
+2,095;Unidades - Eliminacion
+2,097;Promociones - Eliminacion
+2,216;Gastos - Eliminacion
+2,238;Rutas de Embarque - Eliminacion
+2,242;Contenidos de producto - Eliminacion
+2,243;Clasificacion adicional de producto - Eliminacion
+2,246;Motivos de devolucion - Eliminacion
+2,250;Merchant Pago Servicios - Eliminacion
+2,251;Clerk Pago Servicios - Eliminacion
+2,289;Gastos Adicionales - Eliminacion
+2,295;Plazo eliminacion
+2,329;Catalogo de cuentas de banco - Elim
+2,364;Corte Recoleccion - Eliminacion
+3,001;Catбlogos - Insercion
+3,002;Clientes - Insercion
+3,003;Vendedores - Insercion
+3,004;Operaciones - Insercion
+3,005;Entradas - Insercion
+3,006;Notas de credito - Insercion
+3,007;Otras entradas - Insercion
+3,008;Salidas - Insercion
+3,009;Punto de Venta - Insercion
+3,010;Dev. a proveedor - Insercion
+3,011;Otras Salidas - Insercion
+3,012;Procesos - Insercion
+3,013;Importaciones - Insercion
+3,014;Exportaciones FTP - Insercion
+3,015;Tickets - Insercion
+3,016;Compras - Insercion
+3,017;Salidas - Insercion
+3,018;Proveedores - Insercion
+3,019;Linea - Insercion
+3,020;Marcas - Insercion
+3,021;Productos - Insercion
+3,022;Administracion - Insercion
+3,023;Usuarios - Insercion
+3,024;Perfiles - Insercion
+3,025;Cambio de password - Insercion
+3,026;Reportes - Insercion
+3,027;Clientes - Insercion
+3,028;Kardex - Insercion
+3,029;Empresa - Insercion
+3,030;Cerrar Corte - Insercion
+3,031;Rec. Otras Compras - Insercion
+3,050;Cambios de Precios - Insercion
+3,051;Inventario Fisico - Insercion
+3,052;Abrir Corte - Insercion
+3,053;Cargar Inventario Inicial - Insercion
+3,055;Comisiones - Insercion
+3,056;Ventas - Insercion
+3,057;Detalle de Ventas - Insercion
+3,058;Compras - Insercion
+3,059;Detalle de Compras - Insercion
+3,060;Stock Faltante - Insercion
+3,061;Perfiles de Usuario - Insercion
+3,081;Tasa Iva - Insercion
+3,082;Moneda - Insercion
+3,083;Banco - Insercion
+3,088;Sucursales - Insercion
+3,089;Grupos de sucursal - Insercion
+3,091;Anaqueles - Insercion
+3,094;Estados - Insercion
+3,095;Unidades - Insercion
+3,097;Promociones - Insercion
+3,139;Reporte personalizado agregar
+3,216;Gastos - Insercion
+3,238;Rutas de Embarque - Insercion
+3,242;Contenidos de producto - Insercion
+3,243;Clasificacion adicional de producto - Insercion
+3,246;Motivos de devolucion - Insercion
+3,250;Merchant Pago Servicios - Adicion
+3,251;Clerk Pago Servicios - Adicion
+3,289;Gastos Adicionales -  Insercion
+3,295;Plazo insercion
+3,329;Catalogo de cuentas de banco - Adic
+3,364;Corte recoleccion - Insercion
+4,139;Reporte personalizado ejecutar
+5,139;Reporte personalizado disenar
+10,001;Mostrar Costos
+10,002;Cambiar precio
+10,003;Cambiar precio abajo del minimo
+10,004;Cambiar precio abajo del costo
+10,005;Ver precio
+10,006;Descuento en compra
+10,007;Cambiar costo reposicion
+10,008;Abonos cambiar fecha de elaboracion y recepcion
+10,009;Retiros del supervisor
+10,010;Retiros por pago a proveedores
+10,011;Cambiar precio devolucion
+10,012;Devolucion sin venta
+10,013;Devolver compras sin compra
+10,014;Cambiar precio por lista de precio
+10,015;Eliminar ventas del dia
+10,016;Eliminar ventas de cualquier dia
+10,017;Eliminar pedidos / traslados
+10,018;Reenviar Traslados
+10,019;Agregar Traslados
+10,020;Vender a clientes con credito excedido
+10,021;Cambiar tasa iva en la venta
+10,022;Cambiar de almacen
+10,023;Traspasos entre almacenes
+10,024;Descuento en venta
+10,025;Credito y cobranza clientes
+10,026;Cambiar remision a factura
+10,027;Facturar de fecha fuera del mes
+10,028;Desglose kits en documentos
+10,029;Consultar transaccion por folio
+10,030;Ver movimientos de producto
+10,031;Imprimir cotizaciones
+10,032;Cancelar cotizaciones
+10,033;Eliminar detalle de cotizacion
+10,034;Cancelar/Recrear ventas propias con error de surtido
+10,035;Cancelar/Recrear ventas moviles con error de surtido
+10,036;Cancelar/Recrear todas ventas con error de surtido
+10,037;Ver ventas pendientes de todos los cajeros
+10,038;Ver ventas cerradas y canceladas de todos los cajeros
+10,039;Abrir ventas cerradas
+10,040;Reimprimir compra y orden de compra
+10,041;Bitacora ver historial de cambios de clientes
+10,042;Bitacora ver historial de cambios de producto
+10,043;Analisis cliente
+10,044;Retiro de caja consultar de todos los cajeros
+10,045;Retiro de caja consultar de cortes no activos
+10,046;Retiros de caja permitir registro
+10,047;Gastos consultar de todos los cajeros
+10,048;Gastos consultar de cortes no activos
+10,049;Gastos cancelar de corte actual
+10,050;Gastos cancelar de todos los cajeros
+10,051;Gastos cancelar de cortes no activos
+10,052;Gastos Editar de corte activo actual
+10,053;Gastos editar de todos los cajeros
+10,054;Gastos editar de cortes no activos
+10,055;Gastos agregar mismo corte
+10,056;Gastos agregar otro corte
+10,057;Cambiar precio otras compras
+10,058;Cambiar precio otras salidas
+10,059;Editar precios nuevos
+10,060;Ver ventas cerradas y pendientes de un corte anterior
+10,061;Ventas a futuro (grabarlas)
+10,062;Finalizar inventario
+10,063;Ver totales en listado de ventas
+10,064;Poner Ruta de Embarque en venta
+10,068;Agregar productos al surtir ventas a futuro
+10,069;Atajo ctrl+p imprimir cotizacion, dejar pendiente y nueva
+10,070;Eliminar abonos de clientes otros dias (revertir)
+10,071;Eliminar abonos de clientes otros cajeros (revertir)
+10,072;Eliminar abonos de clientes mismo dia ( revertir)
+10,073;Eliminar abonos de clientes mismo cajero (revertir)
+10,074;Editar Corte Actual
+10,075;Editar Cortes Pasados
+10,078;Ver existencias de todas las sucursales y la matriz
+10,079;Ver existencias de la matriz
+10,080;Editar bitacora mismo dia
+10,081;Editar bitacora otro dia
+10,082;Editar bitacora de otro usuario
+10,083;Eliminar bitacora mismo dia
+10,084;Eliminar bitacora otro dia
+10,088;Agregar gasto de otro cajero
+10,089;Modificar estado de bitacora
+10,090;Agregar Guia
+10,091;Editar Guia - Fecha Actual
+10,092;Editar Guia - Fecha Pasada
+10,093;Editar Guia - Cajero Actual
+10,094;Editar Guia - Otro Cajero
+10,095;Recibir Guia
+10,096;Pago terminal bancomer
+10,097;Editar precios por cliente
+10,098;Otorgar Descuentos por Linea a Clientes
+10,099;Ingresar gastos adicionales en compra
+10,100;Asignar vendedor ejecutivo para venta especifica
+10,101;Importar compras
+10,103;Borrar todas las promociones
+10,104;Consultar Docto en Paralelo
+10,105;Ver saldo en listado de proveedores
+10,106;Ver saldo en listado de clientes
+10,107;Ordenar detalles por descripcion en venta
+10,108;Modificar parametro : Incluir pagos de serv. en consolidado
+10,109;Agregar deposito
+10,110;Agregar deposito otro corte
+10,111;Editar deposito
+10,112;Cancelar deposito
+10,113;Consultar depositos
+10,114;Consultar depositos otros cortes
+10,115;Permitir pago con tarjeta sin pinpad si esta configurada
+10,116;Relacionar proveedor con cliente
+10,117;Consultar ventas pendientes de varios dias
+10,118;Extenar iva a cliente
+10,119;Imprimir directamente ticket factura
+10,120;Ver existencia de la sucursal al surtir pedido
+10,121;Aplicar notas de credito a cortes de un dia anterior
+10,122;Aplicar notas de credito a cortes de cuaquier dia anterior
+10,123;Ver costo en cambio de precio
+10,126;Eliminar pedido movil
+10,127;Agregar Fondeo
+10,128;Agregar Fondeo Otro Corte
+10,129;Cancelar Fondeo
+10,130;Consultar Fondeos
+10,131;Consultar Fondeos Otro Corte
+10,132;Editar Fondeo
+10,133;Ver totales de grids
+10,134;Agregar retiro de caja otro cajero
+10,135;Retiro de caja cancelar de corte actual
+10,136;Retiro de caja cancelar de todos los cajeros
+10,137;Retiro de caja cancelar de cortes no activos
+10,138;Retiro de caja agregar mismo corte
+10,139;Retiro de caja agregar otro corte
+10,140;Cancelar venta del mismo dia
+10,141;Cancelar venta de un dia anterior
+10,142;Cancelar venta de cualquier fecha
+10,143;Cancelar venta de otro corte
+10,144;Aplicar cheques postfechados
+10,145;Desaplicar cheques postfechados
+10,146;Cambiar fecha aplicacion cheques postfechados
+10,147;Devolver cheques
+10,148;Imprimir cotizacion sin tope
+10,149;Cambiar descuento comision adicional
+10,150;Reimprimir revision de venta
+10,151;Cambiar precio traslado
+10,152;Alertar de compras nuevas de productos
+10,153;Movil Habilitar importacion de precios
+10,154;Movil habilitar metodo abreviado importacion productos
+10,155;ReImprimir Ticket Contabilidad
+10,156;Autorizar referencias bancarias repetidas
+10,157;Actualizar fecha automaticamente
+11,001;Cambiar Empresa
+11,002;Reimprimir Voucher - Bancomer
+11,003;Recibir productos con caducidad menor a dias minimos
+11,004;Condonar comision tarjeta

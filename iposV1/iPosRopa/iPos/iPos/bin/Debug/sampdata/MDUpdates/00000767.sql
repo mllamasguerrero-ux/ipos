@@ -1,0 +1,2 @@
+INSERT INTO DERECHOS (DR_DERECHO, DR_DESCRIPCION)
+  VALUES (118, 'Catalogo de proveedores');

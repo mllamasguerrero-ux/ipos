@@ -1,0 +1,4 @@
+﻿id;sat_clave;sat_description
+1;PUE;Pago en una sola exhibición
+2;PIP;Pago inicial y parcialidades
+3;PPD;Pago en parcialidades o diferido

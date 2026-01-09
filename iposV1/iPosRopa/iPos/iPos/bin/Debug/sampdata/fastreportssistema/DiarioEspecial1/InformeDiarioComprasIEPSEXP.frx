@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="05/06/2014 21:00:03" ReportInfo.Modified="06/02/2018 18:01:33" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  
+  public class TextPositions
+  {
+       public TextObject textField;
+       public float initialX;
+       public string strField;
+    public TextPositions(ref TextObject p_textField)
+    {
+      textField = p_textField;
+      initialX = p_textField.Left;
+    }
+    
+    public TextPositions(ref TextObject p_textField, string p_strField)
+    {
+      textField = p_textField;
+      initialX = p_textField.Left;
+      strField = p_strField;
+    }
+    
+    
+    
+  }
+  
+  public class ReportScript
+  {
+   /*  
+    static float posicionInicioTextFlex;
+    static TextPositions[] textFlex;    
+    static TextPositions[] textIEPSPorc; 
+    
+         
+    private void ReportTitle1_BeforePrint(object sender, EventArgs e)
+    {      
+      
+                         
+      
+      textIEPSPorc = new TextPositions[10]
+        {
+        new TextPositions(ref Text45,&quot;Table.IEPS_01_PORC&quot;), 
+        new TextPositions(ref Text47,&quot;Table.IEPS_02_PORC&quot;), 
+        new TextPositions(ref Text49,&quot;Table.IEPS_03_PORC&quot;), 
+        new TextPositions(ref Text51,&quot;Table.IEPS_04_PORC&quot;), 
+        new TextPositions(ref Text53,&quot;Table.IEPS_05_PORC&quot;), 
+        new TextPositions(ref Text55,&quot;Table.IEPS_06_PORC&quot;),
+        new TextPositions(ref Text57,&quot;Table.IEPS_07_PORC&quot;), 
+        new TextPositions(ref Text59,&quot;Table.IEPS_08_PORC&quot;),
+        new TextPositions(ref Text61,&quot;Table.IEPS_09_PORC&quot;), 
+        new TextPositions(ref Text63,&quot;Table.IEPS_10_PORC&quot;)
+        };
+      
+      
+      textFlex = new TextPositions[32]
+        {
+        new TextPositions(ref Text65), 
+        new TextPositions(ref Text66), 
+        new TextPositions(ref Text17), 
+        new TextPositions(ref Text18), 
+        new TextPositions(ref Text19), 
+        new TextPositions(ref Text20),
+        new TextPositions(ref Text80), 
+        new TextPositions(ref Text81),  
+        new TextPositions(ref Text21), 
+        new TextPositions(ref Text22), 
+        new TextPositions(ref Text23), 
+        new TextPositions(ref Text24), 
+        new TextPositions(ref Text25), 
+        new TextPositions(ref Text26), 
+        new TextPositions(ref Text27), 
+        new TextPositions(ref Text28), 
+        new TextPositions(ref Text29), 
+        new TextPositions(ref Text30), 
+        new TextPositions(ref Text31), 
+        new TextPositions(ref Text32), 
+        new TextPositions(ref Text33), 
+        new TextPositions(ref Text34), 
+        new TextPositions(ref Text35), 
+        new TextPositions(ref Text36), 
+        new TextPositions(ref Text37), 
+        new TextPositions(ref Text38), 
+        new TextPositions(ref Text39), 
+        new TextPositions(ref Text40), 
+        new TextPositions(ref Text41), 
+        new TextPositions(ref Text42), 
+        new TextPositions(ref Text43), 
+        new TextPositions(ref Text44)
+        };
+      
+        posicionInicioTextFlex = textFlex[0].initialX;   
+    }
+    
+    
+    private void AjustarCampos()
+    {
+      float lastIEPSPorcX = posicionInicioTextFlex;
+             
+      
+      foreach(TextPositions tp in textIEPSPorc)
+      {
+         if( ((Decimal)Report.GetColumnValue(tp.strField)) == -1)
+        {
+          lastIEPSPorcX = tp.initialX;
+          break;
+        }
+      }                 
+      foreach(TextPositions tp in textFlex)
+      {
+        if(tp.initialX &gt;= posicionInicioTextFlex)
+        {
+              tp.textField.Left = tp.initialX - (posicionInicioTextFlex - lastIEPSPorcX);
+          
+        }
+      } 
+    
+    }
+    
+    private void Text45_BeforePrint(object sender, EventArgs e)
+    {
+               
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_01_PORC&quot;)) != -1)
+        Text45.Visible = true;
+      else
+        Text45.Visible = false;
+    }
+    
+    private void Text46_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_01_PORC&quot;)) != -1)
+        Text46.Visible = true;
+      else
+        Text46.Visible = false;
+    }
+    
+    
+    private void Text47_BeforePrint(object sender, EventArgs e)
+    {
+           
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_02_PORC&quot;)) != -1)
+        Text47.Visible = true;
+      else
+        Text47.Visible = false;
+    }
+    
+    private void Text48_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_02_PORC&quot;)) != -1)
+        Text48.Visible = true;
+      else
+        Text48.Visible = false;
+    }
+    
+    
+    
+    
+    private void Text49_BeforePrint(object sender, EventArgs e)
+    {
+           
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_03_PORC&quot;)) != -1)
+        Text49.Visible = true;
+      else
+        Text49.Visible = false;
+    }
+    
+    private void Text50_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_03_PORC&quot;)) != -1)
+        Text50.Visible = true;
+      else
+        Text50.Visible = false;
+    }
+    
+    
+    
+    
+    private void Text51_BeforePrint(object sender, EventArgs e)
+    {
+           
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_04_PORC&quot;)) != -1)
+        Text51.Visible = true;
+      else
+        Text51.Visible = false;
+    }
+    
+    private void Text52_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_04_PORC&quot;)) != -1)
+        Text52.Visible = true;
+      else
+        Text52.Visible = false;
+    }
+    
+            
+    private void Text53_BeforePrint(object sender, EventArgs e)
+    {
+           
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_05_PORC&quot;)) != -1)
+        Text53.Visible = true;
+      else
+        Text53.Visible = false;
+    }
+    
+    private void Text54_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_05_PORC&quot;)) != -1)
+        Text54.Visible = true;
+      else
+        Text54.Visible = false;
+    }
+     
+    private void Text55_BeforePrint(object sender, EventArgs e)
+    {
+           
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_06_PORC&quot;)) != -1)
+        Text55.Visible = true;
+      else
+        Text55.Visible = false;
+    }
+    
+    private void Text56_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_06_PORC&quot;)) != -1)
+        Text56.Visible = true;
+      else
+        Text56.Visible = false;
+    }
+     
+    private void Text57_BeforePrint(object sender, EventArgs e)
+    {
+           
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_07_PORC&quot;)) != -1)
+        Text57.Visible = true;
+      else
+        Text57.Visible = false;
+    }
+    
+    private void Text58_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_07_PORC&quot;)) != -1)
+        Text58.Visible = true;
+      else
+        Text58.Visible = false;
+    }
+    
+    
+    private void Text59_BeforePrint(object sender, EventArgs e)
+    {
+           
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_08_PORC&quot;)) != -1)
+        Text59.Visible = true;
+      else
+        Text59.Visible = false;
+    }
+    
+    private void Text60_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_08_PORC&quot;)) != -1)
+        Text60.Visible = true;                           
+      else
+        Text60.Visible = false;
+    }
+    
+    
+    private void Text61_BeforePrint(object sender, EventArgs e)
+    {
+           
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_09_PORC&quot;)) != -1)
+        Text61.Visible = true;
+      else
+        Text61.Visible = false;
+    }
+    
+    private void Text62_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_09_PORC&quot;)) != -1)
+        Text62.Visible = true;
+      else
+        Text62.Visible = false;
+    }
+    
+    
+    private void Text63_BeforePrint(object sender, EventArgs e)
+    {
+           
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_10_PORC&quot;)) != -1)
+        Text63.Visible = true;
+      else
+        Text63.Visible = false;
+      
+      AjustarCampos();
+    }
+    
+    private void Text64_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((Decimal)Report.GetColumnValue(&quot;Table.IEPS_10_PORC&quot;)) != -1)
+        Text64.Visible = true;
+      else
+        Text64.Visible = false;
+    }
+    
+    
+    
+              
+     */   
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls1iR4mtdbLb+JaRcYQPWVx8vGVqTljdrvz4Bzk0oeJKo39ZvUOzUWnKXRS25tjRWsWn+hzI0zbf5+Q/BBL6E9BM=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT * FROM REP_VENTA_CONIEPS_EXP (&#13;&#10;    @FECHAINI ,&#13;&#10;    @FECHAFIN ,&#13;&#10;    @TIPODOCTOID ,&#13;&#10;    @ALMACENID ,&#13;&#10;    @VENDEDORID,&#13;&#10;    @STR_REMISIONFACTURA ) D&#13;&#10;&#13;&#10;     ORDER BY d.fecha  , D.FECHAHORA">
+        <Column Name="NUMERO" DataType="System.Int32"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="SUCURSALT" DataType="System.String"/>
+        <Column Name="TIPODOC" DataType="System.String"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="ESTATUSDOCTONOMBRE" DataType="System.String"/>
+        <Column Name="ESFACTURAELECTRONICA" DataType="System.String"/>
+        <Column Name="SERIEFOLIOSAT" DataType="System.String"/>
+        <Column Name="PERSONA" DataType="System.String"/>
+        <Column Name="VENDEDOR" DataType="System.String"/>
+        <Column Name="VENDEDORDELCLIENTEID" DataType="System.Int64"/>
+        <Column Name="VENDEDORDELCLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORDELCLIENTECLAVE" DataType="System.String"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="IEPS_01_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_01_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_02_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_02_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_03_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_03_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_04_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_04_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_05_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_05_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_06_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_06_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_07_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_07_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_08_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_08_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_09_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_09_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_10_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_10_PORC" DataType="System.Decimal"/>
+        <Column Name="NOMBREALMACEN" DataType="System.String"/>
+        <Column Name="ESTATUS" DataType="System.String"/>
+        <Column Name="SUMACOSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="TURNOCLAVE" DataType="System.String"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="DOCTOREFKITID" DataType="System.Int64"/>
+        <Column Name="ALMACENTID" DataType="System.Int64"/>
+        <Column Name="NOMBREALMACENTRASPASO" DataType="System.String"/>
+        <CommandParameter Name="FECHAINI" DataType="5" Expression="[FECHAINI]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[FECHAFIN]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="TIPODOCTOID" DataType="1" Expression="[TIPODOCTOID]" DefaultValue="21"/>
+        <CommandParameter Name="VENDEDORID" DataType="1" Expression="[VENDEDORID]" DefaultValue="0"/>
+        <CommandParameter Name="ALMACENID" DataType="1" Expression="[ALMACENID]" DefaultValue="0"/>
+        <CommandParameter Name="STR_REMISIONFACTURA" DataType="16" Size="64" Expression="[REMISIONFACTURA]" DefaultValue="T"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="EMPRESA" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="FECHAINI" DataType="System.DateTime"/>
+    <Parameter Name="FECHAFIN" DataType="System.DateTime"/>
+    <Parameter Name="TIPODOCTOID" DataType="System.Decimal"/>
+    <Parameter Name="TIPODOCTONOMBRE" DataType="System.String"/>
+    <Parameter Name="VENDEDORID" DataType="System.Decimal"/>
+    <Parameter Name="VENDEDORNOMBRE" DataType="System.String"/>
+    <Parameter Name="ALMACENID" DataType="System.Decimal"/>
+    <Parameter Name="NOMBREALMACEN" DataType="System.String"/>
+    <Parameter Name="REMISIONFACTURA" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" FirstPageSource="15" OtherPagesSource="15">
+    <PageHeaderBand Name="PageHeader1" Width="1047.06" Height="85.05">
+      <TextObject Name="Text4" Top="66.15" Width="66.15" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="132.3" Top="66.15" Width="66.15" Height="18.9" Text="COMPRA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="595.35" Top="66.15" Width="75.6" Height="18.9" Text="SUBTOTAL" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="66.15" Top="66.15" Width="66.15" Height="18.9" Text="ALMACEN" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text2" Left="670.95" Top="66.15" Width="66.15" Height="18.9" Text="IMPUESTO" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="737.1" Top="66.15" Width="75.6" Height="18.9" Text="TOTAL" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text22" Left="812.7" Top="66.15" Width="75.6" Height="18.9" Text="SALDO" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text26" Left="888.3" Top="66.15" Width="94.5" Height="18.9" Text="CAJERO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text36" Left="198.45" Top="66.15" Width="94.5" Height="18.9" Text="PROV" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text40" Left="292.95" Top="66.15" Width="302.4" Height="18.9" Text="NOMBRES" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text68" Top="37.8" Width="1048.95" Height="18.9" Text="De la fecha: [Format(&quot;{0:dd/MM/yyyy}&quot;, [FECHAINI])]" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text67" Top="18.9" Width="1048.95" Height="18.9" Text="REPORTE DE COMPRAS" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text9" Width="1048.95" Height="18.9" Text="[EMPRESA.NOMBRE]" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="89.05" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text3" Width="66.15" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="132.3" Width="66.15" Height="18.9" Text="[Table.DOCTOFOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="595.35" Width="75.6" Height="18.9" Text="[Table.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text5" Left="66.15" Width="66.15" Height="18.9" Text="[Table.NOMBREALMACEN]" Font="Arial, 8pt"/>
+      <TextObject Name="Text17" Left="737.1" Width="75.6" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="812.7" Width="75.6" Height="18.9" Text="[Table.SALDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="888.3" Width="94.5" Height="18.9" Text="[Table.VENDEDOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text1" Left="670.95" Width="66.15" Height="18.9" Text="[Table.IMPUESTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text35" Left="198.45" Width="94.5" Height="18.9" Text="[Table.PERSONACLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text39" Left="292.95" Width="302.4" Height="18.9" Text="[Table.PERSONANOMBRES] [Table.PERSONAAPELLIDOS]" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="111.95" Width="1047.06" Height="18.9">
+      <TextObject Name="Text10" Left="963.9" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="[PageNofM]" HorzAlign="Center" WordWrap="false" Font="Arial, 10pt, style=Bold"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

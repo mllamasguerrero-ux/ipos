@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/01/2016 15:06:27" ReportInfo.Modified="04/23/2018 18:27:36" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9uutxti1NJmPo6c0KI06Ng1w=">
+      <TableDataSource Name="Table" Alias="PagoPorCheque" DataType="System.Int32" Enabled="true" SelectCommand="select pago.id, pago.fecha, pago.fechahora, pago.importe,&#13;&#10;       formapago.clave formapagoclave, formapago.nombre formapagonombre,&#13;&#10;       formapagosat.clave formapagosatclave,  formapagosat.nombre formapagosatnombre,&#13;&#10;         pago.banco, pago.referenciabancaria,&#13;&#10;       tipopago.clave tipopagoclave, tipopago.nombre tipopagonombre  ,&#13;&#10;       bancos.nombre banconombre,&#13;&#10;       case when coalesce(pago.reciboelectronicoid ,0) &lt;&gt; 0 then 'S' else 'N' end TIMBRADO,&#13;&#10;      pago.aplicado,&#13;&#10;      persona.clave personaclave,&#13;&#10;      persona.nombre personanombre,&#13;&#10;     pago.fechaaplicado&#13;&#10;&#13;&#10;       from pago&#13;&#10;       left join formapago on formapago.id = pago.formapagoid&#13;&#10;       left join formapagosat on formapagosat.id = pago.formapagosatid&#13;&#10;       left join tipopago on tipopago.id = pago.tipopagoid&#13;&#10;       left join bancos on pago.banco = bancos.id&#13;&#10;       left join persona on persona.id = pago.personaid&#13;&#10;       where pago.formapagoid &lt;&gt; 4 and&#13;&#10;&#13;&#10;       (@porfecha = 'N' OR&#13;&#10;                        pago.fecha &gt;= @fechainicial and pago.fecha &lt;= @fechafinal) and &#13;&#10;       (@porfechaaplicado = 'N' OR&#13;&#10;                        pago.fechaaplicado &gt;= @fechainicialaplicado and pago.fecha &lt;= @fechafinalaplicado) and&#13;&#10;       (@porfechaprocesado = 'N' OR&#13;&#10;                        coalesce(pago.fechaprocesado, '2000.01.01') &gt;= @fechainicialprocesado and coalesce(pago.fechaprocesado,'2000.01.01') &lt;= @fechafinalprocesado) and&#13;&#10;&#13;&#10;       (@porfolio = 'N' or pago.id = @pagoid) and&#13;&#10;&#13;&#10;&#13;&#10;       pago.tipopagoid = 1 and (@incluircancelaciones = 'S' OR ( coalesce(pago.revertido,'N') = 'N' AND coalesce(pago.tipoabonoid,1) &lt;&gt; 3))&#13;&#10;       and (pago.formapagoid = @formapagoid or @formapagoid = 0)&#13;&#10;&#13;&#10;       and ( @estatusaplicacion = 'T' or&#13;&#10;                (pago.aplicado = 'S' AND pago.devuelto = 'N' AND @estatusaplicacion = 'A' ) or&#13;&#10;                (pago.aplicado = 'N' AND pago.devuelto = 'N' AND @estatusaplicacion = 'N' )or&#13;&#10;                (pago.aplicado = 'N' AND pago.devuelto = 'S' AND @estatusaplicacion = 'D' ))&#13;&#10;&#13;&#10;       and ((coalesce(pago.reciboelectronicoid ,0) &lt;&gt; 0 AND @timbrado = 'S' )  OR&#13;&#10;            (coalesce(pago.reciboelectronicoid ,0) = 0 AND @timbrado = 'N' ) OR&#13;&#10;            @timbrado = 'T')&#13;&#10;and (pago.personaid = @personaid or @personaid = 0)&#13;&#10;&#13;&#10;and (pago.banco = @banco or @banco = 0)&#13;&#10;and (@referenciabancaria = '' or coalesce(pago.referenciabancaria,'') like @referenciabancaria )&#13;&#10;&#13;&#10;order by pago.fechahora">
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="FORMAPAGOCLAVE" DataType="System.String"/>
+        <Column Name="FORMAPAGONOMBRE" DataType="System.String"/>
+        <Column Name="FORMAPAGOSATCLAVE" DataType="System.String"/>
+        <Column Name="FORMAPAGOSATNOMBRE" DataType="System.String"/>
+        <Column Name="BANCO" DataType="System.Int64"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="TIPOPAGOCLAVE" DataType="System.String"/>
+        <Column Name="TIPOPAGONOMBRE" DataType="System.String"/>
+        <Column Name="BANCONOMBRE" DataType="System.String"/>
+        <Column Name="TIMBRADO" DataType="System.String"/>
+        <Column Name="APLICADO" DataType="System.String"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="FECHAAPLICADO" DataType="System.DateTime"/>
+        <CommandParameter Name="fechafinal" DataType="5" Expression="[fechafinal]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="fechainicial" DataType="5" Expression="[fechainicial]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="personaid" DataType="1" Expression="[personaid]" DefaultValue="0"/>
+        <CommandParameter Name="incluircancelaciones" DataType="16" Expression="[incluircancelaciones]" DefaultValue="N"/>
+        <CommandParameter Name="formapagoid" DataType="1" Expression="[formapagoid]" DefaultValue="3"/>
+        <CommandParameter Name="timbrado" DataType="16" Size="1" Expression="[timbrado]" DefaultValue="T"/>
+        <CommandParameter Name="porfecha" DataType="16" Expression="[porfecha]" DefaultValue="S"/>
+        <CommandParameter Name="porfechaaplicado" DataType="16" Expression="[fechainicialaplicado]" DefaultValue="N"/>
+        <CommandParameter Name="fechainicialaplicado" DataType="5" Expression="[fechainicialaplicado]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="fechafinalaplicado" DataType="5" Expression="[fechafinalaplicado]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="porfechaprocesado" DataType="16" Expression="[porfechaprocesado]" DefaultValue="N"/>
+        <CommandParameter Name="fechainicialprocesado" DataType="5" Expression="[fechainicialprocesado]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="fechafinalprocesado" DataType="5" Expression="[fechafinalprocesado]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="porfolio" DataType="16" Expression="[porfolio]" DefaultValue="N"/>
+        <CommandParameter Name="pagoid" DataType="1" Expression="[pagoid]" DefaultValue="0"/>
+        <CommandParameter Name="banco" DataType="1" Expression="[banco]" DefaultValue="0"/>
+        <CommandParameter Name="referenciabancaria" DataType="16" Expression="[referenciabancaria]"/>
+        <CommandParameter Name="estatusaplicacion" DataType="16" Expression="[estatusaplicacion]" DefaultValue="T"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechainicial" DataType="System.DateTime"/>
+    <Parameter Name="fechafinal" DataType="System.DateTime"/>
+    <Parameter Name="personaid" DataType="System.Decimal"/>
+    <Parameter Name="cliente" DataType="System.String"/>
+    <Parameter Name="incluircancelaciones" DataType="System.String"/>
+    <Parameter Name="formapagoid" DataType="System.Decimal"/>
+    <Parameter Name="timbrado" DataType="System.String"/>
+    <Parameter Name="porfecha" DataType="System.String"/>
+    <Parameter Name="porfechaaplicado" DataType="System.String"/>
+    <Parameter Name="fechainicialaplicado" DataType="System.DateTime"/>
+    <Parameter Name="fechafinalaplicado" DataType="System.DateTime"/>
+    <Parameter Name="porfechaprocesado" DataType="System.String"/>
+    <Parameter Name="fechainicialprocesado" DataType="System.DateTime"/>
+    <Parameter Name="fechafinalprocesado" DataType="System.DateTime"/>
+    <Parameter Name="porfolio" DataType="System.String"/>
+    <Parameter Name="pagoid" DataType="System.Decimal"/>
+    <Parameter Name="banco" DataType="System.Decimal"/>
+    <Parameter Name="referenciabancaria" DataType="System.String"/>
+    <Parameter Name="estatusaplicacion" DataType="System.String"/>
+    <Parameter Name="banconombre" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="330.75">
+      <TextObject Name="Text49" Width="378" Height="18.9" Text="PAGO CHEQUE" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text33" Top="207.9" Width="66.15" Height="18.9" Text="Desde:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="75.6" Top="207.9" Width="160.65" Height="18.9" Text="[fechainicial]"/>
+      <TextObject Name="Text35" Left="340.2" Top="207.9" Width="170.1" Height="18.9" Text="Hasta:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text36" Left="519.75" Top="207.9" Width="189" Height="18.9" Text="[fechafinal]"/>
+      <TextObject Name="Text38" Top="47.25" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="94.5" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Top="66.15" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Left="472.5" Top="66.15" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="557.55" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="94.5" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="557.55" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text51" Top="94.5" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text52" Left="472.5" Top="94.5" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="94.5" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text53" Top="122.85" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text54" Left="472.5" Top="122.85" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="557.55" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text45" Left="94.5" Top="151.2" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text55" Top="151.2" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="472.5" Top="151.2" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text46" Left="557.55" Top="151.2" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="94.5" Top="170.1" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text56" Top="170.1" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text58" Top="236.25" Width="66.15" Height="18.9" Text="Cliente: " Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text18" Left="75.6" Top="236.25" Width="245.7" Height="18.9" Text="[cliente]"/>
+      <TextObject Name="Text59" Left="340.2" Top="264.6" Width="170.1" Height="18.9" Text="Incluir cancelaciones:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text17" Left="519.75" Top="264.6" Width="47.25" Height="18.9" Text="[incluircancelaciones]"/>
+      <TextObject Name="Text60" Left="340.2" Top="236.25" Width="170.1" Height="18.9" Text="Aplicado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text19" Left="519.75" Top="236.25" Width="189" Height="18.9" Text="[estatusaplicacion]"/>
+      <TextObject Name="Text20" Left="75.6" Top="292.95" Width="245.7" Height="18.9" Text="[banconombre]"/>
+      <TextObject Name="Text61" Top="292.95" Width="66.15" Height="18.9" Text="Banco:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text21" Left="519.75" Top="292.95" Width="179.55" Height="18.9" Text="[referenciabancaria]"/>
+      <TextObject Name="Text62" Left="340.2" Top="292.95" Width="170.1" Height="18.9" Text="Referencia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text22" Left="75.6" Top="264.6" Width="245.7" Height="18.9" Text="[pagoid]"/>
+      <TextObject Name="Text63" Top="264.6" Width="66.15" Height="18.9" Text="Folio: " Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="334.75" Width="1047.06" Height="28.35">
+      <TextObject Name="Text4" Width="56.7" Height="18.9" Text="FOLIO"/>
+      <TextObject Name="Text8" Left="151.2" Width="94.5" Height="18.9" Text="HORA"/>
+      <TextObject Name="Text16" Left="463.05" Width="94.5" Height="18.9" Text="IMPORTE"/>
+      <TextObject Name="Text6" Left="56.7" Width="94.5" Height="18.9" Text="FECHA"/>
+      <TextObject Name="Text2" Left="359.1" Width="103.95" Height="28.35" Text="REFERENCIA BANCARIA"/>
+      <TextObject Name="Text10" Left="245.7" Width="113.4" Height="28.35" Text="BANCO NOMBRE"/>
+      <TextObject Name="Text12" Left="557.55" Width="94.5" Height="18.9" Text="APLICADO"/>
+      <TextObject Name="Text14" Left="652.05" Width="94.5" Height="28.35" Text="FECHA APLICADO"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="367.1" Width="1047.06" Height="37.8" DataSource="Table">
+      <TextObject Name="Text3" Width="56.7" Height="18.9" Text="[PagoPorCheque.ID]"/>
+      <TextObject Name="Text7" Left="151.2" Width="94.5" Height="18.9" Text="[PagoPorCheque.FECHAHORA]" Format="Time" Format.Format="t"/>
+      <TextObject Name="Text15" Left="463.05" Width="94.5" Height="18.9" Text="[PagoPorCheque.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text5" Left="56.7" Width="94.5" Height="18.9" Text="[PagoPorCheque.FECHA]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text1" Left="359.1" Width="103.95" Height="18.9" Text="[PagoPorCheque.REFERENCIABANCARIA]"/>
+      <TextObject Name="Text9" Left="245.7" Width="113.4" Height="18.9" Text="[PagoPorCheque.BANCONOMBRE]"/>
+      <TextObject Name="Text11" Left="557.55" Width="94.5" Height="18.9" Text="[PagoPorCheque.APLICADO]"/>
+      <TextObject Name="Text13" Left="652.05" Width="94.5" Height="18.9" Text="[PagoPorCheque.FECHAAPLICADO]" Format="Date" Format.Format="d"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="408.9" Width="1047.06" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

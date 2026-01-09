@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/08/2014 19:23:29" ReportInfo.Modified="07/10/2018 13:26:43" ReportInfo.CreatorVersion="2018.3.5.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    public long vendedorId = 0;
+
+   
+
+    private void CBVendedor_TextChanged(object sender, EventArgs e)
+    {
+      string[] split = CBVendedor.Text.Split(new string[] { &quot;# Vendedor: &quot; }, StringSplitOptions.None);
+      string strNumCliente = &quot;0&quot;;
+      if(split.Length &gt; 1)     
+        strNumCliente = split[1];
+      
+      try
+      {
+        vendedorId = long.Parse(strNumCliente);
+      }
+      catch{
+      }
+    }
+        
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls+AF0eyxuSCq7hxyjzZtEZOEX71as2qRvb5BJjev4fv0U7e6ABxOfAyo/dabcwl5jQ5swSpQhQIWfenpqogQh6c=">
+      <TableDataSource Name="Table1" Alias="vendedor" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Vendedor: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Vendedor: ' || cast(id as varchar(13)) nombre from persona where tipopersonaid  in (22)&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Main" DataType="System.Int32" Enabled="true" SelectCommand="select d.personaid,pr.clave,  pr.nombre,&#13;&#10;sum( case when dateadd(coalesce(pr.dias,0) day to d.vence) &lt;= current_date then coalesce(d.saldo,0) else 0 end) saldovencido  ,&#13;&#10;sum( case when dateadd(coalesce(pr.dias,0) day to d.vence) &gt; current_date then coalesce(d.saldo,0) else 0 end) saldonovencido,&#13;&#10;&#13;&#10;sum(  case when datediff (day,  coalesce(dateadd(coalesce(pr.dias,0) day to d.vence), current_date),current_date) between 0 and 15 then d.saldo else 0 end) s0_15 ,&#13;&#10;sum(  case when datediff (day,  coalesce(dateadd(coalesce(pr.dias,0) day to d.vence), current_date),current_date) between 16 and 30 then d.saldo else 0 end) s16_30,&#13;&#10;sum(  case when datediff (day,  coalesce(dateadd(coalesce(pr.dias,0) day to d.vence), current_date),current_date) between 31 and 45 then d.saldo else 0 end) s31_45,&#13;&#10;sum(  case when datediff (day,  coalesce(dateadd(coalesce(pr.dias,0) day to d.vence), current_date),current_date) between 46 and 60 then d.saldo else 0 end) s46_60,&#13;&#10;sum(  case when datediff (day,  coalesce(dateadd(coalesce(pr.dias,0) day to d.vence), current_date),current_date) &gt; 61  then d.saldo else 0 end) s61mas,&#13;&#10;&#13;&#10;vendedor.clave clavevendedor,&#13;&#10;vendedor.nombre nombrevendedor&#13;&#10;&#13;&#10;&#13;&#10;from docto d&#13;&#10;inner join persona pr on d.personaid = pr.id&#13;&#10;left  join persona vendedor on pr.vendedorid = vendedor.id&#13;&#10;where d.tipodoctoid in (21,24)&#13;&#10;and coalesce(d.saldo,0) &gt; 0 and d.estatusdoctoid = 1&#13;&#10;and (@usuarioid = 0 or @usuarioid = pr.vendedorid) and coalesce(d.subtipodoctoid,0) not in (7,8)&#13;&#10;group by d.personaid  , pr.clave,pr.nombre,&#13;&#10;vendedor.clave ,&#13;&#10;vendedor.nombre&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;">
+        <Column Name="PERSONAID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="SALDOVENCIDO" DataType="System.Decimal"/>
+        <Column Name="SALDONOVENCIDO" DataType="System.Decimal"/>
+        <Column Name="S0_15" DataType="System.Decimal"/>
+        <Column Name="S16_30" DataType="System.Decimal"/>
+        <Column Name="S31_45" DataType="System.Decimal"/>
+        <Column Name="S46_60" DataType="System.Decimal"/>
+        <Column Name="S61MAS" DataType="System.Decimal"/>
+        <Column Name="CLAVEVENDEDOR" DataType="System.String"/>
+        <Column Name="NOMBREVENDEDOR" DataType="System.String"/>
+        <CommandParameter Name="usuarioid" DataType="1" Expression="vendedorId" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="vendedorid" DataType="System.Decimal"/>
+    <Total Name="Total15" Expression="[Main.S0_15]" Evaluator="Data1"/>
+    <Total Name="Total30" Expression="[Main.S16_30]" Evaluator="Data1"/>
+    <Total Name="Total45" Expression="[Main.S31_45]" Evaluator="Data1"/>
+    <Total Name="Total60" Expression="[Main.S46_60]" Evaluator="Data1"/>
+    <Total Name="Total61" Expression="[Main.S61MAS]" Evaluator="Data1"/>
+    <Total Name="Totalvencido" Expression="[Main.SALDOVENCIDO]" Evaluator="Data1"/>
+    <Total Name="Totalnovencido" Expression="[Main.SALDONOVENCIDO]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="355.6" PaperHeight="215.9" RawPaperSize="5" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1268.57" Height="94.5">
+      <TextObject Name="Text29" Top="66.15" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="Vendedor" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text31" Left="75.6" Top="66.15" Width="207.9" Height="18.9" CanShrink="true" CanBreak="false" Text="[CBVendedor.Text]" Font="Arial, 9pt"/>
+      <TextObject Name="Text23" Left="141.75" Top="18.9" Width="557.55" Height="37.8" CanShrink="true" CanBreak="false" Text="REPORTE DE CARTERA VENCIDA" Font="Arial, 22pt, style=Bold"/>
+      <TextObject Name="Text24" Left="1096.2" Top="18.9" Width="170.1" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="98.5" Width="1268.57" Height="18.9">
+      <TextObject Name="Text2" Width="75.6" Height="18.9" Text="CLIENTE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="75.6" Width="207.9" Height="18.9" Text="NOMBRE CLIENTE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="283.5" Width="94.5" Height="18.9" Text="SALD VENCIDO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="378" Width="94.5" Height="18.9" Text="NO VENCIDO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="472.5" Width="94.5" Height="18.9" Text="0 A 15 DIAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="567" Width="94.5" Height="18.9" Text="16 A 30 DIAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="661.5" Width="94.5" Height="18.9" Text="31 A 45 DIAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="756" Width="94.5" Height="18.9" Text="46 A 60 DIAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="850.5" Width="94.5" Height="18.9" Text="MAS 61 DIAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="954.45" Width="94.5" Height="18.9" Text="VENDEDOR" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text22" Left="1048.95" Width="217.35" Height="18.9" Text="NOMBRE VENDEDOR DEL CLIENTE" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="121.4" Width="1268.57" Height="18.9" DataSource="Table2">
+      <TextObject Name="Text1" Width="75.6" Height="18.9" Text="[Main.CLAVE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text3" Left="75.6" Width="207.9" Height="18.9" Text="[Main.NOMBRE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="283.5" Width="94.5" Height="18.9" Text="[Main.SALDOVENCIDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="378" Width="94.5" Height="18.9" Text="[Main.SALDONOVENCIDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="472.5" Width="94.5" Height="18.9" Text="[Main.S0_15]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="567" Width="94.5" Height="18.9" Text="[Main.S16_30]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="661.5" Width="94.5" Height="18.9" Text="[Main.S31_45]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="756" Width="94.5" Height="18.9" Text="[Main.S46_60]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="850.5" Width="94.5" Height="18.9" Text="[Main.S61MAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="954.45" Width="94.5" Height="18.9" Text="[Main.CLAVEVENDEDOR]" Font="Arial, 7pt"/>
+      <TextObject Name="Text21" Left="1048.95" Width="217.35" Height="18.9" Text="[Main.NOMBREVENDEDOR]" Font="Arial, 7pt"/>
+      <DataFooterBand Name="DataFooter1" Top="144.3" Width="1268.57" Height="18.9">
+        <TextObject Name="Text26" Left="472.5" Width="94.5" Height="18.9" Text="[Total15]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text27" Left="567" Width="94.5" Height="18.9" Text="[Total30]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text28" Left="661.5" Width="94.5" Height="18.9" Text="[Total45]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text30" Left="756" Width="94.5" Height="18.9" Text="[Total60]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text32" Left="850.5" Width="94.5" Height="18.9" Text="[Total61]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text33" Left="283.5" Width="94.5" Height="18.9" Text="[Totalvencido]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text34" Left="378" Width="94.5" Height="18.9" Text="[Totalnovencido]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      </DataFooterBand>
+      <Sort>
+        <Sort Expression="[Main.NOMBREVENDEDOR]"/>
+      </Sort>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="167.2" Width="1268.57" Height="28.35">
+      <TextObject Name="Text25" Left="1171.8" Top="9.45" Width="94.5" Height="18.9" Text="[Page]"/>
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <ComboBoxControl Name="CBVendedor" Left="52" Top="48" Width="165" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Vendedor: 0" TextChangedEvent="CBVendedor_TextChanged" DataColumn="vendedor.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+    <LabelControl Name="Label1" Left="56" Top="24" Width="53" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Vendedor"/>
+  </DialogPage>
+</Report>

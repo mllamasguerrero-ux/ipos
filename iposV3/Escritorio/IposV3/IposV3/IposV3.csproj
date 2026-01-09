@@ -1,0 +1,498 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <LangVersion>11.0</LangVersion>
+    <PlatformTarget>x86</PlatformTarget>
+    <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\**" />
+    <Compile Remove="DataAccess\**" />
+    <Compile Remove="Model\**" />
+    <Compile Remove="Model_Aux\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="DataAccess\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <EmbeddedResource Remove="Model_Aux\**" />
+    <None Remove="Controllers\**" />
+    <None Remove="DataAccess\**" />
+    <None Remove="Model\**" />
+    <None Remove="Model_Aux\**" />
+    <Page Remove="Controllers\**" />
+    <Page Remove="DataAccess\**" />
+    <Page Remove="Model\**" />
+    <Page Remove="Model_Aux\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="assets\CSD_JES900109Q90\JES900109Q90.cer" />
+    <None Remove="assets\CSD_JES900109Q90\JES900109Q90.key" />
+    <None Remove="assets\Fastreportssistema\InformeInventarioActual.frx" />
+    <None Remove="assets\Fastreportssistema\InformeInventarioCompleto.frx" />
+    <None Remove="assets\Fastreportssistema\InformeInventarioIngresado.frx" />
+    <None Remove="assets\Fastreportssistema\InformePrueba.frx" />
+    <None Remove="assets\Fastreportssistema\RECIBOLARGO.frx" />
+    <None Remove="assets\Fastreportssistema\ReciboPagoCliente.frx" />
+    <None Remove="assets\Fastreportssistema\ReciboPagoClienteMultiple.frx" />
+    <None Remove="assets\Fastreportssistema\ReciboPagoProveedor.frx" />
+    <None Remove="assets\Fastreportssistema\ReciboPagoProveedorMultiple.frx" />
+    <None Remove="assets\Fastreportssistema\RptFacturaElectronica40.frx" />
+    <None Remove="assets\meili-snow-mountain-3.jpg" />
+    <None Remove="assets\VirtualXML.dll" />
+    <None Remove="assets\VirtualXML.exe" />
+    <None Remove="assets\VirtualXML_x64.dll" />
+    <None Remove="assets\VirtualXML_x64.exe" />
+    <None Remove="assets\Fastreportssistema\TicketCompras.frx" />
+    <None Remove="assets\Fastreportssistema\TicketVentas.frx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="assets\CSD_JES900109Q90\JES900109Q90.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\CSD_JES900109Q90\JES900109Q90.key">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\InformeInventarioActual.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\InformeInventarioCompleto.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\InformeInventarioIngresado.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\InformePrueba.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\RECIBOLARGO.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\ReciboPagoCliente.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\ReciboPagoClienteMultiple.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\ReciboPagoProveedor.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\ReciboPagoProveedorMultiple.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\RptFacturaElectronica40.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\VirtualXML.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\VirtualXML.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\VirtualXML_x64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\VirtualXML_x64.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\TicketCompras.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Fastreportssistema\TicketVentas.frx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CalcBinding" Version="2.5.2" />
+    <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
+    <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
+    <PackageReference Include="Castle.Core" Version="4.4.1" />
+    <PackageReference Include="Castle.Windsor" Version="4.1.1" />
+    <PackageReference Include="DynamicExpresso.Core" Version="2.13.0" />
+    <PackageReference Include="FastReport.Data.Postgres" Version="2024.2.1" />
+    <PackageReference Include="FastReport.OpenSource" Version="2024.2.1" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2024.2.1" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+    <PackageReference Include="MaterialDesignExtensions" Version="3.3.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.7.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.19">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2592.51" />
+    <PackageReference Include="PDFtoPrinter" Version="1.5.4" />
+    <PackageReference Include="ShowMeTheXAML" Version="2.0.0" />
+    <PackageReference Include="ShowMeTheXAML.AvalonEdit" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\catalogos\linea\" />
+    <Folder Include="ViewModels\Core\Operaciones\PuntoCompraDevo\" />
+    <Folder Include="ViewModels\Core\Producto\" />
+    <Folder Include="ViewModels\Global\" />
+    <Folder Include="ViewModels\Reportes\Fastreport\" />
+    <Folder Include="Views\Behaviours\" />
+    <Folder Include="Views\Core\Operaciones\PuntoCompraDevo\" />
+    <Folder Include="Views\MaterialTheme\" />
+    <Folder Include="Views\FacturaElectronica\" />
+    <Folder Include="Views\Reportes\Fastreport\" />
+    <Folder Include="Views\Traslados\SolicitudMercancia\" />
+    <Folder Include="Views\Traslados\RecepcionTraslado\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdornedControl\AdornedControl.csproj" />
+    <ProjectReference Include="..\KendoNET.DynamicLinq\KendoNET.DynamicLinq.csproj" />
+    <ProjectReference Include="..\LogicWebClient\LogicWebClient.csproj" />
+    <ProjectReference Include="..\UICommon\UICommon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Syncfusion.Data.WPF">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.Data.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfGrid.WPF">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfGrid.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfHubTile.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfHubTile.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfInput.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfInput.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfShared.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfShared.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.Shared.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Tools.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.Tools.WPF.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SplashScreen Include="assets\meili-snow-mountain-3.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </SplashScreen>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="assets\Fastreportssistema\TicketComprasDesign.frx">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\administracion_derechos.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\administracion_menuitems.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_agrupacionventa.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_clasedocto.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_estadopais.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_estatusdocto.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_estatusmovto.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_meses.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_origenfiscal.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_subtipocliente.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_subtipodocto.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_tipodocto.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_tipodoctonota.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_tipodoctoventa.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_tipopersona.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_control_tiporecarga.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_moneda.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_saludo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_formapagosat.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_aduana.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_clavetransporte.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_claveunidadpeso.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_codigopostal.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_colonia.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_configautotransporte.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_figuratransporte.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_impuesto.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_localidad.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_matpeligroso.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_metodopago.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_moneda.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_municipio.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_pais.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_partetransporte.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_patenteaduanal.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_pedimentos.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_productoservicio.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_regimenfiscal.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_subtiporem.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_tasacuota.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_tipocomprobante.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_tipoembalaje.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_tipoestacion.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_tipofactor.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_tipopermiso.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_tiporelacion.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_unidadmedida.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_usocfdi.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_sat_sat_versioncatalogo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_tasaiva.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_tasasieps.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\catalogos_unidad.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\cobranza_estadocobranza.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\contrarecibos_estadopagocontrarecibo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\core_lotesimportados_tipodistloteimportado.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\corte_corte_calculo_def.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\corte_tipocorte.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\corte_tipomontobilletes.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\corte_tipotransaccion.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\corte_turno.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\guia_estadoguia.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\guia_tipoentrega.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\incidencia_tipoeventotabla.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\incidencia_tipoincidencia.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\inventario_grupodiferenciainventario.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\inventario_tipodiferenciainventario.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\mensajeria_mensajeestado.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\mensajeria_mensajenivelurgencia.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\mensajeria_mensajetipo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\monedero_tipomonederomovto.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\pagos_cat_ctrl_estatusdoctopago.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\pagos_cat_ctrl_estatuspago.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\pagos_cat_ctrl_formapago.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\pagos_cat_ctrl_motivo_camfec.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\pagos_cat_ctrl_subtipopago.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\pagos_cat_ctrl_tipoabono.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\pagos_cat_ctrl_tipoaplicacioncredito.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\pagos_cat_ctrl_tipomovimientokardexabono.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\pagos_cat_ctrl_tipopago.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\pagos_cat_ctrl_tiporelacionpago.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\poliza_ingresuc_tipolinea.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\poliza_tipolineapoliza.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\precios_cat_ctrl_camporeferenciaprecio.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\precios_cat_ctrl_tipodescuentoprod.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\precios_cat_ctrl_tipodescuentovale.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\precios_cat_ctrl_tipoutilidad.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\precios_cat_ctrl_tipo_impuesto.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\precios_cat_ctrl_tipo_precio.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\precios_tipomayoreo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\precios_tipoprecio.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\precio_promocion_rangopromocion.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\precio_promocion_tipopromocion.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\rebaja_especial_estatusrebaja.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\replicacion_replgroupdef.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\replicacion_repltipomov.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\revision_estadorevisado.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\surtido_estadosurtido.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\sync_cat_ctrl_estatusexpo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\sync_cat_ctrl_estatusimpo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\sync_cat_ctrl_tipoexpo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\sync_cat_ctrl_tipoimpo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\traslados_motivo_devolucion.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

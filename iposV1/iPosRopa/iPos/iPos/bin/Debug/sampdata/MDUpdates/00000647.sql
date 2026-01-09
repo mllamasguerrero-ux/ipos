@@ -1,0 +1,183 @@
+create or alter procedure MONEDERO_APLICAR (
+    DOCTOID D_FK,
+    MONEDERO D_FK,
+    CLAVEMONEDERO D_CLAVE,
+    MONTOAPLICAR D_PRECIO)
+returns (
+    MONTOAPLICADO D_PRECIO,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable FECHA D_FECHA;
+declare variable CADUCIDAD D_DIAS;
+declare variable MONTOMINIMO D_PRECIO;
+declare variable SALDO D_PRECIO;
+declare variable TIPODOCTOID D_FK;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable ABONOMONEDERO D_PRECIO;
+declare variable ABONOMOVTO D_PRECIO;
+declare variable ABONONOAPLICADO D_PRECIO;
+declare variable VIGENCIASALDOMONEDERO D_FECHA;
+declare variable SALDOBUFFER D_PRECIO;
+declare variable NUEVOMONTOMONEDERO D_PRECIO;
+declare variable NUEVAVIGENCIAMONEDERO D_FECHA;
+BEGIN
+
+     MONEDERO   = COALESCE(:MONEDERO,0);
+
+   --Consumo de monedero
+   MONTOAPLICAR = COALESCE(:MONTOAPLICAR,0);
+   
+  SELECT MONEDEROCADUCIDAD, COALESCE(MONEDEROMONTOMINIMO,0) FROM PARAMETRO
+  INTO :CADUCIDAD, :MONTOMINIMO;
+
+  IF(:CLAVEMONEDERO <>  '' AND :CLAVEMONEDERO IS NOT NULL) THEN
+  BEGIN
+     IF(:MONTOAPLICAR = 0)THEN
+     BEGIN
+        IF(:MONEDERO = 0) THEN
+        begin
+            INSERT INTO MONEDERO (  CLAVE, NOMBRE, SALDO, VIGENCIA)
+            VALUES (:CLAVEMONEDERO , '', 0, DATEADD(:CADUCIDAD day TO current_date ) )
+            RETURNING ID INTO :MONEDERO;
+        end
+
+        UPDATE DOCTO
+        SET DESCMONEDERO = 0 ,
+        TOTAL = TOTAL + COALESCE(DESCMONEDERO,0),
+        MONEDERO = :MONEDERO
+        WHERE ID = :DOCTOID;
+
+
+     END
+     ELSE
+     BEGIN
+
+        IF(:MONEDERO = 0)  THEN
+        BEGIN
+            ERRORCODE = 1085; /*Error de que no se tiene el saldo minimo para aplicar el monedero*/
+            SUSPEND;
+            EXIT;
+        END
+
+
+        SELECT TIPODOCTOID , ESTATUSDOCTOID, FECHA FROM DOCTO
+        WHERE ID = :DOCTOID
+        INTO :TIPODOCTOID , :ESTATUSDOCTOID, :FECHA;
+
+
+        IF(:TIPODOCTOID <> 21)THEN
+        BEGIN
+            ERRORCODE = 1082; /*Error de que no se puede aplicar monedero mas que a ventas */
+            SUSPEND;
+            EXIT;
+        END
+
+        IF(:ESTATUSDOCTOID = 2)THEN
+        BEGIN
+            ERRORCODE = 1083; /*Error de que no se puede aplicar monedero a ventas canceladas*/
+            SUSPEND;
+            EXIT;
+        END
+
+
+        SELECT SALDO FROM MONEDERO WHERE ID = :MONEDERO AND VIGENCIA >= CURRENT_DATE into :SALDO;
+
+        IF(:SALDO < :MONTOAPLICAR) THEN
+        BEGIN
+            ERRORCODE = 1084; /*Error de que la cantidad a aplicar es menor que el saldo*/
+            SUSPEND;
+            EXIT;
+        END
+
+        IF(:SALDO < :MONTOMINIMO) THEN
+        BEGIN
+            ERRORCODE = 1085; /*Error de que no se tiene el saldo minimo para aplicar el monedero*/
+            SUSPEND;
+            EXIT;
+        END
+
+        NUEVAVIGENCIAMONEDERO =  DATEADD(:CADUCIDAD day to :FECHA);
+        NUEVOMONTOMONEDERO =  :SALDO -  :MONTOAPLICAR;
+
+        INSERT INTO MONEDEROMOVTO (MONEDERO,DOCTOID, MONTO, TIPOMONEDEROMOVTOID, MONTOMONEDERO,VIGENCIAMONEDERO,FECHA)
+        VALUES (:MONEDERO, :DOCTOID, :MONTOAPLICAR, 2, :NUEVOMONTOMONEDERO, :NUEVAVIGENCIAMONEDERO,:FECHA);
+
+        UPDATE MONEDERO SET SALDO = :NUEVOMONTOMONEDERO  ,
+         VIGENCIA = :NUEVAVIGENCIAMONEDERO
+         WHERE ID = :MONEDERO;
+
+
+        UPDATE DOCTO
+        SET DESCMONEDERO = COALESCE(:MONTOAPLICAR,0) ,
+        MONEDERO = :MONEDERO
+        WHERE ID = :DOCTOID;
+
+      END
+
+    END
+
+    SELECT  FECHA, COALESCE(ABONOMONEDERO,0) FROM DOCTO WHERE ID = :DOCTOID INTO :FECHA, :ABONOMONEDERO ;
+    IF(:ABONOMONEDERO > 0) THEN
+    BEGIN
+        IF( :MONEDERO = 0) THEN
+        BEGIN
+
+            /*
+            INSERT INTO MONEDEROMOVTO (MONEDERO,DOCTOID, MONTO,TIPOMONEDEROMOVTOID, CADUCIDAD, FECHA)
+            VALUES (:MONEDERO, :DOCTOID, :ABONOMONEDERO, 4,:CADUCIDAD, :FECHA  );
+            */
+
+        END
+        ELSE
+        BEGIN
+
+
+            SELECT VIGENCIA,SALDO FROM MONEDERO WHERE ID = :MONEDERO INTO :VIGENCIASALDOMONEDERO, :SALDOBUFFER;
+
+            IF(:VIGENCIASALDOMONEDERO IS NULL or  :VIGENCIASALDOMONEDERO < CURRENT_DATE) THEN
+            BEGIN
+
+                NUEVAVIGENCIAMONEDERO =  DATEADD(:CADUCIDAD day to :FECHA);
+                NUEVOMONTOMONEDERO =  :ABONOMONEDERO;
+
+                UPDATE MONEDERO SET SALDO = :NUEVOMONTOMONEDERO  ,
+                VIGENCIA = :NUEVAVIGENCIAMONEDERO ,
+                PERDIDO = COALESCE(PERDIDO,0)+ :SALDOBUFFER
+                WHERE ID = :MONEDERO;
+
+                /* Mandar una cancelacion del saldo anterior si la vigencia ya caduco */
+                IF( :VIGENCIASALDOMONEDERO IS NOT NULL) THEN
+                BEGIN
+            
+                    INSERT INTO MONEDEROMOVTO (MONEDERO,DOCTOID, MONTO,TIPOMONEDEROMOVTOID, CADUCIDAD, FECHA, MONTOMONEDERO,VIGENCIAMONEDERO)
+                VALUES (:MONEDERO, :DOCTOID, :SALDOBUFFER, 3,:CADUCIDAD, :FECHA, 0 ,:NUEVAVIGENCIAMONEDERO  );
+                END
+
+            END
+            ELSE
+            BEGIN    
+                NUEVAVIGENCIAMONEDERO =  DATEADD(:CADUCIDAD day to :FECHA);
+                NUEVOMONTOMONEDERO = :SALDOBUFFER + :ABONOMONEDERO;
+
+                UPDATE MONEDERO SET SALDO = :NUEVOMONTOMONEDERO,
+                VIGENCIA = :NUEVAVIGENCIAMONEDERO
+                WHERE ID = :MONEDERO;
+            END
+
+        
+            INSERT INTO MONEDEROMOVTO (MONEDERO,DOCTOID, MONTO,TIPOMONEDEROMOVTOID, CADUCIDAD, FECHA, MONTOMONEDERO, VIGENCIAMONEDERO)
+            VALUES (:MONEDERO, :DOCTOID, :ABONOMONEDERO, 1,:CADUCIDAD, :FECHA , :NUEVOMONTOMONEDERO ,:NUEVAVIGENCIAMONEDERO  );
+
+
+        END
+     END
+
+    ERRORCODE = 0;
+    SUSPEND;
+
+    WHEN ANY DO
+    BEGIN
+            ERRORCODE = 1022;
+            SUSPEND;
+    END
+END

@@ -1,0 +1,9 @@
+create or alter procedure DESASIGNARPEDIMENTOTEMP_DOCTO (
+    DOCTOID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+BEGIN
+   ERRORCODE = 0;
+   SUSPEND;
+END

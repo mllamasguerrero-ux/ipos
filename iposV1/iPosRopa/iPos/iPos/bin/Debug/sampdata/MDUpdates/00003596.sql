@@ -1,0 +1,2 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+VALUES (243, 1, 'Clasificacion adicional de producto', 'Clasificacion adicional de producto', 243, 2, 19);

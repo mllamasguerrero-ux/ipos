@@ -1,0 +1,110 @@
+﻿<Window x:Class="IposV3.Views.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:local="clr-namespace:IposV3"
+            xmlns:localCommon="clr-namespace:UICommon;assembly=UICommon"
+        mc:Ignorable="d" 
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+       Title="IPOS SnowLeopard" Height="800" Width="1100"
+        
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{materialDesign:MaterialDesignFont}" 
+        
+        
+        >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            
+            
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding LeftMenuShowed}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel MinWidth="220">
+                    <ToggleButton 
+                        Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                        DockPanel.Dock="Top"
+                        HorizontalAlignment="Right" 
+                        Margin="16"
+                        IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+
+                    
+
+                    <Syncfusion:MenuAdv Orientation="Vertical" Syncfusion:SkinStorage.VisualStyle="Office2010Silver"
+                                        FontSize="16" ItemsSource="{Binding data}" >
+
+
+                        <Syncfusion:MenuAdv.ItemTemplate >
+                            <HierarchicalDataTemplate ItemsSource="{Binding SubItems}" >
+                                <TextBlock Text="{Binding MyHeader}" >
+
+                                </TextBlock>
+                            </HierarchicalDataTemplate>
+                        </Syncfusion:MenuAdv.ItemTemplate>
+                        <Syncfusion:MenuAdv.ItemContainerStyle>
+
+                            <Style TargetType="Syncfusion:MenuItemAdv">
+
+
+                                <Setter Property="Command" Value="{Binding DataContext.ImportRecentItemCommand , RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                                <Setter Property="CommandParameter" Value="{Binding}" />
+                                <Setter Property="Background" Value="#FF255F7A" />
+                            </Style>
+                        </Syncfusion:MenuAdv.ItemContainerStyle>
+
+                    </Syncfusion:MenuAdv>
+
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <DockPanel>
+                <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                            Mode="PrimaryMid" DockPanel.Dock="Top">
+                    <DockPanel>
+
+                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="{Binding LeftMenuShowed}"
+                                        x:Name="MenuToggleButton"/>
+
+
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Foreground="WhiteSmoke" ><Image Source="/UICommon;component/Resources/i-pos.ico" Height="40" Width="40"/></TextBlock>
+                    </DockPanel>
+                </materialDesign:ColorZone>
+
+
+
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Grid.Row="1"  >
+                        <ContentControl cal:View.Model="{Binding CurrentContent, UpdateSourceTrigger=PropertyChanged}"  />
+                    </ScrollViewer>
+
+                    <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar"
+                                            Grid.Row="1" />
+                </Grid>
+            </DockPanel>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
+
+</Window>

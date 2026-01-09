@@ -1,0 +1,23 @@
+create or alter procedure CORTE_ACTUALIZAR_DIFERENCIA (
+    CORTEID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable ACTIVO D_BOOLCN;
+BEGIN
+
+   UPDATE CORTE
+   SET
+    DIFERENCIA = coalesce(SALDOFINAL,0) - coalesce(SALDOREAL,0) - coalesce(SALDOREALCREDITO,0)
+   WHERE ID = :CORTEID;
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1025;
+      SUSPEND;
+   END 
+END

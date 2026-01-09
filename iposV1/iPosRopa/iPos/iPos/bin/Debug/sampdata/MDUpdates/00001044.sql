@@ -1,0 +1,1 @@
+update parametro set rutareportes = '{BaseDirectory}\sampdata\fastreports';

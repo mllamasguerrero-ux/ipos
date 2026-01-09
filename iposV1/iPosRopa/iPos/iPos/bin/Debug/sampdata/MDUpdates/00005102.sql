@@ -1,0 +1,135 @@
+create or alter procedure RECIBOELECTRONICO_GENERAR_33 (
+    DOCTOPAGOID D_FK,
+    VENDEDORID D_FK)
+returns (
+    DOCTOID D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable ESTATUSDOCTOID D_FK;
+declare variable MOVTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PERSONAID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable PRODUCTOID D_FK;
+declare variable LOTE D_LOTE;
+declare variable FECHAVENCE D_FECHAVENCE;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable PRECIO D_PRECIO;
+declare variable COSTO D_COSTO;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable REFERENCIAS varchar(255);
+declare variable SERIE varchar(31);
+declare variable FOLIO integer;
+declare variable ALMACENTID D_FK;
+declare variable SUCURSALTID D_FK;
+declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable CANTIDADDEFACTURA D_CANTIDAD;
+declare variable CANTIDADDEREMISION D_CANTIDAD;
+declare variable CANTIDADDEINDEFINIDO D_CANTIDAD;
+declare variable NEWMOVTOID D_FK;
+declare variable PRODUCTOSINSUFICIENTES D_CANTIDAD;
+declare variable DESCRIPCION1 D_STDTEXT_64;
+declare variable DESCRIPCION2 D_STDTEXT_64;
+declare variable DESCRIPCION3 D_STDTEXT_64;
+declare variable SUBTOTAL D_IMPORTE;
+declare variable TOTAL D_IMPORTE;
+declare variable IVA D_IMPORTE;
+declare variable IEPS D_IMPORTE;
+declare variable IMPUESTO D_IMPORTE;
+declare variable SUBTOTALORIGEN D_IMPORTE;
+declare variable DOCTOIDORIGEN D_FK;
+declare variable TOTALORIGEN D_IMPORTE;
+declare variable IVAORIGEN D_IMPORTE;
+declare variable IEPSORIGEN D_IMPORTE;
+declare variable IMPUESTOORIGEN D_IMPORTE;
+declare variable CORTEID D_FK;
+declare variable HAYCORTEACTIVO D_BOOLCN;
+declare variable FOLIOSAT D_DOCTOFOLIO;
+declare variable SERIESAT D_DOCTOSERIE;
+declare variable DOCTOITEMID D_FK;
+declare variable TIPOAPLICACION D_FK;
+declare variable FACTOR D_PRECIO;
+declare variable CUENTAPARCIALIDADES integer;
+declare variable FECHAHORA D_FECHA;
+declare variable FORMAPAGOCLAVE D_CLAVE_NULL;
+declare variable REFERENCIABANCARIA D_STDTEXT_LIGHT;
+declare variable CUENTAPAGOCREDITO D_STDTEXT_LIGHT;
+declare variable BANCONOMBRE D_NOMBRE_NULL;
+declare variable PAGOSATID D_FK;
+declare variable TIMBRADOUUID D_STDTEXT_64;
+declare variable IMPSALDOANT D_IMPORTE;
+declare variable IMPSALDOINSOLUTO D_IMPORTE;
+declare variable SAT_METODOPAGOCLAVE D_CLAVE_NULL;
+declare variable PAGODOCTOSATID D_FK;
+declare variable ABONOSSAT D_IMPORTE;
+declare variable CUENTADOCTOSPAGO integer;
+declare variable PAGOID D_FK;
+BEGIN
+
+
+        
+   SELECT HAYCORTEACTIVO, CORTEID,ERRORCODE
+   FROM HAY_CORTE_ACTIVO(:VENDEDORID)
+   INTO :HAYCORTEACTIVO, :CORTEID, :ERRORCODE;
+
+   IF (:ERRORCODE > 0) THEN
+   BEGIN
+      DOCTOID = 0;
+      SUSPEND;
+      EXIT;
+   END
+
+
+
+  SELECT PARAMETRO.sucursalid, SAT_METODOPAGO.SAT_CLAVE
+  FROM PARAMETRO LEFT JOIN SAT_METODOPAGO ON SAT_METODOPAGO.ID = PARAMETRO.sat_metodopagoid
+  INTO :SUCURSALID, :SAT_METODOPAGOCLAVE;
+
+  SELECT DOCTOID, importe, RECIBOELECTRONICOID, FECHAHORA  , FORMAPAGOSAT.CLAVE ,
+  DOCTOPAGO.referenciabancaria , DOCTOPAGO.cuentapagocredito, BANCOS.nombre BANCONOMBRE , PAGOID
+  FROM DOCTOPAGO
+  LEFT JOIN FORMAPAGOSAT ON DOCTOPAGO.formapagosatid = FORMAPAGOSAT.ID
+  LEFT JOIN BANCOS ON BANCOS.ID = DOCTOPAGO.banco
+  WHERE DOCTOPAGO.ID = :DOCTOPAGOID INTO :DOCTOIDORIGEN, :TOTAL, :DOCTOID, :FECHAHORA, :FORMAPAGOCLAVE,
+  :REFERENCIABANCARIA, :CUENTAPAGOCREDITO, :BANCONOMBRE, :PAGOID;
+
+   
+   IF (COALESCE(:DOCTOIDORIGEN, 0) = 0 or COALESCE(:TOTAL,0) = 0 ) THEN
+   BEGIN
+      ERRORCODE = 11001;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- si ya se hizo el recibo electronico
+   IF(COALESCE(:DOCTOID,0) <> 0) THEN
+   BEGIN  
+      ERRORCODE = 11004;
+      SUSPEND;
+      EXIT;
+   END
+
+   
+    SELECT COUNT(*) FROM doctopago WHERE PAGOID = :PAGOID INTO :CUENTADOCTOSPAGO;
+    IF(COALESCE(:CUENTADOCTOSPAGO,0) > 1 ) THEN
+    BEGIN
+      ERRORCODE = 5021;
+      SUSPEND;
+      EXIT;
+    END
+
+    SELECT  DOCTOID ,ERRORCODE
+    FROM   RECIBOELECTRONICO_P_GENERAR_33 (:PAGOID , :VENDEDORID)
+    INTO :DOCTOID , :ERRORCODE;
+
+
+   SUSPEND;
+
+
+  /* WHEN ANY DO
+    BEGIN
+        ERRORCODE = 1009;
+        SUSPEND;
+    END    */
+END

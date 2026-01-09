@@ -1,0 +1,2 @@
+INSERT INTO DERECHOS (DR_DERECHO, DR_DESCRIPCION)
+  VALUES (114, 'Clientes por producto');

@@ -1,0 +1,1 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) VALUES (205, 100, 'Reimpresion orden de compra', 'Reimpresion orden de compra', 205, 3, 6);

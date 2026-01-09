@@ -1,0 +1,4 @@
+UPDATE MENUITEMS
+SET MN_ETIQUETA = 'Pagos',
+MN_DESC = 'Pagos a proveedores'
+WHERE MN_ID = 346

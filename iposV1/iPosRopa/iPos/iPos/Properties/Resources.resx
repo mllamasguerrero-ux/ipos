@@ -1,0 +1,706 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="exit_launcher" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\exit_launcher.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="close_box" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\close-box.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cambioempresa2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cambioempresa2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="searchNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\searchNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cash_register_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cash_register_2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="search_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\search_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shift_down_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shift_down_white.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="folder_plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\folder-plus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="money_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\money_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cursor_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cursor-default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="right_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\right_arrow.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="printer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\printer.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="createDocNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\createDocNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="location_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\location_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cj" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cj.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Buttons1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Buttons1.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icono_cliente" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icono_cliente.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EnterKey1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EnterKey1.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="moneySmallNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\moneySmallNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="export_excel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\export_excel.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cambioempresa" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cambioempresa.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Info" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Info.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cash_terminal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cash_terminal.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Add.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="production_copyleft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\production_copyleft.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="caps_down_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\caps_down_white.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="exit_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\exit_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KOR_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\KOR_32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="createReport_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\createReport_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="closeNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\closeNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="th_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\th_down.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="search_launcher" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\search_launcher.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="createDocNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\createDocNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="printNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\printNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="close_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\close_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon-import-export" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon-import-export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Open door" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Open door.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="addNoBackSmallWhite_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\addNoBackSmallWhite_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="uol" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\uol.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="copyNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\copyNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arrowdown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrowdown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fj" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fj.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="editNoBackSmallWhite_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\editNoBackSmallWhite_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eye" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eye.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="extract_foreground_objects" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\extract_foreground_objects.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EnterKey" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EnterKey.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="seeReport_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\seeReport_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="new_document" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\new_document.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ICONO_MINIMIZAR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icono minimizar.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="down_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\down_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="remove_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\remove_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_kids_lower" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\keyboard_kids_lower.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="strong_box_money" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\strong_box_money.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="english" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\english.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="greencircle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\greencircle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sahid_launcher" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sahid_launcher.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icono_cliente2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icono_cliente2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="createDocDarkNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\createDocDarkNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ambarcircle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ambarcircle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cancel_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cancel_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="disenarreporte" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\disenarreporte.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sendNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sendNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cancelNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cancelNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="customer_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\customer_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cash_stack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cash_stack.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\settings.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="new_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\new_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Numbered list" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Numbered list.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Accept" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Accept.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="spacekey" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\spacekey.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Buttons" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Buttons.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="moneyNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\moneyNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Save.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="STOP" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\stop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WALL_IPOS_copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\wall ipos copy.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="retiro" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\retiro.GIF;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deleteNoBackSmallWhite_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\deleteNoBackSmallWhite_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="canelNoBackSmallWhite_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\canelNoBackSmallWhite_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="i_pos1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\i-pos.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FONDO_IPOS_CON_LOGO_copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\fondo ipos con logo copy.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="newNoBackSmallWhite_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\newNoBackSmallWhite_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="searchO_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\searchO_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="saveNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\saveNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="usercard_01_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\usercard_01_32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ICONO_CERRAR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icono cerrar.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Delete.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ipos material flat walppaer 5 sin logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ipos material flat walppaer 5 sin logo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Box-green-256" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Box-green-256.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rj" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rj.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ol" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ol.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deletered" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\deletered.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Closed door" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Closed door.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="searchNoBackSmallWhite_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\searchNoBackSmallWhite_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="newNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\newNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="edit_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\edit_1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="searchNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\searchNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CERRAR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\cerrar.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ipos_material_flat_walppaer_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ipos material flat walppaer 4.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cash_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cash_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="check_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\check_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icono_vendedor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icono_vendedor.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="i_pos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\i-pos.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="edit_remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\edit_remove.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="exitNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\exitNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="config" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\config.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="add_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ENG_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ENG_32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ADVERTENCIA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\advertencia.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="uparrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\uparrow.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="newNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\newNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="print2_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\print2_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\1.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="edit_launcher" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\edit_launcher.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="addNoBackMedium_j" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\addNoBackMedium_j.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ipos material flat walppaer 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ipos material flat walppaer 5.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="italic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\italic.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="refreshpng" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refreshpng.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="outdent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\outdent.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="invetario_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\invetario_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="print3_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\print3_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cancel_doc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cancel_doc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Exit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Exit.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon-import-export2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon-import-export2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_kids_upper" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\keyboard_kids_upper.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="saveNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\saveNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="edit_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\edit_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="exitRed_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\exitRed_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FONDO_IPOS_SIN_LOGO" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\fondo ipos sin logo.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="iconBinoculars" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\iconBinoculars.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="copyNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\copyNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_alphabetical" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\keyboard_alphabetical.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="color" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\color.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lj" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lj.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eye_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eye_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="doc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\doc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="usercard_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\usercard_01.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\keyboard_white.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KR_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\KR_24.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Closed folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Closed folder.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Korean" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Korean.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shop_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shop_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="createDocNoBackGray_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\createDocNoBackGray_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pencil_box" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pencil-box.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="print_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\print_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="changeEnterprise" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\changeEnterprise.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SpaceDarkgd1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SpaceDarkgd1.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cancelItem_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cancelItem_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="save_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\save_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="applic_doc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\applic_doc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SpaceDarkgd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SpaceDarkgd.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="link" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\link.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon-import-export3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon-import-export3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="add_launcher" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add_launcher.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="transfer_document" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\transfer_document.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="provider_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\provider_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LOGIN_IPOS_MATERIAL_DESIGN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LOGIN IPOS MATERIAL DESIGN.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="doc_find" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\doc_find.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="search_launcher1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\search_launcher1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="submission_form_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\submission_form_background.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cleanNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cleanNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="redcircle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redcircle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="clear_launcher" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\clear_launcher.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="indent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\indent.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="print_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\print_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sheduled_task" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sheduled_task.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="copy_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\copy_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\remove.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="addNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\addNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="import_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\import_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fondo_con_logo_ipos_2_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fondo con logo ipos 2.0.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="help_box" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\help-box.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ICONO_MEDIO" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icono medio.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="kor_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\kor_24.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Korean1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Korean1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fondo_con_logo_ipos_3_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fondo con logo ipos 3.0.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="add_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add_file.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deleteNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\deleteNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="image_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\image_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Document" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Document.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="exitNoBack_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\exitNoBack_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="verreporte" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\verreporte.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bold" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bold.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="addNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\addNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gif\Edit.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="customers" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\customers.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="refresh_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refresh_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="th" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\th.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FONDO_CON_LLAVE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\fondo con llave.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="backcolor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\backcolor.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="product_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\product_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="export_ipos2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\export_ipos2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ENG_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ENG_24.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="underscore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\underscore.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="helpNoBackSmall_J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\helpNoBackSmall_J.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

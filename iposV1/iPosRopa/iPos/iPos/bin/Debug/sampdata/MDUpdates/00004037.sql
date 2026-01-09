@@ -1,0 +1,156 @@
+create or alter procedure IMPORTAR_DBFLINE (
+    DOCTOACTUALID D_FK,
+    REFERENCIA D_REFERENCIA,
+    SUCURSALID D_FK,
+    USERID D_FK,
+    PRODUCTO D_CLAVE,
+    LINEA D_CLAVE,
+    MARCA D_CLAVE,
+    PROVEEDOR D_CLAVE,
+    CANTIDAD D_CANTIDAD,
+    FALTANTE D_CANTIDAD,
+    COSTO D_COSTO,
+    CARGOS_U D_PRECIO,
+    IMPORTE D_PRECIO,
+    IMPORTENETO D_PRECIO,
+    LOTE D_LOTE,
+    FECHAVENCE D_FECHAVENCE,
+    REFERENCIAS varchar(255),
+    SUCURSALTID D_FK,
+    ALMACENTID D_FK,
+    TIPODOCTOID D_FK,
+    FECHA D_FECHA,
+    VENCE D_FECHA,
+    CANTIDADDEFACTURA D_CANTIDAD,
+    CANTIDADDEREMISION D_CANTIDAD,
+    CANTIDADDEINDEFINIDO D_CANTIDAD,
+    PRECIOVISIBLETRASLADO D_PRECIO,
+    OBSERVACION D_OBSERVACION)
+returns (
+    DOCTOID D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRODUCTOID D_FK;
+declare variable PROVEEDORID D_FK;
+declare variable MOVTOID D_FK;
+declare variable COSTOFINAL D_PRECIO;
+declare variable IMPORTEFINAL D_PRECIO;
+BEGIN
+   SELECT ID
+   FROM PRODUCTO
+   WHERE CLAVE = :PRODUCTO
+   INTO :PRODUCTOID;
+
+   if( :PRODUCTOID is null )  then
+   begin
+      /*insert into producto (
+         clave,
+         nombre,
+         ean ,
+         descripcion1 ,
+         manejalote,
+         eskit,
+         negativos
+      ) values (
+         :PRODUCTO,
+         'PRODUCTO NO REGISTRADO',
+         '',
+         'PRODUCTO NO REGISTRADO',
+         'N',
+         'N',
+         'S'
+      ) RETURNING ID INTO :PRODUCTOID;  */
+      ERRORCODE = 1069;
+      SUSPEND;
+      EXIT;
+   end
+
+   SELECT first 1 ID
+   FROM PERSONA
+   WHERE CLAVE = :PROVEEDOR and tipopersonaid = 40
+   INTO :PROVEEDORID;
+
+   IF(COALESCE(:PROVEEDORID ,0) = 0 ) THEN
+   BEGIN
+     SELECT FIRST 1 ID FROM PERSONA WHERE TIPOPERSONAID = 40 INTO :PROVEEDORID;
+     
+   END
+
+   COSTOFINAL = :COSTO;
+   IMPORTEFINAL = :IMPORTE;
+
+   /*IF(:TIPODOCTOID IN (11,14)) THEN
+   BEGIN
+        SELECT FIRST 1 PRODUCTO.costoreposicion FROM PRODUCTO WHERE ID = :PRODUCTOID
+        INTO :COSTOFINAL;
+        COSTOFINAL = COALESCE(:COSTOFINAL, COALESCE(:COSTO,0));
+
+        IMPORTEFINAL = :COSTOFINAL * :CANTIDAD;
+   END       */
+
+
+
+   IF ((:DOCTOACTUALID IS NULL) or (:DOCTOACTUALID = 0)) THEN
+   BEGIN
+      SELECT DOCTOID, ERRORCODE
+      FROM DOCTO_INSERT (
+         :USERID,
+         1,
+         :SUCURSALID,
+         :TIPODOCTOID,
+         0,
+         0,
+         :PROVEEDORID,
+         :USERID,
+         1,
+         :REFERENCIA,
+         :REFERENCIAS,
+         :SUCURSALTID,
+         :ALMACENTID,
+         :FECHA,
+         :VENCE,
+         NULL ,
+         'S' ,
+         1
+      ) INTO :DOCTOID, :ERRORCODE;
+
+     
+        IF (:ERRORCODE > 0) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+        UPDATE DOCTO SET SUBTIPODOCTOID = 6 WHERE ID = :DOCTOID;
+   END
+   ELSE
+   BEGIN
+      DOCTOID = :DOCTOACTUALID;
+   END
+
+   -- provisional mientras cambio docto_insert y movto_insert.
+   UPDATE DOCTO
+   SET REFERENCIAS = :REFERENCIAS, OBSERVACION = :OBSERVACION
+   WHERE ID = :DOCTOID;
+
+   -- Guarda el movimiento en movto
+   SELECT DOCTOID , MOVTOID
+   FROM MOVTO_INSERT (
+      :DOCTOID, 0, 1, 1, :TIPODOCTOID, 0, 0, 0, :USERID, 0,
+      0, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, 0, :CANTIDAD, 0, 0,:COSTOFINAL, 0,
+      :REFERENCIA, :REFERENCIAS, :COSTOFINAL, :SUCURSALTID, :ALMACENTID, 'N', 0,
+      :FECHA, :VENCE, 0.00, NULL,NULL,NULL,NULL,NULL,null, NULL,NULL , NULL
+   ) INTO :DOCTOID, :MOVTOID;
+
+
+   IF(:TIPODOCTOID in (11,41)) THEN
+   BEGIN
+       UPDATE MOVTO SET CANTIDADDEFACTURA = :CANTIDADDEFACTURA ,
+       CANTIDADDEREMISION = :CANTIDADDEREMISION ,
+       CANTIDADDEINDEFINIDO = :CANTIDADDEINDEFINIDO
+       WHERE ID = :MOVTOID;
+   END
+   
+   UPDATE MOVTO SET  PRECIOVISIBLETRASLADO = :PRECIOVISIBLETRASLADO WHERE ID = :MOVTOID ;
+
+END

@@ -1,0 +1,1 @@
+update cuenta set clave = descripcion

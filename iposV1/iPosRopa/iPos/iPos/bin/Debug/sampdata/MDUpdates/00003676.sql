@@ -1,0 +1,11 @@
+CREATE TABLE CLERKPAGOSERVICIO (
+    ID                    D_PK NOT NULL,
+    ACTIVO                D_BOOLCS,
+    CREADO                D_TIMESTAMP,
+    CREADOPOR_USERID      D_FK DEFAULT 0,
+    MODIFICADO            D_TIMESTAMP,
+    MODIFICADOPOR_USERID  D_FK DEFAULT 0,
+    CLERKID               D_CLAVE,
+    SUCURSALCLAVE         D_CLAVE_NULL,
+    SUCURSALID            D_FK
+);

@@ -1,0 +1,2 @@
+﻿id;clave;nombre;sentidoinventario;sentidopago;clasedoctoid;clavesis;sentidoinventarioapartados;sentidopagoapartados;sentidocostopromedio;hacereferencia;tipodistloteimportadoid;tipodoctocancelacionid;sentidoabonocliente;sentidoabonoproveedor;sentidoabonomismocorte;sentidoabonootrocorte;sentidoenprocesosalida;verif_exist;ensamblarkits
+341;COMPRA DE VENDEDOR MOVIL;COMPRA DE VENDEDOR MOVIL;0;0;3;COMPRAVENDEDORMOVIL;0;0;0;N;0;13;0;1;-1;-1;0;N;N

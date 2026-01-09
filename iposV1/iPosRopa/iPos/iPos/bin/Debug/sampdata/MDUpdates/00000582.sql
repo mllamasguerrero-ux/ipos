@@ -1,0 +1,157 @@
+create or alter procedure CORTE_MONTOBILLETES_UPDATE (
+    CORTEID D_FK,
+    TIPODECAMBIO D_TIPOCAMBIO,
+    P1000 D_CANTIDAD,
+    P500 D_CANTIDAD,
+    P200 D_CANTIDAD,
+    P100 D_CANTIDAD,
+    P50 D_CANTIDAD,
+    P20 D_CANTIDAD,
+    D100 D_CANTIDAD,
+    D50 D_CANTIDAD,
+    D20 D_CANTIDAD,
+    D10 D_CANTIDAD,
+    D5 D_CANTIDAD,
+    D2 D_CANTIDAD,
+    D1 D_CANTIDAD,
+    MORRALLAPESOS D_IMPORTE,
+    MORRALLADOLARES D_IMPORTE,
+    MORRALLADEDOLARENPESOS D_IMPORTE,
+    SALDOFINAL D_IMPORTE,
+    CHEQUES D_IMPORTE,
+    VALES D_IMPORTE,
+    TARJETA D_IMPORTE,
+    CREDITO D_IMPORTE)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable ACTIVO D_BOOLCN;
+declare variable MONTO_BILLETES_ID D_FK;
+BEGIN
+   SELECT ACTIVO
+   FROM CORTE
+   WHERE ID = :CORTEID
+   INTO :ACTIVO;
+
+   IF (:CORTEID IS NULL) THEN
+   BEGIN
+      ERRORCODE = 1023;
+      SUSPEND;
+      EXIT;
+   END
+
+   IF (:ACTIVO <> 'S') THEN
+   BEGIN
+      ERRORCODE = 1024;
+      SUSPEND;
+      EXIT;
+   END
+
+
+      SELECT FIRST 1 COALESCE(ID, 0)
+      FROM montobilletes
+      WHERE CORTEID = :CORTEID
+      INTO :MONTO_BILLETES_ID;
+
+
+
+   IF ((:MONTO_BILLETES_ID IS NULL) OR (:MONTO_BILLETES_ID = 0)) THEN
+   BEGIN
+       INSERT INTO MONTOBILLETES
+       (
+    CORTEID ,
+    TIPODECAMBIO,
+    P1000 ,
+    P500 ,
+    P200 ,
+    P100 ,
+    P50  ,
+    P20  ,
+    D100 ,
+    D50  ,
+    D20  ,
+    D10  ,
+    D5   ,
+    D2   ,
+    D1   ,
+    MORRALLAPESOS ,
+    MORRALLADOLARES ,
+    MORRALLADEDOLARENPESOS ,
+    SALDOFINAL ,
+    CHEQUES,
+    VALES   ,
+    TARJETA ,
+    CREDITO)
+
+    VALUES (
+    :CORTEID ,
+    :TIPODECAMBIO,
+    :P1000 ,
+    :P500 ,
+    :P200 ,
+    :P100 ,
+    :P50  ,
+    :P20  ,
+    :D100 ,
+    :D50  ,
+    :D20  ,
+    :D10  ,
+    :D5   ,
+    :D2   ,
+    :D1   ,
+    :MORRALLAPESOS ,
+    :MORRALLADOLARES ,
+    :MORRALLADEDOLARENPESOS ,
+    :SALDOFINAL ,
+    :CHEQUES,
+    :VALES   ,
+    :TARJETA,
+    :CREDITO)   ;
+   END
+   ELSE
+   BEGIN
+
+       UPDATE MONTOBILLETES
+        SET CORTEID = :CORTEID,
+            TIPODECAMBIO = :TIPODECAMBIO,
+            P1000 = :P1000,
+            P500 = :P500 ,
+            P200 = :P200 ,
+            P100 = :P100,
+            P50  = :P50,
+            P20  = :P20,
+            D100 = :D100,
+            D50  = :D50,
+            D20  = :D20,
+            D10  = :D10,
+            D5   = :D5,
+            D2   = :D2,
+            D1   = :D1,
+            MORRALLAPESOS = :MORRALLAPESOS,
+            MORRALLADOLARES = :MORRALLADOLARES ,
+            MORRALLADEDOLARENPESOS = :MORRALLADEDOLARENPESOS ,
+            SALDOFINAL = :SALDOFINAL ,
+            CHEQUES = :CHEQUES,
+            VALES = :VALES  ,
+            TARJETA = :TARJETA,
+            CREDITO = :CREDITO
+            WHERE ID = :MONTO_BILLETES_ID;
+
+   END
+
+
+   UPDATE CORTE
+   SET
+      SALDOREAL  = :SALDOFINAL
+   WHERE ID = :CORTEID;
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1025;
+      SUSPEND;
+   END 
+END

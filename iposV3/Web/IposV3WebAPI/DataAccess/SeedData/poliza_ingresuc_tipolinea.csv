@@ -1,0 +1,25 @@
+﻿id;clave;descripcion;estequileno;esfactura;escredito;tiporeg
+1;DCT;T/Devolucion Rem. Teq. Contad;S;N;N;D
+2;DCY;N/Devolucion Fac. Teq. Cont. ;S;S;N;D
+3;DFC;B/Devolucion Fac. Contado    ;N;S;N;D
+4;DFF;E/Devolucion Fac. Credito    ;N;S;S;D
+5;DFT;W/Devolucion Rem. Teq. Credit;S;N;S;D
+6;DFY;Q/Devolucion Fac. Teq. Cred. ;S;S;S;D
+7;DRC;H/Devolucion Rem. Contado    ;N;N;N;D
+8;DRF;K/Devolucion Rem. Credito    ;N;N;S;D
+9;FCA;A/Facturas Contado           ;N;S;N;V
+10;FCT;M/Facturas Contado Teq.      ;S;S;N;V
+11;FFA;D/Facturas Credito           ;N;S;S;V
+12;FFT;P/Facturas Credito Teq.      ;S;S;S;V
+13;FTF;R/Total Facturas Teq. Credito;S;S;S;T
+14;RCA;G/Remision Contado           ;N;N;N;V
+15;RCT;S/Remision Contado Teq.      ;S;N;N;V
+16;RFA;J/Remision Credito           ;N;N;S;V
+17;RFT;V/Remision Credito Teq.      ;S;N;S;V
+18;TCF;O/Total Facturas Teq. Contado;S;S;N;T
+19;TFC;C/Total Facuras Contado      ;N;S;N;T
+20;TFF;F/Total Facturas Credito     ;N;S;S;T
+21;TFT;X/Total Remision Teq. Credito;S;N;S;T
+22;TRC;I/Total Remision Contado     ;N;N;N;T
+23;TRF;L/Total Remision Credito     ;N;N;S;T
+24;TRT;U/Total Remision Teq. Contado;S;N;N;T

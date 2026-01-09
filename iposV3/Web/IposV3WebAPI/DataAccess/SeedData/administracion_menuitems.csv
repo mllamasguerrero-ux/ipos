@@ -1,0 +1,339 @@
+﻿-1;null;Inactivo;inactivo;null;1;1
+0;null;General;general;null;1;1
+1;0;Catalogos;catalogos;1;1;1
+2;1;Clientes;clientes;2;1;10
+3;1;Vendedores;vendedores;3;1;9
+4;0;Operaciones;Operaciones;4;1;2
+5;4;Entradas;Entradas;5;2;1
+6;5;Notas de credito;Notas de credito;6;3;2
+7;5;Otras entradas;Otras entradas;7;3;5
+8;4;Salidas;Salidas;8;2;2
+9;8;Punto de Venta;Punto de Venta;9;3;1
+10;8;Dev. a proveedor;Dev. a proveedor;10;3;2
+11;8;Otras Salidas;Otras Salidas;11;3;19
+12;0;Procesos;Procesos;12;1;3
+13;99;Importaciones FTP;Importaciones;13;1;1
+14;99;Exportaciones FTP;Exportaciones FTP;14;2;2
+15;100;Reimpresion tickets y cortes;Tickets;15;2;1
+16;5;Compras;Compras;16;2;1
+17;-1;Salidas;Salidas;17;2;null
+18;1;Proveedores;Proveedores;18;1;5
+19;1;Linea;Linea;19;1;1
+20;1;Marcas;Marcas;20;1;2
+21;1;Productos;Productos;21;1;7
+22;0;Administracion;Administracion;22;1;4
+23;22;Usuarios;Usuarios;23;1;3
+24;-1;Perfiles;Perfiles;24;1;null
+25;22;Cambio de password;Cambio de password;25;1;4
+26;0;Reportes;Reportes;26;1;5
+27;103;Catalogo de Clientes;Clientes;27;1;1
+28;106;Kardex;Kardex;28;1;4
+29;22;Empresa;Empresa;29;1;1
+30;8;Cerrar Corte;Cerrar Corte;30;3;7
+31;5;Rec. Otras Compras;Rec. Otras Compras;31;3;4
+50;106;Cambios de Precios;Cambios de Precios;50;1;2
+51;102;Inventario Fisico;Inventario Fisico;51;1;3
+52;8;Abrir Corte;Abrir Corte;52;3;6
+53;22;Cargar Inventario Inicial;Cargar Inventario Inicial;53;1;5
+55;104;Comisiones;Comisiones;55;1;1
+56;110;Diario de Ventas;Reporte de Ventas;56;1;2
+57;110;Diario de Detalle de Ventas;Detalle de Ventas;57;1;3
+58;109;Diario de Compras;Reporte de Compras;58;1;1
+59;109;Detalle de diario de Compras;Detalle de compras;59;1;2
+60;106;Stock Faltante;Stock Faltante;60;1;8
+61;22;Perfiles de Usuario;Perfiles de Usuario;61;1;2
+62;99;Importaciones Excel;Importaciones Excel;62;1;3
+63;99;Exportaciones Excel;Exportaciones Excel;63;1;4
+64;106;Kardex resumido;Kardex Resumido;64;1;5
+65;106;Inventario costeado;Inventario costeado;65;1;3
+66;110;Ventas por forma de pago;Documentos por forma de pago;66;1;11
+67;8;Cortes del dia;Cortes del dia;67;3;8
+68;102;Localizacion de Productos;Localizacion de Productos;68;1;2
+69;8;Retiros;Retiros;69;3;9
+70;5;Notas de credito;Notas de credito;70;1;3
+72;98;Clientes;Aplicacion de saldos;72;1;1
+74;98;Proveedores;Aplicacion de saldos;74;1;2
+75;8;Devoluciones de compras;Devoluciones de compras;75;3;3
+76;4;Proveedores;Proveedores;76;3;4
+77;4;Clientes;Clientes;77;3;3
+78;76;Abonos a proveedores;Abonos a proveedores;78;3;1
+79;77;Abonos de clientes;Abonos de clientes;79;3;1
+80;112;Timbres cancelados;Timbres cancelados;80;2;1
+81;1;Tasa iva;Tasa Iva;81;2;4
+82;1;Moneda;Moneda;82;2;3
+83;1;Banco;Banco;83;2;13
+84;12;Matriz;Matriz;84;2;4
+85;84;Procesar pedidos sucursales;Procesar pedidos sucursales;85;3;1
+86;84;Actualizar precios en sucursales;Actualizar precios en sucursales;86;3;2
+87;106;Inventario x localidad;Inventario x localidad;87;1;6
+88;1;Sucursales;Sucursales;88;1;12
+89;1;Grupos de sucursal;Grupos de sucursal;89;1;11
+90;102;Stock de productos;Stock de productos;90;1;1
+91;1;Anaqueles;Anaqueles;91;1;14
+92;-1;Testing;Testing;92;2;null
+93;102;Impresion etiquetas;Impresion etiquetas;93;2;4
+94;1;Estados;Estados;94;1;8
+95;1;Unidades;Unidades;95;1;6
+96;103;Monedero;Monedero;96;1;3
+97;1;Promociones;Promociones;97;1;15
+98;4;Aplicacion;Aplicacion;98;2;3
+99;12;Sucursales;Sucursales;99;2;1
+100;12;Reimpresion de documentos;Reimpresion de documentos;100;2;2
+101;100;Reimpresion de factura electronica;Reimpresiуn de factura electronica;101;2;2
+102;12;Productos;Productos;102;2;3
+103;26;Clientes;Clientes;103;2;1
+104;26;Vendedores;Vendedores;104;2;2
+105;26;Proveedores;Proveedores;105;2;3
+106;26;Productos;Productos;106;2;4
+107;26;Lineas;Lineas;107;2;5
+108;26;Marcas;Marcas;108;2;6
+109;26;Entradas;Entradas;109;2;7
+110;26;Salidas;Salidas;110;2;8
+111;26;Flujo;Flujo;111;2;9
+112;26;Factura Electronica;Factura Electronica;112;2;10
+113;103;Estados de cuenta;Estados de cuenta;113;1;2
+114;103;Clientes por producto;Clientes por producto;114;3;4
+115;103;Clientes por marcas;Clientes por marcas;115;3;5
+116;103;Clientes por lineas;Clientes por lineas;116;3;6
+117;104;Catalogo de vendedores;Catalogo de vendedores;117;3;2
+118;105;Catalogo de proveedores;Catalogo de proveedores;118;3;1
+119;105;Cuentas Por Pagar;Cuentas Por Pagar;119;3;2
+120;106;Catalogo de productos;Catalogo de productos;120;3;1
+121;106;Lista de precios;Lista de precios;121;3;7
+122;107;Producto por linea;Productos por linea;122;3;1
+123;107;Ventas por linea;Ventas por linea;123;3;2
+124;108;Producto por marca;Productos por marca;124;3;1
+125;108;Ventas por marca;Ventas por marca;125;3;2
+126;109;Compras por producto;Compras por producto;126;3;3
+127;109;Compras por marca;Compras por marca;127;3;4
+128;109;Compras por linea;Compras por linea;128;3;5
+129;109;Notas de credito;Notas de credito;129;3;6
+130;109;Recepcion de traslados sucursales;Recepcion de traslados sucursales;130;3;7
+131;110;Ventas por cliente;Ventas por cliente;131;3;5
+132;110;Ventas por linea;Ventas por linea;132;3;6
+133;110;Ventas por marca;Ventas por marca;133;3;7
+134;110;Ventas por proveedor;Ventas por proveedor;134;3;8
+135;110;Ventas por vendedor;Ventas por vendedor;135;3;9
+136;110;Traslados sucursales;Traslados sucursales;136;3;10
+137;111;Corte de operaciones;Corte de operaciones;137;3;1
+138;8;Tipo ticket;Tipo Ticket;138;1;10
+139;26;Personalizados;Reportes Personalizados;139;2;90
+140;8;Cortes del dia con ajuste;Cortes del dia con ajuste;140;3;10
+141;8;Cortes del dia sumarizaco con ajuste;Cortes del dia sumarizado con ajuste;141;3;11
+142;26;Otros;Otros;142;2;11
+143;142;Descuentos hechos por cajeros;Descuentos hechos por cajeros;143;3;1
+144;5;Recepcion de orden de compra;Recepcion de orden de compra;144;1;6
+145;110;Ventas con saldo;Ventas con saldo;145;3;11
+146;110;Ventas x vendedor del cliente;Ventas x vendedor del cliente;146;3;12
+147;76;Anticipos a proveedores;Anticipos a proveedores;147;2;2
+148;77;Anticipos a clientes;Anticipos a clientes;148;2;2
+149;103;Clientes por vendedor asignado;Clientes por vendedor asignado;149;3;7
+150;106;Inventario x almacen;Productos x almacen;150;1;9
+151;22;Quotas de vendedores;Quotas de vendedores;151;1;6
+152;26;Quotas;Quotas;152;1;12
+153;22;Reasignacion de utilidades por vendedor;Reasignacion de utilidades por vendedor;153;1;7
+154;155;Inicializacion movil;Inicializacion movil;154;2;1
+155;0;Vendedor movil;Vendedor movil;155;1;10
+156;155;Estado de sincronizacion;Estado de sincronizacion;156;2;2
+157;155;Finalizacion Movil;Finalizacion movil;157;2;3
+158;106;Producto por stock;Producto por stock;158;2;10
+159;111;Corte de caja por cajero;Reporte de corte de caja por cajero;159;3;2
+160;111;Cobranza aplicada por cajero;Cobranza aplicada por cajero;160;3;1
+161;111;Cartera vencida;Reporte de cajera vencida;161;3;3
+162;110;Ventas por corte;Ventas por corte;162;3;13
+163;110;Detalle de ventas por corte;Detalle de ventas por corte;163;3;14
+164;155;Cobranza;Cobranza movil;164;2;4
+165;155;Pagos;Pagos movil;165;2;6
+166;155;Reportes cobranza;Reportes cobranza Movil;166;2;7
+167;155;Conexion movil;Conexion movil;167;2;8
+168;106;Inventario por fecha;Inventario por fecha;168;1;10
+169;155;Cambio de precios de productos movil;Cambio de precios de productos movil;169;2;9
+170;106;Inventario costeado general;Inventario costeado general;170;1;11
+171;106;Detalle inventarios por fecha;Detalle inventarios por fecha;171;1;12
+172;106;Resumen inventarios por fecha;Resumen inventarios por fecha;172;1;13
+173;12;Cancelacion de documentos;Cancelacion de documentos;172;2;5
+174;106;Mejores productos;Mejores productos;174;1;14
+175;155;Importar producto precio y existencia movil;Importar producto precio y existencia movil;175;2;10
+176;155;Registro de visita;Registro de visita;176;2;11
+177;106;Historial de lote;Historial de lote;177;2;18
+178;100;Cortes x fecha;Cortes x fecha;178;2;5
+179;26;Receta;Receta;179;1;13
+180;110;Ventas por dia por utilidad;Ventas por dia por utilidad;180;2;15
+181;106;Corta caducidad;Corta caducidad;181;1;19
+182;12;Kits;Kits;182;1;6
+183;182;Ensamble;Ensamble;183;2;1
+184;182;Desensamble;Desensamble;184;2;2
+185;12;Cancelacion de apartados;Cancelacion de apartados;185;2;16
+186;12;Cambiar vencimiento ventas;Cambiar vencimiento ventas;186;1;17
+187;12;Autorizacion rebajas x NC;Autorizacion rebjas por NC;187;1;18
+188;142;Reporte de autorizaciones rebajas x nc;Reporte de autorizaciones rebajas x nc;188;3;2
+189;102;Movimientos de anaqueles;Movimientos de anaqueles;189;1;10
+190;12;Cobranza;Cobranza;190;1;19
+191;190;Bitacoras;Bitacoras;191;3;1
+192;155;Solicitar archivos remotos;Solicitar archivos remotos;192;2;12
+193;99;Nuevos Precios;Nuevos Precios;193;1;6
+194;190;Contrarecibos;Contrarecibos;194;1;20
+195;202;Surtido de ventas moviles;Surtido de ventas moviles;195;3;3
+196;8;Facturas moviles con error;Facturas moviles con error;196;3;13
+197;8;Pedidos moviles por autorizar;Pedidos moviles por autorizar;197;3;14
+198;202;Surtido de ventas pendientes;Surtido de ventas pendientes;198;3;1
+199;202;Ventas con error de surtido;Ventas con error de surtido;199;3;2
+200;102;Intercambio de lotes;Intercambio de lotes;200;3;11
+201;8;Consolidados;Consolidados;201;3;18
+202;8;Surtido;Surtido;202;3;15
+203;201;Consolidacion de facturas;Consolidacion de facturas;203;3;1
+204;201;Consulta de consolidados;Consulta de consolidados;204;3;2
+205;100;Reimpresiones de pendientes de orden de compra por recibir;Reimpresiones de pendientes de orden de compra por recibir;205;3;6
+206;26;Estadisticos totalizados;Estadisticos totalizados;206;3;14
+207;206;Estadistico por producto venta;Estadistico por producto venta;207;2;1
+208;206;Estadisticos de producto compra;Estadisticos de producto compra;208;2;2
+209;206;Estadisticos por venta cliente;Estadisticos por venta cliente;209;2;3
+210;206;Estadisticos por proveedor compra;Estadisticos por proveedor compra;210;2;4
+211;22;Bitacora de cambios;Bitacora de cambios;211;2;8
+212;106;Entradas/Salidas Productos que requieren receta;Entradas/Salidas Productos que requieren receta;212;2;20
+213;1;Grupos de usuario;Grupos de usuario;213;2;17
+214;99;Descomprimir respaldos sucursales;Descomprimir respaldos sucursales;214;2;5
+215;119;Saldos de proveedores;Saldos de proveedores;215;2;1
+216;218;Catalogo de Gastos;Catalogo de Gastos;216;2;1
+217;218;Catalogo de cuentas;Catalogo de cuentas;217;2;2
+218;0;Contabilidad;Contabilidad;218;2;11
+219;218;Retiros de caja;Retiros de caja;219;2;3
+220;218;Gastos;Gastos;220;2;4
+221;106;Productos Mula;Informe Productos Mula;221;21;0
+222;206;Estadistico venta de todos los productos;Estadistico por venta de todos los productos;222;2;0
+223;218;Generar Polizas;Generar Polizas;223;2;5
+224;5;Otras entradas;Otras entradas;224;2;7
+225;8;Otras salidas;Otras salidas;225;2;19
+226;1;Catalogo de otras transacciones;Catalogo de otras transacciones;226;2;17
+227;202;Aprobacion surtido CXC;Aprobacion surtido CXC;227;2;4
+228;231;Ventas por Dia Con Utilidad MultiSucursal;Ventas por Dia Con Utilidad MultiSucursal;228;2;1
+229;231;Traslados Sucursal - MultiSucursal;Traslados Sucursal - MultiSucursal;229;2;2
+230;231;Ultima Venta MultiSucursal;Ultima Venta MultiSucursal;230;2;3
+231;26;Consolidados;Consolidados;231;2;9
+232;1;Cajas;Cajas;232;2;18
+233;22;Terminales pagos servicios;Terminales pagos servicios;233;2;10
+234;8;Aplicar ventas a futuro;Aplicar ventas a futuro;234;2;20
+235;106;Impresion de Precios por Localidad;Impresion de Precios por Localidad;235;2;22
+236;110;Reporte de recargas Emida;Reporte de recargas Emida;236;2;16
+237;110;Reporte de Ventas con Subtotales;Reporte de Ventas con Subtotales;237;2;17
+238;1;Rutas de Embarque;Rutas de Embarque;238;2;20
+242;1;Contenidos de producto;Contenidos de producto;242;2;18
+243;1;Clasificacion adicional de producto;Clasificacion adicional de producto;243;2;19
+244;26;Rutas;Rutas;244;2;92
+245;244;Ventas por Ruta de Embarque;Ventas por Ruta de Embarque;245;2;1
+246;1;Motivos de devolucion;Motivos de devolucion;246;2;21
+247;244;Reporte de Concentrado de Ruta;Reporte de Concentrado de Ruta;247;2;2
+248;26;Recargas y Servicios;Recargas y Servicios;248;2;93
+249;248;Reporte de Conciliacion Emida;Reporte de Conciliacion Emidae;249;2;1
+250;22;Merchant Pago Servicios;Merchant Pago Servicios;250;2;12
+251;22;Clerk Pago Servicios;Clerk Pago Servicios;251;2;11
+252;248;Reporte de Conciliacion Servicios Emida;Reporte de Conciliacion Servicios Emida;252;2;2
+253;119;Estados de Cuenta;Estados de Cuenta;253;2;1
+254;119;Abono a Proveedores;Abono a Proveedores;254;2;2
+255;231;Inventario Costeado MultiSucursal;Inventario Costeado MultiSucursal;255;2;4
+256;231;Ventas por Proveedor MultiSucursal;Ventas por Proveedor MultiSucursal;256;2;5
+257;231;Diario de Compras MultiSucursal;Diario de Compras MultiSucursal;257;2;6
+258;218;Editar Corte;Editar Corte;258;3;6
+259;109;Faltante de Ordenes de Compra;Faltante de Ordenes de Compra;259;2;6
+262;111;Gastos;Reporte de gastos;262;2;4
+263;0;Utilerias;Utilerias;263;1;12
+264;263;Procesos;Procesos;264;2;1
+265;263;Reportes;Reportes;265;2;2
+266;264;Pago a Proveedores por Fecha;Pago a Proveedores por Fecha;266;2;3
+267;264;Baja Saldos Menores;Baja Saldos Menores;267;2;4
+268;265;Reporte Pagos por Proceso;Reporte Pagos por Proceso;268;2;5
+270;231;Gastos Sumarizado MultiSucursal;Gastos Sumarizado MultiSucursal;270;2;7
+271;1;Encargados de Guia;Encargados de Guia;271;2;22
+272;8;Control de embarques;Control de embarques;272;3;20
+273;272;Proceso;Proceso;273;2;1
+274;263;Utilerias Emida;Utilerias Emida;274;2;3
+275;274;Reajustar campos de productos Emida;Reajustar campos de productos Emida;275;2;1
+276;274;Recalcular utilidades transacciones;Recalcular utilidades transacciones;276;2;2
+277;102;Exportar datos para inventario;Exportar datos para inventario;277;2;11
+278;263;Utilerias Bancomer;Utilerias Bancomer;278;2;11
+279;278;Cargado de Llaves;Cargado de Llaves;279;2;4
+280;278;Reporte de prueba;Reporte de prueba;280;2;2
+281;278;Consulta de puntos;Consulta de puntos;281;2;2
+282;263;Mensajeria;Mensajeria;282;2;12
+283;282;Buzon;Buzon;283;2;2
+284;282;Nuevo Mensaje;Nuevo Mensaje;284;2;3
+285;282;Mensajes Enviados;Mensajes Enviados;285;2;4
+286;1;Areas;Areas;286;2;23
+287;263;Utilerias Sistema;Utilerias Sistema;287;2;13
+288;287;Importacion de Clientes desde Excel;Importacion de Clientes desde Excel;288;2;1
+289;1;Gastos Adicionales;Gastos Adicionales;289;2;24
+290;106;Inventario por lotes;Inventario por lotes;290;2;23
+291;111;Reporte de apertura y cierre de cortes;Reporte de apertura y cierre de cortes;291;3;5
+292;1;Almacenes;Almacenes;292;2;2
+293;278;Reporte de Transacciones;Reporte de Transacciones;293;2;5
+295;1;Plazos;Plazos;295;2;28
+296;287;Importacion de Saldos Clientes desde Excel;Importacion de Saldos Clientes desde Excel;296;2;2
+297;112;Informe facturas y notas de credito fiscales;Informe facturas y notas de credito fiscales;297;2;2
+298;84;Pedidos por Existencia;Pedidos por Existencia;298;2;3
+299;84;Devoluciones de pedidos y traslados;Devoluciones de pedidos y traslados;299;2;4
+300;102;Stock Por Almacenes;Stock Por Almacenes;300;2;13
+301;218;Catalogo Cuentas PVC;Catalogo Cuentas PVC;301;2;7
+302;106;Existencias por proveedor por sucursal;Existencias por proveedor por sucursal;302;2;24
+303;263;Importacion de ventas/nc/otros;Importacion de ventas/nc/otros;303;2;90
+304;263;Ajuste Catálogos SAT;Ajuste Catalogos SAT;304;2;1
+305;304;Catalogo de productos SAT operativos;Catalogo de productos SAT operativos;305;2;1
+306;304;Catalogo de Productos SAT Operativos por Linea;Catalogo de Productos SAT Operativos por Linea;306;2;2
+307;304;Ajuste aduanas SAT;Ajuste aduanas SAT;307;2;3
+308;12;Productos promocion;Productos promocion;308;2;20
+309;308;Traslado a productos promocion;Traslado a productos promocion;309;2;1
+310;308;Traslado de promocion a producto base;Traslado de promocion a producto base;310;2;2
+311;308;Reporte de traslados promocion por proveedor;Reporte de traslados promocion por proveedo;311;2;3
+312;111;Abonos de intercambio de mercancia;Abonos de intercambio de mercancia;312;2;12
+313;287;Importacion de Saldos Proveedores desde Excel;Importacion de Saldos Proveedores desde Excel;313;2;4
+314;218;Depositos;Depositos;314;2;8
+315;111;Ventas con autorizacion por precio bajo;Ventas con autorizacion por precio bajo;315;2;13
+316;263;Bloquear clientes con ventas vencidas;Bloquear clientes con ventas vencidas;316;2;12
+317;-1;Generar poliza formato PDF;Generar poliza formato PDF;317;2;9
+318;5;Reasignar notas de credito;Reasignar notas de credito;318;2;8
+319;102;Importar inventario movil;Importar inventario movil;319;2;9
+320;155;Procesos de matriz/sucursal;Procesos de matriz/sucursal;320;2;13
+321;320;Bitacora de cobranza;Bitacora de cobranza;321;2;1
+322;320;Importacion de ventas de vendedor movil;Importacion de ventas de vendedor movil;322;2;2
+323;320;Generar datos para vendedor movil;Generar datos para vendedor movil;323;2;3
+324;320;Procesar Pago Por Vendedor;Procesar Pago Por Vendedor;324;2;3
+325;320;Ventas moviles con errores de facturacion;Ventas moviles con errores de facturacion;325;2;3
+326;320;Reporte de faltantes de vendedor movil;Reporte de faltantes de vendedor movil;326;2;5
+327;111;Corte detallado;Corte detallado;327;2;14
+328;304;Catalogo de Uso CFDI SAT Operativos;Catalogo de Uso CFDI SAT Operativos;328;2;4
+329;218;Cuentas de banco;Cuentas de banco;329;2;10
+330;77;Pagos;Pagos;330;2;3
+331;111;Recuperacion de cobranza por mes;Recuperacion de cobranza por mes;331;2;15
+332;106;Reporte de Lista Precio mas vendidos;Reporte de Lista Precio mas vendidos;332;2;25
+333;110;Reporte de comisiones por cajero;Reporte de comisiones por cajero;333;2;18
+334;304;Ajuste de Clave SAT en Productos;Ajuste de Clave SAT en Productos;334;2;1
+335;304;Asignacion Clave SAT Productos;Asignacion Clave SAT Productos;335;2;5
+336;1;Lista de precios especiales;Lista de precios especiales;336;2;29
+337;1;Maximos de facturacion por dia;Maximos de facturacion por dia;337;2;30
+340;263;Reasignacion valores sin vale;Reasignacion valores sin vale;340;2;91
+341;218;Fondeo de Caja;Fondeo de Caja;341;2;5
+342;5;Reasignar cancelaciones;Reasignar cancelaciones;342;2;10
+343;110;Ventas por hora;Ventas por hora;343;2;19
+344;110;Ventas con servicio a domicilio;Ventas con servicio a domicilio;344;2;20
+345;76;Abonos a proveedores de sucursales;Abonos a proveedores de sucursales;345;2;3
+346;76;Pagos a proveedores de sucursales;Pagos a proveedores de sucursales;346;2;5
+347;5;Facturas originales compras;Facturas originales compras;347;2;11
+348;77;Aplicacion de Cheques postfechados;Aplicacion de Cheques postfechados;348;2;4
+349;1;Motivos de cambio de fecha aplicacion;Motivos de cambio de fecha de aplicacion;349;2;30
+350;104;Comisiones version 2;Comisiones version 2;350;2;3
+351;109;Compras de sucursales;Compras de sucursales;351;2;8
+352;109;Diferencia facturas originales;Diferencia facturas originales;352;2;9
+353;142;Diario General 1;Diario General 1;353;2;3
+354;263;Eliminacion de ventas pendientes;Eliminacion de ventas pendientes;354;2;92
+355;111;Reversion de abonos;Reversion de abonos;355;2;16
+356;202;Revision Final;Revision Final;356;2;5
+357;110;Incidencias de revision;Incidencias de revision;357;2;21
+358;1;Tipos cliente;Tipos cliente;358;2;31
+359;99;Exportacion para cubo;Exportacion para cubo;359;2;7
+360;106;Consulta de compra x producto;Consulta de compra x producto;360;2;26
+361;320;Autorizacion topes movil;Autorizacion topes movil;361;2;8
+362;320;CXC Autorizacion Movil;CXC Autorizacion Movil;362;2;9
+363;99;Solicitar mercancia;Solicitar mercancia;363;2;8
+364;218;Corte Recolecciones;Corte Recolecciones;364;2;11
+365;111;Recoleccion de cortes;Recoleccion de cortes;365;2;117
+366;1;Encargado de corte;Encargado de corte;366;2;32
+367;111;Abonos con misma referencia;Abonos con misma referencia;367;2;17

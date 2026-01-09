@@ -1,0 +1,118 @@
+create or alter procedure PEDIDO_MOVIL_BORRAR (
+    CLAVEVENDEDOR D_CLAVE,
+    FOLIOMOVIL D_REFERENCIA,
+    FECHA D_FECHA,
+    IDMOVIL D_DESCRIPCION)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable TIPODOCTOID D_FK;
+declare variable ESTATUSDOCTOID D_FK;
+declare variable TIPODOCTOIDVENTA D_FK;
+declare variable ESTATUSDOCTOIDVENTA D_FK;
+declare variable VENDEDORID D_FK;
+declare variable ESFACTURAELECTRONICA D_BOOLCN;
+declare variable DOCTOID D_FK;
+declare variable DOCTOREFID D_FK;
+BEGIN
+
+   ERRORCODE = 0;
+
+
+
+   -- Si no es documento de compra 11.
+   IF ((:CLAVEVENDEDOR IS NULL) OR (:CLAVEVENDEDOR = '') or
+        (:FOLIOMOVIL IS NULL) OR (:FOLIOMOVIL = '') ) THEN
+   BEGIN
+      ERRORCODE = 1060;
+      SUSPEND;
+      EXIT;
+   END
+
+
+   SELECT ID FROM PERSONA WHERE CLAVE = :CLAVEVENDEDOR AND TIPOPERSONAID = 20 INTO :VENDEDORID;
+
+   IF(COALESCE(:VENDEDORID,0) = 0) THEN
+   BEGIN
+      ERRORCODE = 1060;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Validar estatus.
+   SELECT ID, DOCTOREFID,  ESTATUSDOCTOID
+   FROM DOCTO
+   WHERE FECHA = :FECHA AND VENDEDORID = :VENDEDORID AND TIPODOCTOID = 331 AND REFERENCIA = :FOLIOMOVIL AND COALESCE(REFERENCIAS,'') = COALESCE(:IDMOVIL,'')
+   INTO :DOCTOID, :DOCTOREFID, :ESTATUSDOCTOID;
+
+
+   -- Si el estatus no es borrador .
+   IF (:ESTATUSDOCTOID <> 0) THEN
+   BEGIN
+      ERRORCODE = 1062;
+      SUSPEND;
+      EXIT;
+   END
+
+
+         
+   -- Validar estatus.
+   SELECT ESTATUSDOCTOID, TIPODOCTOID
+   FROM DOCTO
+   WHERE ID = :DOCTOREFID
+   INTO :ESTATUSDOCTOIDVENTA, :TIPODOCTOIDVENTA;
+   
+   -- Si no es documento de compra 11.
+   IF ((:TIPODOCTOIDVENTA IS NULL) OR (:TIPODOCTOIDVENTA = 0)) THEN
+   BEGIN
+      ERRORCODE = 1060;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Si no es documento de compra 11.
+   IF (:TIPODOCTOIDVENTA <> 21 ) THEN
+   BEGIN
+      ERRORCODE = 1061;
+      SUSPEND;
+      EXIT;
+   END
+
+         
+   -- Si el estatus no es borrador .
+   IF (:ESTATUSDOCTOIDVENTA <> 0) THEN
+   BEGIN
+      ERRORCODE = 1062;
+      SUSPEND;
+      EXIT;
+   END
+
+
+   SELECT ERRORCODE FROM DOCTO_DELETE(:DOCTOREFID) INTO :ERRORCODE;
+
+   IF(:ERRORCODE <> 0 ) then
+   BEGIN    
+      SUSPEND;
+      EXIT;
+   END
+
+   
+
+   SELECT ERRORCODE FROM DOCTO_DELETE(:DOCTOID) INTO :ERRORCODE;
+
+   IF(:ERRORCODE <> 0 ) then
+   BEGIN    
+      SUSPEND;
+      EXIT;
+   END
+
+
+
+   SUSPEND;
+   
+   /*WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1063;
+      SUSPEND;
+   END */
+END

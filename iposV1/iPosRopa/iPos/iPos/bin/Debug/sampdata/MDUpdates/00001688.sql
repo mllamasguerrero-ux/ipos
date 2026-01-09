@@ -1,0 +1,1 @@
+update parametro set lastchangeproddesc = current_timestamp;

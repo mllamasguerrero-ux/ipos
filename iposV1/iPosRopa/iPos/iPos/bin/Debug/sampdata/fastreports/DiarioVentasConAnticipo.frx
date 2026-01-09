@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/16/2014 16:05:45" ReportInfo.Modified="04/16/2014 16:21:03" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2d78g7zdSDhPOlP4Ucyoudc=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;DOCTO.id, &#13;&#10;DOCTO.FOLIO,&#13;&#10;docto.foliosat,&#13;&#10;docto.seriesat,&#13;&#10;DOCTO.FECHA,&#13;&#10;PERSONA.NOMBRE,&#13;&#10;COALESCE(PERSONA.NOMBRES,'') || COALESCE(PERSONA.APELLIDOS,'') NOMBRES_APELLIDOS,&#13;&#10;DOCTO.importe, &#13;&#10;DOCTO.SUBTOTAL,&#13;&#10;DOCTO.IVA,&#13;&#10;DOCTO.TOTAL,&#13;&#10;DOCTO.SALDO,&#13;&#10;anticipo.fechaelaboracion,&#13;&#10;anticipo.importe importeanticipo,&#13;&#10;ultimopago.ultimafechapago ,&#13;&#10;ultimopago.importe  pago&#13;&#10;&#13;&#10;from docto&#13;&#10;left join persona on docto.personaid = persona.id&#13;&#10;left join (select doctoid, min(doctosalidaid)  anticipoaplicadoid from doctopago&#13;&#10;            left join docto d4 on doctopago.doctosalidaid = d4.id  where d4.tipodoctoid = 201 group by doctoid) pagoanticipo on docto.id = pagoanticipo.doctoid&#13;&#10;left join (select doctoid, max(coalesce(doctopago.fecha,fecharecepcion)) ultimafechapago, sum(coalesce(importe,0)) importe from doctopago  where formapagoid not in (4) group by doctoid) ultimopago on docto.id = ultimopago.doctoid&#13;&#10;left join  (select doctoid, sum(coalesce(importe,0)) importe, min(coalesce(fechaelaboracion, fecha)) fechaelaboracion from doctopago where formapagoid in (1,2,3,5,15)  group by doctoid) anticipo on anticipo.doctoid = pagoanticipo.anticipoaplicadoid&#13;&#10;where docto.estatusdoctoid = 1 and docto.tipodoctoid = 21&#13;&#10;and docto.fecha &gt;= @fechaini and docto.fecha &lt;= @fechafin">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="FOLIOSAT" DataType="System.Int32"/>
+        <Column Name="SERIESAT" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="NOMBRES_APELLIDOS" DataType="System.String"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="FECHAELABORACION" DataType="System.DateTime"/>
+        <Column Name="IMPORTEANTICIPO" DataType="System.Decimal"/>
+        <Column Name="ULTIMAFECHAPAGO" DataType="System.DateTime"/>
+        <Column Name="PAGO" DataType="System.Decimal"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2020"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="400" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1436.4" Height="66.15">
+      <TextObject Name="Text31" Left="236.25" Top="9.45" Width="472.5" Height="28.35" Text="DIARIO DE VENTAS" Font="Arial, 20pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="70.15" Width="1436.4" Height="28.35">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Text="FOLIO SAT" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="283.5" Width="66.15" Height="18.9" Text="SERIE SAT" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="349.65" Width="189" Height="28.35" Text="NOMBRES APELLIDOS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="538.65" Width="94.5" Height="18.9" Text="IMPORTE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="633.15" Width="94.5" Height="18.9" Text="SUBTOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="727.65" Width="94.5" Height="18.9" Text="IVA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="822.15" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text22" Left="916.65" Width="94.5" Height="18.9" Text="SALDO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text24" Left="1011.15" Width="94.5" Height="28.35" Text="FECHA ANTICIPO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text26" Left="1105.65" Width="94.5" Height="28.35" Text="IMPORTE ANTICIPO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text28" Left="1200.15" Width="94.5" Height="28.35" Text="ULTIMA FECHA PAGO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text30" Left="1294.65" Width="94.5" Height="18.9" Text="PAGO" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="102.5" Width="1436.4" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" Text="[Table.FOLIOSAT]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="283.5" Width="66.15" Height="18.9" Text="[Table.SERIESAT]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="349.65" Width="189" Height="18.9" Text="[Table.NOMBRES_APELLIDOS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="538.65" Width="94.5" Height="18.9" Text="[Table.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="633.15" Width="94.5" Height="18.9" Text="[Table.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="727.65" Width="94.5" Height="18.9" Text="[Table.IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="822.15" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="916.65" Width="94.5" Height="18.9" Text="[Table.SALDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="1011.15" Width="94.5" Height="18.9" Text="[Table.FECHAELABORACION]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text25" Left="1105.65" Width="94.5" Height="18.9" Text="[Table.IMPORTEANTICIPO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="1200.15" Width="94.5" Height="18.9" Text="[Table.ULTIMAFECHAPAGO]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text29" Left="1294.65" Width="94.5" Height="18.9" Text="[Table.PAGO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="125.4" Width="1436.4" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="52" Top="56" Font="Tahoma, 8pt" TabIndex="2" Text="miércoles, 16 de abril de 2014" ReportParameter="fechaini" FilterOperation="GreaterThanOrEqual" Value="04/16/2014 16:16:39"/>
+    <LabelControl Name="Label1" Left="52" Top="40" Width="62" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Fecha inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="56" Top="112" Font="Tahoma, 8pt" TabIndex="4" Text="miércoles, 16 de abril de 2014" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="04/16/2014 16:16:41"/>
+    <LabelControl Name="Label2" Left="56" Top="96" Width="51" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha fin"/>
+  </DialogPage>
+</Report>

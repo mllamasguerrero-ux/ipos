@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/19/2013 14:15:58" ReportInfo.Modified="10/10/2013 09:18:37" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void btnOk_Click(object sender, EventArgs e)
+    {                                                    
+      Report.SetParameterValue(&quot;Parameter&quot;, TextBox1.Text);
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqGXDUjVHoOo39U7VHz/cohboC87uIIffsgzROmdYrsoxg6E9n8ct5RF8qaZsnjPxBCuQaR9x8qutjAmSIDilaVx1mjEYm/QClDyyx/yPpBhLeHfYFtICdDVVqfLyNxCJEJt/sHImEEKI9Tdor0CiOxhg5a2RKzNRIL/v9cQGXETy+Y+bXys1f02U7gF7fI/VTcS5CKkrgh/ZLH9C8kEfKWg==">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT B.ID, B.ACTIVO, B.CREADO, B.CREADOPOR_USERID, B.MODIFICADO, B.MODIFICADOPOR_USERID, B.CLAVE, B.NOMBRE&#13;&#10;FROM &quot;BANCOS&quot; B&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <CommandParameter Name="clave" DataType="16" Size="20"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="Parameter" DataType="System.String" Expression="&quot;BANAMEX2&quot;"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="718.2" Height="28.35">
+      <TextObject Name="Text2" Left="94.5" Width="94.5" Height="18.9" Text="CLAVE"/>
+      <TextObject Name="Text4" Left="236.25" Width="94.5" Height="18.9" Text="NOMBRE"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="74.15" Width="718.2" Height="75.6" DataSource="Table" Filter="[Parameter] == [Table.CLAVE]">
+      <TextObject Name="Text1" Left="94.5" Top="9.45" Width="94.5" Height="18.9" Text="[Table.CLAVE]"/>
+      <TextObject Name="Text3" Left="236.25" Top="9.45" Width="94.5" Height="18.9" Text="[Table.NOMBRE]"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="153.75" Width="718.2" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" ClickEvent="btnOk_Click" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <LabelControl Name="Label1" Left="16" Top="32" Width="32" Height="13" Font="Tahoma, 8pt" TabIndex="2" Text="Label"/>
+    <TextBoxControl Name="TextBox1" Left="72" Top="28" Font="Tahoma, 8pt" TabIndex="3" Text="BANAMEX"/>
+  </DialogPage>
+</Report>

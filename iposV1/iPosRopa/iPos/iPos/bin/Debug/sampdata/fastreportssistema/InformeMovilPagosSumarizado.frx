@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/24/2015 10:08:56" ReportInfo.Modified="02/24/2015 10:30:28" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlswnOjJ7QXfJ631YFsF1WQzNdQK0ZlP1jccTahKgc1QF4manYhqHhi5onDx4abm6k4mc3v9yQXiK2TLvYGAA3nignu7VjljhVbJhuF092KXRq">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;case formapagoid &#13;&#10;	when 1 then 'Efectivo'&#13;&#10;	when 2 then 'Cheque'&#13;&#10;	when 3 then  'Deposito'&#13;&#10;	when 4 then  'Diferencia'&#13;&#10;	when 5 then  'Devoluciones'&#13;&#10;	when 6 then 'Promociones'&#13;&#10;               else  'No definido'&#13;&#10;end  formapago, &#13;&#10;sum(coalesce(importe,0)) as importe, sum(coalesce(importecambio,0)) cambio&#13;&#10;&#13;&#10;from pagomovil&#13;&#10;where estatus = 1 and tipopagoid = 5&#13;&#10;group by formapagoid">
+        <Column Name="FORMAPAGO" DataType="System.String"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="CAMBIO" DataType="System.Decimal"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Total Name="Importe" Expression="[Table.IMPORTE]" Evaluator="Data1"/>
+    <Total Name="Cambio" Expression="[Table.CAMBIO]" Evaluator="Data1"/>
+    <Total Name="Total" Expression="[Table.IMPORTE] - [Table.CAMBIO]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="85.05">
+      <TextObject Name="Text10" Left="56.7" Top="9.45" Width="529.2" Height="28.35" Text="Reporte de pagos de vendedor movil sumarizado&#13;&#10;" HorzAlign="Right" Font="Arial, 16pt"/>
+      <TextObject Name="Text11" Left="170.1" Top="37.8" Width="311.85" Height="18.9" Text="Fecha: [Date]" HorzAlign="Right"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="89.05" Width="718.2" Height="28.35">
+      <TextObject Name="Text2" Left="9.45" Width="189" Height="18.9" Text="FORMAPAGO"/>
+      <TextObject Name="Text4" Left="207.9" Width="160.65" Height="18.9" Text="IMPORTE" HorzAlign="Center"/>
+      <TextObject Name="Text6" Left="378" Width="160.65" Height="18.9" Text="CAMBIO" HorzAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="121.4" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Left="9.45" Width="189" Height="18.9" Text="[Table.FORMAPAGO]"/>
+      <TextObject Name="Text3" Left="207.9" Width="160.65" Height="18.9" Text="[Table.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text5" Left="378" Width="160.65" Height="18.9" Text="[Table.CAMBIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <ColumnFooterBand Name="ColumnFooter1" Top="144.3" Width="718.2" Height="75.6">
+      <TextObject Name="Text7" Left="207.9" Top="9.45" Width="160.65" Height="18.9" Text="[Importe]" Format="Currency" Format.UseLocale="true" HorzAlign="Right"/>
+      <TextObject Name="Text8" Left="378" Top="9.45" Width="160.65" Height="18.9" Text="[Cambio]" Format="Currency" Format.UseLocale="true" HorzAlign="Right"/>
+      <TextObject Name="Text9" Left="302.4" Top="47.25" Width="160.65" Height="18.9" Text="[Total]" Format="Currency" Format.UseLocale="true" HorzAlign="Right"/>
+      <TextObject Name="Text12" Left="132.3" Top="47.25" Width="160.65" Height="18.9" Text="TOTAL" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <LineObject Name="Line1" Left="9.45" Width="538.65"/>
+      <LineObject Name="Line2" Left="132.3" Top="37.8" Width="330.75"/>
+      <LineObject Name="Line3" Left="132.3" Top="75.6" Width="330.75"/>
+    </ColumnFooterBand>
+    <PageFooterBand Name="PageFooter1" Top="223.9" Width="718.2" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

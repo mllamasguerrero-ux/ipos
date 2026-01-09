@@ -1,0 +1,22 @@
+ALTER TABLE SAT_ADUANA ADD CONSTRAINT PK_SAT_ADUANA PRIMARY KEY (ID);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

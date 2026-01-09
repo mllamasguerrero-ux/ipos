@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <LangVersion>11.0</LangVersion>
+    <PlatformTarget>x86</PlatformTarget>
+    <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CalcBinding" Version="2.5.2" />
+    <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
+    <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
+    <PackageReference Include="Castle.Core" Version="4.4.1" />
+    <PackageReference Include="Castle.Windsor" Version="4.1.1" />
+    <PackageReference Include="DynamicExpresso.Core" Version="2.13.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+    <PackageReference Include="MaterialDesignExtensions" Version="3.3.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.7.0" />
+    <PackageReference Include="RestSharp" Version="107.3.0" />
+    <PackageReference Include="ShowMeTheXAML" Version="2.0.0" />
+    <PackageReference Include="ShowMeTheXAML.AvalonEdit" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdornedControl\AdornedControl.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\KendoNET.DynamicLinq\KendoNET.DynamicLinq.csproj" />
+    <ProjectReference Include="..\Logic\Logic.csproj" />
+    <ProjectReference Include="..\UICommon\UICommon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Syncfusion.Data.WPF">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.Data.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfGrid.WPF">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfGrid.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfHubTile.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfHubTile.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfInput.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfInput.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfShared.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.SfShared.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.Shared.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Tools.Wpf">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\16.2.0.41\Assemblies\4.6\Syncfusion.Tools.WPF.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

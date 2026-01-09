@@ -1,0 +1,21 @@
+ALTER TABLE SAT_TIPOFACTOR ADD CONSTRAINT PK_SAT_TIPOFACTOR PRIMARY KEY (ID);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

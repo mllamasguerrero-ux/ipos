@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 11:45:50" ReportInfo.Modified="04/26/2018 20:09:28" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {        
+           
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQqrfA0sgktN+kEk9vYPLI7S4=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;       sucursal.clave SUCURSAL,&#13;&#10;       docto.sucursalid,&#13;&#10;       docto.cajaid,&#13;&#10;       docto.turnoid, &#13;&#10;       docto.fecha FECHA,&#13;&#10;       docto.serie SERIE,&#13;&#10;       docto.id CONSECUTIVO,&#13;&#10;       docto.total TOTAL  ,&#13;&#10;       docto.estatusdoctoid,&#13;&#10;       docto.tipodoctoid ,&#13;&#10;       docto.referencia ,&#13;&#10;       docto.folio,&#13;&#10;       docto.seriesat, &#13;&#10;       docto.foliosat ,&#13;&#10;       DOCTO.esfacturaelectronica ,&#13;&#10;       sucDest.clave SUCDESTCLAVE,&#13;&#10;       sucDest.nombre SUCDESTNOMBRE,&#13;&#10;       sucDest.id SUCDESTID,&#13;&#10;       docto.personaid,&#13;&#10;       persona.clave personaclave,&#13;&#10;       persona.nombre personanombre,&#13;&#10;      docto.saldo&#13;&#10;       from docto&#13;&#10;left join sucursal on docto.sucursalid = sucursal.id&#13;&#10;left join sucursal sucDest on sucDest.id = docto.sucursaltid&#13;&#10;left join persona on persona.id = docto.personaid&#13;&#10;left join FACTURAORIGINALCOMPRA f on f.factura = docto.referencia and f.proveedorid = docto.personaid&#13;&#10;WHERE &#13;&#10;docto.estatusdoctoid = 1 and&#13;&#10;(docto.TIPODOCTOID = 1011) AND&#13;&#10;((docto.FECHA &gt;= @fechaini and docto.fecha &lt;= @fechafin)  OR @porfecha = 'S')  AND&#13;&#10;(docto.sucursaltid = @sucdestid OR @sucdestid = 0) AND&#13;&#10;(docto.personaid = @personaid OR @personaid = 0) AND&#13;&#10;(coalesce(f.id,0) = 0 or @sinfactproc &lt;&gt; 'S' )&#13;&#10;&#13;&#10;">
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="PERSONAID" DataType="System.Int64"/>
+        <Column Name="SUCURSAL" DataType="System.String"/>
+        <Column Name="SUCURSALID" DataType="System.Int64"/>
+        <Column Name="CAJAID" DataType="System.Int64"/>
+        <Column Name="TURNOID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="SERIE" DataType="System.String"/>
+        <Column Name="CONSECUTIVO" DataType="System.Int64"/>
+        <Column Name="ESTATUSDOCTOID" DataType="System.Int64"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="REFERENCIA" DataType="System.String"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="SERIESAT" DataType="System.String"/>
+        <Column Name="FOLIOSAT" DataType="System.Int32"/>
+        <Column Name="ESFACTURAELECTRONICA" DataType="System.String"/>
+        <Column Name="SUCDESTCLAVE" DataType="System.String"/>
+        <Column Name="SUCDESTNOMBRE" DataType="System.String"/>
+        <Column Name="SUCDESTID" DataType="System.Int64"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <CommandParameter Name="personaid" DataType="1" Expression="[personaid]" DefaultValue="0"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+        <CommandParameter Name="sucdestid" DataType="1" Expression="[sucdestid]" DefaultValue="0"/>
+        <CommandParameter Name="porfecha" DataType="16" Expression="[porfecha]" DefaultValue="S"/>
+        <CommandParameter Name="sinfactproc" DataType="16" Expression="[sinfactproc]" DefaultValue="N"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="personaid" DataType="System.Int64"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="sucdestid" DataType="System.Int64"/>
+    <Parameter Name="porfecha" DataType="System.String"/>
+    <Parameter Name="persona" DataType="System.String"/>
+    <Parameter Name="sucdest" DataType="System.String"/>
+    <Parameter Name="sinfactproc" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="160.65">
+      <TextObject Name="Text27" Left="113.4" Width="425.25" Height="18.9" Text="Compras por sucursal" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text24" Left="708.75" Top="37.8" Width="103.95" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Left="113.4" Top="28.35" Width="425.25" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="113.4" Top="47.25" Width="425.25" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="18.9" Top="47.25" Width="94.5" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text49" Left="463.05" Top="85.05" Width="85.05" Height="18.9" Text="Sucursal" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text51" Left="463.05" Top="113.4" Width="85.05" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="122.85" Top="113.4" Width="103.95" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="548.1" Top="113.4" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text50" Left="9.45" Top="113.4" Width="103.95" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text57" Left="9.45" Top="85.05" Width="103.95" Height="18.9" Text="Proveedor" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="122.85" Top="85.05" Width="311.85" Height="18.9" Text="[persona]"/>
+      <TextObject Name="Text5" Left="548.1" Top="85.05" Width="264.6" Height="18.9" Text="[sucdest]"/>
+      <TextObject Name="Text59" Left="9.45" Top="141.75" Width="103.95" Height="18.9" Text="Sin fact. proc.:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text19" Left="122.85" Top="141.75" Width="103.95" Height="18.9" Text="[sinfactproc]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="164.65" Width="1047.06" Height="18.9">
+      <TextObject Name="Text2" Left="491.4" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 8pt, style=Bold, Italic"/>
+      <TextObject Name="Text6" Left="18.9" Width="94.5" Height="18.9" Text="SUC. CLAVE" Font="Arial, 8pt, style=Bold, Italic"/>
+      <TextObject Name="Text8" Left="113.4" Width="94.5" Height="18.9" Text="SUCURSAL" Font="Arial, 8pt, style=Bold, Italic"/>
+      <TextObject Name="Text10" Left="396.9" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold, Italic"/>
+      <TextObject Name="Text12" Left="207.9" Width="94.5" Height="18.9" Text="PROV. CLAVE" Font="Arial, 8pt, style=Bold, Italic"/>
+      <TextObject Name="Text14" Left="302.4" Width="94.5" Height="18.9" Text="PROVEEDOR" Font="Arial, 8pt, style=Bold, Italic"/>
+      <TextObject Name="Text16" Left="585.9" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 8pt, style=Bold, Italic"/>
+      <TextObject Name="Text18" Left="680.4" Width="94.5" Height="18.9" Text="SALDO" Font="Arial, 8pt, style=Bold, Italic"/>
+      <TextObject Name="Text23" Left="774.9" Width="113.4" Height="18.9" Text="REFERENCIA" Font="Arial, 8pt, style=Bold, Italic"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="187.55" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Left="491.4" Width="94.5" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="18.9" Width="94.5" Height="18.9" Text="[Table.SUCDESTCLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="113.4" Width="94.5" Height="18.9" Text="[Table.SUCDESTNOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="396.9" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="207.9" Width="94.5" Height="18.9" Text="[Table.PERSONACLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="302.4" Width="94.5" Height="18.9" Text="[Table.PERSONANOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text15" Left="585.9" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="680.4" Width="94.5" Height="18.9" Text="[Table.SALDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text22" Left="774.9" Width="113.4" Height="18.9" Text="[Table.REFERENCIA]" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="210.45" Width="1047.06" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

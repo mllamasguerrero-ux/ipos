@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/26/2024 17:43:22" ReportInfo.Modified="11/27/2024 20:35:20" ReportInfo.CreatorVersion="2023.3.0.0">
+  <Dictionary>
+    <PostgresDataConnection Name="Connection" ConnectionString="rijcmlq8ZkN6qUj4G/zvKvLeJ9DDB6WCp22J48oQEWWvz8/J/MqaWZWZ9Wh4OP9L3F+2eZWVGsmrWuKGKxYjTQvmk6jSO/Q8T8KbA3gPp00uKPZlyQ=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;producto.&quot;EmpresaId&quot; EMPRESAID,&#13;&#10;producto.&quot;SucursalId&quot; SUCURSALID,&#13;&#10;producto.&quot;Id&quot; ID,&#13;&#10;producto.&quot;Clave&quot; CLAVE,&#13;&#10;producto.&quot;Nombre&quot; NOMBRE,&#13;&#10;producto.&quot;Descripcion&quot; DESCRIPCION,&#13;&#10;producto.&quot;Descripcion1&quot; DESCRIPCION1,&#13;&#10;producto.&quot;Descripcion2&quot; DESCRIPCION2,&#13;&#10;producto_existencia.&quot;Existencia&quot; EXISTENCIA,&#13;&#10;producto_precios.&quot;Costorepo&quot; COSTOREPOSICION,&#13;&#10;coalesce(producto_precios.&quot;Costorepo&quot;,0.0) * coalesce(producto_existencia.&quot;Existencia&quot;,0.0) IMPORTECOSTOREPOSICION,&#13;&#10;producto_precios.&quot;Costopromedio&quot; COSTOPROMEDIO,  &#13;&#10;coalesce(producto_precios.&quot;Costopromedio&quot;,0) * coalesce(producto_existencia.&quot;Existencia&quot;,0.0) IMPORTECOSTOPROMEDIO&#13;&#10;&#13;&#10;from &quot;Producto&quot; producto&#13;&#10;left join &quot;Producto_precios&quot; producto_precios on &#13;&#10;	producto.&quot;EmpresaId&quot; = producto_precios.&quot;EmpresaId&quot; and &#13;&#10;    producto.&quot;SucursalId&quot; = producto_precios.&quot;SucursalId&quot; and&#13;&#10;    producto.&quot;Id&quot; = producto_precios.&quot;Productoid&quot;&#13;&#10;left join &quot;Producto_existencia&quot; producto_existencia on &#13;&#10;	producto.&quot;EmpresaId&quot; = producto_existencia.&quot;EmpresaId&quot; and &#13;&#10;    producto.&quot;SucursalId&quot; = producto_existencia.&quot;SucursalId&quot; and&#13;&#10;    producto.&quot;Id&quot; = producto_existencia.&quot;Productoid&quot;&#13;&#10;where &#13;&#10;producto.&quot;EmpresaId&quot; =  @empresaid and producto.&quot;SucursalId&quot; = @sucursalid and&#13;&#10;coalesce(producto_existencia.&quot;Existencia&quot; , 0) &gt; 0 &#13;&#10;">
+        <Column Name="empresaid" DataType="System.Int64"/>
+        <Column Name="sucursalid" DataType="System.Int64"/>
+        <Column Name="descripcion" DataType="System.String"/>
+        <Column Name="descripcion1" DataType="System.String"/>
+        <Column Name="descripcion2" DataType="System.String"/>
+        <Column Name="id" DataType="System.Int64"/>
+        <Column Name="clave" DataType="System.String"/>
+        <Column Name="nombre" DataType="System.String"/>
+        <Column Name="existencia" DataType="System.Decimal"/>
+        <Column Name="costoreposicion" DataType="System.Decimal"/>
+        <Column Name="importecostoreposicion" DataType="System.Decimal"/>
+        <Column Name="costopromedio" DataType="System.Decimal"/>
+        <Column Name="importecostopromedio" DataType="System.Decimal"/>
+        <CommandParameter Name="empresaid" DataType="1" Expression="[EMPRESAID]"/>
+        <CommandParameter Name="sucursalid" DataType="1" Expression="[SUCURSALID]"/>
+      </TableDataSource>
+    </PostgresDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal" AsString=""/>
+    <Parameter Name="US_NAME" DataType="System.String" AsString=""/>
+    <Parameter Name="EMPRESAID" DataType="System.Int32" Expression="1"/>
+    <Parameter Name="SUCURSALID" DataType="System.Int32" Expression="1"/>
+    <Total Name="REPO" Expression="[Table.importecostoreposicion]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="PROM" Expression="[Table.importecostopromedio]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="56.7">
+      <TextObject Name="Text21" Left="85.05" Top="9.45" Width="292.95" Height="28.35" Text="Inventario actual" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text22" Left="378" Top="9.45" Width="141.75" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 10pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="60.7" Width="1047.06" Height="18.9">
+      <TextObject Name="Text2" Width="75.6" Height="18.9" Text="CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="75.6" Width="292.95" Height="18.9" Text="DESCRIPCION1" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="368.55" Width="198.45" Height="18.9" Text="DESCRIPCION2" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="567" Width="85.05" Height="18.9" Text="EXISTENCIA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text14" Left="661.5" Width="94.5" Height="18.9" Text="COSTO_REPO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text16" Left="756" Width="94.5" Height="18.9" Text="IMP_REPO." Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text18" Left="850.5" Width="94.5" Height="18.9" Text="COST_PROM" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text20" Left="945" Width="94.5" Height="18.9" Text="IMP_PROM" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="83.6" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="75.6" Height="18.9" Text="[Table.clave]" Font="Arial, 9pt"/>
+      <TextObject Name="Text7" Left="75.6" Width="292.95" Height="18.9" Text="[Table.descripcion1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="368.55" Width="198.45" Height="18.9" Text="[Table.descripcion2]" Font="Arial, 9pt"/>
+      <TextObject Name="Text11" Left="567" Width="85.05" Height="18.9" Text="[Table.existencia]" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="661.5" Width="94.5" Height="18.9" Text="[Table.costoreposicion]" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="756" Width="94.5" Height="18.9" Text="[Table.importecostoreposicion]" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="850.5" Width="94.5" Height="18.9" Text="[Table.costopromedio]" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="945" Width="94.5" Height="18.9" Text="[Table.importecostopromedio]" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="106.5" Width="1047.06" Height="18.9">
+      <TextObject Name="Text3" Left="756" Width="94.5" Height="18.9" Text="[REPO]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="945" Width="94.5" Height="18.9" Text="[PROM]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" Font="Arial, 8pt"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="129.4" Width="1047.06" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="207.9" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="274.05" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="66.15" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="425.25" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

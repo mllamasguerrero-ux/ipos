@@ -1,0 +1,51 @@
+create or alter procedure MOVIL_COMPLETARIMPOCOBRANZA
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable COBRANZAID D_FK;
+declare variable CLIENTE D_STDTEXT_64;
+declare variable PERSONAID D_FK;
+declare variable NOMBRE D_STDTEXT_64;
+BEGIN
+
+
+FOR SELECT CLIENTE , NOMBRE
+   FROM COBRANZAMOVIL
+   WHERE COALESCE(PERSONAID,0) = 0
+   GROUP BY CLIENTE , NOMBRE
+   INTO
+      :CLIENTE, :NOMBRE
+
+   DO
+   BEGIN
+
+     PERSONAID = 0;
+     SELECT ID FROM PERSONA WHERE CLAVE = :CLIENTE AND TIPOPERSONAID = 50 INTO :PERSONAID;
+
+      IF(COALESCE(:PERSONAID,0) = 0) THEN
+      BEGIN
+        insert into PERSONA ( clave, nombre, tipopersonaid)
+        values ( :CLIENTE,:NOMBRE, 50)
+        RETURNING ID INTO :PERSONAID;
+      END
+
+
+     IF(COALESCE(:PERSONAID,0) <> 0) THEN
+      BEGIN
+        UPDATE COBRANZAMOVIL SET PERSONAID = :PERSONAID WHERE CLIENTE = :CLIENTE;
+      END
+
+   END
+
+
+   
+   ERRORCODE = 0;
+   SUSPEND;
+           /*
+    WHEN ANY DO
+    BEGIN
+        ERRORCODE = 9009;
+        SUSPEND;
+    END       */
+
+END

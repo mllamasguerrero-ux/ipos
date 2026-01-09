@@ -1,0 +1,23 @@
+CREATE OR ALTER trigger producto_biu44 for producto
+active before insert or update position 44
+AS
+begin
+  /* Trigger text */
+  NEW.fechacambioprecio = CURRENT_DATE;
+
+  
+   IF(NEW.PRECIO1 <> COALESCE(OLD.PRECIO1,0) or
+      NEW.PRECIO2 <> COALESCE(OLD.PRECIO2,0) or
+      NEW.PRECIO3 <> COALESCE(OLD.PRECIO3,0) or
+      NEW.PRECIO4 <> COALESCE(OLD.PRECIO4,0) or
+      NEW.PRECIO5 <> COALESCE(OLD.PRECIO5,0)  or
+      NEW.LIMITEPRECIO2 <> COALESCE(OLD.LIMITEPRECIO2,0) or
+      NEW.PRECIOMAXIMOPUBLICO <> COALESCE(OLD.PRECIOMAXIMOPUBLICO,0) or
+      COALESCE(NEW.ACTIVO,'S') <> COALESCE(OLD.ACTIVO,'S')  ) THEN
+   BEGIN
+       NEW.cambioparamovil = CURRENT_TIMESTAMP;
+
+   END
+
+
+end

@@ -1,0 +1,13 @@
+|||||100+++++            //CurrentContent = IoC.Get<(nombreTabla)ListViewModel>();
+                            case "(nombreTabla)List":
+                                {
+                                    contentHistory.Clear();
+                                    screen = IoC.Get<(nombreTabla)ListViewModel>();
+                                    screen.MainWindowCommProvider = this;
+                                    CurrentContent = screen;
+                                    LeftMenuShowed = false;
+                                    break;
+                                }
+
+!!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

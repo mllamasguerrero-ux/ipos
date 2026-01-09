@@ -1,0 +1,23 @@
+CREATE GENERATOR SEQ_SAT_TIPORELACION;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

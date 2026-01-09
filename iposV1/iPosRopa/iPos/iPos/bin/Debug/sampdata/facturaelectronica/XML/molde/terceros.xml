@@ -1,0 +1,12 @@
+<terceros:PorCuentadeTerceros
+xmlns:terceros="http://www.sat.gob.mx/terceros"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
+xsi:schemaLocation="http://www.sat.gob.mx/terceros http://www.sat.gob.mx/sitio_internet/cfd/terceros/terceros11.xsd"
+                rfc="JSC7812076Q3" version="1.1" nombre="Jorge Salles Cuervo y Sucesores, S.A. de C.V.">
+                <terceros:Impuestos>
+                                <terceros:Traslados>
+                                                <terceros:Traslado importe="[ImporteTras]" impuesto="IVA" tasa="[TasaTras]"/>
+                                </terceros:Traslados>
+                </terceros:Impuestos>
+</terceros:PorCuentadeTerceros>
+

@@ -1,0 +1,8 @@
+UPDATE MENUITEMS
+SET MN_IDPARENT = -1,
+    MN_ETIQUETA = 'Salidas',
+    MN_DESC = 'Salidas',
+    MN_DERECHO = 17,
+    MN_LEVEL = 2,
+    MN_ORDEN = NULL
+WHERE (MN_ID = 17);

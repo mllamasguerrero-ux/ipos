@@ -1,0 +1,19 @@
+create or alter procedure MOVIL_GETNEXTVENTAFOLIO
+returns (
+    FOLIO D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable SUCURSALID D_FK;
+BEGIN
+
+    SELECT SUCURSALID FROM PARAMETRO INTO :SUCURSALID;
+
+    SELECT  FOLIO
+            FROM GET_FOLIO(:SUCURSALID, 1, 321)
+            INTO  :FOLIO;
+
+       ERRORCODE = 0;
+       SUSPEND;
+
+
+END

@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/22/2016 14:07:03" ReportInfo.Modified="12/07/2016 20:37:37" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript                            
+  {
+                 
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {                                                      
+      
+      
+      if( ((Int64)Report.GetColumnValue(&quot;Table.PROVEEDORPREVIOID&quot;))  == 0)
+      {
+        
+        Data1.Visible = false;            
+      }
+      else
+      {
+          Data1.Visible = true;             
+      }
+    }
+
+    private void Child1_BeforePrint(object sender, EventArgs e)
+    {
+          
+      if( ((Int64)Report.GetColumnValue(&quot;Table.PROVEEDORPREVIOID&quot;))  == 0)
+      {
+                              
+        Child1.Visible = false;              
+      }
+      else
+      {                     
+        Child1.Visible = true;    
+      }
+    }
+
+    private void Text38_BeforePrint(object sender, EventArgs e)
+    {
+      
+      if(Report.GetTotalValue(&quot;SumaCantidadPrevia&quot;) == 0)
+      {
+        Text38.Text = &quot;0.00&quot;;
+        return;
+      }
+        
+      decimal valor =  Report.GetTotalValue(&quot;SumaTotalPrevio&quot;) /  Report.GetTotalValue(&quot;SumaCantidadPrevia&quot;);
+      Text38.Text = valor.ToString(&quot;N2&quot;);
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9uiHRztQFRvOwGyGMiPbA3J8=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;&#13;&#10;	MAIN.DOCTOID,&#13;&#10;             MAIN.FOLIO,&#13;&#10;              MAIN.productoid,&#13;&#10;              MAIN.PRODUCTOCLAVE,&#13;&#10;              MAIN.PRODUCTONOMBRE,&#13;&#10;              MAIN.PRODUCTODESCRIPCION1,&#13;&#10;              MAIN.PRODUCTODESCRIPCION2,&#13;&#10;&#13;&#10;&#13;&#10;              MAIN.CANTIDADFALTANTE ,&#13;&#10;              MAIN.CANTIDADSURTIDA ,&#13;&#10;              MAIN.CANTIDADORDENADA ,&#13;&#10;&#13;&#10;	MAIN.PRECIO,&#13;&#10;   &#13;&#10;              DETALLE.DOCTOIDPREVIO,&#13;&#10;              DETALLE.FECHAPREVIA,&#13;&#10;              DETALLE.PROVEEDORPREVIOID,&#13;&#10;              DETALLE.PROVEEDORPREVIOCLAVE,&#13;&#10;              DETALLE.PROVEEDORPREVIONOMBRE,&#13;&#10;              DETALLE.PROVEEDORPREVIONOMBRES,&#13;&#10;              DETALLE.PROVEEDORPREVIOAPELLIDOS,&#13;&#10;              DETALLE.FOLIOPREVIO,&#13;&#10;              DETALLE.CANTIDADPREVIA,&#13;&#10;              DETALLE.PRECIOPREVIO ,&#13;&#10;              DETALLE.SUBTIPODOCTOIDPREVIO,&#13;&#10;&#13;&#10;            (  coalesce(DETALLE.CANTIDADPREVIA,0) * coalesce(DETALLE.PRECIOPREVIO,0)) TOTALPREVIO&#13;&#10;&#13;&#10;&#13;&#10; FROM&#13;&#10;&#13;&#10;(&#13;&#10;&#13;&#10;SELECT&#13;&#10;              DOCTO.ID DOCTOID,&#13;&#10;              DOCTO.FOLIO,&#13;&#10;              MOVTO.productoid, &#13;&#10;              PRODUCTO.CLAVE PRODUCTOCLAVE,&#13;&#10;              PRODUCTO.NOMBRE PRODUCTONOMBRE,&#13;&#10;              PRODUCTO.DESCRIPCION1 PRODUCTODESCRIPCION1,&#13;&#10;              PRODUCTO.DESCRIPCION2 PRODUCTODESCRIPCION2,&#13;&#10;&#13;&#10;&#13;&#10;             coalesce(MOVTO.CANTIDADFALTANTE,0) CANTIDADFALTANTE,&#13;&#10;&#13;&#10;             coalesce(MOVTO.CANTIDADSURTIDA,0) CANTIDADSURTIDA,&#13;&#10;             coalesce(MOVTO.CANTIDAD,0) CANTIDADORDENADA,&#13;&#10;&#13;&#10;             coalesce(MOVTO.PRECIO,0) PRECIO&#13;&#10;&#13;&#10;&#13;&#10;FROM   &#13;&#10;      DOCTO ORDENFALTANTE &#13;&#10;	INNER JOIN&#13;&#10;        DOCTO ON DOCTO.ID = ORDENFALTANTE.DOCTOREFID &#13;&#10;	LEFT OUTER JOIN&#13;&#10;                PERSONA PROVEEORIG ON PROVEEORIG.ID = DOCTO.PERSONAID LEFT OUTER JOIN&#13;&#10;                MOVTO ON MOVTO.doctoid = DOCTO.ID   LEFT OUTER JOIN&#13;&#10;                PRODUCTO ON PRODUCTO.ID = MOVTO.PRODUCTOID&#13;&#10;&#13;&#10;WHERE        (ORDENFALTANTE.ESTATUSDOCTOID = 0) AND (ORDENFALTANTE.TIPODOCTOID = 17) &#13;&#10;   and  coalesce(MOVTO.CANTIDADFALTANTE,0) &gt; 0&#13;&#10;&#13;&#10;&#13;&#10;)  MAIN&#13;&#10;&#13;&#10;LEFT OUTER JOIN&#13;&#10;&#13;&#10;(&#13;&#10;SELECT&#13;&#10;              MOVTOPREVIO.productoid, &#13;&#10;              DOCTOPREVIO.ID DOCTOIDPREVIO,&#13;&#10;              DOCTOPREVIO.FECHA FECHAPREVIA,&#13;&#10;              PROVEEPREVIO.ID PROVEEDORPREVIOID,&#13;&#10;              PROVEEPREVIO.CLAVE PROVEEDORPREVIOCLAVE,&#13;&#10;              PROVEEPREVIO.NOMBRE PROVEEDORPREVIONOMBRE,&#13;&#10;              PROVEEPREVIO.NOMBRES PROVEEDORPREVIONOMBRES,&#13;&#10;              PROVEEPREVIO.APELLIDOS PROVEEDORPREVIOAPELLIDOS,&#13;&#10;              DOCTOPREVIO.FOLIO FOLIOPREVIO,&#13;&#10;              MOVTOPREVIO.cantidad CANTIDADPREVIA,&#13;&#10;              MOVTOPREVIO.PRECIO PRECIOPREVIO ,&#13;&#10;              DOCTOPREVIO.SUBTIPODOCTOID SUBTIPODOCTOIDPREVIO&#13;&#10;&#13;&#10;              FROM&#13;&#10;                 DOCTO DOCTOPREVIO LEFT OUTER JOIN&#13;&#10;                 MOVTO MOVTOPREVIO ON MOVTOPREVIO.DOCTOID = DOCTOPREVIO.ID LEFT OUTER JOIN&#13;&#10;                PERSONA PROVEEPREVIO ON PROVEEPREVIO.ID = DOCTOPREVIO.PERSONAID&#13;&#10;               WHERE DOCTOPREVIO.ESTATUSDOCTOID = 1 AND DOCTOPREVIO.TIPODOCTOID = 11 AND&#13;&#10;               DOCTOPREVIO.FECHA &gt;= @FECHAPREVIAINI AND DOCTOPREVIO.FECHA &lt;= @FECHAPREVIAFIN&#13;&#10;                AND (DOCTOPREVIO.PERSONAID = @PROVEEDORID  or @PROVEEDORID = 0 )&#13;&#10;                AND  (COALESCE(DOCTOPREVIO.SUBTIPODOCTOID,0) NOT IN (7,23) or @CONTRASLADOS = 'S' )&#13;&#10; )  DETALLE&#13;&#10;&#13;&#10;  ON DETALLE.PRODUCTOID = MAIN.PRODUCTOID&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION1" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION2" DataType="System.String"/>
+        <Column Name="DOCTOIDPREVIO" DataType="System.Int64"/>
+        <Column Name="FECHAPREVIA" DataType="System.DateTime"/>
+        <Column Name="PROVEEDORPREVIOID" DataType="System.Int64"/>
+        <Column Name="PROVEEDORPREVIOCLAVE" DataType="System.String"/>
+        <Column Name="PROVEEDORPREVIONOMBRE" DataType="System.String"/>
+        <Column Name="PROVEEDORPREVIONOMBRES" DataType="System.String"/>
+        <Column Name="PROVEEDORPREVIOAPELLIDOS" DataType="System.String"/>
+        <Column Name="FOLIOPREVIO" DataType="System.Int32"/>
+        <Column Name="CANTIDADPREVIA" DataType="System.Decimal"/>
+        <Column Name="PRECIOPREVIO" DataType="System.Decimal"/>
+        <Column Name="SUBTIPODOCTOIDPREVIO" DataType="System.Int64"/>
+        <Column Name="CANTIDADFALTANTE" DataType="System.Decimal"/>
+        <Column Name="CANTIDADSURTIDA" DataType="System.Decimal"/>
+        <Column Name="CANTIDADORDENADA" DataType="System.Decimal"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="TOTALPREVIO" DataType="System.Decimal"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <CommandParameter Name="FECHAPREVIAINI" DataType="5" Expression="[FECHAPREVIAINI]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="FECHAPREVIAFIN" DataType="5" Expression="[FECHAPREVIAFIN]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="PROVEEDORID" DataType="1" Expression="[PROVEEDORID]" DefaultValue="0"/>
+        <CommandParameter Name="CONTRASLADOS" DataType="16" Expression="[CONTRASLADOS]" DefaultValue="N"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="FECHAPREVIAINI" DataType="System.DateTime"/>
+    <Parameter Name="FECHAPREVIAFIN" DataType="System.DateTime"/>
+    <Parameter Name="PROVEEDORID" DataType="System.Decimal"/>
+    <Parameter Name="CONTRASLADOS" DataType="System.String"/>
+    <Parameter Name="NOMBREPROVEEDOR" DataType="System.String"/>
+    <Total Name="SumaCantidadPrevia" Expression="[Table.CANTIDADPREVIA]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="SumaTotalPrevio" Expression="[Table.TOTALPREVIO]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="355.6" PaperHeight="215.9" RawPaperSize="5" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1268.57" Height="255.15">
+      <TextObject Name="Text6" Left="9.45" Top="189" Width="94.5" Height="18.9" Text="Proveedor:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text7" Left="9.45" Top="217.35" Width="94.5" Height="18.9" Text="Desde:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="113.4" Top="217.35" Width="179.55" Height="18.9" Text="[FECHAPREVIAINI]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="340.2" Top="217.35" Width="56.7" Height="18.9" Text="Hasta:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text10" Left="406.35" Top="217.35" Width="141.75" Height="18.9" Text="[FECHAPREVIAFIN]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="9.45" Top="9.45" Width="274.05" Height="18.9" Text="Productos faltantes con historial" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text28" Left="9.45" Top="37.8" Width="179.55" Height="18.9" Text="Datos de la empresa:" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text48" Left="9.45" Top="66.15" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text30" Left="-9450" Top="-9450" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text49" Left="-9450" Top="-9450" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Left="-9450" Top="-9450" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text51" Left="9.45" Top="85.05" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text31" Left="9.45" Top="103.95" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text32" Left="9.45" Top="122.85" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text33" Left="9.45" Top="141.75" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="396.9" Top="75.6" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="396.9" Top="94.5" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text36" Left="396.9" Top="113.4" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="396.9" Top="132.3" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text12" Left="94.5" Top="66.15" Width="236.25" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text14" Left="94.5" Top="85.05" Width="236.25" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text16" Left="94.5" Top="103.95" Width="94.5" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="94.5" Top="122.85" Width="94.5" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text21" Left="94.5" Top="141.75" Width="94.5" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text22" Left="472.5" Top="75.6" Width="217.35" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text23" Left="472.5" Top="94.5" Width="217.35" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text24" Left="472.5" Top="113.4" Width="217.35" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text25" Left="472.5" Top="132.3" Width="217.35" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text26" Left="444.15" Top="189" Width="94.5" Height="18.9" Text="[IIf([CONTRASLADOS] == &quot;S&quot;,&quot;SI&quot;,&quot;NO&quot;)]" Font="Arial, 8pt"/>
+      <TextObject Name="Text52" Left="-9450" Top="-9450" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text53" Left="340.2" Top="189" Width="103.95" Height="18.9" Text="Con traslado: " Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text5" Left="113.4" Top="189" Width="179.55" Height="18.9" Text="[NOMBREPROVEEDOR]" Font="Arial, 8pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="259.15" Width="1268.57" Height="37.8">
+      <TextObject Name="Text4" Left="623.7" Width="75.6" Height="37.8" Text="CANTIDAD FALTANTE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text2" Left="103.95" Width="113.4" Height="18.9" Text="PRODUCTO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="217.35" Width="217.35" Height="18.9" Text="PRODUCTO DESCRIPCION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text54" Left="434.7" Width="94.5" Height="37.8" Text="CANTIDAD ORDENADA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text56" Left="529.2" Width="94.5" Height="37.8" Text="CANTIDAD SURTIDA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text58" Left="9.45" Width="94.5" Height="28.35" Text="ORDEN DE COMPRA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text60" Left="699.3" Width="85.05" Height="37.8" Text="PRECIO" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader2" Top="300.95" Width="1268.57" Condition="[Table.DOCTOID]">
+      <GroupHeaderBand Name="GroupHeader1" Top="304.95" Width="1268.57" Height="32.35" Condition="[Table.PRODUCTOID]">
+        <TextObject Name="Text1" Left="103.95" Width="113.4" Height="28.35" Text="[Table.PRODUCTONOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text11" Left="217.35" Width="217.35" Height="18.9" Text="[Table.PRODUCTODESCRIPCION1]" Font="Arial, 8pt"/>
+        <TextObject Name="Text3" Left="623.7" Width="75.6" Height="18.9" Text="[Table.CANTIDADFALTANTE]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text57" Left="529.2" Width="94.5" Height="18.9" Text="[Table.CANTIDADSURTIDA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text55" Left="434.7" Width="94.5" Height="18.9" Text="[Table.CANTIDADORDENADA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text29" Left="9.45" Width="94.5" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 8pt"/>
+        <TextObject Name="Text39" Left="699.3" Width="85.05" Height="18.9" Text="[Table.PRECIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <ChildBand Name="Child1" Top="341.3" Width="1268.57" Height="18.9" BeforePrintEvent="Child1_BeforePrint">
+          <TextObject Name="Text17" Left="1077.3" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text19" Left="1171.8" Width="94.5" Height="18.9" Text="PRECIO" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text15" Left="982.8" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text13" Left="727.65" Width="255.15" Height="18.9" Text="PROVEEDOR" Font="Arial, 8pt, style=Bold"/>
+        </ChildBand>
+        <DataBand Name="Data1" Top="364.2" Width="1268.57" Height="18.9" BeforePrintEvent="Data1_BeforePrint" DataSource="Table">
+          <TextObject Name="proveedorPrevioTxt" Left="727.65" Width="255.15" Height="18.9" Text="[Table.PROVEEDORPREVIONOMBRE]" Font="Arial, 8pt"/>
+          <TextObject Name="fechaPreviaTxt" Left="982.8" Width="94.5" Height="18.9" BeforePrintEvent="Text14_BeforePrint" Text="[Table.FECHAPREVIA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+          <TextObject Name="cantidadPreviaTxt" Left="1077.3" Width="94.5" Height="18.9" Text="[Table.CANTIDADPREVIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="precioPrevioTxt" Left="1171.8" Width="94.5" Height="18.9" Text="[Table.PRECIOPREVIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        </DataBand>
+        <GroupFooterBand Name="GroupFooter1" Top="387.1" Width="1268.57" Height="18.9">
+          <TextObject Name="Text38" Left="1171.8" Width="94.5" Height="18.9" BeforePrintEvent="Text38_BeforePrint" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+          <TextObject Name="Text59" Left="1077.3" Width="94.5" Height="18.9" Text="Precio promedio" Font="Arial, 8pt, style=Bold"/>
+        </GroupFooterBand>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter2" Top="410" Width="1268.57"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="414" Width="1268.57" Height="66.15"/>
+  </ReportPage>
+</Report>

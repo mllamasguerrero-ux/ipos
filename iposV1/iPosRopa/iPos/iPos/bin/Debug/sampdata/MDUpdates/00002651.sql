@@ -1,0 +1,14 @@
+CREATE OR ALTER trigger estadosurtido_bi for estadosurtido
+active before insert position 10
+AS
+BEGIN
+    
+  IF (NEW.ACTIVO IS NULL) THEN
+    NEW.ACTIVO = 'S';
+
+  IF (NEW.CREADO IS NULL) THEN
+    NEW.CREADO = CURRENT_TIMESTAMP;
+    
+  IF (NEW.MODIFICADO IS NULL) THEN
+    NEW.MODIFICADO = CURRENT_TIMESTAMP;
+END

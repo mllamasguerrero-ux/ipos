@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;FastReport.Firebird.dll&#13;&#10;FastReport.Bars.dll&#13;&#10;FastReport.dll&#13;&#10;FastReport.Editor.dll" DoublePass="true" ReportInfo.Created="12/17/2013 17:36:14" ReportInfo.Modified="10/14/2025 06:54:48" ReportInfo.CreatorVersion="2014.2.10.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+                   
+using System.Text;
+using System.Globalization;
+
+namespace FastReport
+{
+  
+  
+  /// &lt;summary&gt;
+  /// Convierte números en su expresión numérica a su numeral cardinal
+  /// &lt;/summary&gt;
+
+  public class ReportScript
+  {                        
+    
+    
+    public float reportHeight = 0;     
+                            
+
+    private void Page1_StartPage(object sender, EventArgs e)
+    {
+      decimal cantidad = ((Decimal)Report.GetColumnValue(&quot;CUPONES.CANTIDAD&quot;));
+         
+      if (Engine.FinalPass &amp;&amp; cantidad &gt; 0)
+      {                                                   
+             
+          Page1.PaperHeight = (reportHeight/(float)cantidad ) / Units.Millimeters 
+            + Page1.TopMargin + Page1.BottomMargin;       
+      }
+      
+    }
+                                                        
+
+    private void LayerX_AfterLayout(object sender, EventArgs e)
+    {
+              
+      if((sender as BandBase).Visible)
+      {
+        reportHeight += (sender as BandBase).Height;    
+      }
+    }
+    
+    private void LayerXExt_AfterLayout(object sender, EventArgs e)
+    {
+              
+      if((sender as BandBase).Visible)
+      {
+        reportHeight += (sender as BandBase).Height + 25;    
+      }
+    }
+               
+           
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {   
+      try
+      {
+        string couponImageLocation =  ((String)Report.GetColumnValue(&quot;CUPONES.IMAGEN&quot;));
+        if(couponImageLocation != null &amp;&amp; couponImageLocation != &quot;&quot;)  
+        {
+          this.PictureCoupon.ImageLocation =  ((String)Report.GetColumnValue(&quot;CUPONES.IMAGEN&quot;)).Replace(&quot;{BaseDirectory}&quot;, System.IO.Path.GetDirectoryName(Report.FileName ) + &quot;\\..\\..&quot; ) ;  
+        }
+        else
+        {
+          this.PictureCoupon.Visible = false; 
+        }
+      }                    
+      catch(Exception ex){ 
+        Console.WriteLine(ex.Message);
+      }
+    }
+          
+         
+
+    private void Data4_BeforePrint(object sender, EventArgs e)
+    {
+             
+      try
+      {
+        this.Data4.Visible = ((String)Report.GetColumnValue(&quot;CUPONES.MOSTRARDATOSCLIENTE&quot;)) == &quot;S&quot;; 
+      }
+      catch(Exception ex){ 
+        Console.WriteLine(ex.Message);
+      }
+    }     
+    
+         
+
+    private void ReportTitle1_AfterPrint(object sender, EventArgs e)
+    {
+          
+    }
+    
+    
+    private void Data1_AfterPrint(object sender, EventArgs e)
+    {
+          
+      try
+      {              
+        int cantidadCuponesAImprimir =   (int)((Decimal)Report.GetColumnValue(&quot;CUPONES.CANTIDAD&quot;));
+        for (int i = 0; i &lt; cantidadCuponesAImprimir - 1 ; i++)
+        {
+          Engine.ShowBand(Child1);  
+          Engine.ShowBand(Data4); 
+        }
+      }                  
+      catch(Exception ex){ 
+        Console.WriteLine(ex.Message);
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqGXDUjVHoOo39U7VHz/cohboC87uIIffsgzROmdYrsozCzYReASD25r9j9cwlC1qdtu1zReDZ+vahmJRnPhNO8/YPXOUjHZ8xmIFJLTtNL7YozNukiMFU05ULTFXVKVb+ME7JDvdNZIF3GFBXLGxBq9H3gdafabR7Z+1NwYSC34U=">
+      <TableDataSource Name="Table3" Alias="CUPONES" DataType="System.Int32" Enabled="true" ForceLoadData="true" SelectCommand="SELECT CA.DOCTOID , CA.PROMOCIONCUPONID  , CA.CANTIDAD ,&#13;&#10;PR.clave PROMOCIONCLAVE , PR.NOMBRE  PROMOCIONNOMBRE , PR.descripcion LEYENDA, &#13;&#10;&#13;&#10;CASE WHEN COALESCE( PR.IMAGEN,'') = '' OR COALESCE(PARAMETRO.RUTAIMAGENESPRODUCTO, '') = '' THEN '' ELSE &#13;&#10;COALESCE(PARAMETRO.RUTAIMAGENESPRODUCTO, '') || '\' || COALESCE( PR.IMAGEN,'') END IMAGEN, &#13;&#10;&#13;&#10;&#13;&#10;PR.MostrarDatosCliente&#13;&#10;FROM CUPONESAPLICADOS   CA&#13;&#10;LEFT JOIN PROMOCION PR ON CA.promocioncuponid = PR.id&#13;&#10;LEFT JOIN PARAMETRO ON 1 = 1 &#13;&#10;WHERE CA.DOCTOID = @DOCTOID ">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="PROMOCIONCUPONID" DataType="System.Int64"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="PROMOCIONCLAVE" DataType="System.String"/>
+        <Column Name="PROMOCIONNOMBRE" DataType="System.String"/>
+        <Column Name="LEYENDA" DataType="System.String"/>
+        <Column Name="IMAGEN" DataType="System.String"/>
+        <Column Name="MOSTRARDATOSCLIENTE" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[pdoctoid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table" Alias="REC_MASTER" DataType="System.Int32" Enabled="true" ForceLoadData="true" SelectCommand="SELECT R.*, p.fiscalnombre,&#13;&#10;  &#13;&#10;p.FACT_ELECT_FOLDER&#13;&#10;||  '\facturaelectronica\IMG\logofarmafree.png'  as logoimage,&#13;&#10;&#13;&#10;docto.tipodoctoid, docto.observacion,&#13;&#10;coalesce(rutaembarque.clave,'') rutaembarqueclave,&#13;&#10;coalesce(rutaembarque.nombre, '') rutaembarquenombre,&#13;&#10;docto.ordencompra,&#13;&#10;docto.importeendolar,&#13;&#10;docto.fechahora,&#13;&#10;&#13;&#10;coalesce(docto.total,0) - coalesce(docto.iva,0) totalsiniva&#13;&#10;&#13;&#10; FROM &quot;RECIBO_MASTER&quot; R&#13;&#10;&#13;&#10;inner join parametro p on 1 = 1&#13;&#10;inner join docto on docto.id = r.doctoid&#13;&#10;left join rutaembarque on rutaembarque.id = docto.rutaembarqueid&#13;&#10; where r.doctoid = @doctoid">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="HEADERCANCELACION" DataType="System.String"/>
+        <Column Name="NOMBRESUCURSAL" DataType="System.String"/>
+        <Column Name="DESCRIPCIONSUCURSAL" DataType="System.String"/>
+        <Column Name="EMPRESA_RFC" DataType="System.String"/>
+        <Column Name="EMPRESA_COLONIA" DataType="System.String"/>
+        <Column Name="EMPRESA_DOMICICIO" DataType="System.String"/>
+        <Column Name="EMPRESA_NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="EMPRESA_NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="EMPRESA_CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="EMPRESA_RAZON_SOCIAL" DataType="System.String"/>
+        <Column Name="EMPRESA_TELEFONO" DataType="System.String"/>
+        <Column Name="EMPRESA_CIUDAD" DataType="System.String"/>
+        <Column Name="EMPRESA_ESTADO" DataType="System.String"/>
+        <Column Name="EMPRESA_MUNICIPIO" DataType="System.String"/>
+        <Column Name="LUGARDEEXPEDICION" DataType="System.String"/>
+        <Column Name="FECHADEEXPEDICION" DataType="System.DateTime"/>
+        <Column Name="CAJERO" DataType="System.String"/>
+        <Column Name="TICKET" DataType="System.Int64"/>
+        <Column Name="TITULO" DataType="System.String"/>
+        <Column Name="TITULO_PERSONA" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER1" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER2" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER3" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER4" DataType="System.String"/>
+        <Column Name="DOC_REF_HEADER5" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="PERSONADOMICILIO" DataType="System.String"/>
+        <Column Name="PERSONANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="PERSONANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="PERSONACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PERSONACOLONIA" DataType="System.String"/>
+        <Column Name="PERSONATELEFONO" DataType="System.String"/>
+        <Column Name="PERSONARAZONSOCIAL" DataType="System.String"/>
+        <Column Name="PERSONARFC" DataType="System.String"/>
+        <Column Name="PERSONACIUDAD" DataType="System.String"/>
+        <Column Name="PERSONAESTADO" DataType="System.String"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOVALE" DataType="System.Decimal"/>
+        <Column Name="TOTAL_CON_LETRA" DataType="System.String"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="CAMBIO" DataType="System.Decimal"/>
+        <Column Name="CAJA" DataType="System.String"/>
+        <Column Name="TURNO" DataType="System.String"/>
+        <Column Name="PAGOEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="PAGOTARJETA" DataType="System.Decimal"/>
+        <Column Name="PAGOCREDITO" DataType="System.Decimal"/>
+        <Column Name="PAGOCHEQUE" DataType="System.Decimal"/>
+        <Column Name="PAGOVALE" DataType="System.Decimal"/>
+        <Column Name="ABONO" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="PAGOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="ABONOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="SALDOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="VIGENCIAMONEDERO" DataType="System.DateTime"/>
+        <Column Name="MONEDEROID" DataType="System.Int64"/>
+        <Column Name="CUSTOMFOOTER" DataType="System.String"/>
+        <Column Name="APLICADO" DataType="System.Decimal"/>
+        <Column Name="ENTREGACALLE" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGACOLONIA" DataType="System.String"/>
+        <Column Name="ENTREGAMUNICIPIO" DataType="System.String"/>
+        <Column Name="ENTREGAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PAGOTRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="PAGONOIDENTIFICADO" DataType="System.Decimal"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="REFERENCIAS" DataType="System.String"/>
+        <Column Name="FECHAFACTURA" DataType="System.DateTime"/>
+        <Column Name="NOTAPAGO" DataType="System.String"/>
+        <Column Name="PLAZO" DataType="System.Int16"/>
+        <Column Name="VENCE" DataType="System.DateTime"/>
+        <Column Name="MONTOREBAJA" DataType="System.Decimal"/>
+        <Column Name="TOTALCONREBAJA" DataType="System.Decimal"/>
+        <Column Name="PERSONAAUXNOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAUXAPELLIDOS" DataType="System.String"/>
+        <Column Name="PERSONAAUXDOMICILIO" DataType="System.String"/>
+        <Column Name="PERSONAAUXCOLONIA" DataType="System.String"/>
+        <Column Name="PERSONAAUXCIUDAD" DataType="System.String"/>
+        <Column Name="PERSONAAUXMUNICIPIO" DataType="System.String"/>
+        <Column Name="PERSONAAUXESTADO" DataType="System.String"/>
+        <Column Name="PERSONAAUXPAIS" DataType="System.String"/>
+        <Column Name="PERSONAAUXCODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PERSONAAUXTELEFONO1" DataType="System.String"/>
+        <Column Name="PERSONAAUXCELULAR" DataType="System.String"/>
+        <Column Name="PERSONAAUXEMAIL1" DataType="System.String"/>
+        <Column Name="PERSONAAPARTADOID" DataType="System.Int64"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONATELEFONO2" DataType="System.String"/>
+        <Column Name="FAX" DataType="System.String"/>
+        <Column Name="MONTOREBAJAAUTORIZADA" DataType="System.Decimal"/>
+        <Column Name="NOTAMOVIL1" DataType="System.String"/>
+        <Column Name="NOTAMOVIL2" DataType="System.String"/>
+        <Column Name="FISCALNOMBRE" DataType="System.String"/>
+        <Column Name="LOGOIMAGE" DataType="System.String"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="OBSERVACION" DataType="System.String"/>
+        <Column Name="RUTAEMBARQUECLAVE" DataType="System.String"/>
+        <Column Name="RUTAEMBARQUENOMBRE" DataType="System.String"/>
+        <Column Name="ORDENCOMPRA" DataType="System.String"/>
+        <Column Name="IMPORTEENDOLAR" DataType="System.Decimal"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="TOTALSINIVA" DataType="System.Decimal"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[pdoctoid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="pdoctoid" DataType="System.Int32" Expression="9162"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="80" PaperHeight="279.4" LeftMargin="2" TopMargin="2" RightMargin="2" BottomMargin="2" FirstPageSource="15" OtherPagesSource="15" Watermark.Text="[COPYNAME#]" StartPageEvent="Page1_StartPage">
+    <ReportTitleBand Name="ReportTitle1" Width="287.28" AfterPrintEvent="ReportTitle1_AfterPrint" AfterLayoutEvent="LayerX_AfterLayout"/>
+    <DataBand Name="Data1" Top="4" Width="287.28" CanGrow="true" CanShrink="true" BeforePrintEvent="Data1_BeforePrint" AfterPrintEvent="Data1_AfterPrint" DataSource="Table3" KeepDetail="true">
+      <ChildBand Name="Child1" Top="8" Width="287.28" Height="113.4" AfterLayoutEvent="LayerX_AfterLayout">
+        <PictureObject Name="PictureCoupon" Top="37.8" Width="179.55" Height="75.6" BeforePrintEvent="Picture1_BeforePrint" Image=""/>
+        <TextObject Name="Text17" Top="18.9" Width="292.95" Height="18.9" Text="[CUPONES.LEYENDA]" Font="Arial, 8pt"/>
+        <TextObject Name="Text16" Width="113.4" Height="18.9" Text="CUPON" Font="Arial, 10pt, style=Bold"/>
+      </ChildBand>
+      <DataBand Name="Data4" Top="125.4" Width="287.28" Height="28.35" BeforePrintEvent="Data4_BeforePrint" AfterLayoutEvent="LayerX_AfterLayout">
+        <TextObject Name="Text18" Width="56.7" Height="18.9" Text="Cliente:" Font="Arial, 8pt"/>
+        <TextObject Name="Text19" Left="56.7" Width="236.25" Height="28.35" Text="[REC_MASTER.PERSONAAPELLIDOS] [REC_MASTER.PERSONANOMBRES]" Font="Arial, 8pt"/>
+      </DataBand>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="157.75" Width="287.28" CanShrink="true" AfterLayoutEvent="LayerX_AfterLayout"/>
+  </ReportPage>
+</Report>

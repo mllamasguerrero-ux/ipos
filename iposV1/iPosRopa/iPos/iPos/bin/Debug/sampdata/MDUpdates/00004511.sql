@@ -1,0 +1,10 @@
+create or alter procedure ASIGNARPEDIMENTO_DOCTO (
+    DOCTOID D_FK,
+    COMPLETARDOCTO D_BOOLCN)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+BEGIN
+   ERRORCODE = 0;
+   SUSPEND;
+END

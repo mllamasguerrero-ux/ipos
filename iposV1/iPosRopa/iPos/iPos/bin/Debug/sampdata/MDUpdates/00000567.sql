@@ -1,0 +1,100 @@
+CREATE OR ALTER TRIGGER DOCTO_AIU_30 FOR DOCTO
+ACTIVE AFTER INSERT OR UPDATE POSITION 30
+AS
+   DECLARE VARIABLE PROMOCION D_BOOLCN;
+   DECLARE VARIABLE PRODUCTOID D_FK;
+   DECLARE VARIABLE DOCTOID D_FK;
+   DECLARE VARIABLE MOVTOID D_FK;
+   DECLARE VARIABLE ERRORCODE D_ERRORCODE;
+   DECLARE VARIABLE COSTO D_COSTO;
+   DECLARE VARIABLE IMPORTETOTALPROMOCION D_IMPORTE;
+   DECLARE VARIABLE CANTIDADDISPONIBLE D_CANTIDAD;
+BEGIN
+
+   exit;
+
+   -- Si no es una venta, no aplica calcular promociones.
+   IF (NEW.TIPODOCTOID NOT IN (21)) THEN
+   BEGIN
+      EXIT;
+   END
+
+   -- Calcular el subtotal aplicable dependiendo de la LINEA
+   SELECT COALESCE(SUM(M.TOTAL), 0.00)
+   FROM MOVTO M
+      LEFT JOIN PRODUCTO P
+         ON P.ID = M.PRODUCTOID
+      LEFT JOIN LINEA L
+         ON L.ID = P.LINEAID
+   WHERE M.DOCTOID = NEW.ID
+      AND L.ACUMULAPROMOCION = 'S'
+      AND M.PROMOCION = 'N'
+   INTO :IMPORTETOTALPROMOCION;
+
+   -- Calcular si aplica promocIOn y para que producto.
+   -- Toma en cuenta si hubo una reducciOn de productos
+   -- y la promociOn ya no es aplicable.
+   SELECT PROMOCION, PRODUCTOID
+   FROM GET_APLICA_PROMOCION(:IMPORTETOTALPROMOCION, NEW.SUCURSALID)
+   INTO :PROMOCION, :PRODUCTOID;
+
+   -- Tomar el costo promedio. Para insertarlo en el movto.
+   /*
+   SELECT COSTOPROMEDIO
+   FROM PRODUCTO
+   WHERE ID = :PRODUCTOID
+   INTO :COSTO;
+   */
+   COSTO = 0;
+
+--   insert into traza values ('si ando aqui ' || :PROMOCION || '  ' || :PRODUCTOID  || '  ' || :IMPORTETOTALPROMOCION  || '  ' || CAST(NEW.ID AS VARCHAR(10)));
+
+   -- Si no hay promocion aplicada aun y si aplica, Proceder a insertarla.
+   IF ((NEW.PROMOCION = 'N') AND (:PROMOCION = 'S')) THEN
+   BEGIN
+      -- Evaluar si hay existencia, para aplicar la promocion.
+      SELECT COALESCE(CANTIDAD, 0)
+      FROM INVENTARIO
+      WHERE ALMACENID = NEW.ALMACENID
+        AND PRODUCTOID = :PRODUCTOID
+      INTO :CANTIDADDISPONIBLE;
+
+      -- INSERTAR NUEVA PROMOCION
+      IF (:CANTIDADDISPONIBLE >= 1) THEN
+      BEGIN
+         SELECT DOCTOID, MOVTOID, ERRORCODE
+         FROM MOVTO_INSERT(
+            NEW.ID, NEW.CAJEROID, NEW.ALMACENID, NEW.SUCURSALID,
+            NEW.TIPODOCTOID, NEW.ESTATUSDOCTOID, NEW.ESTATUSDOCTOPAGOID,
+            NEW.PERSONAID, NEW.VENDEDORID, NEW.CAJAID, 0,
+            :PRODUCTOID, NULL, NULL, 1, 1, 0, 0, 0, 0.0000, 0, 'PROMOCION', '',
+            :COSTO, 0, 0, :PROMOCION, 0, NEW.FECHA, NEW.VENCE, 0.00,NULL,NULL,NULL,NULL,NULL)
+         INTO :DOCTOID, :MOVTOID, :ERRORCODE;
+      END
+
+      IF (:ERRORCODE > 0) THEN
+      BEGIN
+         EXIT;
+      END
+   END
+  
+   -- Si ya hay una promocion aplicada y ya no aplica, proceder a eliminarla.
+   IF ((NEW.PROMOCION = 'S') AND (:PROMOCION = 'N')) THEN
+   BEGIN
+      -- ELIMINAR PROMOCION ACTUAL
+      SELECT M.ID
+      FROM MOVTO M
+      WHERE M.DOCTOID = NEW.ID
+        AND M.PROMOCION = 'S'
+      INTO :MOVTOID;
+
+      SELECT ERRORCODE
+      FROM MOVTO_DELETE(:MOVTOID, 'S')
+      INTO :ERRORCODE;
+   END
+
+   WHEN ANY DO
+   BEGIN
+     INSERT INTO TRAZA VALUES ('ERR TG DOCTO_AIU_30 ID=' || CAST(:DOCTOID AS VARCHAR(10)));
+   END
+END

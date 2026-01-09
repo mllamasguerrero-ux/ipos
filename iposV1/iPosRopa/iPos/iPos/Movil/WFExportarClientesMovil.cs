@@ -1,0 +1,136 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Net.NetworkInformation;
+using iPosBusinessEntity;
+using iPosData;
+using System.Collections;
+using Newtonsoft.Json;
+
+using System.EnterpriseServices;
+using FirebirdSql.Data.FirebirdClient;
+using ConexionesBD;
+using Microsoft.ApplicationBlocks.Data;
+
+namespace iPos
+{
+    public partial class WFExportarClientesMovil : IposForm
+    {
+        bool bError = false;
+        string strError = "";
+
+        //bool bCancelar = false;
+        bool m_bShowMensajesError = false;
+
+
+        public WFExportarClientesMovil()
+        {
+            InitializeComponent();
+
+            m_bShowMensajesError = true;
+        }
+
+        public WFExportarClientesMovil(bool bShowMensajesError) : this()
+        {
+            m_bShowMensajesError = bShowMensajesError;
+        }
+
+
+        private void WFExportarClientesMovil_Load(object sender, EventArgs e)
+        {
+            if (ConexionAInternet())
+                IntentarEnvio();
+            else
+            {
+                MessageBox.Show("No se detecto internet para enviar la venta, quedara pendiente de enviar");
+                this.Close();
+            }
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            //bCancelar = true;
+        }
+
+
+        private void EnvioPendientes()
+        {
+            ImportaFtpMovil.EnvioClientes(true, ref bError, ref strError);
+
+
+        }
+
+        private void IntentarEnvio()
+        {
+
+            btnReintentar.Enabled = false;
+            this.progressBar1.Style = ProgressBarStyle.Marquee;
+            this.backgroundWorker1.RunWorkerAsync();
+        }
+
+        private bool ConexionAInternet()
+        {
+            Ping myPing = new Ping();
+            String host = "google.com";
+            byte[] buffer = new byte[32];
+            int timeout = 1000;
+            PingOptions pingOptions = new PingOptions();
+            try
+            {
+                PingReply reply = myPing.Send(host, timeout, buffer, pingOptions);
+                if (reply.Status == IPStatus.Success)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+
+            }
+            return false;
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            EnvioPendientes();
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.progressBar1.Style = ProgressBarStyle.Blocks;
+            if (bError)
+            {
+                btnReintentar.Enabled = true;
+
+                if (m_bShowMensajesError)
+                    MessageBox.Show("Ocurrio un error: " + strError);
+                else
+                    this.Close();
+            }
+            else
+            {
+
+                if (m_bShowMensajesError)
+                    MessageBox.Show("Lo pendiente ha sido enviado");
+
+                this.Close();
+
+            }
+        }
+
+        private void btnReintentar_Click(object sender, EventArgs e)
+        {
+            IntentarEnvio();
+        }
+
+
+
+
+
+    }
+}

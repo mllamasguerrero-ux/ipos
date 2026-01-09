@@ -1,0 +1,7 @@
+|||||100+++++            //@"IposV3.ViewModels.(nombreTabla)ListViewModel",
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)ListViewModel", //listViewModel
+                @"IposV3.Views.(nombreTabla)ListView");
+
+!!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

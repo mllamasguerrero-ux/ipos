@@ -1,0 +1,19 @@
+CREATE OR ALTER trigger insertar_conectado
+active on connect position 2
+AS
+DECLARE VARIABLE new_update CHAR(1);
+DECLARE VARIABLE status_update VARCHAR(30);
+begin
+
+    select ACTUALIZAR, STATUS from IPOS_ACTUALIZADOR INTO :new_update, :status_update;
+    IF(new_update = 'S' and status_update <> 'UPDATED') THEN
+    begin
+     EXCEPTION NEW_UPDATE;
+    end
+
+    DELETE FROM CONECTADOS WHERE CON_IDECON NOT IN (SELECT MON$ATTACHMENT_ID FROM MON$ATTACHMENTS);
+    update or  INSERT INTO CONECTADOS (CON_IDENTI, CON_IDECON , CON_NOMBRE , CON_TIMEST) VALUES (CURRENT_CONNECTION , CURRENT_CONNECTION, CURRENT_USER, CURRENT_TIMESTAMP);
+
+
+
+end

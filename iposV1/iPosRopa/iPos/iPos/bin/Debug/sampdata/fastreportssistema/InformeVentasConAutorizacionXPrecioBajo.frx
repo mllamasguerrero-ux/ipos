@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 11:45:50" ReportInfo.Modified="08/15/2017 23:41:58" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    public string soloProductosConAlerta = &quot;S&quot;;
+
+    private void Text19_BeforePrint(object sender, EventArgs e)
+    {
+      
+      Text19.Text =  ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION1&quot;)) ;
+   //   string productoDescripcion1 = ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION1&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION1&quot;));
+   //   string productoDescripcion2 = ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION2&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION2&quot;));
+      
+                      
+  //    Text19.Text += productoDescripcion1 + productoDescripcion2 ;
+      
+      
+    }      
+
+    private void CBMostrarSoloAlerta_CheckedChanged(object sender, EventArgs e)
+    {
+      soloProductosConAlerta = CBMostrarSoloAlerta.Checked ? &quot;S&quot; : &quot;N&quot;;
+      Report.SetParameterValue(&quot;soloProductosConAlerta&quot;,soloProductosConAlerta);
+    }
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
+           DateTimePicker1.Value = DateTime.Today;
+          DateTimePicker2.Value = DateTime.Today;
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls+AF0eyxuSCq7hxyjzZtEZOf1tWkb3p9tL2woWUT+/eamlm712NVqnXa8RFdNq+lLolT3v+ftUQ75DOqxxPriME=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;&#13;&#10;docto.id doctoid,&#13;&#10;docto.fecha doctofecha,&#13;&#10;docto.folio doctofolio,&#13;&#10;producto.id productoid,&#13;&#10;producto.clave productoclave,&#13;&#10;producto.nombre productonombre,&#13;&#10;producto.descripcion productodescripcion ,&#13;&#10;producto.descripcion1 productodescripcion1,&#13;&#10;producto.descripcion2 productodescripcion2,&#13;&#10;producto.descripcion3 productodescripcion3,&#13;&#10;&#13;&#10;pr.id personaid,&#13;&#10;pr.clave personaclave,&#13;&#10;pr.nombre personanombre,&#13;&#10;pr.nombres personanombres,&#13;&#10;pr.apellidos personaapellidos,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;pc.texto1 texto1,&#13;&#10;pc.texto2 texto2,&#13;&#10;pc.texto3 texto3,&#13;&#10;pc.texto4 texto4,&#13;&#10;pc.texto5 texto5,&#13;&#10;pc.texto6 texto6,&#13;&#10;pc.numero1 numero1,&#13;&#10;pc.numero2 numero2,&#13;&#10;pc.numero3 numero3,&#13;&#10;pc.numero4 numero4,&#13;&#10;pc.fecha1 fecha1,&#13;&#10;pc.fecha2 fecha2,&#13;&#10;&#13;&#10;movto.precio,&#13;&#10;movto.subtotal,&#13;&#10;movto.iva,&#13;&#10;movto.total,&#13;&#10; case when coalesce(pr.dias,0) &gt; 0 then dateadd(pr.dias day to docto.fecha) else null end fechavence,&#13;&#10;&#13;&#10;estatusdocto.clave clave_estatusdocto,&#13;&#10;&#13;&#10;v.clave clavevendedor,&#13;&#10;&#13;&#10;v.id vendedorid,&#13;&#10;v.clave vendedorclave,&#13;&#10;v.nombre vendedornombre,&#13;&#10;v.nombres vendedornombres,&#13;&#10;v.apellidos vendedorapellidos  ,&#13;&#10;                                           &#13;&#10;coalesce(movto.costoultimo,0) costoultimo,&#13;&#10;coalesce(movto.costoreposicion,0) costoreposicion,&#13;&#10;coalesce(movto.costopromedio,0) costopromedio,&#13;&#10;coalesce(movto.costopromedio,0) *coalesce(movto.cantidad,0) costopromediototal ,&#13;&#10;coalesce(movto.total,0) - (coalesce(movto.costoreposicion,0) *coalesce(movto.cantidad,0) )  utilidad ,&#13;&#10;&#13;&#10;apb.id autorizoid,&#13;&#10;apb.clave autorizoclave,&#13;&#10;apb.nombre autorizonombre,&#13;&#10;apb.nombres autorizonombres,&#13;&#10;apb.apellidos autorizoapellidos  ,&#13;&#10;&#13;&#10;&#13;&#10;                        CASE WHEN MOVTO.PRECIO &gt; PRODUCTO.PRECIO1 AND PRODUCTO.precio1 &gt; MOVTO.preciolista THEN 'PRECIO MAYOR A PRECIO1 Y PRECIO LISTA'&#13;&#10;                         &#13;&#10;                               WHEN MOVTO.precio &lt; (&#13;&#10;                                   (CASE WHEN COALESCE(PARAMETRO.tipoutilidadid, 0) = 2 THEN COALESCE(PRODUCTO.costopromedio, PRODUCTO.costoreposicion) WHEN COALESCE(PARAMETRO.TIPOUTILIDADID,0) = 3  THEN COALESCE(PRODUCTO.costoultimo, PRODUCTO.costoreposicion) else PRODUCTO.costoreposicion END)&#13;&#10;                                    ) THEN 'PRECIO MENOR AL COSTO'&#13;&#10;                               WHEN MOVTO.precio &lt; (&#13;&#10;                                        (CASE   WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 1  THEN COALESCE(PRODUCTO.precio1, 0)&#13;&#10;                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 2  THEN COALESCE(PRODUCTO.PRECIO2, 0)  &#13;&#10;                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 3  THEN COALESCE(PRODUCTO.PRECIO3, 0)&#13;&#10;                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 4  THEN COALESCE(PRODUCTO.PRECIO4, 0)&#13;&#10;                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 5  THEN COALESCE(PRODUCTO.PRECIO5, 0)&#13;&#10;                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 6  THEN COALESCE(PRODUCTO.PRECIO6, 0)&#13;&#10;                                                else PRODUCTO.precio1 END&#13;&#10;                                        )&#13;&#10;                                    ) THEN 'PRECIO MENOR A PRECIO MINIMO'&#13;&#10;                                ELSE ''&#13;&#10;                         END  AS ALERTA3&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; from movto&#13;&#10; left join docto on movto.doctoid = docto.id&#13;&#10; left join producto on producto.id = movto.productoid &#13;&#10; left join productocaracteristicas pc on pc.productoid = producto.id&#13;&#10; left join persona pr on pr.id = docto.personaid&#13;&#10; left join persona v on v.id = docto.vendedorid    &#13;&#10; left join persona apb on apb.id = docto.autorizoalertaid&#13;&#10; left join estatusdocto on estatusdocto.id = docto.estatusdoctoid&#13;&#10; left join parametro on 1 = 1&#13;&#10; where  movto.cantidad &gt; 0 and docto.tipodoctoid = 21 and&#13;&#10;        docto.fecha &gt;= @fechaini and docto.fecha &lt;= @fechafin and&#13;&#10;        docto.estatusdoctoid = 1 and  coalesce(docto.autorizoalertaid,0) &lt;&gt; 0 and&#13;&#10;(&#13;&#10;         (CASE WHEN MOVTO.PRECIO &gt; PRODUCTO.PRECIO1 AND PRODUCTO.precio1 &gt; MOVTO.preciolista THEN 'PRECIO MAYOR A PRECIO1 Y PRECIO LISTA'&#13;&#10;                         &#13;&#10;                               WHEN MOVTO.precio &lt; (&#13;&#10;                                   (CASE WHEN COALESCE(PARAMETRO.tipoutilidadid, 0) = 2 THEN COALESCE(PRODUCTO.costopromedio, PRODUCTO.costoreposicion) WHEN COALESCE(PARAMETRO.TIPOUTILIDADID,0) = 3  THEN COALESCE(PRODUCTO.costoultimo, PRODUCTO.costoreposicion) else PRODUCTO.costoreposicion END)&#13;&#10;                                    ) THEN 'PRECIO MENOR AL COSTO'&#13;&#10;                               WHEN MOVTO.precio &lt; (&#13;&#10;                                        (CASE   WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 1  THEN COALESCE(PRODUCTO.precio1, 0)&#13;&#10;                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 2  THEN COALESCE(PRODUCTO.PRECIO2, 0)  &#13;&#10;                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 3  THEN COALESCE(PRODUCTO.PRECIO3, 0)&#13;&#10;                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 4  THEN COALESCE(PRODUCTO.PRECIO4, 0)&#13;&#10;                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 5  THEN COALESCE(PRODUCTO.PRECIO5, 0)&#13;&#10;                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 6  THEN COALESCE(PRODUCTO.PRECIO6, 0)&#13;&#10;                                                else PRODUCTO.precio1 END&#13;&#10;                                        )&#13;&#10;                                    ) THEN 'PRECIO MENOR A PRECIO MINIMO'&#13;&#10;                                ELSE ''&#13;&#10;                         END&#13;&#10;                         )  &lt;&gt; ''  or&#13;&#10;&#13;&#10;   @soloconalerta = 'N'&#13;&#10;&#13;&#10;)&#13;&#10;">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="DOCTOFECHA" DataType="System.DateTime"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION1" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION2" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION3" DataType="System.String"/>
+        <Column Name="TEXTO1" DataType="System.String"/>
+        <Column Name="TEXTO2" DataType="System.String"/>
+        <Column Name="TEXTO3" DataType="System.String"/>
+        <Column Name="TEXTO4" DataType="System.String"/>
+        <Column Name="TEXTO5" DataType="System.String"/>
+        <Column Name="TEXTO6" DataType="System.String"/>
+        <Column Name="NUMERO1" DataType="System.Decimal"/>
+        <Column Name="NUMERO2" DataType="System.Decimal"/>
+        <Column Name="NUMERO3" DataType="System.Decimal"/>
+        <Column Name="NUMERO4" DataType="System.Decimal"/>
+        <Column Name="FECHA1" DataType="System.DateTime"/>
+        <Column Name="FECHA2" DataType="System.DateTime"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="PERSONAID" DataType="System.Int64"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="CLAVE_ESTATUSDOCTO" DataType="System.String"/>
+        <Column Name="VENDEDORID" DataType="System.Int64"/>
+        <Column Name="VENDEDORCLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRES" DataType="System.String"/>
+        <Column Name="VENDEDORAPELLIDOS" DataType="System.String"/>
+        <Column Name="CLAVEVENDEDOR" DataType="System.String"/>
+        <Column Name="COSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="COSTOPROMEDIOTOTAL" DataType="System.Decimal"/>
+        <Column Name="UTILIDAD" DataType="System.Decimal"/>
+        <Column Name="AUTORIZOID" DataType="System.Int64"/>
+        <Column Name="AUTORIZOCLAVE" DataType="System.String"/>
+        <Column Name="AUTORIZONOMBRE" DataType="System.String"/>
+        <Column Name="AUTORIZONOMBRES" DataType="System.String"/>
+        <Column Name="AUTORIZOAPELLIDOS" DataType="System.String"/>
+        <Column Name="ALERTA3" DataType="System.String"/>
+        <Column Name="COSTOULTIMO" DataType="System.Decimal"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+        <CommandParameter Name="soloconalerta" DataType="16" Size="1" Expression="[soloProductosConAlerta]" DefaultValue="S"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="soloProductosConAlerta" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="279.4" PaperHeight="215.9" RawPaperSize="1">
+    <PageHeaderBand Name="PageHeader1" Width="980.53" Height="179.55">
+      <TextObject Name="Text27" Width="378" Height="18.9" Text="Ventas con autorizacion por precio bajo" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text24" Left="708.75" Top="9.45" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Top="28.35" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="94.5" Top="47.25" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Top="47.25" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="472.5" Top="56.7" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="557.55" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="94.5" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Top="66.15" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text41" Left="557.55" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text35" Left="472.5" Top="75.6" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text31" Top="94.5" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="94.5" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text36" Left="472.5" Top="94.5" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="557.55" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text45" Left="94.5" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Top="113.4" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="472.5" Top="113.4" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text46" Left="557.55" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="94.5" Top="132.3" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Top="132.3" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Top="160.65" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text51" Left="519.75" Top="160.65" Width="75.6" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="94.5" Top="160.65" Width="94.5" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="604.8" Top="160.65" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="183.55" Width="980.53" Height="56.7" Condition="[Table.PERSONAID]">
+      <TextObject Name="Text2" Top="18.9" Width="66.15" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text3" Left="75.6" Width="500.85" Height="18.9" CanGrow="true" Text="[Table.PERSONACLAVE] &#13;&#10;[Table.PERSONANOMBRES] [Table.PERSONAAPELLIDOS]" Font="Arial, 10pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text56" Width="75.6" Height="18.9" Text="CLIENTE" Font="Arial, 9pt, style=Bold, Italic, Underline"/>
+      <TextObject Name="Text5" Left="122.85" Top="18.9" Width="66.15" Height="28.35" Text="PRODUCTO CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text7" Left="189" Top="18.9" Width="245.7" Height="18.9" Text="PRODUCTO DESCRIPCION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="434.7" Top="18.9" Width="75.6" Height="18.9" Text="PRECIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="510.3" Top="18.9" Width="66.15" Height="28.35" Text="COSTO ULTIMO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="576.45" Top="18.9" Width="75.6" Height="28.35" Text="COSTO REPO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="652.05" Top="18.9" Width="66.15" Height="28.35" Text="COSTO PROM" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text25" Left="793.8" Top="18.9" Width="66.15" Height="18.9" Text="UTILIDAD" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text16" Left="718.2" Top="18.9" Width="75.6" Height="18.9" Text="AUTORIZO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text26" Left="859.95" Top="18.9" Width="94.5" Height="18.9" Text="ALERTA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text57" Left="66.15" Top="18.9" Width="56.7" Height="28.35" Text="FOLIO" Font="Arial, 8pt, style=Bold"/>
+      <DataBand Name="Data1" Top="244.25" Width="980.53" Height="18.9" CanGrow="true" DataSource="Table">
+        <TextObject Name="Text1" Width="66.15" Height="18.9" Text="[Table.DOCTOFECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+        <TextObject Name="Text19" Left="189" Width="245.7" Height="18.9" CanGrow="true" BeforePrintEvent="Text19_BeforePrint" Font="Arial, 8pt"/>
+        <TextObject Name="Text23" Left="793.8" Width="66.15" Height="18.9" Text="[Table.UTILIDAD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text4" Left="122.85" Width="66.15" Height="18.9" Text="[Table.PRODUCTOCLAVE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text6" Left="434.7" Width="75.6" Height="18.9" Text="[Table.PRECIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text9" Left="510.3" Width="66.15" Height="18.9" Text="[Table.COSTOULTIMO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text11" Left="576.45" Width="75.6" Height="18.9" Text="[Table.COSTOREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text13" Left="652.05" Width="66.15" Height="18.9" Text="[Table.COSTOPROMEDIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text15" Left="718.2" Width="75.6" Height="18.9" Text="[Table.AUTORIZONOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text22" Left="859.95" Width="94.5" Height="18.9" Text="[Table.ALERTA3]" Font="Arial, 6pt"/>
+        <TextObject Name="Text28" Left="66.15" Width="56.7" Height="18.9" Text="[Table.DOCTOFOLIO]" Font="Arial, 8pt"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="267.15" Width="980.53" Height="37.8"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="308.95" Width="980.53" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="314" AcceptButton="btnOk" CancelButton="btnCancel" BackColor="Highlight" LoadEvent="Form1_Load">
+    <ButtonControl Name="btnOk" Left="118" Top="238" Anchor="Bottom, Right" BackColor="Highlight" Font="Tahoma, 8pt" ForeColor="White" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="238" Anchor="Bottom, Right" BackColor="Highlight" Font="Tahoma, 8pt" ForeColor="White" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="28" Top="80" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fechaini" FilterOperation="GreaterThanOrEqual" Value="08/11/2017 09:00:16"/>
+    <LabelControl Name="Label1" Left="28" Top="64" Width="62" Height="13" BackColor="Highlight" Font="Tahoma, 8pt" ForeColor="White" TabIndex="3" Text="Fecha inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="28" Top="148" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="08/11/2017 09:00:19"/>
+    <LabelControl Name="Label2" Left="28" Top="132" Width="51" Height="13" BackColor="Highlight" Font="Tahoma, 8pt" ForeColor="White" TabIndex="5" Text="Fecha fin"/>
+    <CheckBoxControl Name="CBMostrarSoloAlerta" Left="36" Top="200" Width="203" Height="17" BackColor="Highlight" Font="Tahoma, 8pt" ForeColor="White" TabIndex="6" Text="Mostrar solo los productos con alerta" Checked="true" CheckState="Checked" CheckedChangedEvent="CBMostrarSoloAlerta_CheckedChanged"/>
+    <LabelControl Name="Label3" Left="8" Top="20" Width="266" Height="16" BackColor="Highlight" Font="Tahoma, 9.75pt, style=Bold" ForeColor="White" TabIndex="7" Text="Ventas con autorizacion por precio bajo"/>
+  </DialogPage>
+</Report>

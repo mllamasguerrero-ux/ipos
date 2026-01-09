@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/22/2014 13:40:16" ReportInfo.Modified="06/22/2014 14:02:39" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2doe1CHwbwYmiLNPmqTbZqY=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT        u.nombre AS USUARIONOMBRE, d.tipodoctoid AS TIPODOCTOID, t.clave AS TIPODOCTOCLAVE, p.nombre AS DESTINATARIO, &#13;&#10;                         p.username AS DESTINATARIOUSUARIO, d.referencia AS FACTURA, d.vence AS FECHAFACTURA, d.referencias AS NOTAS, d.total AS TOTAL, s.nombre AS SUCURSAL, &#13;&#10;                         d.FECHA&#13;&#10;FROM            docto d LEFT OUTER JOIN&#13;&#10;                         persona u ON d.vendedorid = u.id LEFT OUTER JOIN&#13;&#10;                         persona p ON d.personaid = p.id LEFT OUTER JOIN&#13;&#10;                         tipodocto t ON d.tipodoctoid = t.id LEFT OUTER JOIN&#13;&#10;                         sucursal s ON d.sucursalid = s.id&#13;&#10;where d.fecha &gt;= @fechainicial  and d.fecha &lt;= @fechafinal&#13;&#10;and d.estatusdoctoid = 1 and d.tipodoctoid in (60,61)&#13;&#10;">
+        <Column Name="USUARIONOMBRE" DataType="System.String"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="TIPODOCTOCLAVE" DataType="System.String"/>
+        <Column Name="DESTINATARIO" DataType="System.String"/>
+        <Column Name="DESTINATARIOUSUARIO" DataType="System.String"/>
+        <Column Name="FACTURA" DataType="System.String"/>
+        <Column Name="FECHAFACTURA" DataType="System.DateTime"/>
+        <Column Name="NOTAS" DataType="System.String"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="SUCURSAL" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <CommandParameter Name="fechainicial" DataType="5" Expression="[fechainicial]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="fechafinal" DataType="5" Expression="[fechafinal]" DefaultValue="01/01/2000"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="fechainicial" DataType="System.DateTime"/>
+    <Parameter Name="fechafinal" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="279.4" PaperHeight="215.9" RawPaperSize="119">
+    <ReportTitleBand Name="ReportTitle1" Width="980.53" Height="85.05">
+      <TextObject Name="Text15" Left="207.9" Top="56.7" Width="94.5" Height="18.9" Text="[fechainicial]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text16" Left="434.7" Top="56.7" Width="94.5" Height="18.9" Text="[fechafinal]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text17" Left="103.95" Top="56.7" Width="94.5" Height="18.9" Text="De la fecha"/>
+      <TextObject Name="Text18" Left="330.75" Top="56.7" Width="94.5" Height="18.9" Text="a la fecha"/>
+      <TextObject Name="Text19" Left="160.65" Top="9.45" Width="368.55" Height="28.35" Text="REPORTE DE RETIROS" Font="Arial, 14pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="89.05" Width="980.53" Height="28.35">
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Text="TIPO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Text="DESTINATARIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="378" Width="94.5" Height="18.9" Text="FACTURA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="472.5" Width="94.5" Height="28.35" Text="FECHA FACTURA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="567" Width="170.1" Height="18.9" Text="NOTAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="737.1" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text21" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text2" Left="283.5" Width="94.5" Height="18.9" Text="USUARIO" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="121.4" Width="980.53" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Left="283.5" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.USUARIONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TIPODOCTOCLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.DESTINATARIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="378" Width="94.5" Height="18.9" Text="[Table.FACTURA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="472.5" Width="94.5" Height="18.9" Text="[Table.FECHAFACTURA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="567" Width="170.1" Height="18.9" CanGrow="true" Text="[Table.NOTAS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="737.1" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="144.3" Width="980.53" Height="37.8"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="40" Top="56" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fechainicial" FilterOperation="GreaterThanOrEqual" Value="06/22/2014 13:56:09"/>
+    <LabelControl Name="Label1" Left="40" Top="40" Width="64" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Fecha inicial"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="40" Top="112" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechafinal" FilterOperation="LessThanOrEqual" Value="06/22/2014 13:56:12"/>
+    <LabelControl Name="Label2" Left="40" Top="96" Width="59" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha final"/>
+  </DialogPage>
+</Report>

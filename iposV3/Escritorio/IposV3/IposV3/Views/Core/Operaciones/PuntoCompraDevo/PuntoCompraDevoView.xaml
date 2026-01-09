@@ -1,0 +1,650 @@
+﻿<UserControl
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cal="http://www.caliburnproject.org"
+        xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="IposV3.Views.PuntoCompraDevoView"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:cbind="clr-namespace:CalcBinding;assembly=CalcBinding"
+        xmlns:local="clr-namespace:IposV3"
+            xmlns:localCommon="clr-namespace:UICommon;assembly=UICommon"
+        xmlns:localViews="clr-namespace:IposV3.Views"
+        xmlns:localCont="clr-namespace:Controls;assembly=UICommon"
+        xmlns:localConv="clr-namespace:Converters;assembly=UICommon"
+        xmlns:ac="clr-namespace:AdornedControl;assembly=AdornedControl"
+        xmlns:SfExt="clr-namespace:SyncfusionExt;assembly=UICommon"
+        cal:Message.Attach="[Event Loaded]=[Action ViewLoaded($eventArgs)]"
+        mc:Ignorable="d"
+        VerticalAlignment="Stretch"
+        Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.98'}"
+    
+    >
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="IconBrush" Color="DodgerBlue"/>
+        <localConv:PackIconImageSourceConverter x:Key="PackIconImageSourceConverter" />
+
+        <localConv:HexColorConverter x:Key="hexcolorconverter"/>
+        <localConv:HexTextColorConverter x:Key="hexTextcolorconverter"/>
+        <localConv:DateTimeOffsetToDateTimeConverter x:Key="DateTimeOffsetToDateTimeConverter"/>
+        <localConv:DictionaryItemConverter x:Key="DictionaryItemConverter" />
+
+        <Style x:Key="labelHeaderRibbonStyle" TargetType="{x:Type Label}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontFamily" Value="Calibri" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style x:Key="labelHeaderDetailRibbonStyle" TargetType="{x:Type Label}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontFamily" Value="Calibri" />
+            <Setter Property="FontWeight"  Value="Medium" />
+        </Style>
+        <Style x:Key="textHeaderDetailRibbonStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontFamily" Value="Calibri" />
+            <Setter Property="FontWeight"  Value="Medium" />
+            <Setter Property="Margin" Value="0,5,0,0" />
+        </Style>
+
+
+        <Style x:Key="customCellStyle" TargetType="Syncfusion:VirtualizingCellsControl">
+            <Setter Property="cal:Message.Attach" Value="[Event MouseDoubleClick] = [Action SelectItemByCell($dataContext)]"/>
+        </Style>
+
+        <Style x:Key="filterControlStyle" TargetType="Syncfusion:GridFilterControl">
+            <Setter Property="FilterMode" Value="AdvancedFilter" />
+        </Style>
+
+
+        <Style x:Key="gridPvCellStyle" TargetType="Syncfusion:VirtualizingCellsControl">
+            <!--<Setter Property="cal:Message.Attach" Value="[Event PreviewKeyDown] = [Action MovtosKeyDown($dataContext,$eventArgs)]"/>-->
+        </Style>
+
+        <Style x:Key="customCellStyleWithRowColor" TargetType="Syncfusion:VirtualizingCellsControl"  BasedOn="{StaticResource gridPvCellStyle}" >
+            <Setter Property="Background" Value="{Binding Converter={StaticResource hexcolorconverter}}" />
+            <Setter Property="Foreground" Value="{Binding Converter={StaticResource hexTextcolorconverter}}" />
+
+        </Style>
+
+
+    </UserControl.Resources>
+
+
+    <DockPanel Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  
+               localConv:EnterKeyTraversal.IsEnabled="True" 
+               cal:Message.Attach="[Event PreviewKeyDown] = [Action ControlKeyDown($eventArgs)]">
+        <DockPanel DockPanel.Dock="Top">
+            <WrapPanel DockPanel.Dock="Top">
+                <Label  Style="{StaticResource labelHeaderRibbonStyle}">Fecha/Hora:</Label>
+                <TextBlock x:Name="testctrl" Style="{StaticResource textHeaderDetailRibbonStyle}" Text="{Binding CurrentDateTime_, StringFormat='{}{0:dd/MM/yy HH:mm}'}" />
+                <Label  Style="{StaticResource labelHeaderRibbonStyle}">Sucursal:</Label>
+                <Label  Style="{StaticResource labelHeaderDetailRibbonStyle}" Content="{Binding GlobalSession.CurrentConfiguracion.Sucursalnombre}" />
+                <Label  Style="{StaticResource labelHeaderRibbonStyle}">Cajero:</Label>
+                <Label  Style="{StaticResource labelHeaderDetailRibbonStyle}" Content="{Binding GlobalSession.CurrentUsuario.Nombre}"/>
+            </WrapPanel>
+            <Ribbon x:Name="RibbonWin" DockPanel.Dock="Bottom"  SelectedIndex="0" Width="{Binding ElementName=MainDockPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"
+                    KeyboardNavigation.ControlTabNavigation="None">
+
+                <!-- Help Pane, located at the right-hand side -->
+                <Ribbon.HelpPaneContent>
+                    <RibbonButton SmallImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.Help}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" />
+                </Ribbon.HelpPaneContent>
+                <!-- Quick Access Toolbar - located at the upper-left corner -->
+                <Ribbon.QuickAccessToolBar>
+                    <RibbonQuickAccessToolBar >
+                        <Label Style="{StaticResource labelHeaderRibbonStyle}">Transaccion:</Label>
+                        <TextBlock Style="{StaticResource textHeaderDetailRibbonStyle}">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat=" {0} Folio: {1}">
+                                    <Binding Path="CurrentDocto.TipodoctoNombre"/>
+                                    <Binding Path="CurrentDocto.Folio"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+
+                        <Label Style="{StaticResource labelHeaderRibbonStyle}">Estado:</Label>
+                        <Label Style="{StaticResource labelHeaderDetailRibbonStyle}" Content="{Binding CurrentDocto.EstatusdoctoNombre}"/>
+                        <Label Style="{StaticResource labelHeaderRibbonStyle}">Fecha/Hora Trans:</Label>
+                        <TextBlock Style="{StaticResource textHeaderDetailRibbonStyle}" Text="{Binding CurrentDocto.Fecha, StringFormat='{}{0:dd/MM/yy HH:mm}'}" />
+                        <Label Style="{StaticResource labelHeaderRibbonStyle}">Cajero Trans:</Label>
+                        <Label Style="{StaticResource labelHeaderDetailRibbonStyle}" Content="{Binding CurrentDocto.UsuarioNombre}" />
+
+                    </RibbonQuickAccessToolBar>
+                </Ribbon.QuickAccessToolBar>
+                <!-- Application Menu, located at the left-hand side (down arrow) -->
+                <Ribbon.ApplicationMenu>
+                    <RibbonApplicationMenu >
+                        <RibbonApplicationMenuItem Header="Opciones" ImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.SettingsHelper}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" />
+                        <RibbonApplicationMenuItem Header="Salir" ImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.ExitToApp}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" />
+                    </RibbonApplicationMenu>
+                </Ribbon.ApplicationMenu>
+
+                <!-- Ribbon Tab #1: Home -->
+                <RibbonTab Header="General"  >
+
+                    <!-- Home  group-->
+                    <RibbonGroup x:Name="ClipboardGroup" Header="General" >
+
+                        <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.TextBoxPlus}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" cal:Message.Attach="[Event Click]=[Action NuevaCompra()]" Label="Compra a devolver (F2)"  />
+                        <RibbonMenuButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.FolderOpen}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}"  Label="Abrir"  >
+                            <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.FolderLockOpen}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" cal:Message.Attach="[Event Click]=[Action AbrirCompraCerrada]" Label="Devoluciones cerradas (F5)"  />
+                            <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.FolderOpenOutline}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" cal:Message.Attach="[Event Click]=[Action AbrirCompraPendiente]" Label="Devoluciones pendientes (F4)"  />
+                            <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.FolderOpenOutline}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" cal:Message.Attach="[Event Click]=[Action AbrirCompraPendiente]" Label="Devoluciones de sucursales"  />
+                            <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.PoundBox}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" Label="Por Folio"  />
+                        </RibbonMenuButton>
+                        <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.Cancel}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" Label="Cancelar (F3)"  KeyTip="X" cal:Message.Attach="[Event Click]=[Action CancelarDocto]" />
+                        <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.Cash100}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" Label="Devolver (F6)"  KeyTip="X" cal:Message.Attach="[Event Click]=[Action Pagar()]" />
+
+                        <RibbonMenuButton  LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.Printer}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}"  Label="Imprimir"  >
+                            <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.PrinterPos}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" Label="Imp. transaccion" cal:Message.Attach="[Event Click]=[Action ImprimirDocto]" />
+                            <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.CloudPrint}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" Label="Imp. factura" />
+                        </RibbonMenuButton>
+
+
+
+
+
+                    </RibbonGroup>
+
+                    <RibbonGroup Header="Almacen">
+                        <Label Content="Almacen actual: " />
+                        <ComboBox  x:Name="Alamcenid" 
+			                       ItemsSource="{Binding Catalogs[Almacen]}"
+                                   SelectedValuePath="Id" SelectedValue="{Binding CurrentDocto.Almacenid}"
+                                   DisplayMemberPath="Nombre" IsReadOnly="{Binding BIsReadOnly}" />
+                    </RibbonGroup>
+
+                    <!-- Employee And Payroll group-->
+                    <RibbonGroup x:Name="ProveedorRibbonSection" Header="Proveedor">
+                        <TextBox x:Name="ProveedorClave" Text="{Binding CurrentDocto.ProveedorClave}" Margin="0,0,0,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                        <TextBox x:Name="ProveedorNombre" Text="{Binding CurrentDocto.ProveedorNombre}" Margin="0,0,0,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                        <Button  x:Name="ProveedoridButton" VerticalAlignment="Top" Margin="0,0,0,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('ProveedorClave')]"  Width="24"  Height="24" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Binoculars"/>
+                            </StackPanel>
+                        </Button>
+                    </RibbonGroup>
+
+
+
+
+                    <RibbonGroup  Header="Compra">
+                        <Label   Grid.Column="0" Grid.Row="0" Content="Factura compra "   />
+                        <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding CurrentDocto.Docto_compra_Factura}" Margin="5,0,5,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="{Binding BIsReadOnly}" />
+                        <!-- fechafactura_c fechavence_c -->
+
+                    </RibbonGroup>
+
+                    <RibbonGroup  Header="Compra">
+                        <Label  Content="Fecha vence "   />
+                        <DatePicker  HorizontalAlignment="Left" Margin="0,10,0,0"  VerticalAlignment="Top" SelectedDate="{Binding Converter={StaticResource DateTimeOffsetToDateTimeConverter}, Path=CurrentDocto.Fechavence}"   />
+
+                    </RibbonGroup>
+
+
+                    <RibbonGroup Header="Origen fiscal">
+                        <Label Content="Origen fiscal: " />
+                        <ComboBox  ItemsSource="{Binding Catalogs[Origenfiscal]}"
+                                   SelectedValuePath="Id" SelectedValue="{Binding CurrentDocto.Origenfiscalid}"
+                                   DisplayMemberPath="Nombre" IsReadOnly="{Binding BIsReadOnly}" />
+                    </RibbonGroup>
+
+
+
+                </RibbonTab>
+
+                <!-- Ribbon Tab #2: Launch -->
+                <RibbonTab Header="Proveedor" >
+
+                    <RibbonGroup x:Name="ProveedorRibbonDatosGroup" Header="Datos">
+                        <Label  Content="{Binding CurrentProveedor.Rfc}"  ContentStringFormat="RFC: {0}" />
+                        <Label  Content="{Binding CurrentProveedor.Razonsocial}" ContentStringFormat="Razon social: {0}" />
+
+                    </RibbonGroup>
+
+                    <RibbonGroup x:Name="ProveedorRibbonDomicilioGroup" Header="Domicilio">
+                        <Label>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}Domicilio: {0} Num. {1} {2} Col. {3}">
+                                        <Binding Path="CurrentProveedor.Domicilio_Calle" />
+                                        <Binding Path="CurrentProveedor.Domicilio_Numeroexterior" />
+                                        <Binding Path="CurrentProveedor.Domicilio_Numerointerior" />
+                                        <Binding Path="CurrentProveedor.Domicilio_Colonia" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Label>
+
+                        <Label>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}Ciudad: {0} Estado {1}">
+                                        <Binding Path="CurrentProveedor.Domicilio_Ciudad" />
+                                        <Binding Path="CurrentProveedor.Domicilio_Estado" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Label>
+
+                        <Label>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}C.P.: {0} Tel.: {1}">
+                                        <Binding Path="CurrentProveedor.Domicilio_Codigopostal" />
+                                        <Binding Path="CurrentProveedor.Telefono1" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Label>
+
+                    </RibbonGroup>
+
+                </RibbonTab>
+
+
+                <RibbonTab Header="Pagos" >
+
+                    <RibbonGroup x:Name="PagosGroup" Header="Pagos">
+                        <RibbonButton x:Name="Pagar" LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.CurrencyUsd}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}"  Label="Devolver"  
+                                      cal:Message.Attach="[Event Click] = [Action Pagar()]"/>
+                    </RibbonGroup>
+
+
+
+                    <RibbonGroup x:Name="NotasPagosGroup" Header="Notas">
+                        <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.NoteText}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" Label="Cambiar Nota pago" />
+                        <RibbonMenuItem  Header="Nota: Se pago a plazos fijos " />
+                    </RibbonGroup>
+
+
+                </RibbonTab>
+
+
+
+
+                <RibbonTab  Header="Traslados" >
+                    <RibbonGroup  x:Name="TrasladosGroup" Header="Nuevo" >
+                        <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.FileSwap}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" Label="Nuevo devolucion a sucursal" />
+
+                    </RibbonGroup>
+                    <RibbonGroup   Header="Sucursal destino" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Content="Sucursal destino:" Grid.Column="0"/>
+                            <TextBox x:Name="SucursalTclave_" Grid.Column="1" Text="{Binding CurrentDocto.Docto_traslado_SucursaltClave}" Margin="5,0,5,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                            <TextBox x:Name="SucursalTnombre_" Grid.Column="2" Text="{Binding CurrentDocto.Docto_traslado_SucursaltNombre}" Margin="5,0,5,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                            <Button  x:Name="SucursalTidButton_" Grid.Column="3" VerticalAlignment="Top" Margin="0,0,0,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Sucursaltclave')]"  Width="24"  Height="24" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </RibbonGroup>
+                    <RibbonGroup   Header="Reenviar" >
+                        <RibbonButton LargeImageSource="{Binding Source={x:Static iconPacks:PackIconMaterialKind.FileSend}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}" Label="Reenviar devolucion a sucursal" />
+                    </RibbonGroup>
+
+                </RibbonTab>
+
+
+
+                <RibbonTab Header="Almacen" >
+                    <RibbonGroup x:Name="TraspasosGroup" Header="Almacen">
+                        <RibbonMenuItem  Header="Almacen actual: " />
+                        <ComboBox  x:Name="Alamcenid_" 
+			                       ItemsSource="{Binding Catalogs[Almacen]}"
+                                   SelectedValuePath="Id" SelectedValue="{Binding CurrentDocto.Almacenid}"
+                                   DisplayMemberPath="Nombre" IsReadOnly="{Binding BIsReadOnly}" />
+                    </RibbonGroup>
+                </RibbonTab>
+
+
+                <RibbonTab Header="Observaciones" >
+                    <RibbonGroup  Header="Observacion">
+                        <RibbonMenuItem  Header="Observaciones: " />
+                        <TextBox  Text="{Binding CurrentDocto.Referencias}" Margin="0,0,0,0"  HorizontalAlignment="Left" MinWidth="100" 
+                                  TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" IsReadOnly="{Binding BIsReadOnly}" />
+                    </RibbonGroup>
+
+                    <RibbonGroup  Header="Referencia">
+                        <RibbonMenuItem  Header="Referencia: " />
+                        <TextBox  Text="{Binding CurrentDocto.Referencia}" Margin="0,0,0,0"  HorizontalAlignment="Left" MinWidth="100" 
+                                  TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" IsReadOnly="{Binding BIsReadOnly}" />
+                    </RibbonGroup>
+                </RibbonTab>
+                
+
+            </Ribbon>
+        </DockPanel>
+
+        <ScrollViewer  DockPanel.Dock="Bottom" Width="{Binding ElementName=MainDockPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0,0,0,0"  IsEnabled="{cbind:Binding Path=!IsBusy}" Opacity="{Binding Opacity}">
+            <WrapPanel Name="MainPanel"  HorizontalAlignment="Stretch"   VerticalAlignment="Top" Height="Auto"  >
+                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"  Height="5"  >
+                    <localCont:MessageBoxV2 MessageToUser="{Binding MessageToUser}"  Width="10"  HorizontalAlignment="Right"/>
+                </StackPanel>
+                
+                <StackPanel MinWidth="110"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}" >
+
+                    <WrapPanel Width="{Binding ElementName=MainDockPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}">
+                        <StackPanel HorizontalAlignment="Stretch">
+                            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Medium" FontSize="12" HorizontalAlignment="Stretch"  VerticalAlignment="Top">Detalles de transaccion relacionada</TextBlock>
+
+                            <ac:AdornedControl IsAdornerVisible="{Binding IsBusy}">
+                                <ac:AdornedControl.AdornerContent>
+                                    <localCont:LoadingWait></localCont:LoadingWait>
+                                </ac:AdornedControl.AdornerContent>
+
+                                <Syncfusion:SfDataGrid x:Name="SfTableDataGridViewRef" 
+                                    ItemsSource="{Binding MovtoToDevoItems}" 
+                                    RowStyle="{StaticResource customCellStyleWithRowColor}"
+                                    SelectionMode="Extended"
+                                    localConv:SfGridSelectedItemBehaviour.SelectedItems="{Binding SelectedMovtoItems, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                     cal:Message.Attach="[Event PreviewKeyDown] = [Action MovtoGridKeyDown($eventArgs)]"
+                                    AllowFiltering="True" AllowEditing="True"
+                                    FilterPopupStyle="{StaticResource filterControlStyle}"
+                                    Margin="2,2,2,2"  AutoGenerateColumns="False" 
+                                    Background="{Binding StringBindingExpression[DataGridBackground]}" 
+                                    IsReadOnly="{cbind:Binding !BoolBindingExpression[TransaccionEnBorrador]}" 
+                                    RowHeight="35"   
+                                   MinWidth="100" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}" HorizontalAlignment="Stretch"
+                                    Height="{Binding ElementName=MainDockPanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=10.5*x/60}" MinHeight="120" Loaded="SfTableDataGridView_Loaded"
+                                                     
+                                    >
+                                    <Syncfusion:SfDataGrid.Columns>
+
+                                        <Syncfusion:GridTextColumn  MappingName="Claveproducto" HeaderText="Producto"  ColumnSizer="None" Width="12" />
+
+                                        <Syncfusion:GridTextColumn  MappingName="Descripcion" HeaderText="Descripcion"  ColumnSizer="None" Width="33"/>
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="Cant. compra" MappingName="Cantidadref" ColumnSizer="None" Width="10"
+                                                                        NumberDecimalDigits="3" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator="," />
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="Cant. disp." MappingName="Cantdisp" ColumnSizer="None" Width="10"
+                                                                        NumberDecimalDigits="3" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator="," />
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="Precio compra" MappingName="Preciounidadref" ColumnSizer="None"  Width="11" TextAlignment="Right" 
+                                                                        NumberDecimalDigits="2" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator="," />
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="Cant. a dev." MappingName="Cantidad" ColumnSizer="None" Width="10"
+                                                                        NumberDecimalDigits="3" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator="," />
+
+
+                                        <Syncfusion:GridTextColumn  MappingName="Lote" HeaderText="Lote"  ColumnSizer="None" Width="12"/>
+                                        
+
+                                    </Syncfusion:SfDataGrid.Columns>
+                                </Syncfusion:SfDataGrid>
+                            </ac:AdornedControl>
+
+                        </StackPanel>
+                    </WrapPanel>
+
+                    <WrapPanel Width="{Binding ElementName=MainDockPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}">
+                        <StackPanel HorizontalAlignment="Stretch">
+                            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Medium" FontSize="12" HorizontalAlignment="Stretch"  VerticalAlignment="Top">Detalles de nota de credito</TextBlock>
+
+
+                            <ac:AdornedControl IsAdornerVisible="{Binding IsBusyMovtoList}">
+                                <ac:AdornedControl.AdornerContent>
+                                    <localCont:LoadingWait></localCont:LoadingWait>
+                                </ac:AdornedControl.AdornerContent>
+
+                                <Syncfusion:SfDataGrid x:Name="SfTableDataGridView" 
+                                    ItemsSource="{Binding MovtoItems}" 
+                                    RowStyle="{StaticResource customCellStyleWithRowColor}"
+                                    SelectionMode="Extended"
+                                    localConv:SfGridSelectedItemBehaviour.SelectedItems="{Binding SelectedMovtoItems, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                     cal:Message.Attach="[Event PreviewKeyDown] = [Action MovtoGridKeyDown($eventArgs)]"
+                                    AllowFiltering="True" AllowEditing="True"
+                                    FilterPopupStyle="{StaticResource filterControlStyle}"
+                                    Margin="2,2,2,2"  AutoGenerateColumns="False" 
+                                    Background="{Binding StringBindingExpression[DataGridBackground]}" 
+                                    IsReadOnly="{cbind:Binding !BoolBindingExpression[TransaccionEnBorrador]}"  
+                                    RowHeight="35"   
+                                   MinWidth="100" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}" HorizontalAlignment="Stretch"
+                                    Height="{Binding ElementName=MainDockPanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=11*x/60}" MinHeight="120" Loaded="SfTableDataGridView_Loaded"
+                                    >
+                                    <Syncfusion:SfDataGrid.Columns>
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="Cantidad" MappingName="Cantidad" ColumnSizer="None" Width="10"
+                                                                        NumberDecimalDigits="3" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator="," />
+
+                                        <Syncfusion:GridTextColumn  HeaderText="Descripcion" MappingName="Descripcion1" ColumnSizer="None" Width="34" />
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="Precio s/i c/u " MappingName="Precio" ColumnSizer="None"  Width="11" TextAlignment="Right" 
+                                                                        IsHidden="True" NumberDecimalDigits="2" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator="," />
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="Precio c/u" MappingName="Preciomostrar" ColumnSizer="None"  Width="11" TextAlignment="Right" 
+                                                                        NumberDecimalDigits="2" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator="," />
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="%IVA" MappingName="Tasaiva" ColumnSizer="None"  Width="7" TextAlignment="Right"
+                                                                        NumberDecimalDigits="2" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator=","/>
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="%IEPS" MappingName="Tasaieps" ColumnSizer="None"  Width="7" TextAlignment="Right"
+                                                                        NumberDecimalDigits="2" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator=","/>
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="%D" MappingName="Descuentoporcentaje" ColumnSizer="None"  Width="7" TextAlignment="Right"
+                                                                        NumberDecimalDigits="2" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator=","/>
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="Desc." MappingName="Descuentomostrar" ColumnSizer="None"  Width="9" TextAlignment="Right"
+                                                                        NumberDecimalDigits="2" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator=","/>
+
+                                        <Syncfusion:GridNumericColumn  HeaderText="Importe" MappingName="Total" ColumnSizer="None"  Width="13" TextAlignment="Right"
+                                                                        NumberDecimalDigits="2" NumberDecimalSeparator="." NumberGroupSizes="3" NumberGroupSeparator=","/>
+
+                                        <Syncfusion:GridTextColumn  HeaderText="Descripcion 2" MappingName="Descripcion2"  Width="18"/>
+
+                                        <Syncfusion:GridTextColumn  HeaderText="Lote" MappingName="Lote"  Width="11"/>
+
+                                        <Syncfusion:GridTextColumn  HeaderText="Unidad" MappingName="Unidadnombre"  Width="11"/>
+
+
+                                        <Syncfusion:GridTextColumn  HeaderText="Desc vale" MappingName="Descuentovale"  Width="11"/>
+
+                                        <Syncfusion:GridTextColumn  HeaderText="%Desc vale" MappingName="Descuentovaleporcentaje"  Width="11"/>
+
+                                        <Syncfusion:GridTextColumn  HeaderText="P manual" MappingName="Ingresopreciomanual"  Width="11"/>
+
+                                        <Syncfusion:GridTextColumn  HeaderText="% D manual" MappingName="Porcentajedescuentomanual"  Width="11"/>
+
+                                        <Syncfusion:GridTextColumn  HeaderText="Existencia" MappingName="Existencia"  Width="11"/>
+
+
+
+
+                                    </Syncfusion:SfDataGrid.Columns>
+                                </Syncfusion:SfDataGrid>
+                            </ac:AdornedControl>
+
+
+                        </StackPanel>
+                    </WrapPanel>
+
+
+
+
+                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}">
+                        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,20">
+                            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Medium"  HorizontalAlignment="Stretch"  VerticalAlignment="Top"></TextBlock>
+                            <Border BorderThickness="0,2,0,0"  BorderBrush="LightBlue" VerticalAlignment="Top" >
+                                <WrapPanel Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+
+                                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=8.8*x/12.5}"
+                                               IsEnabled="{cbind:Binding BoolBindingExpression[TransaccionEnBorrador]}">
+
+                                        <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.5*x/12.5}"  Height="85"  >
+                                            <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Producto" />
+
+                                            <localConv:SfTextBoxExt2 x:Name="P_productoclave"
+                                             Text="{Binding CurrentMovto.ProductoClave}" 
+                                                 HorizontalAlignment="Stretch" 
+                                                 VerticalAlignment="Center"
+                                                 Margin="0,0,6,0"
+                                                 IsReadOnly="{Binding BIsReadOnly}" 
+                                                 IsHitTestVisible="True"
+                                                 ForceCursor="True"
+                                                 BorderThickness="0,0,0,2"
+                                            BorderBrush="DarkGray"
+                                            Background="#F9F9F9F9"
+                                                 localCommon:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="localConv:SfTextBoxExt2.Text"
+                                                 cal:Message.Attach="[Event PreviewKeyDown] = [Action ProductoKeyDown($eventArgs)]"
+                                            
+                                                            Height="30"
+                                                            SearchItemPath="Text"
+                                                            SuggestionMode="Contains"
+                                                            AutoCompleteMode="Suggest"
+                                                            AutoCompleteSource="{Binding GlobalSession.ListadoAutoCompleteProd}" />
+
+
+                                            <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=P_productoclave}"  Margin="0,0,0,0"/>
+                                        </StackPanel>
+
+
+                                        <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x/12.5}"  Height="85" Visibility="{cbind:Binding Path=CajasBotellasActive}" >
+                                            <Label  Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Cajas" />
+                                            <Syncfusion:DoubleTextBox x:Name="P_cajas" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="0" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cajas}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="{Binding BIsReadOnly}" />
+                                            <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=P_cajas}"  Margin="0,0,0,0"/>
+                                        </StackPanel>
+
+                                        <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.6*x/12.5}"  Height="85"  >
+                                            <Label  Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Cantidad" />
+                                            <Syncfusion:DoubleTextBox x:Name="P_cantidad" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding CurrentMovto.Cantidad}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="{Binding BIsReadOnly}" IsEnabled="{cbind:Binding CantidadEnabled}" 
+                                                 ForceCursor="True" 
+                                                 localCommon:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="Syncfusion:DoubleTextBox.Value"
+                                                 cal:Message.Attach="[Event PreviewKeyDown] = [Action CantidadKeyDown($eventArgs)]" />
+                                            <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=P_cantidad}"  Margin="0,0,0,0"/>
+                                        </StackPanel>
+
+                                        <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.6*x/12.5}"  Height="85"  >
+                                            <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Precio" />
+                                            <SfExt:DoubleTextBoxNoUpDown x:Name="P_precio" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding CurrentMovto.Precio}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="{cbind:Binding !PrecioEnabled}" 
+                                                 ForceCursor="True" 
+                                                 Step="0"
+                                                 localCommon:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="SfExt:DoubleTextBoxNoUpDown.Value"
+                                                 cal:Message.Attach="[Event PreviewKeyDown] = [Action PrecioKeyDown($eventArgs)]"/>
+                                            <ListBox x:Name="P_precioLista" SelectedValue="{Binding SelectedListPrice}"  SelectedValuePath="Value" BorderThickness="0" ItemsSource="{Binding ListaPrecios}" ScrollViewer.VerticalScrollBarVisibility="Visible" Height="30" Visibility="{cbind:Binding ListaPrecioEnabled}"
+                                                 cal:Message.Attach="[Event LostFocus] = [Action ListPriceLostFocus]" >
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Key}"/>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+
+                                            <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=P_precio}"  Margin="0,0,0,0"/>
+                                        </StackPanel>
+
+                                        <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.8*x/12.5}"  Height="85"  >
+                                            <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="% Desc." />
+                                            <Syncfusion:DoubleTextBox x:Name="P_descuentoporcentaje" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding CurrentMovto.Descuentoporcentaje}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="{cbind:Binding !DescuentoEnabled}" 
+                                                ForceCursor="True" 
+                                                localCommon:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="Syncfusion:DoubleTextBox.Value"
+                                                cal:Message.Attach="[Event PreviewKeyDown] = [Action DescuentoporcentajeKeyDown($eventArgs)]" />
+                                            <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=P_descuentoporcentaje}"  Margin="0,0,0,0"/>
+                                        </StackPanel>
+
+
+                                        <StackPanel MinWidth="20" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.6*x/12.5}"  Height="85"  >
+                                            <Label Margin="10,0,10,0"  Content=" " />
+                                            <Button  Margin="6" Padding="6"
+                                            x:Name="SaveMovto" Content="Ok"  Foreground="WhiteSmoke"/>
+                                        </StackPanel>
+
+                                        <StackPanel MinWidth="20" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.6*x/12.5}"  Height="85"  >
+                                            <Label Margin="10,0,10,0"  Content=" " />
+                                            <Button  Margin="6" Padding="6"
+                                            x:Name="CancelMovto"
+                                            Content="X" Visibility="{cbind:Binding Path=!BIsReadOnly}" Background="LightGray"/>
+                                        </StackPanel>
+
+                                        <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=6*x/12.5}"  Height="85"  >
+                                            <Label Margin="10,0,10,0"  Content=" " />
+                                            <TextBox x:Name="ProductoNombre" Text="{Binding CurrentMovto.DescripcionProductoMovto}" Margin="0,0,0,0" IsReadOnly="True"  Background="#F9F9F9F9"    />
+                                        </StackPanel>
+
+                                        <StackPanel MinWidth="20" HorizontalAlignment="Right" 
+                                                    Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.5*x/12.5}"  Height="85"  >
+                                            <Label Margin="10,0,10,0"  Content=" " />
+                                            <Button  Margin="0,-10,0,0" Padding="6" Content="Pagar(F6)" Width="100" cal:Message.Attach="[Event Click]=[Action Pagar()]"  Foreground="WhiteSmoke"/>
+                                        </StackPanel>
+                                        
+
+                                    </WrapPanel>
+
+                                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3.2*x/12.5}">
+
+                                        <Grid MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}" ShowGridLines="False">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Label Content="Subtotal:" Grid.Row="0" Grid.Column="1" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
+                                            <Label Content="{Binding CurrentDocto.Subtotal}" ContentStringFormat="N2" Grid.Row="0" Grid.Column="2" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
+                                            <Label Content="Ieps:" Grid.Row="1" Grid.Column="1" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
+                                            <Label Content="{Binding CurrentDocto.Ieps}" ContentStringFormat="N2" Grid.Row="1" Grid.Column="2" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
+                                            <Label Content="Iva:" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
+                                            <Label Content="{Binding CurrentDocto.Iva}"  ContentStringFormat="N2" Grid.Row="2" Grid.Column="2" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
+                                            <Label Content="Total:" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
+                                            <Label Content="{Binding CurrentDocto.Total}" ContentStringFormat="N2" Grid.Row="3" Grid.Column="2" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
+                                        </Grid>
+                                    </WrapPanel>
+
+
+
+
+
+
+
+
+
+                                </WrapPanel>
+                            </Border>
+                        </StackPanel>
+                    </WrapPanel>
+
+
+
+
+
+                    <WrapPanel Width="{Binding ElementName=MainDockPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}">
+                        <StackPanel HorizontalAlignment="Stretch">
+                            <Label Style="{DynamicResource LabelGroupFormTemplate}" Content=""  HorizontalAlignment="Stretch"  VerticalAlignment="Top"/>
+                            <Border BorderThickness="0,2,0,0" BorderBrush="#AAAAAA"  >
+                                <WrapPanel>
+                                    <Label Content="{Binding DerechosUsuario[10], Converter={StaticResource DictionaryItemConverter}}" />
+
+                                </WrapPanel>
+                            </Border>
+                        </StackPanel>
+                    </WrapPanel>
+
+
+
+                </StackPanel>
+
+
+
+
+            </WrapPanel>
+        </ScrollViewer>
+    </DockPanel>
+
+
+
+</UserControl>

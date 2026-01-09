@@ -1,0 +1,78 @@
+create or alter procedure TRASPASOSALIDA_CERRAR (
+    DOCTOID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+declare variable ESTATUSDOCTOID D_FK;
+declare variable DOCTOVENTAID D_FK;
+declare variable SUBTIPODOCTOID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable ESTADOSURTIDOID D_FK;
+BEGIN
+
+   ERRORCODE  = 0;
+
+   -- Leer del DOCTO a cancelar.
+   SELECT ESTATUSDOCTOID , DOCTOREFID  , TIPODOCTOID, SUBTIPODOCTOID
+   FROM DOCTO
+   WHERE ID = :DOCTOID
+   INTO :ESTATUSDOCTOID, :DOCTOVENTAID, :TIPODOCTOID, :SUBTIPODOCTOID;
+
+
+   -- Si no esta vigente: Salir.
+   IF (:ESTATUSDOCTOID <> 0) THEN
+   BEGIN
+      ERRORCODE = 1007;
+      SUSPEND;
+      EXIT;
+   END
+
+   
+   IF (:TIPODOCTOID NOT IN (31)) THEN
+   BEGIN
+      ERRORCODE = 1008;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Completar el documento con afectacion de inventarios.
+   SELECT ERRORCODE
+   FROM DOCTO_SAVE(:DOCTOID)
+   INTO :ERRORCODE;
+
+   
+   IF(:ERRORCODE <> 0) THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+
+
+   IF(COALESCE(:SUBTIPODOCTOID,0) = 8  AND COALESCE(:DOCTOVENTAID,0) <> 0 ) THEN
+   BEGIN
+
+
+        SELECT ERRORCODE
+        FROM DOCTO_SAVE(:DOCTOVENTAID)
+        INTO :ERRORCODE;
+   END
+
+
+
+   
+   IF(:ERRORCODE <> 0) THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+   
+    WHEN ANY DO
+    BEGIN
+        ERRORCODE = 1009;
+        SUSPEND;
+    END
+END

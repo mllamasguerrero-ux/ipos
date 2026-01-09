@@ -1,0 +1,7 @@
+|||||100+++++            //FromAssembly(typeof((nombreTabla)ListViewModel)
+            container.Register(Castle.MicroKernel.Registration.AllTypes.FromAssembly(typeof((nombreTabla)ListViewModel).Assembly)
+                .Where(x => x.Name.EndsWith("ViewModel"))
+                .Configure(x => x.LifeStyle.Is(LifestyleType.Transient)));
+
+!!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

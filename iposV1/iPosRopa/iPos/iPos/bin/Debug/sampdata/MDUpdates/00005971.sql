@@ -1,0 +1,261 @@
+create or alter procedure IMPORTAR_DBFLINE_VENTAS (
+    DOCTOACTUALID D_FK,
+    REFERENCIA D_REFERENCIA,
+    SUCURSALID D_FK,
+    USERID D_FK,
+    PRODUCTO D_CLAVE,
+    LINEA D_CLAVE,
+    MARCA D_CLAVE,
+    PROVEEDOR D_CLAVE,
+    CANTIDAD D_CANTIDAD,
+    FALTANTE D_CANTIDAD,
+    COSTO D_COSTO,
+    CARGOS_U D_PRECIO,
+    IMPORTE D_PRECIO,
+    IMPORTENETO D_PRECIO,
+    LOTE D_LOTE,
+    FECHAVENCE D_FECHAVENCE,
+    REFERENCIAS varchar(255),
+    SUCURSALTID D_FK,
+    ALMACENTID D_FK,
+    TIPODOCTOID D_FK,
+    FECHA D_FECHA,
+    VENCE D_FECHA,
+    CANTIDADDEFACTURA D_CANTIDAD,
+    CANTIDADDEREMISION D_CANTIDAD,
+    CANTIDADDEINDEFINIDO D_CANTIDAD,
+    PRECIOVISIBLETRASLADO D_PRECIO,
+    OBSERVACION D_OBSERVACION,
+    PEDIMENTO D_PEDIMENTO,
+    FECHAIMPORTACION D_FECHA,
+    ADUANA D_ADUANA,
+    TIPOCAMBIOIMPO D_PRECIO,
+    DOCTOIMPORTADOID D_FK,
+    DOCTOREFIMP varchar(255),
+    PLAZOCHAR varchar(31))
+returns (
+    DOCTOID D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRODUCTOID D_FK;
+declare variable PROVEEDORID D_FK;
+declare variable MOVTOID D_FK;
+declare variable COSTOFINAL D_PRECIO;
+declare variable IMPORTEFINAL D_PRECIO;
+declare variable LOTEIMPORTADO D_FK;
+declare variable DOCTOREFID D_FK;
+declare variable MOVTOREFID D_FK;
+declare variable CORTEID D_FK;
+declare variable CAJEROID D_FK;
+declare variable PLAZOID smallint;
+BEGIN
+   SELECT ID
+   FROM PRODUCTO
+   WHERE CLAVE = :PRODUCTO
+   INTO :PRODUCTOID;
+
+   if( :PRODUCTOID is null )  then
+   begin
+      /*insert into producto (
+         clave,
+         nombre,
+         ean ,
+         descripcion1 ,
+         manejalote,
+         eskit,
+         negativos
+      ) values (
+         :PRODUCTO,
+         'PRODUCTO NO REGISTRADO',
+         '',
+         'PRODUCTO NO REGISTRADO',
+         'N',
+         'N',
+         'S'
+      ) RETURNING ID INTO :PRODUCTOID;  */
+      ERRORCODE = 1069;
+      SUSPEND;
+      EXIT;
+   end
+
+   SELECT first 1 ID
+   FROM PERSONA
+   WHERE CLAVE = :PROVEEDOR and tipopersonaid = 40
+   INTO :PROVEEDORID;
+
+   IF(COALESCE(:PROVEEDORID ,0) = 0 ) THEN
+   BEGIN
+     SELECT FIRST 1 ID FROM PERSONA WHERE TIPOPERSONAID = 40 INTO :PROVEEDORID;
+     
+   END
+
+   COSTOFINAL = :COSTO;
+   IMPORTEFINAL = :IMPORTE;
+
+   /*IF(:TIPODOCTOID IN (11,14)) THEN
+   BEGIN
+        SELECT FIRST 1 PRODUCTO.costoreposicion FROM PRODUCTO WHERE ID = :PRODUCTOID
+        INTO :COSTOFINAL;
+        COSTOFINAL = COALESCE(:COSTOFINAL, COALESCE(:COSTO,0));
+
+        IMPORTEFINAL = :COSTOFINAL * :CANTIDAD;
+   END       */
+
+
+
+             -- SELECCIONAR EL CORTE CORRSPONDIENTE
+  SELECT PARAMETRO.sucursalid FROM PARAMETRO INTO :SUCURSALID;
+
+  CAJEROID = 1331;
+
+   SELECT ID FROM CORTE WHERE CAJEROID = :CAJEROID AND FECHACORTE = :FECHA INTO :CORTEID;
+
+   IF(COALESCE(:CORTEID , 0) = 0) THEN
+   BEGIN
+       SELECT ERRORCODE,  CORTEID FROM
+        CORTE_ABRIR (
+                :FECHA,
+                :SUCURSALID ,
+                :CAJEROID ,
+                0,
+            1) INTO :ERRORCODE, :CORTEID;
+
+            
+        IF (:ERRORCODE > 0) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+   END
+
+
+
+
+          -- INSERTAR DOCTO SI SE REQUIERE
+
+   IF ((:DOCTOACTUALID IS NULL) or (:DOCTOACTUALID = 0)) THEN
+   BEGIN
+
+
+   
+     IF(:TIPODOCTOID = 22 AND COALESCE(:DOCTOREFIMP, '') <> '') THEN
+     BEGIN
+       SELECT FIRST 1 ID FROM DOCTO WHERE REFERENCIA = :DOCTOREFIMP ORDER BY ID DESC INTO :DOCTOREFID;
+     END
+     ELSE
+     BEGIN
+         DOCTOREFID = NULL;
+     END
+
+
+      SELECT DOCTOID, ERRORCODE
+      FROM DOCTO_INSERT (
+         :CAJEROID,
+         1,
+         :SUCURSALID,
+         :TIPODOCTOID,
+         0,
+         0,
+         :PROVEEDORID,
+         :USERID,
+         1,
+         :REFERENCIA,
+         :REFERENCIAS,
+         :SUCURSALTID,
+         :ALMACENTID,
+         :FECHA,
+         :VENCE,
+         :DOCTOREFID ,
+         'S' ,
+         1
+      ) INTO :DOCTOID, :ERRORCODE;
+
+     
+        IF (:ERRORCODE > 0) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+        UPDATE DOCTO SET  DOCTOIMPORTADOID = :DOCTOIMPORTADOID WHERE ID = :DOCTOID;
+
+        UPDATE DOCTO SET SUBTIPODOCTOID = 28 WHERE ID = :DOCTOID;
+
+
+
+        PLAZOID = 0;
+        IF( COALESCE(:PLAZOCHAR,'') <> '') THEN
+        BEGIN
+
+            SELECT ID FROM PLAZO WHERE CLAVE = :PLAZOCHAR INTO :PLAZOID;
+
+            IF(COALESCE(:PLAZOID,0) = 0) THEN
+            BEGIN
+                INSERT INTO PLAZO(CLAVE, NOMBRE, COMISIONISTA, LEYENDA, DIAS)
+                VALUES(:PLAZOCHAR, :PLAZOCHAR, 'N', '', 10)
+                RETURNING ID INTO :PLAZOID;
+            END
+
+        END
+        IF(COALESCE(:PLAZOID,0) > 0 ) THEN
+        BEGIN
+           UPDATE DOCTO SET DOCTO.plazoid = :PLAZOID WHERE ID =  :DOCTOID;
+        END
+
+
+   END
+   ELSE
+   BEGIN
+      DOCTOID = :DOCTOACTUALID;
+                 
+     IF(:TIPODOCTOID = 22 AND COALESCE(:DOCTOREFIMP, '') <> '') THEN
+     BEGIN
+      SELECT DOCTOREFID FROM DOCTO WHERE ID = :DOCTOID INTO :DOCTOREFID;
+     END
+
+   END
+
+
+
+
+   -- provisional mientras cambio docto_insert y movto_insert.
+   UPDATE DOCTO
+   SET REFERENCIAS = :REFERENCIAS, OBSERVACION = :OBSERVACION
+   WHERE ID = :DOCTOID;
+
+
+   
+     IF(:TIPODOCTOID = 22 AND COALESCE(:DOCTOREFIMP, '') <> '') THEN
+     BEGIN
+            
+        SELECT FIRST 1 ID FROM MOVTO WHERE DOCTOID = :doctoid AND PRODUCTOID = :productoid INTO :MOVTOREFID;
+     END
+
+   -- Guarda el movimiento en movto
+   SELECT DOCTOID , MOVTOID , ERRORCODE
+   FROM MOVTO_INSERT (
+      :DOCTOID, 0, 1, 1, :TIPODOCTOID, 0, 0, 0, :CAJEROID, 0,
+      0, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDAD, 0, :CANTIDAD, 0, 0,:COSTOFINAL, 0,
+      :REFERENCIA, :REFERENCIAS, :COSTOFINAL, :SUCURSALTID, :ALMACENTID, 'N', 0,
+      :FECHA, :VENCE, 0.00, :DOCTOREFID,NULL,NULL,NULL,:MOVTOREFID,null, NULL,NULL , NULL, :LOTEIMPORTADO , 'N','N'
+   ) INTO :DOCTOID, :MOVTOID, :ERRORCODE;
+
+   
+        IF (:ERRORCODE > 0) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+
+
+   
+   UPDATE MOVTO SET  PRECIOVISIBLETRASLADO = :PRECIOVISIBLETRASLADO WHERE ID = :MOVTOID ;
+
+
+
+
+
+
+
+END

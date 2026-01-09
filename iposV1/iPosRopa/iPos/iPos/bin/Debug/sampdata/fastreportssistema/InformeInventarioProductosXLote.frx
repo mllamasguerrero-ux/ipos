@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/10/2017 18:37:16" ReportInfo.Modified="04/11/2017 16:24:00" ReportInfo.CreatorVersion="2014.2.10.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+ 
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls+AF0eyxuSCq7hxyjzZtEZONtwmuRcx/i9BuPAWjTngiNWqYVl8Fop11livyS0CqWmWCZFIprg3fyOCpnFGtcJc=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;producto.id,&#13;&#10;producto.clave,&#13;&#10;linea.clave lineaclave,&#13;&#10;linea.nombre lineanombre,&#13;&#10;marca.clave marcaclave,&#13;&#10;marca.nombre marcanombre,&#13;&#10;producto.ean,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2,&#13;&#10;inventario.lote,&#13;&#10;inventario.fechavence,&#13;&#10;sum(inventario.cantidad) cantidad,&#13;&#10;producto.existencia,&#13;&#10;producto.manejalote&#13;&#10;&#13;&#10;from&#13;&#10;producto&#13;&#10;left join inventario on inventario.productoid = producto.id&#13;&#10;left join linea on linea.id = producto.lineaid &#13;&#10;left join marca on marca.id = producto.marcaid&#13;&#10;&#13;&#10;where producto.inventariable = 'S' AND inventario.cantidad&lt;&gt;0&#13;&#10;&#13;&#10;group by&#13;&#10;producto.id,&#13;&#10;producto.clave,&#13;&#10;linea.clave ,&#13;&#10;linea.nombre ,&#13;&#10;marca.clave ,&#13;&#10;marca.nombre ,&#13;&#10;producto.ean,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2,&#13;&#10;inventario.lote,&#13;&#10;inventario.fechavence,&#13;&#10;producto.existencia,&#13;&#10;producto.manejalote&#13;&#10;&#13;&#10;order by&#13;&#10; case when @orden = 0 then producto.clave&#13;&#10;      when @orden = 1 then producto.descripcion1&#13;&#10;      when @orden = 2 then producto.descripcion2&#13;&#10;      when @orden = 3 then marca.nombre&#13;&#10;      when @orden = 4 then linea.nombre&#13;&#10;      else producto.clave&#13;&#10;   end">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="LINEACLAVE" DataType="System.String"/>
+        <Column Name="LINEANOMBRE" DataType="System.String"/>
+        <Column Name="MARCACLAVE" DataType="System.String"/>
+        <Column Name="MARCANOMBRE" DataType="System.String"/>
+        <Column Name="EAN" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="LOTE" DataType="System.String"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="MANEJALOTE" DataType="System.String"/>
+        <CommandParameter Name="orden" DataType="10" Expression="[orden]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="orden" DataType="System.Int32"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="320" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1134" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="41" Width="1134" Height="18.9">
+      <TextObject Name="Text12" Width="85.05" Height="18.9" Text="CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text13" Left="85.05" Width="226.8" Height="18.9" Text="DESCRIPCION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="557.55" Width="56.7" Height="18.9" Text="MARCA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="614.25" Width="85.05" Height="18.9" Text="LINEA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text17" Left="699.3" Width="122.85" Height="18.9" Text="EAN" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="311.85" Width="245.7" Height="18.9" Text="DESCRIPCION2" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text5" Left="897.75" Width="85.05" Height="18.9" Text="FECHAVENCE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text3" Left="982.8" Width="122.85" Height="18.9" Text="LOTE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text8" Left="822.15" Width="75.6" Height="18.9" Text="CANTIDAD" Font="Arial, 7pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data2" Top="63.1" Width="1134" Height="18.9" DataSource="Table" Filter="[Table.CANTIDAD]&gt;0">
+      <TextObject Name="Text1" Left="85.05" Width="226.8" Height="9.45" Text="[Table.DESCRIPCION1]" Font="Arial, 7pt"/>
+      <TextObject Name="Text9" Width="85.05" Height="9.45" Text="[Table.CLAVE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text10" Left="557.55" Width="56.7" Height="9.45" Text="[Table.MARCACLAVE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text11" Left="699.3" Width="122.85" Height="9.45" Text="[Table.EAN]" Font="Arial, 7pt"/>
+      <TextObject Name="Text15" Left="614.25" Width="85.05" Height="9.45" Text="[Table.LINEACLAVE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text19" Left="311.85" Width="245.7" Height="9.45" Text="[Table.DESCRIPCION2]" Font="Arial, 7pt"/>
+      <TextObject Name="Text4" Left="897.75" Width="85.05" Height="9.45" Text="[Table.FECHAVENCE]" Format="Date" Format.Format="d" Font="Arial, 7pt"/>
+      <TextObject Name="Text2" Left="982.8" Width="122.85" Height="9.45" Text="[Table.LOTE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text7" Left="822.15" Width="75.6" Height="9.45" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+</Report>

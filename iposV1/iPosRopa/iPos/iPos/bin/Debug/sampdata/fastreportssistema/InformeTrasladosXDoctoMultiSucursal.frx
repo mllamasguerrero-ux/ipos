@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 11:45:50" ReportInfo.Modified="11/08/2016 12:27:20" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    private void ImprimeFilas(ref int iCount, string strConexion)
+    {
+      Report.Dictionary.Connections[0].ConnectionString = strConexion;
+                                                 
+      DataSourceBase rowDataSuc1 = Report.GetDataSource(&quot;Table&quot;); 
+      rowDataSuc1.ForceLoadData = true;
+      rowDataSuc1.Init();
+      
+      rowDataSuc1.First();
+      FastReport.Table.TableCell tc = null;
+      Table01.PrintRow(0);
+              
+      while (rowDataSuc1.HasMoreRows)
+      {                             
+        FastReport.Table.TableRow tr =  new FastReport.Table.TableRow();
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Text = (string)Report.GetColumnValue(&quot;Table.SUCURSALCLAVE&quot;); 
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Text = (string)Report.GetColumnValue(&quot;Table.SUCURSALNOMBRE&quot;); 
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{                                                  
+          tc.Text = ((DateTime)Report.GetColumnValue(&quot;Table.FECHA&quot;)).ToString(&quot;dd/MM/yyyy&quot;) ;
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Text = (string)Report.GetColumnValue(&quot;Table.TIPODOCTONOMBRE&quot;); 
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Text = ((Int32)Report.GetColumnValue(&quot;Table.FOLIO&quot;)).ToString();
+        }
+        catch(Exception ex)
+        {                            
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Text = (string)Report.GetColumnValue(&quot;Table.ESTATUS&quot;); 
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Text = (string)Report.GetColumnValue(&quot;Table.CLAVE&quot;); 
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Text = (string)Report.GetColumnValue(&quot;Table.NOMBRES&quot;); 
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Format = new FastReport.Format.NumberFormat();
+          tc.Text = ((decimal)Report.GetColumnValue(&quot;Table.SUBTOTAL&quot;)).ToString(&quot;N2&quot;); 
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Format = new FastReport.Format.NumberFormat();
+          tc.Text = ((decimal)Report.GetColumnValue(&quot;Table.IVA&quot;)).ToString(&quot;N2&quot;); 
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+        
+        tc = new FastReport.Table.TableCell();
+        try{
+          tc.Format = new FastReport.Format.NumberFormat();
+          tc.Text = ((Decimal)Report.GetColumnValue(&quot;Table.TOTAL&quot;)).ToString(&quot;N2&quot;);   
+        }
+        catch(Exception ex)
+        {
+          tc.Text = &quot;&quot;;
+        }
+        tr.AddChild(tc);
+                               
+                  
+        iCount++;
+        Table01.Rows.Add(tr);            
+        Table01.PrintRow(iCount);
+        Table01.PrintColumns();
+                                    
+        rowDataSuc1.Next();
+           
+        
+      }    
+      
+    }
+    
+    private void Table01_ManualBuild(object sender, EventArgs e)
+    {                                                     
+      
+      int iCount = 0; 
+      string strCadenasConexion = ((String)Report.GetParameterValue(&quot;conexiones&quot;));//RichTextBox1.Text;//&quot;initial catalog=C:\\IposProject\\iPosRopa\\iPos\\iPos\\bin\\Debug\\sampdata\\IPOSDB.fdb;user id=sysdba;password=masterkey|initial catalog=C:\\IPOSTHINGS\\fama\\fama.fdb;user id=sysdba;password=masterkey&quot;;
+        
+      string[] cadenasConexion  = strCadenasConexion.Split(new string[] { &quot;masterkey&quot; }, StringSplitOptions.None); //strCadenasConexion.Split('|');
+      
+      foreach(string strCadena in cadenasConexion)
+      {                                         
+        if(strCadena.Trim().Length == 0)
+          continue;
+                        
+        //MessageBox.Show(strCadena + &quot;masterkey&quot;);
+        ImprimeFilas( ref iCount,  strCadena + &quot;masterkey&quot;);
+      
+      }
+      
+      
+      
+                                        
+      
+    }
+    
+    private void Form1_Load(object sender, EventArgs e)
+    {
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2SM1VuggebmwBTIc1p9iE80=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;&#13;&#10;&#13;&#10;s.clave clave,&#13;&#10;s.nombre nombres,&#13;&#10;td.nombre tipodoctonombre,&#13;&#10;coalesce(docto.subtotal,0) subtotal,&#13;&#10; coalesce(docto.iva,0)  iva,&#13;&#10;coalesce(docto.total,0) total,&#13;&#10;docto.fecha,&#13;&#10;docto.folio,&#13;&#10;docto.id,&#13;&#10;ed.nombre estatus,&#13;&#10;sucursal.clave sucursalclave,&#13;&#10;sucursal.nombre sucursalnombre&#13;&#10;&#13;&#10;&#13;&#10; from docto &#13;&#10;left join sucursal s on s.id = docto.sucursaltid&#13;&#10;left join tipodocto td on td.id = docto.tipodoctoid&#13;&#10;left join estatusdocto ed on ed.id = docto.estatusdoctoid&#13;&#10;left join sucursal on sucursal.id = docto.sucursalid&#13;&#10; where  docto.estatusdoctoid in (1,2) and  docto.tipodoctoid in (31,81)  and docto.fecha &gt;= @fechaini and docto.fecha &lt;= @fechafin&#13;&#10;&#13;&#10;">
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRES" DataType="System.String"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ESTATUS" DataType="System.String"/>
+        <Column Name="SUCURSALCLAVE" DataType="System.String"/>
+        <Column Name="SUCURSALNOMBRE" DataType="System.String"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2021"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="conexiones" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="350" PaperHeight="210" FirstPageSource="4" OtherPagesSource="4">
+    <ReportTitleBand Name="ReportTitle1" Width="1247.4" Height="75.6">
+      <TextObject Name="Text27" Left="18.9" Width="378" Height="18.9" Text="Traslados por sucursal - sumarizado" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text24" Left="727.65" Top="9.45" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text50" Left="18.9" Top="47.25" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text51" Left="538.65" Top="47.25" Width="75.6" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="132.3" Top="47.25" Width="94.5" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="623.7" Top="47.25" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="79.6" Width="1247.4" Height="28.35">
+      <TextObject Name="Text10" Left="963.9" Width="94.5" Height="18.9" Text="SUBTOTAL" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="1058.4" Width="75.6" Height="18.9" Text="IVA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text14" Left="1143.45" Width="85.05" Height="18.9" Text="TOTAL" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text55" Left="765.45" Width="198.45" Height="28.35" Text="SUCURSAL NOMBRE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text56" Left="633.15" Width="122.85" Height="28.35" Text="SUCURSAL CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text3" Left="236.25" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text5" Left="330.75" Width="113.4" Height="18.9" Text="TIPO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="444.15" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text16" Left="538.65" Width="94.5" Height="18.9" Text="ESTATUS" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text18" Left="9.45" Width="103.95" Height="28.35" Text="CLAVE SUC.ORIGEN" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text19" Left="113.4" Width="113.4" Height="28.35" Text="NOMBRE SUC.ORIGEN" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="111.95" Width="1247.4" Height="47.25" CanGrow="true">
+      <TableObject Name="Table01" Left="9.45" Top="9.45" Width="1219.03" Height="18.9" ManualBuildEvent="Table01_ManualBuild">
+        <TableColumn Name="Column44" Width="106.31"/>
+        <TableColumn Name="Column45" Width="115.76"/>
+        <TableColumn Name="Column46" Width="106.31"/>
+        <TableColumn Name="Column47" Width="106.31"/>
+        <TableColumn Name="Column48" Width="96.86"/>
+        <TableColumn Name="Column49" Width="96.86"/>
+        <TableColumn Name="Column50" Width="125.21"/>
+        <TableColumn Name="Column51" Width="200.81"/>
+        <TableColumn Name="Column52" Width="94.5"/>
+        <TableColumn Name="Column53" Width="85.05"/>
+        <TableColumn Name="Column54" Width="85.05"/>
+        <TableRow Name="Row2">
+          <TableCell Name="Cell76" Text="CLAVE SUC.ORIGEN" Font="Arial, 8pt"/>
+          <TableCell Name="Cell77" Text="NOMBRE SUC.ORIGEN" Font="Arial, 8pt"/>
+          <TableCell Name="Cell78" Text="FECHA" Font="Arial, 8pt"/>
+          <TableCell Name="Cell79" Text="TIPO" Font="Arial, 8pt"/>
+          <TableCell Name="Cell80" Text="FOLIO" Font="Arial, 8pt"/>
+          <TableCell Name="Cell81" Text="ESTATUS" Font="Arial, 8pt"/>
+          <TableCell Name="Cell82" Text="SUCURSAL CLAVE" Format="Number" Format.UseLocale="true" Font="Arial, 8pt"/>
+          <TableCell Name="Cell83" Text="SUCURSAL NOMBRE" HorzAlign="Right" Font="Arial, 8pt"/>
+          <TableCell Name="Cell84" Text="SUBTOTAL"/>
+          <TableCell Name="Cell85" Text="IVA"/>
+          <TableCell Name="Cell86" Text="TOTAL"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="163.2" Width="1247.4" Height="18.9">
+      <TextObject Name="Text17" Left="1171.8" Width="56.7" Height="18.9" Text="[Page]"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="350" Height="298" AcceptButton="btnOk" CancelButton="btnCancel" LoadEvent="Form1_Load">
+    <ButtonControl Name="btnOk" Left="82" Top="234" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="165" Top="234" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="72" Top="124" Font="Tahoma, 8pt" TabIndex="2" Text="miércoles, 3 de agosto de 2016" ReportParameter="fechaini" FilterOperation="GreaterThanOrEqual" Value="08/03/2016 14:47:28"/>
+    <LabelControl Name="Label1" Left="72" Top="108" Width="44" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="fechaini"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="72" Top="176" Font="Tahoma, 8pt" TabIndex="4" Text="miércoles, 3 de agosto de 2016" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="08/03/2016 14:47:32"/>
+    <LabelControl Name="Label2" Left="72" Top="160" Width="46" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="fechafin"/>
+    <LabelControl Name="Label3" Left="60" Top="8" Width="210" Height="13" Font="Tahoma, 8pt" TabIndex="6" Text="INFORME DE TRASLADOS POR SUCURSAL" ClickEvent=""/>
+    <TextBoxControl Name="TextBox1" Left="56" Top="60" Width="252" Enabled="false" Font="Tahoma, 8pt" TabIndex="7" ReportParameter="conexiones"/>
+    <LabelControl Name="Label4" Left="56" Top="44" Width="63" Height="13" Font="Tahoma, 8pt" TabIndex="8" Text="Conexiones"/>
+  </DialogPage>
+</Report>

@@ -1,0 +1,15 @@
+|||||100+++++            //@"IposV3.ViewModels.(nombreTabla)AddViewModel",
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)AddViewModel", //addviewmodel
+                @"IposV3.Views.(nombreTabla)AddEditView");
+
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)EditViewModel",
+                @"IposV3.Views.(nombreTabla)AddEditView");
+
+            ViewLocator.NameTransformer.AddRule(
+                @"IposV3.ViewModels.(nombreTabla)ShowViewModel",
+                @"IposV3.Views.(nombreTabla)AddEditView");
+
+!!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

@@ -1,0 +1,160 @@
+
+<UserControl x:Class="IposV3.Views.MovtoLoteimportadoListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+                xmlns:SfExt="clr-namespace:SyncfusionExt;assembly=UICommon"
+            xmlns:local="clr-namespace:IposV3"
+            xmlns:localCommon="clr-namespace:UICommon;assembly=UICommon"
+            xmlns:localCont="clr-namespace:Controls;assembly=UICommon"
+            xmlns:localConv="clr-namespace:Converters;assembly=UICommon"
+              xmlns:cbind="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ac="clr-namespace:AdornedControl;assembly=AdornedControl"
+             mc:Ignorable="d"
+             Name="CurrentUserControl"
+            Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.75'}" 
+            Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.75'}"
+             >
+
+    <UserControl.Resources>
+
+        <Style x:Key="customCellStyle" TargetType="Syncfusion:VirtualizingCellsControl">
+            <Setter Property="cal:Message.Attach" Value="[Event MouseDoubleClick] = [Action SelectItemByCell($dataContext)]"/>
+        </Style>
+
+        <Style x:Key="filterControlStyle" TargetType="Syncfusion:GridFilterControl">
+            <Setter Property="FilterMode" Value="AdvancedFilter" />
+        </Style>
+
+
+    </UserControl.Resources>
+
+    <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+        <StackPanel Name="ForePanel"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"   >
+            <localCont:MessageBoxV2 MessageToUser="{Binding MessageToUser}"  Width="10"  HorizontalAlignment="Right"/>
+            <ScrollViewer x:Name="ScrollViewerWrap" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" 
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=10*x/60}" MinHeight="30" >
+                <WrapPanel Name="MainPanel"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" MinWidth="100" MinHeight="100" >
+                    <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"    >
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}">Seleccion de lote importado</TextBlock>
+                    </StackPanel>
+                    <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2*x/12.5}"  Height="Auto"  >
+                        <Label Style="{DynamicResource LabelPanelHeaderTemplate}" Margin="0,0,0,0"  Content="Almacen" />
+                        <ComboBox  x:Name="Almacenid" 
+			                ItemsSource="{Binding Catalogs[Almacen]}"
+                        
+                        SelectedValuePath="Id"
+                        SelectedValue="{Binding ListParam.Almacenid}"
+                        DisplayMemberPath="Nombre" IsEnabled="{cbind:Binding ManejaAlmacen}" />
+                    </StackPanel>
+
+                    <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=4*x/12.5}"  Height="Auto">
+                        <Label Style="{DynamicResource LabelPanelHeaderTemplate}" Margin="0,0,0,0"  Content="Producto" />
+                        <WrapPanel>
+                            <TextBox x:Name="Productoclave" Text="{Binding ListParam.Productoclave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   />
+                            <TextBox x:Name="Productonombre" Text="{Binding ListParam.Productonombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                            <Button  x:Name="ProductoidButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Productoclave')]"  Width="24"  Height="24"   Style="{StaticResource MaterialDesignIconButton}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                </StackPanel>
+                            </Button>
+                        </WrapPanel>
+                    </StackPanel>
+
+                    <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="Auto"  >
+                        <Label  Style="{DynamicResource LabelPanelHeaderTemplate}" VerticalAlignment="Top" Margin="10,1,10,0">Palabras Claves:</Label>
+                        <TextBox x:Name="TSTPalabrasClave" Margin="10,0,10,3" TextWrapping="Wrap" VerticalAlignment="Top"  Height="25"  Text="{Binding KendoParams.GeneralFilter.Value}"
+                         localCommon:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
+                          cal:Message.Attach="[Event KeyDown] = [Action TSTPalabrasClaveKeyDown($pressedKey)]"/>
+
+                    </StackPanel>
+
+                    
+                    <WrapPanel  MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"   >
+                        <Button x:Name="TSBBuscar" VerticalAlignment="Top" Width="43"  Height="30" Margin="10,30,10,0" Style="{StaticResource MaterialDesignIconButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="FileDocumentBoxSearchOutline"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="AddItem"   VerticalAlignment="Top" Width="43"  Margin="0,30,0,0" Height="30" 
+                                Style="{StaticResource MaterialDesignIconButton}"  Visibility="{cbind:Binding Path=AllowAdd}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Add"/>
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
+
+                </WrapPanel>
+            </ScrollViewer>
+
+
+
+
+
+            <ac:AdornedControl IsAdornerVisible="{Binding IsBusy}"
+		        >
+             <ac:AdornedControl.AdornerContent>
+                    <localCont:LoadingWait></localCont:LoadingWait>
+             </ac:AdornedControl.AdornerContent>
+
+             <Syncfusion:SfDataGrid x:Name="SfTableDataGridView" 
+                      ItemsSource="{Binding Items}" 
+                      RowStyle="{StaticResource customCellStyle}"
+                       AllowFiltering="True"  AllowEditing="True"
+                       FilterPopupStyle="{StaticResource filterControlStyle}"
+                      Margin="2,2,2,2"  AutoGenerateColumns="False" Background="#FFFFFFFF" IsReadOnly="True"  RowHeight="35" HorizontalAlignment="Left"   
+                                   MinWidth="100" Width="{Binding ElementName=MainScrollViewer, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=35*x/60}" MinHeight="150"  >
+                <Syncfusion:SfDataGrid.Columns>
+
+
+                    <Syncfusion:GridTextColumn  MappingName="Productonombre" HeaderText="Producto" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Lote" HeaderText="Lote" ColumnSizer="SizeToHeader"/>
+                    
+                    <Syncfusion:GridTextColumn  MappingName="Pedimento" HeaderText="Pedimento" ColumnSizer="SizeToHeader"/>
+                    
+                    <Syncfusion:GridTextColumn  MappingName="Fechaimportacion" HeaderText="Fecha importacion" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridNumericColumn  MappingName="Cantidad" HeaderText="Cantidad" ColumnSizer="SizeToHeader"/>
+
+
+                    <Syncfusion:GridNumericColumn  MappingName="CantidadATomar" HeaderText="Cant. tomar" ColumnSizer="SizeToCells" IsReadOnly="False">
+
+                            <Syncfusion:GridNumericColumn.CellStyle>
+                                <Style TargetType="Syncfusion:GridCell">
+                                    <Setter Property="Background" Value="LightGreen" />
+                                </Style>
+                            </Syncfusion:GridNumericColumn.CellStyle>
+
+                        </Syncfusion:GridNumericColumn>
+
+
+                    <Syncfusion:GridNumericColumn  MappingName="Cantidadendocto" HeaderText="Cantidad en docto" ColumnSizer="SizeToHeader"/>
+
+                    <Syncfusion:GridTextColumn  MappingName="Almacennombre" HeaderText="Almacen" ColumnSizer="SizeToHeader"/>
+
+
+                 </Syncfusion:SfDataGrid.Columns>
+              </Syncfusion:SfDataGrid>
+            </ac:AdornedControl>
+
+
+
+
+            <ScrollViewer HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" 
+                       Height="{Binding ElementName=ForePanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=2*x/60}" MinHeight="50">
+                <StackPanel Margin="200,0,0,0"  >
+                    <Button Width="120" Margin="6" Padding="6" x:Name="Select" Content="Seleccionar"  Foreground="WhiteSmoke"/>
+                </StackPanel>
+            </ScrollViewer>
+
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

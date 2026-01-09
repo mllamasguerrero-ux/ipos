@@ -1,0 +1,214 @@
+create or alter procedure GET_KARDEX (
+    PRODUCTO_ID D_FK,
+    FECHAINI D_FECHA,
+    FECHAFIN D_FECHA,
+    ALMACENID D_FK)
+returns (
+    NUMERO integer,
+    KARDEXID D_FK,
+    DOCTOID D_FK,
+    MOVTOID D_FK,
+    PRODUCTOID D_FK,
+    SUCURSALID D_FK,
+    FECHA D_FECHA,
+    FECHAHORA D_TIMESTAMP,
+    SUCURSALCLAVE D_CLAVE,
+    TIPODOCTOCLAVE D_CLAVE,
+    DOCTOFOLIO D_DOCTOFOLIO,
+    PRODUCTOCLAVE D_CLAVE,
+    PRODUCTODESCRIPCION D_DESCRIPCION,
+    CANTIDADINI D_CANTIDAD,
+    CANTIDADMOV D_CANTIDAD,
+    CANTIDADFIN D_CANTIDAD,
+    CANTIDADAPARTADOINI D_CANTIDAD,
+    CANTIDADAPARTADOMOV D_CANTIDAD,
+    CANTIDADAPARTADOFIN D_CANTIDAD,
+    NOMBREVENDEDOR D_NOMBRE_NULL,
+    SUBTIPODOCTOCLAVE D_CLAVE_NULL)
+as
+declare variable EXISTENCIAINICIAL D_CANTIDAD;
+declare variable FECHAINICIAL D_FECHA;
+declare variable CANTIDADMOVTOSINICIAL D_CANTIDAD;
+declare variable EXISTENCIAINICIALAPARTADO D_CANTIDAD;
+declare variable FECHAINICIALAPARTADO D_FECHA;
+declare variable CANTIDADMOVTOSINICIALAPARTADO D_CANTIDAD;
+BEGIN
+       EXISTENCIAINICIAL = 0;
+       CANTIDADMOVTOSINICIAL = 0;
+       EXISTENCIAINICIALAPARTADO = 0;
+
+--existencia normal
+   -- Tomar existencia inicial de INVENTARIO
+   SELECT sum(CANTIDADINICIAL), MIN(FECHAINICIAL)
+   FROM INVENTARIO
+   WHERE (ALMACENID = :ALMACENID or :ALMACENID = 0 )
+     AND PRODUCTOID = :PRODUCTO_ID
+     AND COALESCE(ESAPARTADO,'N') = 'N'
+   GROUP BY /*ALMACENID,*/ PRODUCTOID,ESAPARTADO
+   INTO :EXISTENCIAINICIAL, :FECHAINICIAL;
+
+   -- Calcular existencia incial antes de la fecha del rango.
+   /*IF (:FECHAINI > :FECHAINICIAL) THEN
+   BEGIN*/
+      SELECT
+         COALESCE(SUM(TD.SENTIDOINVENTARIO * K.CANTIDAD), 0.00)
+      FROM KARDEX K
+         LEFT JOIN DOCTO D
+            ON D.ID = K.DOCTOID
+         LEFT JOIN TIPODOCTO TD
+            ON TD.ID = D.TIPODOCTOID
+      WHERE K.PRODUCTOID = :PRODUCTO_ID
+        AND K.FECHA < :FECHAINI
+        AND (K.ALMACENID = :ALMACENID or :ALMACENID = 0 )
+        AND COALESCE(K.ESAPARTADO,'N') = 'N'
+
+      INTO :CANTIDADMOVTOSINICIAL;
+   /*END
+   ELSE
+   BEGIN
+      CANTIDADMOVTOSINICIAL = 0;
+   END     */
+
+   
+   CANTIDADMOVTOSINICIAL = COALESCE(:CANTIDADMOVTOSINICIAL,0);
+   CANTIDADINI = 0;
+   CANTIDADFIN = :EXISTENCIAINICIAL + :CANTIDADMOVTOSINICIAL;
+
+   --insert into traza(valor) values ('TEST' || cast(:existenciainicial as varchar(10)) || ' -- ' || cast(:cantidadmovtosinicial as varchar(10))  )  ;
+
+-- existencia apartados
+-- Tomar existencia inicial de INVENTARIO
+   SELECT sum(CANTIDADINICIAL), MIN(FECHAINICIAL)
+   FROM INVENTARIO
+   WHERE (ALMACENID = :ALMACENID or :ALMACENID = 0 )
+     AND PRODUCTOID = :PRODUCTO_ID
+     AND COALESCE(ESAPARTADO,'N') = 'S'
+   GROUP BY /*ALMACENID,*/ PRODUCTOID,ESAPARTADO
+   INTO :EXISTENCIAINICIALAPARTADO, :FECHAINICIALAPARTADO;
+
+   -- Calcular existencia incial antes de la fecha del rango.
+   IF (:FECHAINI > :FECHAINICIALAPARTADO) THEN
+   BEGIN
+      SELECT
+         COALESCE(SUM(TD.SENTIDOINVENTARIO * K.CANTIDAD), 0.00)
+      FROM KARDEX K
+         LEFT JOIN DOCTO D
+            ON D.ID = K.DOCTOID
+         LEFT JOIN TIPODOCTO TD
+            ON TD.ID = D.TIPODOCTOID
+
+      WHERE K.PRODUCTOID = :PRODUCTO_ID
+        AND K.FECHA < :FECHAINI
+        AND  (K.ALMACENID = :ALMACENID or :ALMACENID = 0 )
+        AND COALESCE(K.ESAPARTADO,'N') = 'S'
+      INTO :CANTIDADMOVTOSINICIALAPARTADO;
+   END
+   ELSE
+   BEGIN
+      CANTIDADMOVTOSINICIALAPARTADO = 0;
+   END
+
+
+   CANTIDADAPARTADOINI = 0;
+   CANTIDADAPARTADOFIN = :EXISTENCIAINICIALAPARTADO + :CANTIDADMOVTOSINICIALAPARTADO;
+
+
+     NUMERO = 0;
+
+   FOR SELECT
+      K.ID,
+      K.DOCTOID,
+      K.MOVTOID,
+      K.PRODUCTOID,
+      D.SUCURSALID,
+      D.FECHA,
+      D.FECHAHORA,
+      S.CLAVE,
+
+      CASE WHEN TD.ID = 25 AND K.ESAPARTADO = 'N' THEN 'PREAPARTADO'
+           WHEN TD.ID = 25 AND K.ESAPARTADO = 'S' AND K.CANTIDAD < 0 THEN 'ENTREGA APARTADOS'
+           WHEN TD.ID = 26 AND K.ESAPARTADO = 'N' THEN 'PRE CANCELACION APARTADO'
+      ELSE TD.CLAVE END ,
+
+
+      D.FOLIO,
+      P.CLAVE,
+      P.DESCRIPCION1,
+      CASE WHEN COALESCE(K.esapartado,'N') = 'S' then 0 ELSE  TD.SENTIDOINVENTARIO * K.CANTIDAD end  AS CANTIDADNORMAL,  
+      CASE WHEN COALESCE(K.esapartado,'N') = 'S' then TD.sentidoinventarioapartados * K.CANTIDAD ELSE 0  end  AS CANTIDADAPARTADO ,
+      V.NOMBRE AS NOMBREVENDEDOR  ,
+      STD.CLAVE SUBTIPODOCTOCLAVE
+   FROM KARDEX K
+      LEFT JOIN DOCTO D
+         ON D.ID = K.DOCTOID
+      LEFT JOIN TIPODOCTO TD
+         ON TD.ID = (case when D.esapartado = 'S' AND D.TIPODOCTOID = '21' THEN 25 ELSE D.TIPODOCTOID END )      
+      LEFT JOIN SUBTIPODOCTO STD
+         ON STD.ID = COALESCE(D.subtipodoctoid,0)
+      LEFT JOIN PRODUCTO P
+         ON P.ID = K.PRODUCTOID
+      LEFT JOIN SUCURSAL S
+         ON S.ID = D.SUCURSALID    
+      LEFT JOIN persona V ON V.ID = D.vendedorid
+   WHERE K.PRODUCTOID = :PRODUCTO_ID
+     AND K.FECHA BETWEEN :FECHAINI AND :FECHAFIN
+     AND  (K.ALMACENID = :ALMACENID or :ALMACENID = 0 )
+   ORDER BY K.ID
+   INTO
+      :KARDEXID,
+      :DOCTOID ,
+      :MOVTOID ,
+      :PRODUCTOID ,
+      :SUCURSALID ,
+      :FECHA ,
+      :FECHAHORA ,
+      :SUCURSALCLAVE ,
+      :TIPODOCTOCLAVE ,
+      :DOCTOFOLIO ,
+      :PRODUCTOCLAVE ,
+      :PRODUCTODESCRIPCION ,
+      :CANTIDADMOV,
+      :CANTIDADAPARTADOMOV,
+      :NOMBREVENDEDOR ,
+      :SUBTIPODOCTOCLAVE
+   DO
+   BEGIN
+      NUMERO = :NUMERO + 1;
+      CANTIDADINI = :CANTIDADFIN ;
+      CANTIDADFIN = :CANTIDADINI + :CANTIDADMOV;
+
+      
+      CANTIDADAPARTADOINI = :CANTIDADAPARTADOFIN ;
+      CANTIDADAPARTADOFIN = :CANTIDADAPARTADOINI + :CANTIDADAPARTADOMOV;
+
+      SUSPEND;
+   END
+
+   if (:NUMERO = 0) then
+   BEGIN
+    numero = 0;
+    kardexid = 0;
+    doctoid = 0;
+    movtoid = 0;
+    productoid = 0;
+    sucursalid = 0;
+    fecha = current_date;
+    fechahora = current_date;
+    sucursalclave = '--';
+    tipodoctoclave = '--';
+    doctofolio = 0;
+    productoclave = '--';
+    productodescripcion = '-- sin movimientos --';
+    cantidadini = 0;
+    cantidadmov = 0;
+    cantidadfin = 0;   
+    cantidadapartadoini = 0;
+    cantidadapartadomov = 0;
+    cantidadapartadofin = 0;
+    NOMBREVENDEDOR = '';
+    SUBTIPODOCTOCLAVE = '';
+    -- suspend; sin suspend es mejor, no regresa renglon falso
+   END
+
+
+END

@@ -1,0 +1,22 @@
+CREATE TABLE R_DOCTOPAGOMOVIL (
+    ID                     D_PK NOT NULL /* D_PK = BIGINT NOT NULL */,
+    ACTIVO                 D_BOOLCS /* D_BOOLCS = CHAR(1) DEFAULT 'S' NOT NULL CHECK (VALUE IN ('S', 'N')) */,
+    CREADO                 D_TIMESTAMP /* D_TIMESTAMP = TIMESTAMP default current_timestamp NOT NULL */,
+    CREADOPOR_USERID       D_FK /* D_FK = BIGINT */,
+    MODIFICADO             D_TIMESTAMP /* D_TIMESTAMP = TIMESTAMP default current_timestamp NOT NULL */,
+    MODIFICADOPOR_USERID   D_FK /* D_FK = BIGINT */,
+    PAGOMOVILID            D_FK /* D_FK = BIGINT */,
+    COBRANZAID             D_FK /* D_FK = BIGINT */,
+    ESTATUS                D_FK /* D_FK = BIGINT */,
+    FECHA                  D_FECHA /* D_FECHA = DATE */,
+    FECHAHORA              D_TIMESTAMP /* D_TIMESTAMP = TIMESTAMP default current_timestamp NOT NULL */,
+    CORTEID                D_FK /* D_FK = BIGINT */,
+    IMPORTE                D_IMPORTE /* D_IMPORTE = NUMERIC(18,2) DEFAULT 0.00 */,
+    REVERTIDO              D_BOOLCN /* D_BOOLCN = CHAR(1) DEFAULT 'N' NOT NULL CHECK (VALUE IN ('S', 'N')) */,
+    R_DOCTOPAGOMOVILREFID  D_FK /* D_FK = BIGINT */,
+    TIPOPAGOID             D_FK /* D_FK = BIGINT */,
+    VENTACOBRANZA          D_STDTEXT_64 /* D_STDTEXT_64 = VARCHAR(64) */,
+    SALDOANTERIOR          D_PRECIO /* D_PRECIO = NUMERIC(18,2) DEFAULT 0.00 */,
+    SALDONUEVO             D_PRECIO /* D_PRECIO = NUMERIC(18,2) DEFAULT 0.00 */,
+    SALDOPAGO              D_PRECIO /* D_PRECIO = NUMERIC(18,2) DEFAULT 0.00 */
+);

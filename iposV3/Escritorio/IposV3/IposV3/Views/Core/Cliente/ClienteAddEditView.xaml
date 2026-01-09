@@ -1,0 +1,1180 @@
+<UserControl
+        x:Class="IposV3.Views.ClienteAddEditView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cal="http://www.caliburnproject.org"
+        xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:cbind="clr-namespace:CalcBinding;assembly=CalcBinding"
+        xmlns:local="clr-namespace:IposV3"
+            xmlns:localCommon="clr-namespace:UICommon;assembly=UICommon"
+        xmlns:localCont="clr-namespace:Controls;assembly=UICommon"
+        xmlns:localConv="clr-namespace:Converters;assembly=UICommon"
+        xmlns:ac="clr-namespace:AdornedControl;assembly=AdornedControl"
+        mc:Ignorable="d"  
+        Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.85'}" 
+        Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.75'}"
+        >
+    <UserControl.Resources>
+        <localConv:DecimalNullableConverter x:Key="DecimalNullableConverter"/>
+        <localConv:IntNullableConverter x:Key="IntNullableConverter"/>
+        <localConv:DateTimeOffsetToDateTimeConverter x:Key="DateTimeOffsetToDateTimeConverter"/>
+    </UserControl.Resources>
+
+
+    <ScrollViewer Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.83'}"
+                HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Padding="20,20,20,20" Margin="0 0 0 0 "  IsEnabled="{cbind:Binding Path=!IsBusy}" Opacity="{Binding Opacity}">
+        <WrapPanel Name="MainPanel" HorizontalAlignment="Stretch"  VerticalAlignment="Top"  >
+            <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"  Height="5"  >
+                <localCont:MessageBoxV2 MessageToUser="{Binding MessageToUser}"  Width="10"  HorizontalAlignment="Right"/>
+            </StackPanel>
+
+
+
+            <ac:AdornedControl  IsAdornerVisible="{Binding IsBusy}">
+                <ac:AdornedControl.AdornerContent>
+                    <localCont:LoadingWait></localCont:LoadingWait>
+                </ac:AdornedControl.AdornerContent>
+                <WrapPanel HorizontalAlignment="Stretch"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding Path=!IsBusy}">
+
+
+                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=8*x/12.5}">
+
+                        <Button  x:Name="Back" Style="{StaticResource MaterialDesignIconButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ArrowLeft"/>
+                            </StackPanel>
+                        </Button>
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}">Cliente</TextBlock>
+                    </WrapPanel>
+
+
+                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=4.2*x/12.5}">
+
+                        <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=4*x/12.5}"  Height="65"  >
+                            <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="0,0,0,0" Padding="0,0,0,0"  Content="Buscar campo" />
+
+                            <localConv:SfTextBoxExt2 x:Name="BusquedaCampo" 
+                                                 MinWidth="180"
+                                                 HorizontalAlignment="Stretch" 
+                                                 VerticalAlignment="Center"
+                                                 Margin="0,-2,6,0"
+                                                 IsHitTestVisible="True"
+                                                 ForceCursor="True"
+                                                 BorderThickness="0,0,0,2"
+                                            BorderBrush="DarkGray"
+                                            Background="#F9F9F9F9"
+                                                 localCommon:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="localConv:SfTextBoxExt2.Text"
+                                            
+                                                            Height="18"
+                                                            SearchItemPath="Text"
+                                                            SuggestionMode="Contains"
+                                                            AutoCompleteMode="Suggest" Loaded="BusquedaCampo_Loaded" SelectedItemChanged="BusquedaCampo_SelectedItemChanged"  >
+
+                                <localConv:SfTextBoxExt2.AutoCompleteItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding FullText}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </localConv:SfTextBoxExt2.AutoCompleteItemTemplate>
+                            </localConv:SfTextBoxExt2>
+                        </StackPanel>
+
+                    </WrapPanel>
+
+
+
+
+
+                    <TabControl Template="{DynamicResource TabControlControlTemplate1}" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}"  SelectionChanged="TabControl1_SelectionChanged">
+
+                        <TabItem HorizontalAlignment="Stretch" Margin="0,0,0,10" Header="General">
+                            <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}">
+                                <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+
+                                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+                                        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,10">
+                                            <Border BorderThickness="0,0,0,0" BorderBrush="LightBlue"  >
+                                                <WrapPanel Margin="0,0,0,0">
+
+
+                                                    <StackPanel Margin="0,0,0,0"  MinWidth="80" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Clave*" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}"  x:Name="Clave" Text="{Binding Cliente.Clave}" Margin="10,0,10,0" Padding="0,0,0,0" IsReadOnly="{Binding BIsReadOnly}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Clave}"  Margin="0,0,0,0" Padding="0,0,0,0" Height="12" FontSize="10"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="20" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Activo*" HorizontalAlignment="Center" />
+                                                        <CheckBox  x:Name="Activo"  IsChecked="{Binding Cliente.Activo, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Activo, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Activo}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Nombres" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Nombres" Text="{Binding Cliente.Nombres}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Nombres}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Apellidos" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Apellidos" Text="{Binding Cliente.Apellidos}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Apellidos}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Razon social" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Razonsocial" Text="{Binding Cliente.Razonsocial}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Razonsocial}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Rfc" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Rfc" Text="{Binding Cliente.Rfc}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Rfc}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="80" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  MinHeight="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="0,0,0,0"  Content="Vendedor" />
+                                                        <WrapPanel>
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_comision_VendedorClave" Text="{Binding Cliente.Cliente_comision_VendedorClave}" Margin="10,0,0,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BoolBindingExpression[VendedorReadOnly]}"  />
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_comision_VendedorNombre" Text="{Binding Cliente.Cliente_comision_VendedorNombre}" Margin="10,0,0,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                            <Button  x:Name="Cliente_comision_VendedoridButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_comision_VendedorClave')]"  Width="20"  Height="20" Visibility="{cbind:Binding Path=!BoolBindingExpression[VendedorReadOnly]}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_comision_VendedorClave}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  MinHeight="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="0,0,0,0"  Content="Tipo cliente" />
+                                                        <WrapPanel>
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="SubtipoclienteClave" Text="{Binding Cliente.SubtipoclienteClave}" Margin="10,0,0,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="SubtipoclienteNombre" Text="{Binding Cliente.SubtipoclienteNombre}" Margin="10,0,0,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                            <Button  x:Name="SubtipoclienteidButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('SubtipoclienteClave')]"  Width="20"  Height="20" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=SubtipoclienteClave}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="0,0,0,0"  Content="Vigencia" />
+                                                        <DatePicker x:Name="Vigencia" HorizontalAlignment="Left" Margin="0,0,0,0"  VerticalAlignment="Top" SelectedDate="{Binding Converter={StaticResource DateTimeOffsetToDateTimeConverter}, Path=Cliente.Vigencia}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Vigencia}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                </WrapPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </WrapPanel>
+
+                                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+                                        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,10">
+                                            <Border BorderThickness="0,2,0,0" BorderBrush="LightBlue"  >
+                                                <WrapPanel Margin="0,0,0,0">
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Tel 1" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Telefono1" Text="{Binding Cliente.Telefono1}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Telefono1}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Tel 2" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Telefono2" Text="{Binding Cliente.Telefono2}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Telefono2}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Cel" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Celular" Text="{Binding Cliente.Celular}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Celular}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Nextel" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Nextel" Text="{Binding Cliente.Nextel}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Nextel}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Email 1" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Email1" Text="{Binding Cliente.Email1}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Email1}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Email 2" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Email2" Text="{Binding Cliente.Email2}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Email2}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Email 3" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Email3" Text="{Binding Cliente.Email3}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Email3}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Email 4" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Email4" Text="{Binding Cliente.Email4}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Email4}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                </WrapPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </WrapPanel>
+
+                                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+                                        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,0">
+                                            <Border BorderThickness="0,2,0,0" BorderBrush="LightBlue"  >
+                                                <WrapPanel Margin="0,0,0,0">
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="SAT Pais" />
+                                                        <WrapPanel>
+                                                            <TextBox x:Name="Cliente_fact_elect_Sat_paisClave" Text="{Binding Cliente.Cliente_fact_elect_Sat_paisClave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                            <TextBox x:Name="Cliente_fact_elect_Sat_paisNombre" Text="{Binding Cliente.Cliente_fact_elect_Sat_paisNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                            <Button  x:Name="Cliente_fact_elect_Sat_id_paisButton" VerticalAlignment="Top" Margin="5,0,5,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_fact_elect_Sat_paisClave')]"  Width="24"  Height="24" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Sat_paisClave}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Margin="0,0,10,0" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Estado" />
+                                                        <ComboBox Style="{DynamicResource ComboBoxFieldFormTemplate}" x:Name="Domicilio_Estado" ItemsSource="{Binding Catalogs[Estadopais]}"
+                                    SelectedValuePath="Clave"
+                                    SelectedValue="{Binding Cliente.Domicilio_Estado}"
+                                    DisplayMemberPath="Nombre"
+                                    IsReadOnly="{Binding BIsReadOnly}"/>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilio_Estado}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="C.P." />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Domicilio_Codigopostal" Text="{Binding Cliente.Domicilio_Codigopostal}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilio_Codigopostal}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Localidad SAT" />
+                                                        <WrapPanel >
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_fact_elect_Sat_LocalidadClave" Text="{Binding Cliente.Cliente_fact_elect_Sat_LocalidadClave}" Margin="0,0,0,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_fact_elect_Sat_LocalidadNombre" Text="{Binding Cliente.Cliente_fact_elect_Sat_LocalidadNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                            <Button  x:Name="Cliente_fact_elect_Sat_LocalidadidButton" VerticalAlignment="Top" Margin="5,0,5,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_fact_elect_Sat_LocalidadClave')]"  Width="24"  Height="20" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Sat_LocalidadClave}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Ciudad" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Domicilio_Ciudad" Text="{Binding Cliente.Domicilio_Ciudad}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilio_Ciudad}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Colonia SAT" />
+                                                        <WrapPanel>
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_fact_elect_Sat_ColoniaClave" Text="{Binding Cliente.Cliente_fact_elect_Sat_ColoniaClave}" Margin="10,0,10,0"  HorizontalAlignment="Left" MaxWidth="75"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}"  x:Name="Cliente_fact_elect_Sat_ColoniaNombre" Text="{Binding Cliente.Cliente_fact_elect_Sat_ColoniaNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" MaxWidth="150"  IsReadOnly="True" />
+                                                            <Button  x:Name="Cliente_fact_elect_Sat_ColoniaidButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_fact_elect_Sat_ColoniaClave')]"  Width="24"  Height="20" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Sat_ColoniaClave}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Municipio SAT" />
+                                                        <WrapPanel>
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_fact_elect_Sat_MunicipioClave" Text="{Binding Cliente.Cliente_fact_elect_Sat_MunicipioClave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_fact_elect_Sat_MunicipioNombre" Text="{Binding Cliente.Cliente_fact_elect_Sat_MunicipioNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                            <Button  x:Name="Cliente_fact_elect_Sat_MunicipioidButton" VerticalAlignment="Top" Margin="5,0,5,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_fact_elect_Sat_MunicipioClave')]"  Width="24"  Height="20" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Sat_MunicipioClave}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Calle" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Domicilio_Calle" Text="{Binding Cliente.Domicilio_Calle}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilio_Calle}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="No. Ext." />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Domicilio_Numeroexterior" Text="{Binding Cliente.Domicilio_Numeroexterior}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilio_Numeroexterior}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="No. Int." />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Domicilio_Numerointerior" Text="{Binding Cliente.Domicilio_Numerointerior}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilio_Numerointerior}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Referencia" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Domicilio_Referencia" Text="{Binding Cliente.Domicilio_Referencia}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilio_Referencia}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Distancia*" />
+                                                        <Syncfusion:DoubleTextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_fact_elect_Distancia" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cliente.Cliente_fact_elect_Distancia, Converter={StaticResource DecimalNullableConverter}}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="{Binding BIsReadOnly}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Distancia}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+
+
+
+
+
+                                                </WrapPanel>
+                                                
+                                                
+                                                
+                                            </Border>
+                                        </StackPanel>
+                                    </WrapPanel>
+
+
+                                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+                                        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,0">
+                                            <TextBlock FontWeight="Medium"  HorizontalAlignment="Stretch"  VerticalAlignment="Top">Facturacion electronica/Poliza</TextBlock>
+                                            <Border BorderThickness="0,2,0,0" BorderBrush="LightBlue"  >
+                                                <WrapPanel Margin="0,10,0,0">
+
+                                                    <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Retiene isr*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_fact_elect_Retieneisr"  IsChecked="{Binding Cliente.Cliente_fact_elect_Retieneisr, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BoolBindingExpression[ArrendatarioReadOnly]}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_fact_elect_Retieneisr, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Retieneisr}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Retiene iva*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_fact_elect_Retieneiva"  IsChecked="{Binding Cliente.Cliente_fact_elect_Retieneiva, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BoolBindingExpression[ArrendatarioReadOnly]}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_fact_elect_Retieneiva, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Retieneiva}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Uso CFDI" />
+                                                        <WrapPanel>
+                                                            <TextBox x:Name="Cliente_fact_elect_Sat_usocfdiClave" Text="{Binding Cliente.Cliente_fact_elect_Sat_usocfdiClave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                            <TextBox x:Name="Cliente_fact_elect_Sat_usocfdiNombre" Text="{Binding Cliente.Cliente_fact_elect_Sat_usocfdiNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                            <Button  x:Name="Cliente_fact_elect_Sat_usocfdiidButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_fact_elect_Sat_usocfdiClave')]"  Width="24"  Height="24" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Sat_usocfdiClave}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Regimen fiscal SAT" />
+                                                        <ComboBox  x:Name="Cliente_fact_elect_Sat_Regimenfiscalid" 
+			ItemsSource="{Binding Catalogs[Sat_regimenfiscal]}"
+                        
+                        SelectedValuePath="Id"
+                        SelectedValue="{Binding Cliente.Cliente_fact_elect_Sat_Regimenfiscalid}"
+                        DisplayMemberPath="Nombre"
+ 			IsReadOnly="{Binding BIsReadOnly}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Sat_Regimenfiscalid}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Generar recibo electronico" />
+                                                        <CheckBox  x:Name="Cliente_fact_elect_Generarreciboelectronico"  IsChecked="{Binding Cliente.Cliente_fact_elect_Generarreciboelectronico, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_fact_elect_Generarreciboelectronico, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Generarreciboelectronico}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Desglose ieps*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_poliza_Desgloseieps"  IsChecked="{Binding Cliente.Cliente_poliza_Desgloseieps, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BoolBindingExpression[DesgloseIepsReadOnly]}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_poliza_Desgloseieps, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_poliza_Desgloseieps}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Exento iva*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_pago_parametros_Exentoiva"  IsChecked="{Binding Cliente.Cliente_pago_parametros_Exentoiva, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding Path=!BoolBindingExpression[TienePermisoExentarIvaClientes]}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_pago_parametros_Exentoiva, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Exentoiva}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  Height="65" Visibility="{cbind:Binding Path=!BoolBindingExpression[PlazoXProductoHide]}"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Separar productos x plazo*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_poliza_Separarprodxplazo"  IsChecked="{Binding Cliente.Cliente_poliza_Separarprodxplazo, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_poliza_Separarprodxplazo, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_poliza_Separarprodxplazo}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Genera comprobante trasl" />
+                                                        <CheckBox x:Name="Cliente_fact_elect_Generacomprobtrasl"  IsChecked="{Binding Cliente.Cliente_fact_elect_Generacomprobtrasl, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_fact_elect_Generacomprobtrasl, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Generacomprobtrasl}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Genera cartaporte" />
+                                                        <CheckBox x:Name="Cliente_fact_elect_Generacartaporte"  IsChecked="{Binding Cliente.Cliente_fact_elect_Generacartaporte, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_fact_elect_Generacartaporte, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Generacartaporte}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Cuenta ieps" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_poliza_Cuentaieps" Text="{Binding Cliente.Cliente_poliza_Cuentaieps}" Margin="10,0,10,0"  IsReadOnly="{Binding BoolBindingExpression[CuentaIepsReadOnly]}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_poliza_Cuentaieps}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.4*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Cuenta contpaq" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_poliza_Cuentacontpaq" Text="{Binding Cliente.Cliente_poliza_Cuentacontpaq}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_poliza_Cuentacontpaq}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.8*x/12.5}"  MinHeight="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Moneda" />
+                                                        <WrapPanel>
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_pago_parametros_MonedaClave" Text="{Binding Cliente.Cliente_pago_parametros_MonedaClave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_pago_parametros_MonedaNombre" Text="{Binding Cliente.Cliente_pago_parametros_MonedaNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                            <Button x:Name="Cliente_pago_parametros_MonedaidButton" VerticalAlignment="Top" Margin="5,0,5,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_pago_parametros_MonedaClave')]"  Width="24"  Height="20" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_MonedaClave}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+
+
+                                                </WrapPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </WrapPanel>
+
+
+                                </WrapPanel>
+                                
+                            </WrapPanel>
+                        </TabItem>
+
+
+                        <TabItem HorizontalAlignment="Stretch" Margin="0,0,0,10" Header="Pagos">
+
+                            <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}">
+                                <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+
+
+
+
+
+                                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+                                        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,10">
+                                            <TextBlock  FontWeight="Medium"  HorizontalAlignment="Stretch"  VerticalAlignment="Top">Datos de pago</TextBlock>
+                                            <Border BorderThickness="0,1,0,0" BorderBrush="LightBlue"  >
+                                                <WrapPanel Margin="0,10,0,0">
+
+                                                    <StackPanel MinWidth="10" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Hab. Tarjeta*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_pago_parametros_Hab_pagotarjeta"  IsChecked="{Binding Cliente.Cliente_pago_parametros_Hab_pagotarjeta, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_pago_parametros_Hab_pagotarjeta, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Hab_pagotarjeta}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="10" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Hab. Credito*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_pago_parametros_Hab_pagocredito"  IsChecked="{Binding Cliente.Cliente_pago_parametros_Hab_pagocredito, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding BoolBindingExpression[TienePermisoCreditoCobranza]}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_pago_parametros_Hab_pagocredito, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Hab_pagocredito}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="10" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Hab. Transf.*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_pago_parametros_Hab_pagotransferencia"  IsChecked="{Binding Cliente.Cliente_pago_parametros_Hab_pagotransferencia, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding Path=BoolBindingExpression[TienePermisoCreditoCobranza]}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_pago_parametros_Hab_pagotransferencia, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Hab_pagotransferencia}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="10" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Hab. Efectivo*" HorizontalAlignment="Center" />
+                                                        <CheckBox  x:Name="Cliente_pago_parametros_Hab_pagoefectivo"  IsChecked="{Binding Cliente.Cliente_pago_parametros_Hab_pagoefectivo, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_pago_parametros_Hab_pagoefectivo, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Hab_pagoefectivo}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="10" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Hab. Cheque*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_pago_parametros_Hab_pagocheque"  IsChecked="{Binding Cliente.Cliente_pago_parametros_Hab_pagocheque, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding Path=BoolBindingExpression[TienePermisoCreditoCobranza]}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_pago_parametros_Hab_pagocheque, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Hab_pagocheque}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="10" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Bloqueado*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_pago_parametros_Bloqueado"  IsChecked="{Binding Cliente.Cliente_pago_parametros_Bloqueado, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding Path=BoolBindingExpression[TienePermisoCreditoCobranza]}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_pago_parametros_Bloqueado, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Bloqueado}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Nota de bloqueo" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_pago_parametros_Bloqueonot" Text="{Binding Cliente.Cliente_pago_parametros_Bloqueonot}" Margin="10,0,10,0"  IsReadOnly="{cbind:Binding Path=!BoolBindingExpression[TienePermisoCreditoCobranza]}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Bloqueonot}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Lim. Credito*" />
+                                                        <Syncfusion:DoubleTextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_pago_parametros_Limitecredito" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cliente.Cliente_pago_parametros_Limitecredito, Converter={StaticResource DecimalNullableConverter}}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="{cbind:Binding Path=!BoolBindingExpression[TienePermisoCreditoCobranza]}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Limitecredito}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Dias plazo" />
+                                                        <Syncfusion:IntegerTextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_pago_parametros_Dias"  HorizontalAlignment="Stretch"  Margin="10,0,10,0" MinWidth="100" NumberGroupSeparator=","  TextWrapping="Wrap"  VerticalAlignment="Top" Value="{Binding Cliente.Cliente_pago_parametros_Dias, Converter={StaticResource IntNullableConverter}}"  IsScrollingOnCircle="False" IsReadOnly="{cbind:Binding Path=!BoolBindingExpression[TienePermisoCreditoCobranza]}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Dias}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Dias extra" />
+                                                        <Syncfusion:IntegerTextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_pago_parametros_Dias_extr"  HorizontalAlignment="Stretch"  Margin="10,0,10,0" MinWidth="100" NumberGroupSeparator=","  TextWrapping="Wrap"  VerticalAlignment="Top" Value="{Binding Cliente.Cliente_pago_parametros_Dias_extr, Converter={StaticResource IntNullableConverter}}"  IsScrollingOnCircle="False" IsReadOnly="{cbind:Binding Path=!BoolBindingExpression[TienePermisoCreditoCobranza]}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Dias_extr}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Revision" />
+                                                        <ComboBox  x:Name="Cliente_pago_parametros_Revision" 
+			ItemsSource="{Binding Catalogs[DiasDeLaSemana]}"
+                        
+                        SelectedValuePath="Clave"
+                        SelectedValue="{Binding Cliente.Cliente_pago_parametros_Revision}"
+                        DisplayMemberPath="Nombre"
+ 			IsReadOnly="{cbind:Binding Path=!BoolBindingExpression[TienePermisoCreditoCobranza]}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Revision}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Pagos" />
+                                                        <ComboBox  x:Name="Cliente_pago_parametros_Pagos" 
+			ItemsSource="{Binding Catalogs[DiasDeLaSemana]}"
+                        
+                        SelectedValuePath="Clave"
+                        SelectedValue="{Binding Cliente.Cliente_pago_parametros_Pagos}"
+                        DisplayMemberPath="Nombre"
+ 			IsReadOnly="{cbind:Binding Path=!BoolBindingExpression[TienePermisoCreditoCobranza]}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Pagos}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Lista precio" />
+                                                        <ComboBox Style="{DynamicResource ComboBoxFieldFormTemplate}" x:Name="Cliente_precio_Listaprecioid" 
+			ItemsSource="{Binding Catalogs[Tipoprecio]}"
+                        
+                        SelectedValuePath="Id"
+                        SelectedValue="{Binding Cliente.Cliente_precio_Listaprecioid}"
+                        DisplayMemberPath="Nombre"
+ 			IsReadOnly="{Binding BIsReadOnly}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_precio_Listaprecioid}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Super lista precio" />
+                                                        <ComboBox  Style="{DynamicResource ComboBoxFieldFormTemplate}" x:Name="Cliente_precio_Superlistaprecioid" 
+			                                                        ItemsSource="{Binding Catalogs[Tipoprecio]}"
+                        
+                                                                                SelectedValuePath="Id"
+                                                                                SelectedValue="{Binding Cliente.Cliente_precio_Superlistaprecioid}"
+                                                                                DisplayMemberPath="Nombre"
+ 			                                                        IsReadOnly="{Binding BoolBindingExpression[ManejaSuperListaPrecioReadOnly]}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_precio_Superlistaprecioid}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="% Com E.*" />
+                                                        <Syncfusion:DoubleTextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_comision_Por_come" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cliente.Cliente_comision_Por_come, Converter={StaticResource DecimalNullableConverter}}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="{cbind:Binding Path=!BoolBindingExpression[TienePermisoCreditoCobranza]}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_comision_Por_come}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Serv. a dom." />
+                                                        <CheckBox  x:Name="Cliente_comision_Servicioadomicilio"  IsChecked="{Binding Cliente.Cliente_comision_Servicioadomicilio, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_comision_Servicioadomicilio, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_comision_Servicioadomicilio}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                </WrapPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </WrapPanel>
+
+                                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+                                        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,10">
+                                            <TextBlock  FontWeight="Medium"  HorizontalAlignment="Stretch"  VerticalAlignment="Top">Pagos en abonos</TextBlock>
+                                            <Border BorderThickness="0,2,0,0" BorderBrush="LightBlue"  >
+                                                <WrapPanel Margin="0,10,0,0">
+
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.8*x/12.5}"  MinHeight="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Forma de pago en abonos" />
+                                                        <WrapPanel>
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_pago_parametros_Creditoformapagoabonos_Clave" Text="{Binding Cliente.Cliente_pago_parametros_Creditoformapagoabonos_Clave}" Margin="10,0,0,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BoolBindingExpression[VersionCFDI3340Hide]}" />
+                                                            <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_pago_parametros_Creditoformapagoabonos_Nombre" Text="{Binding Cliente.Cliente_pago_parametros_Creditoformapagoabonos_Nombre}" Margin="10,0,0,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                            <Button  x:Name="Cliente_pago_parametros_CreditoformapagoabonosButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_pago_parametros_Creditoformapagoabonos_Clave')]"  Width="20"  Height="24" Visibility="{cbind:Binding Path=!BoolBindingExpression[VersionCFDI3340Hide]}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Creditoformapagoabonos_Clave}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.8*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Forma de pago SAT en abonos" />
+                                                        <WrapPanel>
+                                                            <TextBox x:Name="Cliente_fact_elect_Creditoformapagosatabonos_Clave" Text="{Binding Cliente.Cliente_fact_elect_Creditoformapagosatabonos_Clave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                            <TextBox x:Name="Cliente_fact_elect_Creditoformapagosatabonos_Nombre" Text="{Binding Cliente.Cliente_fact_elect_Creditoformapagosatabonos_Nombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                            <Button  x:Name="Cliente_fact_elect_CreditoformapagosatabonosButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_fact_elect_Creditoformapagosatabonos_Clave')]"  Width="24"  Height="24" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="Binoculars"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Creditoformapagosatabonos_Clave}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+                                                    
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Referencia abonos" />
+                                                        <TextBox Style="{DynamicResource TextBoxFieldFormTemplate}" x:Name="Cliente_pago_parametros_Creditoreferenciaabonos" Text="{Binding Cliente.Cliente_pago_parametros_Creditoreferenciaabonos}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Creditoreferenciaabonos}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Parcialidades*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_pago_parametros_Pagoparcialidades"  IsChecked="{Binding Cliente.Cliente_pago_parametros_Pagoparcialidades, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_pago_parametros_Pagoparcialidades, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Pagoparcialidades}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Cargo x venta c/tarj*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_pago_parametros_Cargoxventacontarjeta"  IsChecked="{Binding Cliente.Cliente_pago_parametros_Cargoxventacontarjeta, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_pago_parametros_Cargoxventacontarjeta, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Cargoxventacontarjeta}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="C/tarj.  prec. Lista*" HorizontalAlignment="Center" />
+                                                        <CheckBox x:Name="Cliente_pago_parametros_Pagotarjmenorpreciolista"  IsChecked="{Binding Cliente.Cliente_pago_parametros_Pagotarjmenorpreciolista, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                        <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_pago_parametros_Pagotarjmenorpreciolista, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_parametros_Pagotarjmenorpreciolista}"  Margin="0,0,0,0"/>
+                                                    </StackPanel>
+
+
+                                                </WrapPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </WrapPanel>
+
+
+
+
+                                </WrapPanel>
+
+
+                            </WrapPanel>
+
+                        </TabItem>
+
+
+
+                        <TabItem HorizontalAlignment="Stretch" Margin="0,0,0,10" Header="Contacto/Datos Entrega">
+
+                            <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}">
+                                <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+                                    <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,0">
+                                        <TextBlock  FontWeight="Medium"  HorizontalAlignment="Stretch"  VerticalAlignment="Top">Contacto 1</TextBlock>
+                                        <Border BorderThickness="0,2,0,0" BorderBrush="LightBlue"  >
+                                            <WrapPanel Margin="0,10,0,0">
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Nombre" />
+                                                    <TextBox x:Name="Contacto1_Nombre" Text="{Binding Cliente.Contacto1_Nombre}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Nombre}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Email" />
+                                                    <TextBox x:Name="Contacto1_Email" Text="{Binding Cliente.Contacto1_Email}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Email}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Tel." />
+                                                    <TextBox x:Name="Contacto1_Telefono1" Text="{Binding Cliente.Contacto1_Telefono1}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Telefono1}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Calle" />
+                                                    <TextBox x:Name="Contacto1_Domicilio_Calle" Text="{Binding Cliente.Contacto1_Domicilio_Calle}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Domicilio_Calle}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.6*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="No. Ext." />
+                                                    <TextBox x:Name="Contacto1_Domicilio_Numeroexterior" Text="{Binding Cliente.Contacto1_Domicilio_Numeroexterior}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Domicilio_Numeroexterior}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.6*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="No. Int." />
+                                                    <TextBox x:Name="Contacto1_Domicilio_Numerointerior" Text="{Binding Cliente.Contacto1_Domicilio_Numerointerior}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Domicilio_Numerointerior}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Colonia" />
+                                                    <TextBox x:Name="Contacto1_Domicilio_Colonia" Text="{Binding Cliente.Contacto1_Domicilio_Colonia}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Domicilio_Colonia}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Ciudad" />
+                                                    <TextBox x:Name="Contacto1_Domicilio_Ciudad" Text="{Binding Cliente.Contacto1_Domicilio_Ciudad}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Domicilio_Ciudad}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Municipio" />
+                                                    <TextBox x:Name="Contacto1_Domicilio_Municipio" Text="{Binding Cliente.Contacto1_Domicilio_Municipio}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Domicilio_Municipio}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Estado" />
+                                                    <TextBox x:Name="Contacto1_Domicilio_Estado" Text="{Binding Cliente.Contacto1_Domicilio_Estado}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Domicilio_Estado}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Pais" />
+                                                    <TextBox x:Name="Contacto1_Domicilio_Pais" Text="{Binding Cliente.Contacto1_Domicilio_Pais}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Domicilio_Pais}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="C.P." />
+                                                    <TextBox x:Name="Contacto1_Domicilio_Codigopostal" Text="{Binding Cliente.Contacto1_Domicilio_Codigopostal}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto1_Domicilio_Codigopostal}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                            </WrapPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </WrapPanel>
+
+                                <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+                                    <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,0">
+                                        <TextBlock  FontWeight="Medium"  HorizontalAlignment="Stretch"  VerticalAlignment="Top">Contacto 2</TextBlock>
+                                        <Border BorderThickness="0,2,0,0" BorderBrush="LightBlue"  >
+                                            <WrapPanel Margin="0,10,0,0">
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Nombre" />
+                                                    <TextBox x:Name="Contacto2_Nombre" Text="{Binding Cliente.Contacto2_Nombre}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Nombre}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Email" />
+                                                    <TextBox x:Name="Contacto2_Email" Text="{Binding Cliente.Contacto2_Email}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Email}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Tel." />
+                                                    <TextBox x:Name="Contacto2_Telefono1" Text="{Binding Cliente.Contacto2_Telefono1}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Telefono1}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Calle" />
+                                                    <TextBox x:Name="Contacto2_Domicilio_Calle" Text="{Binding Cliente.Contacto2_Domicilio_Calle}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Domicilio_Calle}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.6*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="No. Ext." />
+                                                    <TextBox x:Name="Contacto2_Domicilio_Numeroexterior" Text="{Binding Cliente.Contacto2_Domicilio_Numeroexterior}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Domicilio_Numeroexterior}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.6*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="No. Int." />
+                                                    <TextBox x:Name="Contacto2_Domicilio_Numerointerior" Text="{Binding Cliente.Contacto2_Domicilio_Numerointerior}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Domicilio_Numerointerior}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Colonia" />
+                                                    <TextBox x:Name="Contacto2_Domicilio_Colonia" Text="{Binding Cliente.Contacto2_Domicilio_Colonia}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Domicilio_Colonia}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Ciudad" />
+                                                    <TextBox x:Name="Contacto2_Domicilio_Ciudad" Text="{Binding Cliente.Contacto2_Domicilio_Ciudad}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Domicilio_Ciudad}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Municipio" />
+                                                    <TextBox x:Name="Contacto2_Domicilio_Municipio" Text="{Binding Cliente.Contacto2_Domicilio_Municipio}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Domicilio_Municipio}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Estado" />
+                                                    <TextBox x:Name="Contacto2_Domicilio_Estado" Text="{Binding Cliente.Contacto2_Domicilio_Estado}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Domicilio_Estado}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Pais" />
+                                                    <TextBox x:Name="Contacto2_Domicilio_Pais" Text="{Binding Cliente.Contacto2_Domicilio_Pais}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Domicilio_Pais}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="C.P." />
+                                                    <TextBox x:Name="Contacto2_Domicilio_Codigopostal" Text="{Binding Cliente.Contacto2_Domicilio_Codigopostal}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Contacto2_Domicilio_Codigopostal}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                            </WrapPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </WrapPanel>
+
+                                <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+                                    <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,20">
+                                        <TextBlock  FontWeight="Medium"  HorizontalAlignment="Stretch"  VerticalAlignment="Top">Domicilio Entrega</TextBlock>
+                                        <Border BorderThickness="0,2,0,0" BorderBrush="LightBlue"  >
+                                            <WrapPanel Margin="0,10,0,0">
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Calle" />
+                                                    <TextBox x:Name="Domicilioentrega_Calle" Text="{Binding Cliente.Domicilioentrega_Calle}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilioentrega_Calle}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.6*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="No. Ext." />
+                                                    <TextBox x:Name="Domicilioentrega_Numeroexterior" Text="{Binding Cliente.Domicilioentrega_Numeroexterior}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilioentrega_Numeroexterior}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=0.6*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="No. Int." />
+                                                    <TextBox x:Name="Domicilioentrega_Numerointerior" Text="{Binding Cliente.Domicilioentrega_Numerointerior}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilioentrega_Numerointerior}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="C.P." />
+                                                    <TextBox x:Name="Domicilioentrega_Codigopostal" Text="{Binding Cliente.Domicilioentrega_Codigopostal}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilioentrega_Codigopostal}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Estado" />
+                                                    <ComboBox Style="{DynamicResource ComboBoxFieldFormTemplate}" x:Name="Domicilioentrega_Estado" ItemsSource="{Binding Catalogs[Estadopais]}"
+                                    SelectedValuePath="Clave"
+                                    SelectedValue="{Binding Cliente.Domicilioentrega_Estado}"
+                                    DisplayMemberPath="Nombre"
+                                    IsReadOnly="{Binding BIsReadOnly}"/>
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilioentrega_Estado}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Ciudad" />
+                                                    <TextBox x:Name="Domicilioentrega_Ciudad" Text="{Binding Cliente.Domicilioentrega_Ciudad}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Domicilioentrega_Ciudad}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="75"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Colonia SAT" />
+                                                    <WrapPanel>
+                                                        <TextBox x:Name="Cliente_fact_elect_Entrega_Sat_ColoniaClave" Text="{Binding Cliente.Cliente_fact_elect_Entrega_Sat_ColoniaClave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                        <TextBox x:Name="Cliente_fact_elect_Entrega_Sat_ColoniaNombre" Text="{Binding Cliente.Cliente_fact_elect_Entrega_Sat_ColoniaNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                        <Button  x:Name="Cliente_fact_elect_Entrega_Sat_ColoniaidButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_fact_elect_Entrega_Sat_ColoniaClave')]"  Width="24"  Height="24" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <materialDesign:PackIcon Kind="Binoculars"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </WrapPanel>
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Entrega_Sat_ColoniaClave}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="75"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Localidad SAT" />
+                                                    <WrapPanel>
+                                                        <TextBox x:Name="Cliente_fact_elect_Entrega_Sat_LocalidadClave" Text="{Binding Cliente.Cliente_fact_elect_Entrega_Sat_LocalidadClave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                        <TextBox x:Name="Cliente_fact_elect_Entrega_Sat_LocalidadNombre" Text="{Binding Cliente.Cliente_fact_elect_Entrega_Sat_LocalidadNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                        <Button  x:Name="Cliente_fact_elect_Entrega_Sat_LocalidadidButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_fact_elect_Entrega_Sat_LocalidadClave')]"  Width="24"  Height="24" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <materialDesign:PackIcon Kind="Binoculars"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </WrapPanel>
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Entrega_Sat_LocalidadClave}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="75"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Municipio SAT" />
+                                                    <WrapPanel>
+                                                        <TextBox x:Name="Cliente_fact_elect_Entrega_Sat_MunicipioClave" Text="{Binding Cliente.Cliente_fact_elect_Entrega_Sat_MunicipioClave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                        <TextBox x:Name="Cliente_fact_elect_Entrega_Sat_MunicipioNombre" Text="{Binding Cliente.Cliente_fact_elect_Entrega_Sat_MunicipioNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                        <Button  x:Name="Cliente_fact_elect_Entrega_Sat_MunicipioidButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_fact_elect_Entrega_Sat_MunicipioClave')]"  Width="24"  Height="24" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <materialDesign:PackIcon Kind="Binoculars"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </WrapPanel>
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Entrega_Sat_MunicipioClave}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.2*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Distancia*" />
+                                                    <Syncfusion:DoubleTextBox x:Name="Cliente_fact_elect_Entrega_Distancia" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cliente.Cliente_fact_elect_Entrega_Distancia, Converter={StaticResource DecimalNullableConverter}}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="{Binding BIsReadOnly}" />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Entrega_Distancia}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Referencia domicilio" />
+                                                    <TextBox x:Name="Cliente_fact_elect_Entregareferenciadom" Text="{Binding Cliente.Cliente_fact_elect_Entregareferenciadom}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_fact_elect_Entregareferenciadom}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                            </WrapPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </WrapPanel>
+
+                            </WrapPanel>
+                        </TabItem>
+
+
+                        <TabItem HorizontalAlignment="Stretch" Margin="0,0,0,10" Header="Datos Adicionales">
+                            <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}">
+
+
+                                
+
+
+                                <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}">
+                                    <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,20">
+                                        <TextBlock FontWeight="Medium"  HorizontalAlignment="Stretch"  VerticalAlignment="Top">Configuraciones adicionales</TextBlock>
+                                        <Border BorderThickness="0,2,0,0" BorderBrush="LightBlue"  >
+                                            <WrapPanel Margin="0,10,0,0">
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.8*x/12.5}"  Height="75"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Proveedor" />
+                                                    <WrapPanel>
+                                                        <TextBox x:Name="ProveeclienteClave" Text="{Binding Cliente.ProveeclienteClave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{cbind:Binding Path=!BoolBindingExpression[TienePermisoRelacionarProveCliente]}" />
+                                                        <TextBox x:Name="ProveeclienteNombre" Text="{Binding Cliente.ProveeclienteNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                        <Button  x:Name="ProveeclienteidButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('ProveeclienteClave')]"  Width="24"  Height="24" Visibility="{cbind:Binding Path=BoolBindingExpression[TienePermisoRelacionarProveCliente]}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <materialDesign:PackIcon Kind="Binoculars"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </WrapPanel>
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=ProveeclienteClave}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.6*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Solicita orden compra*" HorizontalAlignment="Center" />
+                                                    <CheckBox x:Name="Cliente_ordencompra_Solicitaordencompra"  IsChecked="{Binding Cliente.Cliente_ordencompra_Solicitaordencompra, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                    <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_ordencompra_Solicitaordencompra, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_ordencompra_Solicitaordencompra}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.6*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Maneja mayoreo x producto*" HorizontalAlignment="Center" />
+                                                    <CheckBox x:Name="Cliente_precio_Mayoreoxproducto"  IsChecked="{Binding Cliente.Cliente_precio_Mayoreoxproducto, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding !BIsReadOnly}" />
+                                                    <Rectangle Width="20" Height="1" Fill="Blue" Visibility="{Binding ElementName=Cliente_precio_Mayoreoxproducto, Path=IsFocused, Converter={localConv:FocusVisibilityConverter}}" />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_precio_Mayoreoxproducto}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.8*x/12.5}"  Height="75"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Ruta Embarque" />
+                                                    <WrapPanel>
+                                                        <TextBox x:Name="Cliente_rutaembarque_RutaembarqueClave" Text="{Binding Cliente.Cliente_rutaembarque_RutaembarqueClave}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="50"   IsReadOnly="{Binding BIsReadOnly}" />
+                                                        <TextBox x:Name="Cliente_rutaembarque_RutaembarqueNombre" Text="{Binding Cliente.Cliente_rutaembarque_RutaembarqueNombre}" Margin="10,0,10,0"  HorizontalAlignment="Left" Width="100"  IsReadOnly="True" />
+                                                        <Button  x:Name="Cliente_rutaembarque_RutaembarqueidButton" VerticalAlignment="Top" Margin="10,0,10,0" cal:Message.Attach="[Event Click] = [Action ShowPopUpSelector('Cliente_rutaembarque_RutaembarqueClave')]"  Width="24"  Height="24" Visibility="{cbind:Binding Path=!BIsReadOnly}"  Style="{StaticResource MaterialDesignIconButton}">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <materialDesign:PackIcon Kind="Binoculars"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </WrapPanel>
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_rutaembarque_RutaembarqueClave}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+
+
+                                            </WrapPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </WrapPanel>
+
+
+
+
+
+                                <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12.5*x/12.5}">
+                                    <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,20">
+                                        <TextBlock FontWeight="Medium"  HorizontalAlignment="Stretch"  VerticalAlignment="Top">Datos informativos</TextBlock>
+                                        <Border BorderThickness="0,2,0,0" BorderBrush="LightBlue"  >
+                                            <WrapPanel Margin="0,10,0,0">
+
+
+
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Saldo*" />
+                                                    <Syncfusion:DoubleTextBox x:Name="Cliente_pago_Saldo" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cliente.Cliente_pago_Saldo, Converter={StaticResource DecimalNullableConverter}}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="True" />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_Saldo}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Saldo apartado negativo*" />
+                                                    <Syncfusion:DoubleTextBox x:Name="Cliente_pago_Saldoapartadonegativo" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cliente.Cliente_pago_Saldoapartadonegativo, Converter={StaticResource DecimalNullableConverter}}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="True" />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_Saldoapartadonegativo}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Saldo apartado positivo*" />
+                                                    <Syncfusion:DoubleTextBox x:Name="Cliente_pago_Saldoapartadopositivo" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cliente.Cliente_pago_Saldoapartadopositivo, Converter={StaticResource DecimalNullableConverter}}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="True" />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_Saldoapartadopositivo}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Saldos positivos*" />
+                                                    <Syncfusion:DoubleTextBox x:Name="Cliente_pago_Saldospositivos" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cliente.Cliente_pago_Saldospositivos, Converter={StaticResource DecimalNullableConverter}}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="True" />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_Saldospositivos}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="65"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Saldos negativos*" />
+                                                    <Syncfusion:DoubleTextBox x:Name="Cliente_pago_Saldosnegativos" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cliente.Cliente_pago_Saldosnegativos, Converter={StaticResource DecimalNullableConverter}}" VerticalAlignment="Top"  IsScrollingOnCircle="False" IsReadOnly="True" />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_Saldosnegativos}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="75"  >
+                                                    <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Ultima venta" />
+                                                    <DatePicker x:Name="Cliente_pago_Ultimaventa" HorizontalAlignment="Left" Margin="78,10,0,0"  VerticalAlignment="Top" SelectedDate="{Binding Converter={StaticResource DateTimeOffsetToDateTimeConverter}, Path=Cliente.Cliente_pago_Ultimaventa }" IsEnabled="False"  />
+                                                    <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cliente_pago_Ultimaventa}"  Margin="0,0,0,0"/>
+                                                </StackPanel>
+
+                                            </WrapPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </WrapPanel>
+
+
+                            </WrapPanel>
+                        </TabItem>
+
+
+                        <TabItem HorizontalAlignment="Stretch" Margin="0,0,0,10" Header="Firma" Visibility="{cbind:Binding Path=!BoolBindingExpression[FirmaHide]}" >
+                            <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}">
+
+                                <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}">
+
+                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2.4*x/12.5}"  Height="65"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Firma" />
+                                        <TextBox x:Name="Firma" Text="{Binding Cliente.Firma}" Margin="10,0,10,0"  IsReadOnly="{Binding BIsReadOnly}"  />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Firma}"  Margin="0,0,0,0"/>
+                                    </StackPanel>
+                                </WrapPanel>
+                            </WrapPanel>
+                        </TabItem>
+
+                    </TabControl>
+
+                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="6" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}">
+                        <Rectangle  Width="120"/>
+                        <Rectangle  Width="120"/>
+                        <Button MinWidth="120" Margin="6" Padding="6"
+                    x:Name="Accept" Content="Ok" IsEnabled="{cbind:Binding !Cliente.HasErrors}" Foreground="WhiteSmoke"/>
+                        <Rectangle  Width="120"/>
+                        <Button MinWidth="120" Margin="6" Padding="6"
+                    x:Name="Cancel"
+                    Content="Cancelar" Visibility="{cbind:Binding Path=!BIsReadOnly}" Background="LightGray"/>
+
+                    </WrapPanel>
+
+                </WrapPanel>
+            </ac:AdornedControl>
+
+        </WrapPanel>
+    </ScrollViewer>
+</UserControl>
+

@@ -1,0 +1,465 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/28/2015 19:13:57" ReportInfo.Modified="07/09/2018 16:52:59" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Data1_BeforeLayout(object sender, EventArgs e)
+    {
+      
+    }
+    
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+      if(((String)Report.GetColumnValue(&quot;Table.DESGLOSEIEPS&quot;)) != &quot;S&quot; &amp;&amp; ((Decimal)Report.GetColumnValue(&quot;Table.MONTOIEPS&quot;)) == 0)
+      {
+        Text51.Visible = false;  
+        Text52.Visible = false;
+        Text53.Visible = false;
+        Text54.Visible = false;
+      }
+      else
+      {  
+        Text51.Visible = true;  
+        Text52.Visible = true;
+        Text53.Visible = true;
+        Text54.Visible = true;
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9ulo0oFzu+fAspTfl5QCl1gw=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand=" SELECT            grupousuario.id  grupoid,  &#13;&#10;        grupousuario.nombre  gruponombre, &#13;&#10;        sucursal.clave sucursal,&#13;&#10;        sum(coalesce(corte.numerotickets,0))  num_tickets, &#13;&#10;        sum(coalesce(corte.numerodevoluciones,0)) num_devoluciones,&#13;&#10;                sum(coalesce(corte.saldoinicial,0)) saldoinicial, &#13;&#10;        sum(coalesce(corte.ingreso,0)) ingreso, &#13;&#10;        sum(coalesce(corte.devolucion,0)) devolucion, &#13;&#10;        sum(coalesce(corte.aportacion,0)) aportacion, &#13;&#10;        sum(coalesce(corte.retiro,0)) retiro, &#13;&#10;        sum(coalesce(corte.pagoproveedores,0)  - coalesce(corte.egreso_od_compra,0)) pagoproveedores,&#13;&#10;        sum(coalesce(corte.saldofinal,0)) saldofinal, &#13;&#10;        sum(coalesce(corte.saldoreal,0)) saldoreal, &#13;&#10;        sum(coalesce(corte.saldoreal,0) - coalesce(corte.saldofinal,0)) diferencia,&#13;&#10;                corte.fechacorte, &#13;&#10;        min(corte.inicia) inicia, &#13;&#10;        max(corte.termina) termina, &#13;&#10;        sum(coalesce(corte.ingresoefectivo,0)) ingresoefectivo, &#13;&#10;        sum(coalesce(corte.ingresotarjeta,0)) ingresotarjeta,&#13;&#10;        sum(coalesce(corte.ingresocredito,0)) ingresocredito, &#13;&#10;        sum(coalesce(corte.ingresocheque,0)) ingresocheque, &#13;&#10;        sum(coalesce(corte.ingresovale,0)) ingresovale,    &#13;&#10;        sum(coalesce(corte.ingresodeposito,0)) ingresdeposito,&#13;&#10;        sum(coalesce(corte.ingresodeptercero,0)) ingresodeptercero, &#13;&#10;        sum(coalesce(corte.ingresoindefinido,0)) ingresoindefinido,&#13;&#10;                sum(coalesce(corte.cambiocheque,0)) cambiocheque, &#13;&#10;        sum(coalesce(corte.ingresoporiva,0)) ingresoporiva, &#13;&#10;        sum(coalesce(corte.ingresosubtotal,0)) ingresosubtotal, &#13;&#10;        corteieps.tasaieps, &#13;&#10;        sum(coalesce(corteieps.monto ,0)) montoieps, &#13;&#10;        parametro.desgloseieps, &#13;&#10;        sum(coalesce(corte.egreso,0)) egreso,&#13;&#10;                sum(coalesce(corte.egresoefectivo,0)) egresoefectivo, &#13;&#10;        sum(coalesce(corte.egresotarjeta,0)) egresotarjeta, &#13;&#10;        sum(coalesce(corte.egresocheque,0)) egresocheque, &#13;&#10;        sum(coalesce(corte.egresocredito,0)) egresocredito, &#13;&#10;        sum(coalesce(corte.egresovale,0)) egresovale, &#13;&#10;        sum(coalesce(corte.egresomonedero,0)) egresomonedero , &#13;&#10;        sum(coalesce(corte.egresotransferencia,0)) egresotransferencia,  &#13;&#10;        sum(coalesce(corte.egresodeposito,0)) egresodeposito,&#13;&#10;        sum(coalesce(corte.egresodeptercero,0)) egresodeptercero,&#13;&#10;        sum(coalesce(corte.egresoindefinido,0)) egresoindefinido,&#13;&#10;&#13;&#10;        sum( ( coalesce(corte.egresoefectivo,0) + coalesce(corte.egresotarjeta,0) + coalesce(corte.egresocheque,0) + coalesce(corte.egresocredito,0) + coalesce(corte.egresovale,0) + coalesce(corte.egresomonedero,0)  + coalesce(corte.egresotransferencia,0) + coalesce(corte.egresoindefinido,0)    + coalesce(corte.egresodeposito,0)  + coalesce(corte.egresodeptercero,0)&#13;&#10;                          + coalesce(corte.devolucion,0) + coalesce(corte.cancelacion,0)&#13;&#10;                          - (  coalesce(corte.rev_abonoefe_md,0) + coalesce(corte.rev_abonoefe_od,0) + coalesce(corte.rev_abonotarj_md,0) + coalesce(corte.rev_abonotarj_od,0)&#13;&#10;                              + coalesce(corte.rev_abonocheque_md,0) + coalesce(corte.rev_abonocheque_od,0) + coalesce(corte.rev_abonocred_md,0) + coalesce(corte.rev_abonocred_od,0)&#13;&#10;                              + coalesce(corte.rev_abonovale_md,0) + coalesce(corte.rev_abonovale_od,0) + coalesce(corte.rev_abonomoned_md,0) + coalesce(corte.rev_abonomoned_od,0)&#13;&#10;                              + coalesce(corte.rev_abonotransf_md,0) + coalesce(corte.rev_abonotransf_od,0)&#13;&#10;                              + coalesce(corte.rev_abonodep_md,0) + coalesce(corte.rev_abonodep_od,0)&#13;&#10;                              + coalesce(corte.rev_abonodepter_md,0) + coalesce(corte.rev_abonodepter_od,0)&#13;&#10;                              + coalesce(corte.rev_abonoindef_md,0) + coalesce(corte.rev_abonoindef_od,0)    )&#13;&#10;                              + coalesce(corte.egreso_od_compra,0)&#13;&#10;                          ) * -1) as compras ,&#13;&#10;&#13;&#10;        sum( (  coalesce(corte.rev_abonoefe_md,0) + coalesce(corte.rev_abonoefe_od,0) + coalesce(corte.rev_abonotarj_md,0) + coalesce(corte.rev_abonotarj_od,0)&#13;&#10;                              + coalesce(corte.rev_abonocheque_md,0) + coalesce(corte.rev_abonocheque_od,0) + coalesce(corte.rev_abonocred_md,0) + coalesce(corte.rev_abonocred_od,0)&#13;&#10;                              + coalesce(corte.rev_abonovale_md,0) + coalesce(corte.rev_abonovale_od,0) + coalesce(corte.rev_abonomoned_md,0) + coalesce(corte.rev_abonomoned_od,0)&#13;&#10;                              + coalesce(corte.rev_abonotransf_md,0) + coalesce(corte.rev_abonotransf_od,0)&#13;&#10;                              + coalesce(corte.rev_abonodep_md,0) + coalesce(corte.rev_abonodep_od,0)&#13;&#10;                              + coalesce(corte.rev_abonodepter_md,0) + coalesce(corte.rev_abonodepter_od,0) &#13;&#10;                              + coalesce(corte.rev_abonoindef_md,0) + coalesce(corte.rev_abonoindef_od,0)  ) * -1 )  REVERSION_ABONOS,&#13;&#10;&#13;&#10;        sum(( coalesce(corte.egresoefectivo,0) - coalesce(corte.devolucionefectivo,0) - coalesce(corte.cancelacionefectivo,0) - coalesce(corte.rev_abonoefe_md,0) - coalesce(corte.rev_abonoefe_od,0) + coalesce(corte.egresoefe_od_compra,0)  ) * -1) comprasefectivo,&#13;&#10;        sum(( coalesce(corte.egresotarjeta,0) - coalesce(corte.devoluciontarjeta,0)  - coalesce(corte.cancelaciontarjeta,0) - coalesce(corte.rev_abonotarj_md,0) - coalesce(corte.rev_abonotarj_od,0) + coalesce(corte.egresotarj_od_compra,0) )  * -1)  comprastarjeta,&#13;&#10;        sum(( coalesce(corte.egresocheque,0) - coalesce(corte.devolucioncheque,0)  - coalesce(corte.cancelacioncheque,0) - coalesce(corte.rev_abonocheque_md,0) - coalesce(corte.rev_abonocheque_od,0) + coalesce(corte.egresocheque_od_compra,0) ) * -1) comprascheque,&#13;&#10;        sum((coalesce(corte.egresocredito,0) - coalesce(corte.devolucioncredito,0) - coalesce(corte.cancelacioncredito,0) - coalesce(corte.rev_abonocred_md,0) - coalesce(corte.rev_abonocred_od,0) + coalesce(corte.egresocred_od_compra,0) ) * -1)  comprascredito,&#13;&#10;        sum(( coalesce(corte.egresovale,0) - coalesce(corte.devolucionvale,0)  - coalesce(corte.cancelacionvale,0) - coalesce(corte.rev_abonovale_md,0) - coalesce(corte.rev_abonovale_od,0) + coalesce(corte.egresovale_od_compra,0) ) * -1) comprasvale,&#13;&#10;        sum(( coalesce(corte.egresotransferencia,0) - coalesce(corte.devoluciontransferencia,0)  - coalesce(corte.cancelaciontransferencia,0) - coalesce(corte.rev_abonotransf_md,0) - coalesce(corte.rev_abonotransf_od,0) + coalesce(corte.egresotransf_od_compra,0) ) * -1) comprastransferencia,&#13;&#10;        sum(( coalesce(corte.egresodeposito,0) - coalesce(corte.devoluciondeposito,0)  - coalesce(corte.cancelaciondeposito,0) - coalesce(corte.rev_abonodep_md,0) - coalesce(corte.rev_abonodep_od,0) + coalesce(corte.egresodep_od_compra,0) )  * -1)  comprasdeposito,&#13;&#10;        sum(( coalesce(corte.egresodeptercero,0) - coalesce(corte.devoluciondeptercero,0)  - coalesce(corte.cancelaciondeptercero,0) - coalesce(corte.rev_abonodepter_md,0) - coalesce(corte.rev_abonodepter_od,0) + coalesce(corte.egresodepter_od_compra,0) )  * -1)  comprasdepositotercero,&#13;&#10;        sum(( coalesce(corte.egresoindefinido,0)  - coalesce(corte.devolucionindefinido,0)   - coalesce(corte.cancelacionindefinido,0)  + coalesce(corte.egresoind_od_compra,0)  )  * -1) comprasindefinido ,&#13;&#10;&#13;&#10;        sum(coalesce(corte.devolucionefectivo,0)) * -1 devolucionefectivo,&#13;&#10;        sum(coalesce(corte.devoluciontarjeta,0)) * -1 devoluciontarjeta,&#13;&#10;        sum(coalesce(corte.devolucioncheque,0)) * -1 devolucioncheque,&#13;&#10;        sum(coalesce(corte.devolucioncredito,0)) * -1 devolucioncredito,&#13;&#10;        sum(coalesce(corte.devolucionvale,0)) * -1 devolucionvale,&#13;&#10;        sum(coalesce(corte.devolucionmonedero,0)) * -1 devolucionmonedero,&#13;&#10;        sum(coalesce(corte.devoluciontransferencia,0)) * -1 devoluciontransferencia,&#13;&#10;        sum(coalesce(corte.devolucionindefinido,0)) * -1 devolucionindefinido,    &#13;&#10;        sum(coalesce(corte.devoluciondeposito,0)) * -1 devoluciondeposito,&#13;&#10;        sum(coalesce(corte.devoluciondeptercero,0)) * -1 devoluciondeptercero,&#13;&#10;        sum(coalesce(corte.retirosdecaja,0)) * -1 retirosdecaja,&#13;&#10;        sum(coalesce(corte.gastos,0)) * -1 gastos  ,&#13;&#10;&#13;&#10;                 &#13;&#10;SUM( coalesce(corte.numerotickets,0)  - coalesce(corte.numeroventatraslados,0)) AS num_tickets_ventasyotros,&#13;&#10;SUM( coalesce(corte.numerosolotraslados,0))  as num_tickets_solotraslados,&#13;&#10;SUM( coalesce(corte.numeroventatraslados,0))  as num_tickets_ventatraslados,&#13;&#10;&#13;&#10;SUM( coalesce(corte.ingreso,0)  - coalesce(corte.ventatraslados,0)) as ingreso_ventas,&#13;&#10;SUM( coalesce(corte.solotraslados,0)) as ingreso_solotraslados ,&#13;&#10;SUM( coalesce(corte.ventatraslados,0)) as ingreso_ventatraslados,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;SUM(corte.ingresoefectivo                -  coalesce(corte.ingresoefectivoventatraslado,0) + coalesce(corte.ingresoefe_od_ventatraslado,0) - coalesce(corte.ingresoefe_od,0)&#13;&#10;  - coalesce(corte.rev_abonoefe_md,0) + coalesce(corte.rev_abonoefe_ventatrasla_md,0) + coalesce(corte.egresoefe_od_compra,0) )    as ingresoefectivo_ventas,&#13;&#10;SUM(corte.ingresoefectivosolotraslado - coalesce(corte.rev_abonoefe_ventatrasla_md,0)) as ingresoefectivo_solotraslados ,&#13;&#10;SUM(corte.ingresoefectivoventatraslado - coalesce(corte.ingresoefe_od_ventatraslado,0) - coalesce(corte.rev_abonoefe_ventatrasla_md,0)) as ingresoefectivo_ventatraslados,&#13;&#10;&#13;&#10;SUM(corte.ingresotarjeta - coalesce(corte.ingresotarjetaventatraslado,0) + coalesce(corte.ingresotarj_od_ventatraslado,0) -  coalesce(corte.ingresotarj_od,0)&#13;&#10;    - coalesce(corte.rev_abonotarj_md,0) + coalesce(corte.rev_abonotarj_ventatrasla_md,0) + coalesce(corte.egresotarj_od_compra,0) )  as ingresotarjeta_ventas,&#13;&#10;SUM(corte.ingresotarjetasolotraslado  - coalesce(corte.rev_abonotarj_ventatrasla_md,0)) as ingresotarjeta_solotraslados ,&#13;&#10;SUM(corte.ingresotarjetaventatraslado - coalesce(corte.ingresotarj_od_ventatraslado,0) - coalesce(corte.rev_abonotarj_ventatrasla_md,0)) as ingresotarjeta_ventatraslados ,&#13;&#10;&#13;&#10;SUM(corte.ingresocheque  - coalesce(corte.ingresochequeventatraslado,0) + coalesce(corte.ingresocheque_od_ventatraslado,0)  -  coalesce(corte.ingresocheque_od,0)&#13;&#10;    - coalesce(corte.rev_abonocheque_md,0) + coalesce(corte.rev_abonocheque_ventatrasla_md,0) + coalesce(corte.egresocheque_od_compra,0) )  as ingresocheque_ventas,&#13;&#10;SUM(corte.ingresochequesolotraslado - coalesce(corte.rev_abonocheque_ventatrasla_md,0)) as ingresocheque_solotraslados ,&#13;&#10;SUM(corte.ingresochequeventatraslado - coalesce(corte.ingresocheque_od_ventatraslado,0) - - coalesce(corte.rev_abonocheque_ventatrasla_md,0))  as ingresocheque_ventatraslados,&#13;&#10;&#13;&#10;SUM(corte.ingresovale  - coalesce(corte.ingresovaleventatraslado,0) + coalesce(corte.ingresovale_od_ventatraslado,0)   -  coalesce(corte.ingresovale_od,0)&#13;&#10;    - coalesce(corte.rev_abonovale_md,0) + coalesce(corte.rev_abonovale_ventatrasla_md,0) + coalesce(corte.egresovale_od_compra,0) )  as ingresovale_ventas,&#13;&#10;SUM(corte.ingresovalesolotraslado - coalesce(corte.rev_abonovale_ventatrasla_md,0)) as ingresovale_solotraslados ,&#13;&#10;SUM(corte.ingresovaleventatraslado - coalesce(corte.ingresovale_od_ventatraslado,0) - coalesce(corte.rev_abonovale_ventatrasla_md,0))   as ingresovale_ventatraslados,&#13;&#10;&#13;&#10;SUM(corte.ingresocredito  - coalesce(corte.ingresocreditoventatraslado ,0)  + coalesce(corte.ingresocred_od_ventatraslado, 0) -  coalesce(corte.ingresocred_od,0)&#13;&#10;    - coalesce(corte.rev_abonocred_md,0) + coalesce(corte.rev_abonocred_ventatrasla_md,0) + coalesce(corte.egresocred_od_compra,0) )  as ingresocredito_ventas,&#13;&#10;SUM(corte.ingresocreditosolotraslado  - coalesce(corte.rev_abonocred_ventatrasla_md,0)) as ingresocred_solotraslados ,&#13;&#10;SUM(corte.ingresocreditoventatraslado - coalesce(corte.ingresocred_od_ventatraslado, 0)  - coalesce(corte.rev_abonocred_ventatrasla_md,0))  as ingresocredito_ventatraslados,&#13;&#10;&#13;&#10;SUM(corte.ingresomonedero  - coalesce(corte.ingresomonederoventatraslado, 0)  + coalesce(corte.ingresomoned_od_ventatraslado, 0)   -  coalesce(corte.ingresomoned_od, 0)&#13;&#10;    - coalesce(corte.rev_abonomoned_md,0) + coalesce(corte.rev_abonomoned_ventatrasla_md,0) + coalesce(corte.egresomoned_od_compra,0) )  as ingresomonedero_ventas,&#13;&#10;SUM(corte.ingresomonederosolotraslado  - coalesce(corte.rev_abonomoned_ventatrasla_md,0)) as ingresomonedero_solotraslados ,&#13;&#10;SUM(corte.ingresomonederoventatraslado - coalesce(corte.ingresomoned_od_ventatraslado, 0)  - coalesce(corte.rev_abonomoned_ventatrasla_md,0))  as ingresomonedero_ventatraslados  ,&#13;&#10;&#13;&#10;SUM(corte.ingresotransferencia  - coalesce(corte.ingresotransfventatraslado,0)   + coalesce(corte.ingresotransf_od_ventatraslado,0)   -  coalesce(corte.ingresotransf_od, 0)&#13;&#10;    - coalesce(corte.rev_abonotransf_md,0) + coalesce(corte.rev_abonotransf_ventatrasla_md,0) + coalesce(corte.egresotransf_od_compra,0) )  as ingresotransferencia_ventas,&#13;&#10;SUM(corte.ingresotransfsolotraslado - coalesce(corte.rev_abonotransf_ventatrasla_md,0))  as ingresotransferencia_solotraslados ,&#13;&#10;SUM(corte.ingresotransfventatraslado - coalesce(corte.ingresotransf_od_ventatraslado,0)  - coalesce(corte.rev_abonotransf_ventatrasla_md,0))  as ingresotransferencia_ventatraslados  ,&#13;&#10;&#13;&#10;           &#13;&#10;SUM(corte.ingresodeposito - coalesce(corte.ingresodepositoventatraslado,0) + coalesce(corte.ingresodep_od_ventatraslado,0) -  coalesce(corte.ingresodep_od,0)&#13;&#10;    - coalesce(corte.rev_abonodep_md,0) + coalesce(corte.rev_abonodep_ventatrasla_md,0) + coalesce(corte.egresodep_od_compra,0) )  as ingresodep_ventas,&#13;&#10;SUM(corte.ingresodepositosolotraslado  - coalesce(corte.rev_abonodep_ventatrasla_md,0)) as ingresodep_solotraslados ,&#13;&#10;SUM(corte.ingresodepositoventatraslado - coalesce(corte.ingresodep_od_ventatraslado,0) - coalesce(corte.rev_abonodep_ventatrasla_md,0)) as ingresodep_ventatraslados ,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;SUM(corte.ingresodeptercero - coalesce(corte.ingresodepterceroventatraslado,0) + coalesce(corte.ingresodepter_od_ventatraslado,0) -  coalesce(corte.ingresodepter_od,0)&#13;&#10;    - coalesce(corte.rev_abonodepter_md,0) + coalesce(corte.rev_abonodepter_ventatrasla_md,0) + coalesce(corte.egresodepter_od_compra,0) )  as ingresodepter_ventas,&#13;&#10;SUM(corte.ingresodeptersolotraslado  - coalesce(corte.rev_abonodepter_ventatrasla_md,0)) as ingresodepter_solotraslados ,&#13;&#10;SUM(corte.ingresodepterceroventatraslado - coalesce(corte.ingresodepter_od_ventatraslado,0) - coalesce(corte.rev_abonodepter_ventatrasla_md,0)) as ingresodepter_ventatraslados ,&#13;&#10;&#13;&#10;           &#13;&#10;SUM(corte.ingresoindefinido - coalesce(corte.ingresoindefventatraslado,0) + coalesce(corte.ingresoindef_od_ventatraslado,0) -  coalesce(corte.ingresoindef_od,0)&#13;&#10;    - coalesce(corte.rev_abonoindef_md,0) + coalesce(corte.rev_abonoindef_ventatrasla_md,0) + coalesce(corte.egresoind_od_compra,0) )  as ingresoindef_ventas,&#13;&#10;SUM(corte.ingresoindefsolotraslado  - coalesce(corte.rev_abonoindef_ventatrasla_md,0)) as ingresoindef_solotraslados ,&#13;&#10;SUM(corte.ingresoindefventatraslado - coalesce(corte.ingresoindef_od_ventatraslado,0) - coalesce(corte.rev_abonoindef_ventatrasla_md,0)) as ingresoindef_ventatraslados ,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;SUM( coalesce(corte.devolucion,0) - coalesce(corte.devoventatraslados,0)) devolucion_ventas,&#13;&#10;SUM( coalesce(corte.devoventatraslados,0)) devolucion_ventatraslados,&#13;&#10;&#13;&#10;SUM( coalesce(corte.cancelacion,0))  cancelacion,&#13;&#10;SUM( coalesce(corte.cancelacion,0)  - coalesce(corte.cancsolotraslados,0)) cancelacion_ventas,&#13;&#10;SUM( coalesce(corte.cancventatraslados,0)) cancelacion_ventatraslados,&#13;&#10;SUM( coalesce(corte.cancsolotraslados,0)) cancelacion_solotraslados ,&#13;&#10;&#13;&#10;&#13;&#10;SUM( coalesce(corte.numerodevoluciones,0) - coalesce(corte.numerodevoventatraslados,0)) AS num_devoluciones_ventas,&#13;&#10;SUM( coalesce(corte.numerodevoventatraslados,0)) AS num_devoluciones_ventatraslados  ,&#13;&#10;&#13;&#10;SUM( coalesce(corte.numerocancelaciones,0)) as num_cancelaciones,&#13;&#10;SUM( coalesce(corte.numerocancelaciones,0) - coalesce(corte.numerocancventatraslados,0)) as num_cancelaciones_ventas,&#13;&#10;SUM( coalesce(corte.numerocancsolotraslados,0)) num_cancelaciones_solotraslados,&#13;&#10;SUM( coalesce(corte.numerocancventatraslados,0)) num_cancelaciones_ventatraslados ,&#13;&#10;&#13;&#10;                         SUM( coalesce(corte.cancelacionefectivo,0) * -1) cancelacionefectivo,&#13;&#10;                         SUM( coalesce(corte.cancelaciontarjeta,0) * -1) cancelaciontarjeta,&#13;&#10;                         SUM( coalesce(corte.cancelacioncheque,0) * -1) cancelacioncheque,&#13;&#10;                         SUM( coalesce(corte.cancelacioncredito,0) * -1) cancelacioncredito,&#13;&#10;                         SUM( coalesce(corte.cancelacionvale,0) * -1) cancelacionvale,&#13;&#10;                         SUM( coalesce(corte.cancelacionmonedero,0) * -1) cancelacionmonedero,&#13;&#10;                         SUM( coalesce(corte.cancelaciontransferencia,0) * -1) cancelaciontransferencia, &#13;&#10;                         SUM( coalesce(corte.cancelaciondeposito,0) * -1) cancelaciondeposito,&#13;&#10;                         SUM( coalesce(corte.cancelaciondeptercero,0) * -1) cancelaciondeptercero,&#13;&#10;                         SUM( coalesce(corte.cancelacionindefinido,0) * -1) cancelacionindefinido,&#13;&#10;&#13;&#10; SUM(corte.ingresoefe_od  - corte.ingresoefe_od_ventatraslado) as ingresoefe_od_ventas,&#13;&#10; SUM(corte.ingresoefe_od_ventatraslado) as ingresoefe_od_ventatraslados  ,&#13;&#10; SUM(corte.ingresocred_od  - corte.ingresocred_od_ventatraslado) as ingresocred_od_ventas,&#13;&#10; SUM(corte.ingresocred_od_ventatraslado) as ingresocred_od_ventatraslados  ,&#13;&#10; SUM(corte.ingresocheque_od  - corte.ingresocheque_od_ventatraslado) as ingresocheque_od_ventas,&#13;&#10; SUM(corte.ingresocheque_od_ventatraslado) as ingresocheque_od_ventatraslados  ,&#13;&#10; SUM(corte.ingresotarj_od  - corte.ingresotarj_od_ventatraslado) as ingresotarj_od_ventas,&#13;&#10; SUM(corte.ingresotarj_od_ventatraslado) as ingresotarj_od_ventatraslados  ,&#13;&#10; SUM(corte.ingresovale_od  - corte.ingresovale_od_ventatraslado) as ingresovale_od_ventas,&#13;&#10; SUM(corte.ingresovale_od_ventatraslado) as ingresovale_od_ventatraslados  ,&#13;&#10; SUM(corte.ingresotransf_od  - corte.ingresotransf_od_ventatraslado) as ingresotransf_od_ventas,&#13;&#10; SUM(corte.ingresotransf_od_ventatraslado) as ingresotransf_od_ventatraslados,&#13;&#10; &#13;&#10; SUM(corte.ingresodep_od  - corte.ingresodep_od_ventatraslado) as ingresodep_od_ventas,&#13;&#10; SUM(corte.ingresodep_od_ventatraslado) as ingresdep_od_ventatraslados  ,&#13;&#10;&#13;&#10; SUM(corte.ingresodepter_od  - corte.ingresodepter_od_ventatraslado) as ingresodepter_od_ventas,&#13;&#10; SUM(corte.ingresodepter_od_ventatraslado) as ingresodepter_od_ventatraslados  ,&#13;&#10;                                                                       &#13;&#10; SUM(corte.ingresoindef_od  - corte.ingresoindef_od_ventatraslado) as ingresoindef_od_ventas,&#13;&#10; SUM(corte.ingresoindef_od_ventatraslado) as ingresoindef_od_ventatraslados  ,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; SUM(corte.REV_ABONOEFE_OD) REV_ABONOEFE_OD,&#13;&#10; SUM(corte.REV_ABONOEFE_VENTATRASLA_OD) REV_ABONOEFE_VENTATRASLA_OD,&#13;&#10; SUM(corte.REV_ABONOCHEQUE_OD) REV_ABONOCHEQUE_OD,&#13;&#10; SUM(corte.REV_ABONOCHEQUE_VENTATRASLA_OD) REV_ABONOCHEQUE_VENTATRASLA_OD,&#13;&#10; SUM(corte.REV_ABONOCRED_OD) REV_ABONOCRED_OD,&#13;&#10; SUM(corte.REV_ABONOCRED_VENTATRASLA_OD) REV_ABONOCRED_VENTATRASLA_OD,&#13;&#10; SUM(corte.REV_ABONOTARJ_OD) REV_ABONOTARJ_OD ,&#13;&#10; SUM(corte.REV_ABONOTARJ_VENTATRASLA_OD) REV_ABONOTARJ_VENTATRASLA_OD,&#13;&#10; SUM(corte.REV_ABONOTRANSF_OD) REV_ABONOTRANSF_OD,&#13;&#10; SUM(corte.REV_ABONOTRANSF_VENTATRASLA_OD) REV_ABONOTRANSF_VENTATRASLA_OD,&#13;&#10; SUM(corte.REV_ABONOVALE_OD) REV_ABONOVALE_OD,&#13;&#10; SUM(corte.REV_ABONOVALE_VENTATRASLA_OD) REV_ABONOVALE_VENTATRASLA_OD,&#13;&#10; SUM(corte.REV_ABONOMONED_OD) REV_ABONOMONED_OD,&#13;&#10; SUM(corte.REV_ABONOMONED_VENTATRASLA_OD) REV_ABONOMONED_VENTATRASLA_OD, &#13;&#10; sum(coalesce(corte.INTERCAMBIOMERCANCIA,0)) INTERCAMBIOMERCANCIA ,&#13;&#10;&#13;&#10; SUM(corte.REV_ABONODEP_OD) REV_ABONODEP_OD ,&#13;&#10; SUM(corte.REV_ABONODEP_VENTATRASLA_OD) REV_ABONODEP_VENTATRASLA_OD,&#13;&#10; SUM(corte.REV_ABONODEPTER_OD) REV_ABONODEPTER_OD ,&#13;&#10; SUM(corte.REV_ABONODEPTER_VENTATRASLA_OD) REV_ABONODEPTER_VENTATRASLA_OD,&#13;&#10; SUM(corte.REV_ABONOINDEF_OD) REV_ABONOINDEF_OD ,&#13;&#10; SUM(corte.REV_ABONOINDEF_VENTATRASLA_OD) REV_ABONOINDEF_VENTATRASLA_OD,&#13;&#10;&#13;&#10;sum(corte.fondeosdecaja) fondeosdecaja ,&#13;&#10;&#13;&#10;       &#13;&#10; SUM(corte.pagoproveedores - coalesce(corte.egresoefe_od_compra,0)) pagoproveedoresefectivo,&#13;&#10; SUM(0 - coalesce(corte.egresotarj_od_compra,0)) pagoproveedorestarjeta,&#13;&#10; SUM(0 - coalesce(corte.egresocheque_od_compra,0)) pagoproveedorescheque,&#13;&#10; SUM(0 - coalesce(corte.egresovale_od_compra,0)) pagoproveedoresvale,&#13;&#10; SUM(0 - coalesce(corte.egresocred_od_compra,0)) pagoproveedorescred,&#13;&#10; SUM(0 - coalesce(corte.egresotransf_od_compra,0)) pagoproveedorestransf,&#13;&#10; SUM(0 - coalesce(corte.egresodep_od_compra,0)) pagoproveedoresdeposito,&#13;&#10; SUM(0 - coalesce(corte.egresodepter_od_compra,0)) pagoproveedoresdepter,&#13;&#10; SUM(0 - coalesce(corte.egresoind_od_compra,0)) pagoproveedoresind,&#13;&#10;&#13;&#10; sum(coalesce(corte.fondodinamico,0)) fondodinamicoinicial,&#13;&#10; sum(coalesce(corte.fondodinamicofinal,0)) fondodinamicofinal,&#13;&#10; sum( coalesce(corte.fondodinamico,0) -  coalesce(corte.fondodinamicofinal , 0) ) fondodinamicodiferencia&#13;&#10;&#13;&#10;                         &#13;&#10;FROM            corte LEFT OUTER JOIN&#13;&#10;                         sucursal ON sucursal.id = corte.sucursalid LEFT OUTER JOIN&#13;&#10;                         persona ON corte.cajeroid = persona.id  left outer join&#13;&#10;                         corteieps on corteieps.id = corte.id left outer join&#13;&#10;             grupousuario on grupousuario.id = persona.grupousuarioid   left outer join&#13;&#10;                         parametro on 1 = 1 &#13;&#10;WHERE        (corte.sucursalid =&#13;&#10;                             (SELECT        sucursalid&#13;&#10;                               FROM            parametro)) AND (corte.fechacorte = @fecha)&#13;&#10;&#13;&#10;group by persona.grupousuarioid, &#13;&#10;grupousuario.id,  &#13;&#10;grupousuario.nombre, &#13;&#10;sucursal.clave,&#13;&#10;corte.fechacorte,&#13;&#10;corteieps.tasaieps, &#13;&#10;parametro.desgloseieps">
+        <Column Name="SUCURSAL" DataType="System.String"/>
+        <Column Name="NUM_TICKETS" DataType="System.Int32"/>
+        <Column Name="NUM_DEVOLUCIONES" DataType="System.Int32"/>
+        <Column Name="SALDOINICIAL" DataType="System.Decimal"/>
+        <Column Name="INGRESO" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCION" DataType="System.Decimal"/>
+        <Column Name="APORTACION" DataType="System.Decimal"/>
+        <Column Name="RETIRO" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORES" DataType="System.Decimal"/>
+        <Column Name="SALDOFINAL" DataType="System.Decimal"/>
+        <Column Name="SALDOREAL" DataType="System.Decimal"/>
+        <Column Name="DIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="FECHACORTE" DataType="System.DateTime"/>
+        <Column Name="INICIA" DataType="System.DateTime"/>
+        <Column Name="TERMINA" DataType="System.DateTime"/>
+        <Column Name="INGRESOEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="INGRESOTARJETA" DataType="System.Decimal"/>
+        <Column Name="INGRESOCREDITO" DataType="System.Decimal"/>
+        <Column Name="INGRESOCHEQUE" DataType="System.Decimal"/>
+        <Column Name="INGRESOVALE" DataType="System.Decimal"/>
+        <Column Name="CAMBIOCHEQUE" DataType="System.Decimal"/>
+        <Column Name="INGRESOPORIVA" DataType="System.Decimal"/>
+        <Column Name="INGRESOSUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="TASAIEPS" DataType="System.Decimal"/>
+        <Column Name="MONTOIEPS" DataType="System.Decimal"/>
+        <Column Name="DESGLOSEIEPS" DataType="System.String"/>
+        <Column Name="EGRESO" DataType="System.Decimal"/>
+        <Column Name="EGRESOEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="EGRESOTARJETA" DataType="System.Decimal"/>
+        <Column Name="EGRESOCHEQUE" DataType="System.Decimal"/>
+        <Column Name="EGRESOCREDITO" DataType="System.Decimal"/>
+        <Column Name="EGRESOVALE" DataType="System.Decimal"/>
+        <Column Name="EGRESOMONEDERO" DataType="System.Decimal"/>
+        <Column Name="EGRESOTRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="EGRESOINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="COMPRAS" DataType="System.Decimal"/>
+        <Column Name="COMPRASEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="COMPRASTARJETA" DataType="System.Decimal"/>
+        <Column Name="COMPRASCHEQUE" DataType="System.Decimal"/>
+        <Column Name="COMPRASCREDITO" DataType="System.Decimal"/>
+        <Column Name="COMPRASVALE" DataType="System.Decimal"/>
+        <Column Name="COMPRASTRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="COMPRASINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONTARJETA" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONCHEQUE" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONCREDITO" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONVALE" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONMONEDERO" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONTRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="GRUPOID" DataType="System.Int64"/>
+        <Column Name="GRUPONOMBRE" DataType="System.String"/>
+        <Column Name="RETIROSDECAJA" DataType="System.Decimal"/>
+        <Column Name="GASTOS" DataType="System.Decimal"/>
+        <Column Name="NUM_TICKETS_VENTASYOTROS" DataType="System.Int64"/>
+        <Column Name="NUM_TICKETS_SOLOTRASLADOS" DataType="System.Int64"/>
+        <Column Name="NUM_TICKETS_VENTATRASLADOS" DataType="System.Int64"/>
+        <Column Name="INGRESO_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESO_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESO_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOEFECTIVO_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOEFECTIVO_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOEFECTIVO_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOTARJETA_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOTARJETA_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOTARJETA_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOCHEQUE_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOCHEQUE_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOCHEQUE_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOVALE_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOVALE_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOVALE_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOCREDITO_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOCREDITO_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOMONEDERO_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOMONEDERO_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOMONEDERO_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCION_VENTAS" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCION_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="CANCELACION" DataType="System.Decimal"/>
+        <Column Name="CANCELACION_VENTAS" DataType="System.Decimal"/>
+        <Column Name="CANCELACION_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="CANCELACION_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="NUM_DEVOLUCIONES_VENTAS" DataType="System.Int64"/>
+        <Column Name="NUM_DEVOLUCIONES_VENTATRASLADOS" DataType="System.Int64"/>
+        <Column Name="NUM_CANCELACIONES" DataType="System.Int64"/>
+        <Column Name="NUM_CANCELACIONES_VENTAS" DataType="System.Int64"/>
+        <Column Name="NUM_CANCELACIONES_SOLOTRASLADOS" DataType="System.Int64"/>
+        <Column Name="NUM_CANCELACIONES_VENTATRASLADOS" DataType="System.Int64"/>
+        <Column Name="CANCELACIONEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONTARJETA" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONCHEQUE" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONCREDITO" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONVALE" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONMONEDERO" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONTRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="INGRESOEFE_OD_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOEFE_OD_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOCRED_OD_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOCRED_OD_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOCHEQUE_OD_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOCHEQUE_OD_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOTARJ_OD_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOTARJ_OD_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOVALE_OD_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOVALE_OD_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOTRANSF_OD_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOTRANSF_OD_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOTRANSFERENCIA_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOTRANSFERENCIA_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOTRANSFERENCIA_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="REVERSION_ABONOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOCRED_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOEFE_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOEFE_VENTATRASLA_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOCHEQUE_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOCHEQUE_VENTATRASLA_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOCRED_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOCRED_VENTATRASLA_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOTARJ_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOTARJ_VENTATRASLA_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOTRANSF_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOTRANSF_VENTATRASLA_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOVALE_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOVALE_VENTATRASLA_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOMONED_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOMONED_VENTATRASLA_OD" DataType="System.Decimal"/>
+        <Column Name="INTERCAMBIOMERCANCIA" DataType="System.Decimal"/>
+        <Column Name="INGRESDEPOSITO" DataType="System.Decimal"/>
+        <Column Name="INGRESODEPTERCERO" DataType="System.Decimal"/>
+        <Column Name="EGRESODEPOSITO" DataType="System.Decimal"/>
+        <Column Name="EGRESODEPTERCERO" DataType="System.Decimal"/>
+        <Column Name="COMPRASDEPOSITO" DataType="System.Decimal"/>
+        <Column Name="COMPRASDEPOSITOTERCERO" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONDEPOSITO" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONDEPTERCERO" DataType="System.Decimal"/>
+        <Column Name="INGRESODEP_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESODEP_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESODEP_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESODEPTER_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESODEPTER_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESODEPTER_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONDEPOSITO" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONDEPTERCERO" DataType="System.Decimal"/>
+        <Column Name="INGRESODEP_OD_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESDEP_OD_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESODEPTER_OD_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESODEPTER_OD_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="REV_ABONODEP_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONODEP_VENTATRASLA_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONODEPTER_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONODEPTER_VENTATRASLA_OD" DataType="System.Decimal"/>
+        <Column Name="INGRESOINDEFINIDO" DataType="System.Decimal"/>
+        <Column Name="INGRESOINDEF_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOINDEF_SOLOTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOINDEF_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="INGRESOINDEF_OD_VENTAS" DataType="System.Decimal"/>
+        <Column Name="INGRESOINDEF_OD_VENTATRASLADOS" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOINDEF_OD" DataType="System.Decimal"/>
+        <Column Name="REV_ABONOINDEF_VENTATRASLA_OD" DataType="System.Decimal"/>
+        <Column Name="FONDEOSDECAJA" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORESEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORESCHEQUE" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORESVALE" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORESCRED" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORESTRANSF" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORESDEPOSITO" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORESDEPTER" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORESIND" DataType="System.Decimal"/>
+        <Column Name="PAGOPROVEEDORESTARJETA" DataType="System.Decimal"/>
+        <Column Name="FONDODINAMICOINICIAL" DataType="System.Decimal"/>
+        <Column Name="FONDODINAMICOFINAL" DataType="System.Decimal"/>
+        <Column Name="FONDODINAMICODIFERENCIA" DataType="System.Decimal"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fecha" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="279.4" PaperHeight="215.9" RawPaperSize="1" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="980.53"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="980.53"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="8" Width="980.53" Height="727.65" Condition="[Table.GRUPOID]">
+      <TextObject Name="Text61" Left="9.45" Width="321.3" Height="37.8" Text="CORTE SUMARIZADO POR GRUPO DE CAJEROS Y FECHA " Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text159" Left="9.45" Top="56.7" Width="122.85" Height="18.9" Text="GRUPO CAJEROS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text160" Left="132.3" Top="56.7" Width="179.55" Height="18.9" Text="[Table.GRUPONOMBRE]" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="330.75" Width="141.75" Height="18.9" Border.Lines="All" Text="SUCURSAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text2" Left="472.5" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.SUCURSAL]" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="330.75" Top="18.9" Width="141.75" Height="18.9" Border.Lines="All" Text="# TICKETS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text9" Left="330.75" Top="37.8" Width="141.75" Height="18.9" Border.Lines="All" Text="# DEVOLUCIONES" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text79" Left="9.45" Top="37.8" Width="56.7" Height="18.9" Fill.Color="DodgerBlue" Text="CORTE" HorzAlign="Center"/>
+      <TextObject Name="Text6" Left="472.5" Top="18.9" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.NUM_TICKETS]" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text8" Left="472.5" Top="37.8" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.NUM_DEVOLUCIONES]" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text78" Left="330.75" Top="75.6" Width="141.75" Height="18.9" Border.Lines="All" Text="FECHA DE CORTE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text11" Left="330.75" Top="132.3" Width="141.75" Height="18.9" Border.Lines="All" Text="SALDO INICIAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text13" Left="330.75" Top="151.2" Width="141.75" Height="18.9" Border.Lines="All" Text="INGRESO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="472.5" Top="132.3" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.SALDOINICIAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="472.5" Top="151.2" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.INGRESO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text80" Top="491.4" Width="132.3" Height="18.9" Border.Lines="All" Text="COMPRAS " Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text77" Left="330.75" Top="378" Width="141.75" Height="18.9" Border.Lines="All" Text="EGRESO TOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text76" Left="472.5" Top="378" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.EGRESO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="330.75" Top="396.9" Width="141.75" Height="18.9" Border.Lines="All" Text="SALDOREAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text24" Left="472.5" Top="396.9" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.SALDOREAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="330.75" Top="415.8" Width="141.75" Height="18.9" Border.Lines="All" Text="SALDOFINAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text22" Left="472.5" Top="415.8" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.SALDOFINAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="330.75" Top="434.7" Width="141.75" Height="18.9" Border.Lines="All" Text="DIFERENCIA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text26" Left="472.5" Top="434.7" Width="179.55" Height="18.9" Border.Lines="All" EvenStylePriority="UseAll" Text="[Table.DIFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="330.75" Top="170.1" Width="141.75" Height="18.9" Border.Lines="All" Text="DEVOLUCION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text17" Left="330.75" Top="207.9" Width="141.75" Height="18.9" Border.Lines="All" Text="APORTACION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text19" Left="330.75" Top="226.8" Width="141.75" Height="18.9" Border.Lines="All" Text="RETIRO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text21" Left="330.75" Top="302.4" Width="141.75" Height="18.9" Border.Lines="All" Text="PAGO PROVEEDORES" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="472.5" Top="170.1" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text16" Left="472.5" Top="207.9" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.APORTACION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text18" Left="472.5" Top="226.8" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.RETIRO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="472.5" Top="302.4" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.PAGOPROVEEDORES]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text28" Left="472.5" Top="75.6" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.FECHACORTE]" Format="Date" Format.Format="d" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="472.5" Top="94.5" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.INICIA]" Format="Date" Format.Format="d" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="472.5" Top="113.4" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.TERMINA]" Format="Date" Format.Format="d" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text34" Left="132.3" Top="510.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOEFECTIVO_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text36" Left="226.8" Top="510.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOTARJETA_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text38" Left="510.3" Top="510.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOCREDITO_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text40" Left="321.3" Top="510.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOCHEQUE_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text42" Left="415.8" Top="510.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOVALE_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text31" Left="330.75" Top="94.5" Width="141.75" Height="18.9" Border.Lines="All" Text="INICIA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text33" Left="330.75" Top="113.4" Width="141.75" Height="18.9" Border.Lines="All" Text="TERMINA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text45" Left="670.95" Top="642.6" Width="122.85" Height="28.35" Text="CAMBIO CHEQUE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text81" Top="453.6" Width="302.4" Height="18.9" Text="RESUMEN POR TRANSACCION Y TIPO DE PAGO" HorzAlign="Center" TextFill.Color="Blue"/>
+      <TextObject Name="Text82" Top="510.3" Width="132.3" Height="18.9" Border.Lines="All" Text="VENTAS" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text86" Top="472.5" Width="132.3" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="TRANSACCION" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text87" Left="132.3" Top="472.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="EFECTIVO" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text88" Left="226.8" Top="472.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="TAREJETA" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text89" Left="321.3" Top="472.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="CHEQUE" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text90" Left="415.8" Top="472.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="VALES" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text91" Left="510.3" Top="472.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="CREDITO" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text53" Left="680.4" Top="359.1" Width="94.5" Height="18.9" Border.Lines="All" VertAlign="Center" TextFill.Color="Blue"/>
+      <TextObject Name="Text54" Left="680.4" Top="396.9" Width="94.5" Height="18.9" Border.Lines="All" VertAlign="Center" TextFill.Color="Blue"/>
+      <TextObject Name="Text59" Left="9.45" Top="406.35" Width="160.65" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text74" Left="9.45" Top="283.5" Width="198.45" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text72" Left="9.45" Top="245.7" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text69" Left="9.45" Top="264.6" Width="198.45" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text68" Left="9.45" Top="217.35" Width="302.4" Height="28.35" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text66" Left="9.45" Top="94.5" Width="75.6" Height="18.9" Text="NOMBRE:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text67" Left="9.45" Top="160.65" Width="217.35" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text64" Left="9.45" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text56" Left="9.45" Top="340.2" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text29" Left="132.3" Top="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.COMPRASEFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text37" Left="226.8" Top="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.COMPRASTARJETA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text41" Left="321.3" Top="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.COMPRASCHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text43" Left="510.3" Top="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.COMPRASCREDITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text49" Left="415.8" Top="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.COMPRASVALE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text99" Left="330.75" Top="321.3" Width="141.75" Height="18.9" Border.Lines="All" Text="COMPRAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text35" Left="472.5" Top="321.3" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.COMPRAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text101" Left="330.75" Top="245.7" Width="141.75" Height="18.9" Border.Lines="All" Text="RETIROS DE CAJA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text102" Left="472.5" Top="245.7" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.RETIROSDECAJA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text105" Left="330.75" Top="359.1" Width="141.75" Height="18.9" Border.Lines="All" Text="GASTOS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text106" Left="472.5" Top="359.1" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.GASTOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text107" Left="652.05" Width="94.5" Height="18.9" Border.Lines="All" Text="GENERAL" Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text108" Left="746.55" Width="94.5" Height="18.9" Border.Lines="All" Text="TRASL. FRANQ." Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text47" Left="652.05" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.NUM_TICKETS_VENTASYOTROS]" Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text111" Left="746.55" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.NUM_TICKETS_VENTATRASLADOS]" Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text113" Left="652.05" Top="151.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESO_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Italic" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text115" Left="746.55" Top="151.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESO_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Italic" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text116" Left="652.05" Top="170.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCION_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Italic" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text117" Left="746.55" Top="170.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCION_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Italic" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text118" Left="652.05" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.NUM_DEVOLUCIONES_VENTAS]" Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text119" Left="746.55" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.NUM_DEVOLUCIONES_VENTATRASLADOS]" Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text120" Left="330.75" Top="56.7" Width="141.75" Height="18.9" Border.Lines="All" Text="# CANCELACIONES" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text121" Left="472.5" Top="56.7" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.NUM_CANCELACIONES]" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text122" Left="652.05" Top="56.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.NUM_CANCELACIONES_VENTAS]" Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text124" Left="746.55" Top="56.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.NUM_CANCELACIONES_VENTATRASLADOS]" Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text125" Left="330.75" Top="189" Width="141.75" Height="18.9" Border.Lines="All" Text="CANCELACION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text126" Left="472.5" Top="189" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.CANCELACION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text127" Left="652.05" Top="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACION_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Italic" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text128" Left="746.55" Top="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACION_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Italic" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text130" Top="529.2" Width="132.3" Height="18.9" Border.Lines="All" Text="TRASLADOS FRANQ." Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text137" Left="132.3" Top="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOEFECTIVO_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text138" Left="226.8" Top="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOTARJETA_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text139" Left="321.3" Top="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOCHEQUE_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text140" Left="510.3" Top="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOCREDITO_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text141" Left="415.8" Top="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOVALE_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text148" Left="841.05" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Khaki" Text="SOLO TRASL." Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text149" Left="841.05" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Khaki" Text="[Table.NUM_TICKETS_SOLOTRASLADOS]" Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text150" Left="841.05" Top="151.2" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Khaki" Text="[Table.INGRESO_SOLOTRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Italic" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text153" Left="841.05" Top="56.7" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Khaki" Text="[Table.NUM_CANCELACIONES_SOLOTRASLADOS]" Font="Arial, 8pt, style=Italic"/>
+      <TextObject Name="Text154" Left="841.05" Top="189" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Khaki" Text="[Table.CANCELACION_SOLOTRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt, style=Italic" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text155" Left="9.45" Top="141.75" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text156" Left="9.45" Top="198.45" Width="198.45" Height="18.9" Text="DIRECCIÓN:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text157" Left="9.45" Top="387.45" Width="198.45" Height="18.9" Text="TELEFONO:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text158" Left="9.45" Top="321.3" Width="198.45" Height="18.9" Text="CODIGO POSTAL:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="793.8" Top="642.6" Width="151.2" Height="18.9" Text="[Table.CAMBIOCHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text100" Top="604.8" Width="132.3" Height="18.9" Border.Lines="All" Text="DEVOLUCIONES" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text39" Left="132.3" Top="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCIONEFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text57" Left="226.8" Top="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCIONTARJETA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text63" Left="321.3" Top="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCIONCHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text65" Left="415.8" Top="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCIONVALE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text75" Left="510.3" Top="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCIONCREDITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text142" Top="623.7" Width="132.3" Height="18.9" Border.Lines="All" Text="CANCELACIONES" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text143" Left="132.3" Top="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACIONEFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text144" Left="226.8" Top="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACIONTARJETA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text145" Left="321.3" Top="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACIONCHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text146" Left="415.8" Top="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACIONVALE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text147" Left="510.3" Top="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACIONCREDITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text84" Top="642.6" Width="132.3" Height="18.9" Border.Lines="All" Text="PAGO PROVEEDORES" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text55" Left="132.3" Top="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.PAGOPROVEEDORESEFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text85" Top="661.5" Width="132.3" Height="18.9" Border.Lines="All" Text="RETIROS SUP." Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text60" Left="132.3" Top="661.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.RETIRO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text103" Top="680.4" Width="132.3" Height="18.9" Border.Lines="All" Text="GASTOS" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text104" Left="132.3" Top="680.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.GASTOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text92" Left="321.3" Top="670.95" Width="415.8" Height="18.9" Text="IMPUESTOS" HorzAlign="Center" TextFill.Color="Blue"/>
+      <TextObject Name="Text93" Left="283.5" Top="689.85" Width="113.4" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="TASA IEPS" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text94" Left="396.9" Top="689.85" Width="113.4" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="MONTO" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text95" Left="510.3" Top="689.85" Width="113.4" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="IVA" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text96" Left="623.7" Top="689.85" Width="113.4" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="SUBTOTAL IVA" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text97" Left="737.1" Top="689.85" Width="113.4" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="SUB TOTAL 0%" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text98" Left="850.5" Top="689.85" Width="103.95" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="CREDITO" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text51" Left="283.5" Top="708.75" Width="113.4" Height="18.9" CanShrink="true" Text="[Table.TASAIEPS]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text52" Left="396.9" Top="708.75" Width="113.4" Height="18.9" CanShrink="true" Text="[Table.MONTOIEPS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text46" Left="510.3" Top="708.75" Width="113.4" Height="18.9" Text="[Table.INGRESOPORIVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text48" Left="623.7" Top="708.75" Width="113.4" Height="18.9" Text="[Table.INGRESOSUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text62" Left="66.15" Top="37.8" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text165" Top="548.1" Width="132.3" Height="18.9" Border.Lines="All" Text="ABONOS OTROS DIAS" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text166" Left="132.3" Top="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOEFE_OD_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text167" Left="226.8" Top="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOTARJ_OD_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text168" Left="321.3" Top="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOCHEQUE_OD_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text169" Left="510.3" Top="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOCRED_OD_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text170" Left="415.8" Top="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOVALE_OD_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text173" Left="604.8" Top="472.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="TRANSF." Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text172" Left="604.8" Top="510.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOTRANSFERENCIA_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text161" Left="604.8" Top="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.COMPRASTRANSFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text163" Left="604.8" Top="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOTRANSFERENCIA_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text171" Left="604.8" Top="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOTRANSF_OD_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text162" Left="604.8" Top="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCIONTRANSFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text164" Left="604.8" Top="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACIONTRANSFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text186" Top="567" Width="132.3" Height="18.9" Border.Lines="All" Text="REV. VENTAS OT. CORTES" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text187" Left="132.3" Top="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOEFE_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text174" Left="226.8" Top="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOTARJ_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text175" Left="321.3" Top="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOCHEQUE_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text176" Left="510.3" Top="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOCRED_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text177" Left="415.8" Top="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOVALE_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text178" Left="604.8" Top="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOTRANSF_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text179" Top="585.9" Width="132.3" Height="18.9" Border.Lines="All" Text="REV. TRASL. OT. CORTES" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text180" Left="132.3" Top="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOEFE_VENTATRASLA_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text181" Left="226.8" Top="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOTARJ_VENTATRASLA_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text182" Left="321.3" Top="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOCHEQUE_VENTATRASLA_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text183" Left="510.3" Top="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOCRED_VENTATRASLA_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text184" Left="415.8" Top="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOVALE_VENTATRASLA_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text185" Left="604.8" Top="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOTRANSF_VENTATRASLA_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text188" Left="330.75" Top="340.2" Width="141.75" Height="18.9" Border.Lines="All" Text="REV. ABONOS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text189" Left="472.5" Top="340.2" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.REVERSION_ABONOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text190" Left="661.5" Top="302.4" Width="160.65" Height="18.9" Border.Lines="All" Text="INTERCAMBIO MERCANCIA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text191" Left="822.15" Top="302.4" Width="122.85" Height="18.9" Border.Lines="All" Text="[Table.INTERCAMBIOMERCANCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text208" Left="699.3" Top="472.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="DEPOSITO" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text199" Left="793.8" Top="472.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="DEP. TER." Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text192" Left="699.3" Top="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.COMPRASDEPOSITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text200" Left="793.8" Top="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.COMPRASDEPOSITOTERCERO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text209" Left="699.3" Top="510.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESODEP_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text201" Left="793.8" Top="510.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESODEPTER_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text194" Left="699.3" Top="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESODEP_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text202" Left="793.8" Top="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESODEPTER_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text196" Left="699.3" Top="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESODEP_OD_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text203" Left="793.8" Top="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESODEPTER_OD_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text197" Left="699.3" Top="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONODEP_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text204" Left="793.8" Top="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONODEPTER_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text198" Left="699.3" Top="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONODEP_VENTATRASLA_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text206" Left="793.8" Top="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONODEPTER_VENTATRASLA_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text193" Left="699.3" Top="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCIONDEPOSITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text205" Left="793.8" Top="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCIONDEPTERCERO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text195" Left="699.3" Top="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACIONDEPOSITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text207" Left="793.8" Top="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACIONDEPTERCERO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text217" Left="888.3" Top="472.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Blue" Text="OTRO" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 9pt" TextFill.Color="White"/>
+      <TextObject Name="Text218" Left="888.3" Top="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.COMPRASINDEFINIDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text210" Left="888.3" Top="510.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOINDEF_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text211" Left="888.3" Top="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOINDEF_VENTATRASLADOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text212" Left="888.3" Top="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.INGRESOINDEF_OD_VENTAS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text213" Left="888.3" Top="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOINDEF_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text214" Left="888.3" Top="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.REV_ABONOINDEF_VENTATRASLA_OD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text215" Left="888.3" Top="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.DEVOLUCIONINDEFINIDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text216" Left="888.3" Top="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.CANCELACIONINDEFINIDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text219" Left="330.75" Top="264.6" Width="141.75" Height="18.9" Border.Lines="All" Text="FONDEOS DE CAJA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text220" Left="472.5" Top="264.6" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.FONDEOSDECAJA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text227" Left="226.8" Top="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.PAGOPROVEEDORESTARJETA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text228" Left="321.3" Top="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.PAGOPROVEEDORESCHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text221" Left="415.8" Top="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.PAGOPROVEEDORESVALE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text222" Left="510.3" Top="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.PAGOPROVEEDORESCRED]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text223" Left="604.8" Top="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.PAGOPROVEEDORESTRANSF]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text224" Left="699.3" Top="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.PAGOPROVEEDORESDEPOSITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text225" Left="793.8" Top="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.PAGOPROVEEDORESDEPTER]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text226" Left="888.3" Top="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.PAGOPROVEEDORESIND]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text235" Left="330.75" Top="283.5" Width="141.75" Height="18.9" Border.Lines="All" Text="FONDO DINAMICO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text236" Left="472.5" Top="283.5" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.FONDODINAMICODIFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text229" Left="652.05" Top="283.5" Width="56.7" Height="18.9" Border.Lines="All" Text="FONDO INI" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text230" Left="708.75" Top="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.FONDODINAMICOINICIAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text233" Left="803.25" Top="283.5" Width="56.7" Height="18.9" Border.Lines="All" Text="FONDO FIN" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text234" Left="859.95" Top="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.FONDODINAMICOFINAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <DataBand Name="Data1" Top="739.65" Width="980.53" CanShrink="true" BeforePrintEvent="Data1_BeforePrint" DataSource="Table"/>
+      <GroupFooterBand Name="GroupFooter1" Top="743.65" Width="980.53"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="747.65" Width="980.53"/>
+  </ReportPage>
+</Report>

@@ -1,0 +1,13 @@
+create or alter procedure MOVIL_GETNEXTCOBRANZAFOLIO
+returns (
+    FOLIO D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+BEGIN
+
+    FOLIO = GEN_ID(SEQ_COBRANZAMOVIL, 1);
+    
+       ERRORCODE = 0;
+       SUSPEND;
+
+END

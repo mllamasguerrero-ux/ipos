@@ -1,0 +1,21 @@
+CREATE OR ALTER trigger persona_bi for persona
+active before insert position 0
+AS
+BEGIN
+  IF (NEW.ID IS NULL) THEN
+    NEW.ID = GEN_ID(SEQ_PERSONA, 1);
+    
+  IF (NEW.ACTIVO IS NULL) THEN
+    NEW.ACTIVO = 'Y';
+
+  IF (NEW.CREADO IS NULL) THEN
+    NEW.CREADO = CURRENT_TIMESTAMP;
+    
+  IF (NEW.MODIFICADO IS NULL) THEN
+    NEW.MODIFICADO = CURRENT_TIMESTAMP;
+
+  IF (NEW.CLAVE IS NULL) then
+  BEGIN
+      NEW.CLAVE = 'C_' || lpad(CAST( NEW.id AS varchar(31)),6,'0') ;
+  END
+END

@@ -1,0 +1,1 @@
+INSERT INTO DERECHOS (DR_DERECHO, DR_DESCRIPCION) VALUES (10036, 'Cancelar/Recrear todas ventas con error de surtido');

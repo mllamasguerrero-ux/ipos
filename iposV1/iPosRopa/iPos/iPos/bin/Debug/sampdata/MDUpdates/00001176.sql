@@ -1,0 +1,1 @@
+update parametro set fiscalregimen = 'REGIMEN GENERAL DE LEY PERSONAS MORALES'

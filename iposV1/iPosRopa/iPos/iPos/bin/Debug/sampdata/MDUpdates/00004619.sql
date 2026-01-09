@@ -1,0 +1,23 @@
+ALTER TABLE SAT_TIPORELACION ADD CONSTRAINT PK_SAT_TIPORELACION PRIMARY KEY (ID);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,15 @@
+|||||100+++++            //FromAssembly(typeof((nombreTabla)AddViewModel)
+		container.Register(Castle.MicroKernel.Registration.AllTypes.FromAssembly(typeof((nombreTabla)AddViewModel).Assembly)
+                .Where(x => x.Name.EndsWith("ViewModel"))
+                .Configure(x => x.LifeStyle.Is(LifestyleType.Transient)));
+
+		container.Register(Castle.MicroKernel.Registration.AllTypes.FromAssembly(typeof((nombreTabla)EditViewModel).Assembly)
+                .Where(x => x.Name.EndsWith("ViewModel"))
+                .Configure(x => x.LifeStyle.Is(LifestyleType.Transient)));
+
+		container.Register(Castle.MicroKernel.Registration.AllTypes.FromAssembly(typeof((nombreTabla)ShowViewModel).Assembly)
+                .Where(x => x.Name.EndsWith("ViewModel"))
+                .Configure(x => x.LifeStyle.Is(LifestyleType.Transient)));
+
+!!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

@@ -1,0 +1,190 @@
+|||||100+++++
+using BindingModels;
+using Controllers.Controller;
+using IposV3.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Npgsql;
+using Syncfusion.Data.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static Npgsql.PostgresTypes.PostgresCompositeType;
+using KendoNET.DynamicLinq;
+using Syncfusion.Windows.Shared;
+using Castle.Core.Internal;
+
+namespace Controllers.Controller
+{
+
+    public class (nombreTabla)Controller : BaseController<(nombreTabla)BindingModel>
+    {
+
+        private ApplicationDbContext _applicationDbContext;
+
+        public (nombreTabla)Controller(ApplicationDbContext applicationDbContext)
+        {
+            this._applicationDbContext = applicationDbContext;
+        }
+
+
+        public override (nombreTabla)BindingModel? GetById((nombreTabla)BindingModel itemSelect)
+        {
+            _applicationDbContext.ChangeTracker.LazyLoadingEnabled = false;
+
+            var basicQuery = this._applicationDbContext.(nombreTabla)
+                           .Where(x => x.EmpresaId == itemSelect.EmpresaId && x.SucursalId == itemSelect.SucursalId && x.Id == itemSelect.Id);
+
+            var queryWithIncludes = QueryableWithIncludes(basicQuery);
+
+            var item =
+                  queryWithIncludes.Select(x => new (nombreTabla)BindingModel(x))
+                            .FirstOrDefault();
+
+            _applicationDbContext.ChangeTracker.LazyLoadingEnabled = true;
+
+            return item;
+        }
+
+        public override List<(nombreTabla)BindingModel> GetAll()
+        {
+
+            _applicationDbContext.ChangeTracker.LazyLoadingEnabled = false;
+
+            var basicQuery = this._applicationDbContext.(nombreTabla);
+
+            var queryWithIncludes = QueryableWithIncludes(basicQuery);
+
+            var lst =
+                  queryWithIncludes.Select(x => new (nombreTabla)BindingModel(x))
+                            .ToList();
+
+            _applicationDbContext.ChangeTracker.LazyLoadingEnabled = true;
+
+            return lst;
+
+        }
+
+
+
+        public override List<(nombreTabla)BindingModel> SelectList(object param, KendoParams? kendoParams)
+        {
+            (nombreTabla)Param itemParam = ((nombreTabla)Param)param;
+
+            List<(nombreTabla)BindingModel> listToReturn = new List<(nombreTabla)BindingModel>();
+
+            try
+            {
+
+                if (kendoParams != null)
+                {
+
+                if (kendoParams!.GeneralFilter != null && kendoParams!.GeneralFilter!.Value != null && !kendoParams!.GeneralFilter!.Value.IsNullOrEmpty())
+                    kendoParams!.AddGeneralFilterToFilters();
+
+                    if (kendoParams!.Sort == null)
+                        kendoParams!.Sort = FillDefaultSort();
+                }
+
+                _applicationDbContext.ChangeTracker.LazyLoadingEnabled = false;
+                var basicQuery = this._applicationDbContext.(nombreTabla)
+                                .Where(x => x.EmpresaId == itemParam.P_empresaid && x.SucursalId == itemParam.P_sucursalid);
+
+
+                var queryWithIncludes = QueryableWithIncludes(basicQuery);
+
+                var lstQuery = queryWithIncludes
+                      .ToDataSourceResult(kendoParams?.Take ?? 0, kendoParams?.Skip ?? 0, kendoParams?.Sort?.Select(y => y.ToKendoNetEquivalent()), kendoParams!.Filter?.ToKendoNetEquivalent())
+                      .Data.ToList<(nombreTabla)>()
+                      .Select(x => new (nombreTabla)BindingModel(x));
+
+                listToReturn.AddRange(lstQuery);
+
+                _applicationDbContext.ChangeTracker.LazyLoadingEnabled = true;
+
+                return listToReturn;
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
+        public override bool Insert((nombreTabla)BindingModel item)
+        {
+            item.Item!.Creado = DateTimeOffset.UtcNow;
+            item.Item!.Modificado = DateTimeOffset.UtcNow;
+            this._applicationDbContext.(nombreTabla).Add(item.Item!);
+            this._applicationDbContext.SaveChanges();
+            return true;
+        }
+
+
+        public override List<(nombreTabla)BindingModel> Select(object param, string search, string fieldsSearching)
+        {
+            KendoParams kendoParams = new KendoParams();
+            kendoParams.GeneralFilter = new KendoGeneralFilter("search", fieldsSearching);
+            return SelectList(param, kendoParams);
+        }
+
+        public override List<(nombreTabla)BindingModel> SelectById((nombreTabla)BindingModel itemSelect)
+        {
+            (nombreTabla)BindingModel item = new (nombreTabla)BindingModel();
+
+
+
+            _applicationDbContext.ChangeTracker.LazyLoadingEnabled = false;
+
+            var basicQuery = this._applicationDbContext.(nombreTabla)
+                .Where(x => x.EmpresaId == itemSelect.EmpresaId && x.SucursalId == itemSelect.SucursalId && x.Id == itemSelect.Id);
+
+            var queryWithIncludes = QueryableWithIncludes(basicQuery);
+
+            var listItems = queryWithIncludes.Select(x => new (nombreTabla)BindingModel(x)).ToList();
+
+            _applicationDbContext.ChangeTracker.LazyLoadingEnabled = true;
+
+
+            return listItems;
+        }
+        public override bool Update((nombreTabla)BindingModel item)
+        {
+            if (item.HasErrors)
+                throw new InvalidOperationException("Hay datos no validos en este registro");
+
+            this._applicationDbContext.(nombreTabla)?.Update(item.Item!);
+            this._applicationDbContext.SaveChanges();
+
+            return true;
+
+        }
+        public override bool Delete((nombreTabla)BindingModel item)
+        {
+
+            _applicationDbContext.(nombreTabla)?.Remove(item.Item!);
+            this._applicationDbContext.SaveChanges();
+            return true;
+        }
+
+
+#pragma warning disable CS8602
+    public IQueryable<(nombreTabla)> QueryableWithIncludes(IQueryable<(nombreTabla)> itemBasicQuery)
+        {
+            return itemBasicQuery(includeCommandForWholeEntity);
+
+        }  
+#pragma warning restore CS8602
+
+    }
+
+}
+
+
+
+!!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR

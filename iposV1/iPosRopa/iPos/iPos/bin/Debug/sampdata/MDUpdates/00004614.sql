@@ -1,0 +1,23 @@
+ALTER TABLE SAT_UNIDADMEDIDA ADD CONSTRAINT PK_SAT_UNIDADMEDIDA PRIMARY KEY (ID);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

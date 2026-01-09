@@ -1,0 +1,7 @@
+https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/cvpn-getting-started.html
+https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/client-auth-mutual-enable.html
+.\EasyRSA-Start.bat
+./easyrsa init-pki
+./easyrsa build-ca nopass
+./easyrsa --san=DNS:server build-server-full server nopass
+./easyrsa build-client-full client1.domain.tld nopass

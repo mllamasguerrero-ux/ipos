@@ -1,0 +1,6 @@
+﻿id;sat_clave;sat_descripcion;sat_valormaximo;sat_fechainicio;sat_fechafin;sat_ns;sat_nds
+1;E;Egreso;100,000,000;1/1/2017;null;null;null
+2;T;Traslado;0;1/1/2017;null;null;null
+3;N;Nómina;0;1/1/2017;1/1/2017;999999999999999999.999999;999999999999999999.999999
+4;P;Pago;100,000,000;1/1/2017;null;null;null
+5;I;Ingreso;100,000,000;1/1/2017;null;null;null

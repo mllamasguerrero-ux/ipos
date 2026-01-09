@@ -1,0 +1,14 @@
+﻿id;clave;nombre;listacliente;listatraslado
+1;Precio 1;Precio 1;S;S
+2;Precio 2;Precio 2;S;S
+3;Precio 3;Precio 3;S;S
+4;Precio 4;Precio 4;S;S
+5;Precio 5;Precio 5;S;S
+6;Precio 6;Precio 6;N;N
+7;Precio 7;Precio 7;N;N
+8;Precio 8;Precio 8;N;N
+9;Precio 9;Precio 9;N;N
+10;Precio 10;Precio 10;N;N
+101;Costo ultimo;Costo ultimo;N;S
+102;Costo reposicion;Costo reposicion;N;S
+103;Costo promedio;Costo promedio;N;S

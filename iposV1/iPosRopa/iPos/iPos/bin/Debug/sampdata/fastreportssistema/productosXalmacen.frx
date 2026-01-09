@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/05/2014 22:04:59" ReportInfo.Modified="05/29/2017 11:15:49" ReportInfo.CreatorVersion="2014.2.10.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2XbFkxCIpCJ3zGL4FM+o4w0=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT      almacen.id idalmacen, almacen.clave clavealmacen, almacen.nombre as nombrealmacen, producto.clave AS producto, producto.nombre, producto.descripcion, producto.descripcion1, producto.id idproducto,&#13;&#10;                         sum(inventario.cantidad) AS existencia&#13;&#10;FROM           producto inner JOIN&#13;&#10;                    inventario ON producto.id = inventario.productoid and (inventario.almacenid = @almacenid or @almacenid = 0)&#13;&#10;left join&#13;&#10;                   almacen on inventario.almacenid = almacen.id&#13;&#10;WHERE        &#13;&#10;(producto.id = @productoid or @productoid = 0)&#13;&#10;GROUP BY &#13;&#10; almacen.id, almacen.clave, almacen.nombre , producto.id, producto.clave, producto.nombre, producto.descripcion, producto.descripcion1&#13;&#10;ORDER BY almacen.clave, producto.id">
+        <Column Name="PRODUCTO" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="IDALMACEN" DataType="System.Int64"/>
+        <Column Name="CLAVEALMACEN" DataType="System.String"/>
+        <Column Name="NOMBREALMACEN" DataType="System.String"/>
+        <Column Name="IDPRODUCTO" DataType="System.Int64"/>
+        <CommandParameter Name="productoid" DataType="1" Size="31" Expression="[p_productoid]" DefaultValue="1"/>
+        <CommandParameter Name="almacenid" DataType="1" Expression="[p_almaceninicio]" DefaultValue="1"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="p_almaceninicio" DataType="System.Decimal"/>
+    <Parameter Name="p_nombrealmacen" DataType="System.String"/>
+    <Parameter Name="p_productoid" DataType="System.Decimal"/>
+    <Parameter Name="p_productonombre" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="75.6">
+      <TextObject Name="Text15" Left="141.75" Top="9.45" Width="245.7" Height="28.35" Text="PRODUCTOS POR ALMACEN" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text16" Left="141.75" Top="37.8" Width="245.7" Height="18.9" Text="Del almacen:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text21" Left="141.75" Top="56.7" Width="245.7" Height="18.9" Text="Del producto:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text22" Left="387.45" Top="56.7" Width="245.7" Height="18.9" Text="[p_productonombre]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text17" Left="387.45" Top="37.8" Width="245.7" Height="18.9" Text="[p_nombrealmacen]" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="78.8" Width="718.2" Height="18.9">
+      <TextObject Name="Text2" Width="66.15" Height="18.9" Text="ALMACEN" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="66.15" Width="75.6" Height="18.9" Text="PRODUCTO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="141.75" Width="245.7" Height="18.9" Text="DESCRIPCION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="387.45" Width="245.7" Height="18.9" Text="DESCRIPCION1" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="633.15" Width="75.6" Height="18.9" Text="EXISTENCIA" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="100.9" Width="718.2" Height="9.45" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Width="66.15" Height="9.45" Text="[Table.CLAVEALMACEN]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="66.15" Width="75.6" Height="9.45" CanGrow="true" Text="[Table.PRODUCTO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text9" Left="141.75" Width="245.7" Height="9.45" CanGrow="true" Text="[Table.DESCRIPCION]" Font="Arial, 7pt"/>
+      <TextObject Name="Text11" Left="387.45" Width="245.7" Height="9.45" CanGrow="true" Text="[Table.DESCRIPCION1]" Font="Arial, 7pt"/>
+      <TextObject Name="Text13" Left="633.15" Width="75.6" Height="9.45" Text="[Table.EXISTENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+</Report>

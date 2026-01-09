@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/14/2015 13:57:00" ReportInfo.Modified="05/14/2015 14:26:32" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9utyrt7DYSmGl079x18mYZZY=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;docto.id, &#13;&#10;docto.folio, &#13;&#10;docto.fecha,&#13;&#10;docto.hora,&#13;&#10;producto.clave,&#13;&#10;producto.nombre,&#13;&#10;producto.descripcion,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2,&#13;&#10;sum(coalesce(movto.cantidadsurtida,0)) existencia,&#13;&#10;max(movto.costoreposicion) costoreposicion,&#13;&#10;sum(coalesce(movto.cantidadsurtida,0) * coalesce(movto.costoreposicion,0)) importereposicion,&#13;&#10;max(movto.costopromedio) costopromedio,&#13;&#10;sum(coalesce(movto.cantidadsurtida,0) * coalesce(movto.costopromedio,0)) importepromedio&#13;&#10;&#13;&#10;&#13;&#10;from docto left join movto on docto.id = movto.doctoid&#13;&#10;left join producto on movto.productoid = producto.id&#13;&#10;where docto.tipodoctoid = 50 and coalesce(docto.subtipodoctoid,0) = 4&#13;&#10;and docto.estatusdoctoid = 1&#13;&#10;and docto.fecha &gt;= @fechainicial and docto.fecha &lt;= @fechafinal&#13;&#10;&#13;&#10;group by&#13;&#10;producto.clave,&#13;&#10;producto.nombre,&#13;&#10;producto.descripcion,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2,&#13;&#10;docto.id, &#13;&#10;docto.folio, &#13;&#10;docto.fecha,&#13;&#10;docto.hora&#13;&#10;&#13;&#10;having  sum(coalesce(movto.cantidadsurtida,0)) &gt; 0&#13;&#10;&#13;&#10;order by docto.fecha, docto.hora&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="HORA" DataType="System.TimeSpan"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="COSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="IMPORTEREPOSICION" DataType="System.Decimal"/>
+        <Column Name="IMPORTEPROMEDIO" DataType="System.Decimal"/>
+        <CommandParameter Name="fechainicial" DataType="5" Expression="[fechainicial]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafinal" DataType="5" Expression="[fechafinal]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechainicial" DataType="System.DateTime"/>
+    <Parameter Name="fechafinal" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="85.05">
+      <TextObject Name="Text27" Left="132.3" Top="9.45" Width="756" Height="28.35" Text="Detalle de inventarios completos por rango de fecha" Font="Arial, 20pt, style=Bold"/>
+      <TextObject Name="Text31" Left="359.1" Top="47.25" Width="94.5" Height="18.9" Text="[fechainicial]" Format="Date" Format.Format="d" Font="Arial, 11pt"/>
+      <TextObject Name="Text32" Left="623.7" Top="47.25" Width="94.5" Height="18.9" Text="[fechafinal]" Format="Date" Format.Format="d" Font="Arial, 11pt"/>
+      <TextObject Name="Text33" Left="245.7" Top="47.25" Width="103.95" Height="18.9" Text="Fecha inicial:" Font="Arial, 11pt"/>
+      <TextObject Name="Text34" Left="510.3" Top="47.25" Width="94.5" Height="18.9" Text="Fecha final:" Font="Arial, 11pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="89.05" Width="1047.06"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="93.05" Width="1047.06" Condition="[Table.FECHA]">
+      <GroupHeaderBand Name="GroupHeader2" Top="97.05" Width="1047.06" Condition="[Table.HORA]">
+        <GroupHeaderBand Name="GroupHeader3" Top="101.05" Width="1047.06" Height="56.7" Condition="[Table.ID]">
+          <TextObject Name="Text3" Left="387.45" Width="122.85" Height="18.9" Text="[[Table.ID]]"/>
+          <TextObject Name="Text2" Left="217.35" Width="94.5" Height="18.9" Text="[[Table.HORA]]"/>
+          <TextObject Name="Text5" Left="170.1" Width="47.25" Height="18.9" Text="Hora:" Font="Arial, 10pt, style=Bold"/>
+          <TextObject Name="Text6" Left="330.75" Width="56.7" Height="18.9" Text="ID" Font="Arial, 10pt, style=Bold"/>
+          <TextObject Name="Text4" Width="56.7" Height="18.9" Text="Fecha:" Font="Arial, 10pt, style=Bold"/>
+          <TextObject Name="Text1" Left="56.7" Width="94.5" Height="18.9" Text="[[Table.FECHA]]" Format="Date" Format.Format="d"/>
+          <TextObject Name="Text8" Left="94.5" Top="28.35" Width="94.5" Height="18.9" Text="CLAVE" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text10" Left="189" Top="28.35" Width="94.5" Height="18.9" Text="NOMBRE" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text12" Left="283.5" Top="28.35" Width="94.5" Height="18.9" Text="DESCRIPCION" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text14" Left="378" Top="28.35" Width="94.5" Height="18.9" Text="DESCRIPCION1" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text16" Left="472.5" Top="28.35" Width="94.5" Height="18.9" Text="DESCRIPCION2" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text18" Left="567" Top="28.35" Width="94.5" Height="18.9" Text="EXISTENCIA" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text20" Left="661.5" Top="28.35" Width="94.5" Height="28.35" Text="COSTO REPOSICION" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text22" Left="756" Top="28.35" Width="94.5" Height="28.35" Text="IMPORTE REPOSICION" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text24" Left="850.5" Top="28.35" Width="94.5" Height="28.35" Text="COSTO PROMEDIO" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text26" Left="945" Top="28.35" Width="94.5" Height="28.35" Text="IMPORTE PROMEDIO" Font="Arial, 8pt, style=Bold"/>
+          <DataBand Name="Data1" Top="161.75" Width="1047.06" Height="18.9" DataSource="Table">
+            <TextObject Name="Text7" Left="94.5" Width="94.5" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 8pt"/>
+            <TextObject Name="Text9" Left="189" Width="94.5" Height="18.9" Text="[Table.NOMBRE]" Font="Arial, 8pt"/>
+            <TextObject Name="Text11" Left="283.5" Width="94.5" Height="18.9" Text="[Table.DESCRIPCION]" Font="Arial, 8pt"/>
+            <TextObject Name="Text13" Left="378" Width="94.5" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 8pt"/>
+            <TextObject Name="Text15" Left="472.5" Width="94.5" Height="18.9" Text="[Table.DESCRIPCION2]" Font="Arial, 8pt"/>
+            <TextObject Name="Text17" Left="567" Width="94.5" Height="18.9" Text="[Table.EXISTENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text19" Left="661.5" Width="94.5" Height="18.9" Text="[Table.COSTOREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text21" Left="756" Width="94.5" Height="18.9" Text="[Table.IMPORTEREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text23" Left="850.5" Width="94.5" Height="18.9" Text="[Table.COSTOPROMEDIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text25" Left="945" Width="94.5" Height="18.9" Text="[Table.IMPORTEPROMEDIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          </DataBand>
+          <GroupFooterBand Name="GroupFooter3" Top="184.65" Width="1047.06" Height="9.45"/>
+        </GroupHeaderBand>
+        <GroupFooterBand Name="GroupFooter2" Top="198.1" Width="1047.06"/>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="202.1" Width="1047.06"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="206.1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text28" Left="576.45" Width="94.5" Height="18.9" Text="[PageN]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text29" Left="708.75" Width="94.5" Height="18.9" Text="[TotalPages]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text30" Left="680.4" Width="28.35" Height="18.9" Text="de" Font="Arial, 8pt, style=Bold"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel" BackColor="SteelBlue">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="44" Top="92" Font="Tahoma, 8pt" TabIndex="2" Text="jueves, 14 de mayo de 2015" ReportParameter="fechainicial" FilterOperation="GreaterThanOrEqual" Value="05/14/2015 14:01:45"/>
+    <LabelControl Name="Label1" Left="44" Top="76" Width="64" Height="13" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="3" Text="Fecha inicial"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="44" Top="148" Font="Tahoma, 8pt" TabIndex="4" Text="jueves, 14 de mayo de 2015" ReportParameter="fechafinal" FilterOperation="LessThanOrEqual" Value="05/14/2015 14:01:49"/>
+    <LabelControl Name="Label2" Left="44" Top="132" Width="59" Height="13" BackColor="SteelBlue" Font="Tahoma, 8pt" ForeColor="White" TabIndex="5" Text="Fecha final"/>
+    <LabelControl Name="Label3" Left="20" Top="24" Width="243" Height="16" BackColor="SteelBlue" Font="Tahoma, 9.75pt" ForeColor="White" TabIndex="6" Text="Detalle de inventarios por rango de fecha"/>
+  </DialogPage>
+</Report>

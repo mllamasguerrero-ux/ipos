@@ -1,0 +1,23 @@
+EXECUTE BLOCK
+AS
+BEGIN
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (348, 'Aplicacion de Cheques postfechados');
+
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10144, 'Aplicar cheques postfechados');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10145, 'Desaplicar cheques postfechados');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10146, 'Cambiar fecha aplicacion cheques postfechados');
+  	
+	INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+	VALUES (348, 77, 'Aplicacion de Cheques postfechados', 'Aplicacion de Cheques postfechados', 348, 2, 4);
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 348);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 348);
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10144);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10144);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10145);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10145);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10146);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10146);
+
+END

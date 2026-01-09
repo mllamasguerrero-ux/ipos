@@ -1,0 +1,9 @@
+EXECUTE BLOCK
+AS
+BEGIN
+      insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10149, 'Cambiar descuento comision adicional');
+
+
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10149);
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10149);
+end

@@ -1,0 +1,713 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/05/2014 15:11:01" ReportInfo.Modified="03/25/2019 17:12:59" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    decimal saldoValue = 0;
+    decimal saldoAFavor = 0;
+    private void Text15_BeforePrint(object sender, EventArgs e)
+    {
+          saldoValue += ((Decimal)Report.GetColumnValue(&quot;Table.IMPORTERELATIVO&quot;));
+      Text15.Text = saldoValue.ToString(&quot;N2&quot;);
+    }
+
+    private void Text16_BeforePrint(object sender, EventArgs e)
+    {
+                
+      saldoAFavor += ((Decimal)Report.GetColumnValue(&quot;Table.IMPORTESALDOPORAPLICAR&quot;));
+      Text16.Text =saldoAFavor.ToString(&quot;N2&quot;);
+    }
+
+    private void Text5_BeforePrint(object sender, EventArgs e)
+    {
+      
+      string strOperacion = &quot;&quot;;
+      switch( ((Int64)Report.GetColumnValue(&quot;Table.TIPODOCTOID&quot;)) )
+      {
+        case 21: 
+        case 25:                   
+          if( ((Int64)Report.GetColumnValue(&quot;Table.TIPODOCTOID&quot;)) == 25  ||  (((Int64)Report.GetColumnValue(&quot;Table.TIPODOCTOID&quot;)) == 21 &amp;&amp; ((String)Report.GetColumnValue(&quot;Table.ESAPARTADO&quot;)) == &quot;S&quot;)       )
+            strOperacion = &quot;Venta de apartado&quot;;
+          else
+            strOperacion = &quot;Venta&quot;;
+          
+          if(((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 1)
+          {
+            Text5.Text = strOperacion + &quot; #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+          }
+          else
+          {
+            if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 0)
+            {
+              if(((String)Report.GetColumnValue(&quot;Table.ESREVERSION&quot;)).Equals(&quot;N&quot;))
+              {   
+                if( ((Int64)Report.GetColumnValue(&quot;Table.TIPOPAGOID&quot;)) == 1)
+                {
+                  Text5.Text = &quot;Abono #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString()
+                    + &quot;  de la &quot; + strOperacion + &quot; #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+                }
+                else{          
+                  Text5.Text = &quot;Reversion del Abono #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString()
+                    + &quot;  de la &quot; + strOperacion + &quot; #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+                }
+                  
+              }
+              else
+              {              
+                Text5.Text = &quot;Reversion manual #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString() 
+                  + &quot; del abono #&quot; + ((Int64)Report.GetColumnValue(&quot;Table.ABONOREFID&quot;)).ToString()
+                  + &quot;  de la &quot; + strOperacion + &quot; #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+              }
+            }
+            else if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 1)
+            {
+              Text5.Text = &quot;Aplicacion de saldo de la nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString() 
+                           + &quot; a la &quot; + strOperacion + &quot; #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+            }
+            else
+            {    
+              Text5.Text = &quot;Reversion de aplicacion de saldo de la nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString() 
+                + &quot; a la &quot; + strOperacion + &quot; #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+            }
+          } 
+          break;
+        
+        
+        case 23: 
+        case 26: 
+          if( ((Int64)Report.GetColumnValue(&quot;Table.TIPODOCTOID&quot;)) == 25)
+            strOperacion = &quot;Cancelacion de apartado&quot;;
+          else
+            strOperacion = &quot;Cancelacion&quot;;
+          
+          if(((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 1)
+          {
+            Text5.Text = strOperacion + &quot;  #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString() + &quot; de la venta #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;));
+          }
+          else
+          {
+            if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 0)
+            {
+              if(((String)Report.GetColumnValue(&quot;Table.ESREVERSION&quot;)).Equals(&quot;N&quot;))
+              {   
+                if( ((Int64)Report.GetColumnValue(&quot;Table.TIPOPAGOID&quot;)) == 2)
+                {
+                  Text5.Text = &quot;Pago #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString()
+                    + &quot;  de la &quot; + strOperacion + &quot; #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString();
+                }
+                else{          
+                  Text5.Text = &quot;Reversion del Pago #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString()
+                    + &quot;  de la &quot; + strOperacion + &quot; #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString();
+                }
+                  
+              }
+              else
+              {              
+                Text5.Text = &quot;Reversion manual #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString() 
+                  + &quot; del pago #&quot; + ((Int64)Report.GetColumnValue(&quot;Table.ABONOREFID&quot;)).ToString()
+                  + &quot;  de la &quot; + strOperacion + &quot; #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString();
+              }
+            } 
+          } 
+          break;
+        
+        
+        
+        case 22: 
+          if(((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 1)
+          {
+            Text5.Text = &quot;Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString() + &quot; de la venta #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;));;
+          }
+          else
+          {
+            if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 0)
+            {
+              if(((String)Report.GetColumnValue(&quot;Table.ESREVERSION&quot;)).Equals(&quot;N&quot;))
+              {   
+                if( ((Int64)Report.GetColumnValue(&quot;Table.TIPOPAGOID&quot;)) == 2)
+                {
+                  Text5.Text = &quot;Pago #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString()
+                    + &quot;  de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString();
+                }
+                else{          
+                  Text5.Text = &quot;Reversion del Pago #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString()
+                    + &quot;  de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString();
+                }
+                  
+              }
+              else
+              {              
+                Text5.Text = &quot;Reversion manual #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString() 
+                  + &quot; del pago #&quot; + ((Int64)Report.GetColumnValue(&quot;Table.ABONOREFID&quot;)).ToString()
+                  + &quot;  de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString();
+              }
+            }
+            else if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 1)
+            {
+              Text5.Text = &quot;Aplicacion de saldo de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString() 
+                + &quot; a la venta #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+            }
+            else
+            {    
+              Text5.Text = &quot;Reversion de aplicacion de saldo de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString() 
+                + &quot; a la venta #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+            }
+          } 
+          break;
+        
+        
+        case 24: 
+          if(((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 1)
+          {
+            Text5.Text = &quot;Cancelación de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString() + &quot; de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;));;
+          }
+          else
+          {
+            if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 0)
+            {
+              if(((String)Report.GetColumnValue(&quot;Table.ESREVERSION&quot;)).Equals(&quot;N&quot;))
+              {   
+                if( ((Int64)Report.GetColumnValue(&quot;Table.TIPOPAGOID&quot;)) == 2)
+                {
+                  Text5.Text = &quot;Abono #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString()
+                    + &quot;  de la cancelación de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+                }
+                else{          
+                  Text5.Text = &quot;Reversion del Abono #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString()
+                    + &quot;  de la cancelación de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+                }
+                  
+              }
+              else
+              {              
+                Text5.Text = &quot;Reversion manual #&quot;+ ((Int64)Report.GetColumnValue(&quot;Table.ABONOID&quot;)).ToString() 
+                  + &quot; del abono #&quot; + ((Int64)Report.GetColumnValue(&quot;Table.ABONOREFID&quot;)).ToString()
+                  + &quot;  de la cancelacipon de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+              }
+            }
+            else if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 1)
+            {
+              Text5.Text = &quot;Aplicacion de saldo de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString() 
+                + &quot; a la venta #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+            }
+            else
+            {    
+              Text5.Text = &quot;Reversion de aplicacion de saldo de la Nota de credito #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOSALIDA&quot;)).ToString() 
+                + &quot; a la venta #&quot; + ((Int32)Report.GetColumnValue(&quot;Table.FOLIOENTRADA&quot;)).ToString();
+            }
+          } 
+          break;
+        
+        
+        
+      
+      }
+    }
+
+    private void Text6_BeforePrint(object sender, EventArgs e)
+    {
+      
+      string strOperacion = &quot;&quot;;
+      switch( ((Int64)Report.GetColumnValue(&quot;Table.TIPODOCTOID&quot;)) )
+      {
+        case 21: 
+        case 25:                   
+          if( ((Int64)Report.GetColumnValue(&quot;Table.TIPODOCTOID&quot;)) == 25  ||  (((Int64)Report.GetColumnValue(&quot;Table.TIPODOCTOID&quot;)) == 21 &amp;&amp; ((String)Report.GetColumnValue(&quot;Table.ESAPARTADO&quot;)) == &quot;S&quot;)       )
+            strOperacion = &quot;Venta de apartado&quot;;
+          else
+            strOperacion = &quot;Venta&quot;;
+          
+          if(((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 1)
+          {
+            Text6.Text = strOperacion;
+          }
+          else
+          {
+            if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 0)
+            {
+              if(((String)Report.GetColumnValue(&quot;Table.ESREVERSION&quot;)).Equals(&quot;N&quot;))
+              {   
+                if( ((Int64)Report.GetColumnValue(&quot;Table.TIPOPAGOID&quot;)) == 1)
+                {
+                  Text6.Text = &quot;Abono de &quot; + strOperacion  ;
+                }
+                else{          
+                  Text6.Text = &quot;Reversion de Abono de &quot; + strOperacion ;
+                }
+                  
+              }
+              else
+              {              
+                Text6.Text = &quot;Reversion manual de abono de &quot; + strOperacion  ;
+              }
+            }
+            else if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 1)
+            {
+              Text6.Text = &quot;Aplicacion de saldo de nota de credito a &quot; + strOperacion ;
+            }
+            else
+            {    
+              Text6.Text = &quot;Reversion de aplicacion de saldo de nota de credito  a &quot; + strOperacion ;
+            }
+          } 
+          break;
+        
+        
+        case 23: 
+        case 26: 
+          if( ((Int64)Report.GetColumnValue(&quot;Table.TIPODOCTOID&quot;)) == 25)
+            strOperacion = &quot;Cancelacion de apartado&quot;;
+          else
+            strOperacion = &quot;Cancelacion&quot;;
+          
+          if(((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 1)
+          {
+            Text6.Text = strOperacion ;
+          }
+          else
+          {
+            if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 0)
+            {
+              if(((String)Report.GetColumnValue(&quot;Table.ESREVERSION&quot;)).Equals(&quot;N&quot;))
+              {   
+                if( ((Int64)Report.GetColumnValue(&quot;Table.TIPOPAGOID&quot;)) == 2)
+                {
+                  Text6.Text = &quot;Pago de &quot; + strOperacion ;
+                }
+                else{          
+                  Text6.Text = &quot;Reversion del Pago de &quot; + strOperacion ;
+                }
+                  
+              }
+              else
+              {              
+                Text6.Text = &quot;Reversion manual de pago de &quot; + strOperacion ;
+              }
+            } 
+          } 
+          break;
+        
+        
+        
+        case 22: 
+          if(((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 1)
+          {
+            Text6.Text = &quot;Nota de credito&quot;;
+          }
+          else
+          {
+            if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 0)
+            {
+              if(((String)Report.GetColumnValue(&quot;Table.ESREVERSION&quot;)).Equals(&quot;N&quot;))
+              {   
+                if( ((Int64)Report.GetColumnValue(&quot;Table.TIPOPAGOID&quot;)) == 2)
+                {
+                  Text6.Text = &quot;Pago de Nota de credito&quot;;
+                }
+                else{          
+                  Text6.Text = &quot;Reversion de Pago de Nota de credito&quot;;
+                }
+                  
+              }
+              else
+              {              
+                Text6.Text = &quot;Reversion manual de pago de Nota de credito &quot;;
+              }
+            }
+            else if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 1)
+            {
+              Text6.Text = &quot;Aplicacion de saldo de Nota de credito a venta&quot;;
+            }
+            else
+            {    
+              Text6.Text = &quot;Reversion de aplicacion de saldo de la Nota de credito a venta&quot;;
+            }
+          } 
+          break;
+        
+        
+        case 24: 
+          if(((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 1)
+          {
+            Text6.Text = &quot;Cancelación de la Nota de credito&quot; ;
+          }
+          else
+          {
+            if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 0)
+            {
+              if(((String)Report.GetColumnValue(&quot;Table.ESREVERSION&quot;)).Equals(&quot;N&quot;))
+              {   
+                if( ((Int64)Report.GetColumnValue(&quot;Table.TIPOPAGOID&quot;)) == 2)
+                {
+                  Text6.Text = &quot;Abono de cancelación de Nota de credito&quot;;
+                }
+                else{          
+                  Text6.Text = &quot;Reversion de Abono de cancelación de la Nota de credito&quot;;
+                }
+                  
+              }
+              else
+              {              
+                Text6.Text = &quot;Reversion manual de abono de cancelacipon de la Nota de credito&quot;;
+              }
+            }
+            else if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 1)
+            {
+              Text6.Text = &quot;Aplicacion de saldo de Nota de credito a venta&quot;;
+            }
+            else
+            {    
+              Text6.Text = &quot;Reversion de aplicacion de saldo de Nota de credito a venta&quot;;
+            }
+          } 
+          break;
+        
+        case 201: 
+          if(((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 1)
+          {
+            Text6.Text = &quot;Anticipo&quot;;
+          }
+          else
+          {
+            if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 0)
+            {
+              if(((String)Report.GetColumnValue(&quot;Table.ESREVERSION&quot;)).Equals(&quot;N&quot;))
+              {   
+                if( ((Int64)Report.GetColumnValue(&quot;Table.TIPOPAGOID&quot;)) == 1)
+                {
+                  Text6.Text = &quot;Pago de Anticipo&quot;;
+                }
+                else{          
+                  Text6.Text = &quot;Reversion de Pago de Anticipo&quot;;
+                }
+                  
+              }
+              else
+              {              
+                Text6.Text = &quot;Reversion manual de pago de Anticipo&quot;;
+              }
+            }
+            else if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 1)
+            {
+              Text6.Text = &quot;Aplicacion de saldo de Anticipo a venta&quot;;
+            }
+            else
+            {    
+              Text6.Text = &quot;Reversion de aplicacion de saldo del Anticipo a venta&quot;;
+            }
+          } 
+          break;
+        
+        case 203: 
+          if(((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 1)
+          {
+            Text6.Text = &quot;Cancelacion de anticipo&quot;;
+          }
+          else
+          {
+            if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 0)
+            {
+              if(((String)Report.GetColumnValue(&quot;Table.ESREVERSION&quot;)).Equals(&quot;N&quot;))
+              {   
+                if( ((Int64)Report.GetColumnValue(&quot;Table.TIPOPAGOID&quot;)) == 1)
+                {
+                  Text6.Text = &quot;Pago de Cancelacion de Anticipo&quot;;
+                }
+                else{          
+                  Text6.Text = &quot;Reversion de Pago de Cancelacion de Anticipo&quot;;
+                }
+                  
+              }
+              else
+              {              
+                Text6.Text = &quot;Reversion manual de pago de Cancelacion de Anticipo&quot;;
+              }
+            }
+            else if(((Int32)Report.GetColumnValue(&quot;Table.APLICACIONSALDOS&quot;)) == 1)
+            {
+              Text6.Text = &quot;Aplicacion de saldo de Cancelacion de Anticipo a venta&quot;;
+            }
+            else
+            {    
+              Text6.Text = &quot;Reversion de aplicacion de saldo del Cancelacion deAnticipo a venta&quot;;
+            }
+          } 
+          break;
+        
+        
+        
+        
+        
+      
+      }
+      
+    }
+
+    private void Text17_BeforePrint(object sender, EventArgs e)
+    {
+      DateTime dt = ((DateTime)Report.GetColumnValue(&quot;Table.FECHAVENCE&quot;));
+      if( dt == null || dt &lt;= DateTime.MinValue || (((Int32)Report.GetColumnValue(&quot;Table.CARGOABONO&quot;)) == 2))
+      {
+           Text17.Text = &quot;&quot;;
+      }
+    }
+
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+      if( ((DateTime)Report.GetColumnValue(&quot;Table.FECHA&quot;)) &gt;= ((DateTime)Report.GetParameterValue(&quot;fechainicio&quot;))  &amp;&amp;
+        ((DateTime)Report.GetColumnValue(&quot;Table.FECHA&quot;)) &lt;= ((DateTime)Report.GetParameterValue(&quot;fechafin&quot;)))
+      {
+        Data1.Visible= true;
+      }
+      else{    
+        Data1.Visible= false;
+      }  
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQqjFb/74TC01TM5is4W0TdVo=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="                       SELECT C.DOCTOID,&#13;&#10;C.DOCTOFOLIO,&#13;&#10;C.TIPODOCTOID,&#13;&#10;C.TIPOABONOID,&#13;&#10;C.FORMAPAGOID,&#13;&#10;C.FECHA,&#13;&#10;C.IMPORTE,&#13;&#10;C.TIPOPAGOID,&#13;&#10;C.CARGOABONO,&#13;&#10;C.ESAPARTADO,&#13;&#10;C.PERSONAID,&#13;&#10;C.PERSONAAPARTADOID,&#13;&#10;C.FECHAVENCE,&#13;&#10;C.IMPORTERELATIVO,&#13;&#10;C.IMPORTESALDOPORAPLICAR,&#13;&#10;V.SALDOVENCIDO,&#13;&#10;c.pagoid,&#13;&#10;&#13;&#10;   P.nombres  personanombres,&#13;&#10;  P.apellidos  personaapellidos,&#13;&#10;  P.domicilio  personadomicilio,&#13;&#10;  P.colonia  personacolonia,&#13;&#10;  P.ciudad  personaciudad,&#13;&#10;  P.municipio  personamunicipio,&#13;&#10;  P.estado personaestado,&#13;&#10;  P.pais  personapais,&#13;&#10;  P.codigopostal  personacodigopostal,&#13;&#10;  P.telefono1  personatelefono1,&#13;&#10;  P.celular personacelular,&#13;&#10;  P.email1  personaemail1  ,&#13;&#10;&#13;&#10;  coalesce(P.dias,0) diasplazo,&#13;&#10;  coalesce(P.limitecredito,0.00)  limitecredito,&#13;&#10;  coalesce(P.revision,'')  revision,&#13;&#10;  coalesce(P.pagos,'')  pagos,&#13;&#10;  coalesce(P.listaprecioid,1) listaprecioid,&#13;&#10;&#13;&#10;  coalesce(P.saldo,0)  saldo  ,&#13;&#10;  &#13;&#10;  coalesce(P.saldospositivos,0) saldospositivos ,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; TD.nombre NOMBRETIPODOCTO,&#13;&#10; FP.nombre NOMBREFORMAPAGO,&#13;&#10;&#13;&#10;    case when  C.CARGOABONO = 1 AND C.tipodoctoid IN (22,24) AND coalesce(C.importesaldoporaplicar,0) &lt; 0 then&#13;&#10;            coalesce(C.importesaldoporaplicar,0) * -1&#13;&#10;      else case when  C.CARGOABONO = 1 AND coalesce(c.importerelativo,0) &lt; 0 then  coalesce(c.importerelativo,0)  * -1 else 0 end&#13;&#10;      end CARGO_NEGATIVO  ,&#13;&#10;      &#13;&#10;    case when  C.CARGOABONO = 1 AND C.tipodoctoid IN (22,24) AND coalesce(C.importesaldoporaplicar,0) &gt; 0 then&#13;&#10;            coalesce(C.importesaldoporaplicar,0)&#13;&#10;      else case when  C.CARGOABONO = 1 AND coalesce(c.importerelativo,0) &gt; 0 then  coalesce(c.importerelativo,0) else 0 end&#13;&#10;      end CARGO_POSITIVO ,&#13;&#10;&#13;&#10;      &#13;&#10;    case when  C.CARGOABONO = 2 AND coalesce(c.importesaldoporaplicar,0) &lt; 0 then  coalesce(c.importesaldoporaplicar,0)  * -1&#13;&#10;          when C.CARGOABONO = 2 AND coalesce(c.importerelativo,0) &lt; 0 then  coalesce(c.importerelativo,0)  * -1&#13;&#10;           else 0 end&#13;&#10;      ABONO_NEGATIVO  ,&#13;&#10;&#13;&#10;      &#13;&#10;    case when  C.CARGOABONO = 2 AND coalesce(c.importesaldoporaplicar,0) &gt; 0 then  coalesce(c.importesaldoporaplicar,0)&#13;&#10;          when C.CARGOABONO = 2 AND coalesce(c.importerelativo,0) &gt; 0 then  coalesce(c.importerelativo,0)&#13;&#10;           else 0 end&#13;&#10;      ABONO_POSITIVO,&#13;&#10;&#13;&#10;c.FOLIOENTRADA,&#13;&#10;c.FOLIOSALIDA,&#13;&#10;c.ABONOID,&#13;&#10;c.ABONOREFID,&#13;&#10;c.ESREVERSION,&#13;&#10;c.APLICACIONSALDOS,&#13;&#10;    &#13;&#10;c. referenciabancaria,&#13;&#10;c.notas,&#13;&#10;c.fecharecepcion,&#13;&#10;c.fechaaplicado,&#13;&#10;c.cuentapagocredito,&#13;&#10;c. banco ,&#13;&#10;c.importetotalabono&#13;&#10;&#13;&#10;&#13;&#10;FROM (select * from &quot;CLIENTE_SALDO_MOVTOS&quot; c0 where c0.personaid = @personaid)  C&#13;&#10; LEFT JOIN (select * from &quot;CLIENTE_SALDO_VENCIDO&quot; V0 where V0.personaid =  @personaid) v ON  v.personaid = c.personaid&#13;&#10; LEFT JOIN &quot;PERSONA&quot; P ON P.ID = C.PERSONAID&#13;&#10;left join &quot;TIPODOCTO&quot;  TD ON TD.id = C.tipodoctoid&#13;&#10;LEFT JOIN &quot;FORMAPAGO&quot;  FP ON FP.ID = C.formapagoid&#13;&#10;ORDER BY C.FECHA,C.FECHAHORA">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="TIPOABONOID" DataType="System.Int64"/>
+        <Column Name="FORMAPAGOID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="TIPOPAGOID" DataType="System.Int64"/>
+        <Column Name="CARGOABONO" DataType="System.String"/>
+        <Column Name="ESAPARTADO" DataType="System.String"/>
+        <Column Name="PERSONAID" DataType="System.Int64"/>
+        <Column Name="PERSONAAPARTADOID" DataType="System.Int64"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="IMPORTERELATIVO" DataType="System.Decimal"/>
+        <Column Name="IMPORTESALDOPORAPLICAR" DataType="System.Decimal"/>
+        <Column Name="SALDOVENCIDO" DataType="System.Decimal"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="PERSONADOMICILIO" DataType="System.String"/>
+        <Column Name="PERSONACOLONIA" DataType="System.String"/>
+        <Column Name="PERSONACIUDAD" DataType="System.String"/>
+        <Column Name="PERSONAMUNICIPIO" DataType="System.String"/>
+        <Column Name="PERSONAESTADO" DataType="System.String"/>
+        <Column Name="PERSONAPAIS" DataType="System.String"/>
+        <Column Name="PERSONACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="PERSONATELEFONO1" DataType="System.String"/>
+        <Column Name="PERSONACELULAR" DataType="System.String"/>
+        <Column Name="PERSONAEMAIL1" DataType="System.String"/>
+        <Column Name="DIASPLAZO" DataType="System.Int32"/>
+        <Column Name="LIMITECREDITO" DataType="System.Decimal"/>
+        <Column Name="REVISION" DataType="System.String"/>
+        <Column Name="PAGOS" DataType="System.String"/>
+        <Column Name="LISTAPRECIOID" DataType="System.Int64"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="SALDOSPOSITIVOS" DataType="System.Decimal"/>
+        <Column Name="NOMBRETIPODOCTO" DataType="System.String"/>
+        <Column Name="NOMBREFORMAPAGO" DataType="System.String"/>
+        <Column Name="PAGOID" DataType="System.Int64"/>
+        <Column Name="CARGO_NEGATIVO" DataType="System.Decimal"/>
+        <Column Name="CARGO_POSITIVO" DataType="System.Decimal"/>
+        <Column Name="ABONO_NEGATIVO" DataType="System.Decimal"/>
+        <Column Name="ABONO_POSITIVO" DataType="System.Decimal"/>
+        <Column Name="FOLIOENTRADA" DataType="System.Int32"/>
+        <Column Name="FOLIOSALIDA" DataType="System.Int32"/>
+        <Column Name="ABONOID" DataType="System.Int64"/>
+        <Column Name="ABONOREFID" DataType="System.Int64"/>
+        <Column Name="ESREVERSION" DataType="System.String"/>
+        <Column Name="APLICACIONSALDOS" DataType="System.Int32"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="NOTAS" DataType="System.String"/>
+        <Column Name="FECHARECEPCION" DataType="System.DateTime"/>
+        <Column Name="FECHAAPLICADO" DataType="System.DateTime"/>
+        <Column Name="CUENTAPAGOCREDITO" DataType="System.String"/>
+        <Column Name="BANCO" DataType="System.String"/>
+        <Column Name="IMPORTETOTALABONO" DataType="System.Decimal"/>
+        <CommandParameter Name="personaid" DataType="1" Expression="[cliente]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="persona" DataType="System.Int32" Enabled="true" SelectCommand="select * from persona where id = @personaid">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="TIPOPERSONAID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="MEMO" DataType="System.String"/>
+        <Column Name="SALUDOID" DataType="System.Int64"/>
+        <Column Name="NOMBRES" DataType="System.String"/>
+        <Column Name="APELLIDOS" DataType="System.String"/>
+        <Column Name="RAZONSOCIAL" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CONTACTO1" DataType="System.String"/>
+        <Column Name="CONTACTO2" DataType="System.String"/>
+        <Column Name="USERNAME" DataType="System.String"/>
+        <Column Name="CLAVEACCESO" DataType="System.String"/>
+        <Column Name="DOMICILIO" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="CIUDAD" DataType="System.String"/>
+        <Column Name="MUNICIPIO" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="PAIS" DataType="System.String"/>
+        <Column Name="CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="TELEFONO1" DataType="System.String"/>
+        <Column Name="TELEFONO2" DataType="System.String"/>
+        <Column Name="TELEFONO3" DataType="System.String"/>
+        <Column Name="CELULAR" DataType="System.String"/>
+        <Column Name="NEXTEL" DataType="System.String"/>
+        <Column Name="EMAIL1" DataType="System.String"/>
+        <Column Name="EMAIL2" DataType="System.String"/>
+        <Column Name="EMPRESAID" DataType="System.Int64"/>
+        <Column Name="VENDEDORID" DataType="System.Int64"/>
+        <Column Name="ESCLIENTE" DataType="System.String"/>
+        <Column Name="ESCLIENTEGENERAL" DataType="System.String"/>
+        <Column Name="ESPROVEEDOR" DataType="System.String"/>
+        <Column Name="ESUSUARIO" DataType="System.String"/>
+        <Column Name="LISTAPRECIOID" DataType="System.Int64"/>
+        <Column Name="VIGENCIA" DataType="System.DateTime"/>
+        <Column Name="RESET_PASS" DataType="System.Int16"/>
+        <Column Name="HAB_PAGOTARJETA" DataType="System.String"/>
+        <Column Name="HAB_PAGOCREDITO" DataType="System.String"/>
+        <Column Name="HAB_PAGOCHEQUE" DataType="System.String"/>
+        <Column Name="CORTEID" DataType="System.Int64"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="SALDOAPARTADO" DataType="System.Decimal"/>
+        <Column Name="SALDOSPOSITIVOS" DataType="System.Decimal"/>
+        <Column Name="SALDOSNEGATIVOS" DataType="System.Decimal"/>
+        <Column Name="SALDOAPARTADOPOSITIVO" DataType="System.Decimal"/>
+        <Column Name="SALDOAPARTADONEGATIVO" DataType="System.Decimal"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="GAFFETE" DataType="System.String"/>
+        <Column Name="LIMITECREDITO" DataType="System.Decimal"/>
+        <Column Name="DIAS" DataType="System.Int32"/>
+        <Column Name="REVISION" DataType="System.String"/>
+        <Column Name="PAGOS" DataType="System.String"/>
+        <Column Name="BLOQUEADO" DataType="System.String"/>
+        <Column Name="TICKETLARGO" DataType="System.String"/>
+        <Column Name="ENTREGACALLE" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGANUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="ENTREGACOLONIA" DataType="System.String"/>
+        <Column Name="ENTREGAMUNICIPIO" DataType="System.String"/>
+        <Column Name="ENTREGAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="HAB_PAGOTRANSFERENCIA" DataType="System.String"/>
+        <Column Name="CREDITOFORMAPAGOABONOS" DataType="System.Int64"/>
+        <Column Name="CREDITOREFERENCIAABONOS" DataType="System.String"/>
+        <Column Name="RETIENEISR" DataType="System.String"/>
+        <Column Name="RETIENEIVA" DataType="System.String"/>
+        <Column Name="MONEDAID" DataType="System.Int64"/>
+        <Column Name="DESGLOSEIEPS" DataType="System.String"/>
+        <Column Name="CUENTAIEPS" DataType="System.String"/>
+        <Column Name="SUPERLISTAPRECIOID" DataType="System.Int64"/>
+        <Column Name="ALMACENID" DataType="System.Int64"/>
+        <Column Name="BLOQUEONOT" DataType="System.String"/>
+        <Column Name="EMAIL3" DataType="System.String"/>
+        <Column Name="EMAIL4" DataType="System.String"/>
+        <Column Name="CAJASBOTELLAS" DataType="System.String"/>
+        <Column Name="ESTATUSENVIOID" DataType="System.Int64"/>
+        <CommandParameter Name="personaid" DataType="1" Expression="[cliente]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="cliente" DataType="System.Decimal"/>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="esapartado" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="279.4" PaperHeight="215.9" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="980.53" Height="274.05">
+      <TextObject Name="Text19" Left="66.15" Top="18.9" Width="207.9" Height="18.9" Text="Estado de cuenta del cliente: " Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text26" Left="66.15" Top="37.8" Width="37.8" Height="18.9" Text="de:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text27" Left="255.15" Top="37.8" Width="18.9" Height="18.9" Text="a:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text28" Left="66.15" Top="75.6" Width="94.5" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text29" Left="66.15" Top="94.5" Width="94.5" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text30" Left="66.15" Top="113.4" Width="94.5" Height="18.9" Text="Ciudad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text31" Left="425.25" Top="113.4" Width="94.5" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text32" Left="66.15" Top="132.3" Width="94.5" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text33" Left="425.25" Top="94.5" Width="94.5" Height="18.9" Text="Cp" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="425.25" Top="132.3" Width="94.5" Height="18.9" Text="Correo" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="66.15" Top="179.55" Width="132.3" Height="18.9" Text="Limite de credito:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text36" Left="66.15" Top="198.45" Width="132.3" Height="18.9" Text="Saldo actual:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="66.15" Top="217.35" Width="132.3" Height="18.9" Text="Saldo vencido:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text38" Left="66.15" Top="236.25" Width="132.3" Height="18.9" Text="Saldo por aplicar:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text39" Left="378" Top="179.55" Width="94.5" Height="18.9" Text="Plazo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text40" Left="604.8" Top="179.55" Width="94.5" Height="18.9" Text="Revisión:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text41" Left="604.8" Top="198.45" Width="94.5" Height="18.9" Text="Pagos:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="604.8" Top="217.35" Width="94.5" Height="18.9" Text="Precio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="170.1" Top="75.6" Width="245.7" Height="18.9" Text="[persona.DOMICILIO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text44" Left="170.1" Top="94.5" Width="245.7" Height="18.9" Text="[persona.COLONIA]" Font="Arial, 9pt"/>
+      <TextObject Name="Text45" Left="170.1" Top="113.4" Width="245.7" Height="18.9" Text="[persona.CIUDAD]" Font="Arial, 9pt"/>
+      <TextObject Name="Text46" Left="170.1" Top="132.3" Width="245.7" Height="18.9" Text="[persona.ESTADO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text47" Left="529.2" Top="94.5" Width="179.55" Height="18.9" Text="[persona.CODIGOPOSTAL]" Font="Arial, 9pt"/>
+      <TextObject Name="Text48" Left="529.2" Top="113.4" Width="179.55" Height="18.9" Text="[persona.TELEFONO1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text49" Left="529.2" Top="132.3" Width="179.55" Height="18.9" Text="[persona.EMAIL1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text50" Left="340.2" Top="18.9" Width="387.45" Height="18.9" Text="[persona.NOMBRES] [persona.APELLIDOS]" Font="Arial, 9pt"/>
+      <TextObject Name="Text51" Left="113.4" Top="37.8" Width="94.5" Height="18.9" Text="[fechainicio]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text52" Left="292.95" Top="37.8" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text53" Left="207.9" Top="179.55" Width="151.2" Height="18.9" Text="[persona.LIMITECREDITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text54" Left="708.75" Top="179.55" Width="94.5" Height="18.9" Text="[persona.REVISION]" Font="Arial, 9pt"/>
+      <TextObject Name="Text55" Left="708.75" Top="198.45" Width="94.5" Height="18.9" Text="[persona.PAGOS]" Font="Arial, 9pt"/>
+      <TextObject Name="Text56" Left="481.95" Top="179.55" Width="94.5" Height="18.9" Text="[persona.DIAS]" Font="Arial, 9pt"/>
+      <TextObject Name="Text57" Left="207.9" Top="217.35" Width="151.2" Height="18.9" Text="[Table.SALDOVENCIDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text58" Left="207.9" Top="236.25" Width="151.2" Height="18.9" Text="[persona.SALDOSPOSITIVOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text59" Left="708.75" Top="217.35" Width="94.5" Height="18.9" Text="[persona.LISTAPRECIOID]" Font="Arial, 9pt"/>
+      <TextObject Name="Text60" Left="207.9" Top="198.45" Width="151.2" Height="18.9" Text="[persona.SALDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="278.05" Width="980.53" Height="28.35">
+      <TextObject Name="Text2" Width="66.15" Height="28.35" Text="Fecha" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="66.15" Width="56.7" Height="28.35" Text="#Venta o cargo" Font="Arial, 8pt"/>
+      <TextObject Name="Text8" Left="122.85" Width="85.05" Height="18.9" Text="Cargo (-)" Font="Arial, 8pt"/>
+      <TextObject Name="Text10" Left="207.9" Width="56.7" Height="18.9" Text="Cargo (+)" Font="Arial, 8pt"/>
+      <TextObject Name="Text12" Left="264.6" Width="56.7" Height="18.9" Text="Abono (-)" Font="Arial, 8pt"/>
+      <TextObject Name="Text14" Left="321.3" Width="56.7" Height="18.9" Text="Abono (+)" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="491.4" Width="66.15" Height="18.9" Text="Vence" Font="Arial, 8pt"/>
+      <TextObject Name="Text20" Left="557.55" Width="132.3" Height="18.9" Text="Movimiento" Font="Arial, 8pt"/>
+      <TextObject Name="Text22" Left="689.85" Width="85.05" Height="18.9" Text="Tipo Pago" Font="Arial, 8pt"/>
+      <TextObject Name="Text23" Left="378" Width="56.7" Height="18.9" Text="Saldo" Font="Arial, 8pt"/>
+      <TextObject Name="Text24" Left="434.7" Width="56.7" Height="18.9" Text="a favor" Font="Arial, 8pt"/>
+      <TextObject Name="Text25" Left="774.9" Width="198.45" Height="18.9" Text="Referencia" HorzAlign="Center" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="310.4" Width="980.53" Height="28.35" BeforePrintEvent="Data1_BeforePrint" DataSource="Table">
+      <TextObject Name="Text1" Width="66.15" Height="28.35" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="66.15" Width="56.7" Height="28.35" Text="[Table.DOCTOFOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="122.85" Width="85.05" Height="28.35" Text="[Table.CARGO_NEGATIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="207.9" Width="56.7" Height="28.35" Text="[Table.CARGO_POSITIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="264.6" Width="56.7" Height="28.35" Text="[Table.ABONO_NEGATIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="321.3" Width="56.7" Height="28.35" Text="[Table.ABONO_POSITIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="378" Width="56.7" Height="28.35" BeforePrintEvent="Text15_BeforePrint" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text16" Left="434.7" Width="56.7" Height="28.35" BeforePrintEvent="Text16_BeforePrint" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+      <TextObject Name="Text17" Left="491.4" Width="66.15" Height="28.35" BeforePrintEvent="Text17_BeforePrint" Text="[Table.FECHAVENCE]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text21" Left="689.85" Width="85.05" Height="28.35" Text="[Table.NOMBREFORMAPAGO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="774.9" Width="198.45" Height="28.35" BeforePrintEvent="Text5_BeforePrint" Font="Arial, 8pt"/>
+      <TextObject Name="Text6" Left="557.55" Width="132.3" Height="28.35" BeforePrintEvent="Text6_BeforePrint" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="342.75" Width="980.53" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

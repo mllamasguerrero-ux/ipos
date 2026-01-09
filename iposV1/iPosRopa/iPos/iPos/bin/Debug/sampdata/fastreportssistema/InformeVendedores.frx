@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/02/2014 13:27:39" ReportInfo.Modified="03/02/2014 14:15:59" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2ehAIJUqDKlK3KAH0C4MdWI=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;clave,&#13;&#10;nombre,&#13;&#10;nombres,&#13;&#10;apellidos,&#13;&#10;domicilio,&#13;&#10;numerointerior,&#13;&#10;numeroexterior,&#13;&#10;colonia,&#13;&#10;ciudad,&#13;&#10;municipio,&#13;&#10;estado,&#13;&#10;codigopostal,&#13;&#10;telefono1,&#13;&#10;celular,&#13;&#10;gaffete&#13;&#10;from&#13;&#10;persona where tipopersonaid in (22,20)">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="NOMBRES" DataType="System.String"/>
+        <Column Name="APELLIDOS" DataType="System.String"/>
+        <Column Name="DOMICILIO" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="CIUDAD" DataType="System.String"/>
+        <Column Name="MUNICIPIO" DataType="System.String"/>
+        <Column Name="CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="CELULAR" DataType="System.String"/>
+        <Column Name="GAFFETE" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="TELEFONO1" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="170.1">
+      <TextObject Name="Text19" Left="85.05" Top="9.45" Width="349.65" Height="18.9" Text="Catalogo de vendedores" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text20" Left="103.95" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text21" Left="103.95" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text22" Left="567" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text23" Left="103.95" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text24" Left="567" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text25" Left="567" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text26" Left="103.95" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="567" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text28" Left="103.95" Top="141.75" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text29" Left="9.45" Top="66.15" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text30" Left="9.45" Top="85.05" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text31" Left="9.45" Top="103.95" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text32" Left="9.45" Top="122.85" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text33" Left="9.45" Top="141.75" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="481.95" Top="66.15" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="481.95" Top="85.05" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text36" Left="481.95" Top="103.95" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="481.95" Top="122.85" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text38" Left="9.45" Top="37.8" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="174.1" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Width="75.6" Height="18.9" Text="CLAVE" Font="Arial, 8pt"/>
+      <TextObject Name="Text6" Left="75.6" Width="66.15" Height="18.9" Text="GAFFETE" Font="Arial, 8pt"/>
+      <TextObject Name="Text8" Left="519.75" Width="94.5" Height="18.9" Text="COLONIA" Font="Arial, 8pt"/>
+      <TextObject Name="Text10" Left="614.25" Width="94.5" Height="18.9" Text="CIUDAD" Font="Arial, 8pt"/>
+      <TextObject Name="Text12" Left="708.75" Width="94.5" Height="18.9" Text="ESTADO" Font="Arial, 8pt"/>
+      <TextObject Name="Text14" Left="803.25" Width="94.5" Height="18.9" Text="CODIGOPOSTAL" Font="Arial, 8pt"/>
+      <TextObject Name="Text16" Left="897.75" Width="94.5" Height="18.9" Text="TELEFONO1" Font="Arial, 8pt"/>
+      <TextObject Name="Text17" Left="141.75" Width="189" Height="18.9" Text="NOMBRE" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="330.75" Width="189" Height="18.9" Text="DOMICILIO" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="206.45" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="75.6" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="141.75" Width="189" Height="18.9" Text="[Table.NOMBRES] [Table.APELLIDOS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="330.75" Width="189" Height="18.9" Text="[Table.DOMICILIO] [Table.NUMEROEXTERIOR] [Table.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="75.6" Width="66.15" Height="18.9" Text="[Table.GAFFETE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="519.75" Width="94.5" Height="18.9" Text="[Table.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="614.25" Width="94.5" Height="18.9" Text="[Table.CIUDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="708.75" Width="94.5" Height="18.9" Text="[Table.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="803.25" Width="94.5" Height="18.9" Text="[Table.CODIGOPOSTAL]" Font="Arial, 8pt"/>
+      <TextObject Name="Text15" Left="897.75" Width="94.5" Height="18.9" Text="[Table.TELEFONO1]" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="229.35" Width="1047.06" Height="18.9">
+      <TextObject Name="Text39" Left="746.55" Width="94.5" Height="18.9" Text="[Page]" Font="Arial, 8pt"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

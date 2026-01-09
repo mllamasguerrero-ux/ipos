@@ -1,0 +1,19 @@
+EXECUTE BLOCK
+AS
+BEGIN
+
+
+      insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10182, 'Cambiar de almacen - gastos');
+
+
+          INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10182);
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10182);
+
+
+      insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10183, 'Filtrar por almacen - gastos');
+
+
+          INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10183);
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10183);
+
+  END

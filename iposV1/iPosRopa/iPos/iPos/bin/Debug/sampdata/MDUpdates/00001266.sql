@@ -1,0 +1,155 @@
+create or alter procedure GET_PRODUCTO_PRECIO_DOCTO (
+    PRODUCTOID D_FK,
+    PERSONAID D_FK,
+    CANTIDAD D_CANTIDAD,
+    TIPODOCTOID D_FK,
+    SUCURSALID D_FK,
+    SUCURSALTID D_FK,
+    COSTOPROD D_COSTO)
+returns (
+    PRECIO D_PRECIO,
+    ESPROMOCION D_BOOLCN,
+    PROMOCIONID D_FK,
+    PROMOCIONDESGLOSE D_STDTEXT_64,
+    MONEDEROABONO D_PRECIO,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRECIO1 D_PRECIO;
+declare variable PRECIO2 D_PRECIO;
+declare variable PRECIO3 D_PRECIO;
+declare variable PRECIO4 D_PRECIO;
+declare variable PRECIO5 D_PRECIO;
+declare variable LISTAPRECIO varchar(1);
+declare variable PRECIOREAL D_FK;
+declare variable TIPOPRECIOREAL D_FK;
+BEGIN
+
+   ESPROMOCION = 'N';
+   PROMOCIONID = NULL;
+   PROMOCIONDESGLOSE = null;
+
+   IF ((:PRODUCTOID IS NULL) OR (:PRODUCTOID = 0)) THEN
+   BEGIN
+      ERRORCODE = 1048;
+      SUSPEND;
+      EXIT;
+   END
+   
+   IF ((:PERSONAID IS NULL) OR (:PERSONAID = 0)) THEN
+   BEGIN
+      ERRORCODE = 1049;
+      SUSPEND;
+      EXIT;
+   END
+   
+   IF ((:CANTIDAD = 0)) THEN
+   BEGIN      
+      ERRORCODE = 0;
+      PRECIO = 0;
+      SUSPEND;
+      EXIT;
+   END
+
+   IF ((:CANTIDAD IS NULL) OR (:CANTIDAD = 0)) THEN
+   BEGIN
+      ERRORCODE = 1050;
+      SUSPEND;
+      EXIT;
+   END
+
+   -- Compra
+   IF (:TIPODOCTOID IN (11)) THEN
+   BEGIN
+      PRECIO = :COSTOPROD;
+   END
+   -- Venta
+   ELSE IF (:TIPODOCTOID IN (21, 23,25)) THEN
+   BEGIN
+      -- Ver si acumula un precio con descuento
+      SELECT PRECIO, ESPROMOCION, PROMOCIONID, PROMOCIONDESGLOSE, MONEDEROABONO, ERRORCODE
+      FROM GET_PRODUCTO_PRECIO(:PRODUCTOID, :PERSONAID, :CANTIDAD)
+      INTO :PRECIO, :ESPROMOCION, :PROMOCIONID, :PROMOCIONDESGLOSE, :MONEDEROABONO,:ERRORCODE;
+
+
+   END
+   -- Traspaso salida
+   ELSE IF (:TIPODOCTOID IN (31)) THEN
+   BEGIN
+      SELECT CAST(COALESCE(LISTA_PRECIO_TRASPASO, '0') AS CHAR(1))
+      FROM SUCURSAL
+        WHERE ID = :SUCURSALTID
+      INTO :LISTAPRECIO;
+      
+      SELECT PRECIO1, PRECIO2, PRECIO3, PRECIO4, PRECIO5
+      FROM PRODUCTO
+      WHERE ID = :PRODUCTOID
+      INTO :PRECIO1, :PRECIO2, :PRECIO3, :PRECIO4, :PRECIO5;
+
+      IF (:LISTAPRECIO = '1') THEN
+         PRECIO = :PRECIO1;
+      ELSE IF (:LISTAPRECIO = '2') THEN
+         PRECIO = PRECIO2;
+      ELSE IF (:LISTAPRECIO = '3') THEN
+         PRECIO = PRECIO3;
+      ELSE IF (:LISTAPRECIO = '4') THEN
+         PRECIO = PRECIO4;
+      ELSE IF (:LISTAPRECIO = '5') THEN
+         PRECIO = PRECIO5;     
+      ELSE IF (:LISTAPRECIO = '0') THEN
+         PRECIO = 0;
+      ELSE 
+         PRECIO = PRECIO4;
+   END
+   --surtimiento de pedido
+   ELSE IF (:TIPODOCTOID IN (81)) THEN
+   BEGIN
+         select coalesce(precioenviotraslado, (case when :tipodoctoid = 31 then 7  else 1 end))
+         from SUCURSAL where id = :SUCURSALTID into :TIPOPRECIOREAL;
+         if(:TIPOPRECIOREAL = 1) then
+         begin
+            SELECT COALESCE(COSTOREPOSICION,COALESCE(COSTOPROMEDIO,COALESCE(COSTOULTIMO,0))) FROM PRODUCTO WHERE ID = :PRODUCTOID INTO :PRECIOREAL;
+        end
+        else if(:TIPOPRECIOREAL = 2) then
+        begin
+            SELECT COALESCE(COSTOULTIMO,COALESCE(COSTOPROMEDIO,0)) FROM PRODUCTO WHERE ID = :PRODUCTOID INTO :PRECIOREAL;
+        end
+        else if(:TIPOPRECIOREAL = 3) then
+        begin    
+            SELECT COALESCE(COSTOPROMEDIO,COALESCE(COSTOULTIMO,0)) FROM PRODUCTO WHERE ID = :PRODUCTOID INTO :PRECIOREAL;
+        end
+        else if(:TIPOPRECIOREAL = 4) then
+        begin     
+            SELECT COALESCE(PRECIO1,0) FROM PRODUCTO WHERE ID = :PRODUCTOID INTO :PRECIOREAL;
+        end
+        else if(:TIPOPRECIOREAL = 5) then
+        begin                  
+            SELECT COALESCE(PRECIO2,0) FROM PRODUCTO WHERE ID = :PRODUCTOID INTO :PRECIOREAL;
+        end
+        else if(:TIPOPRECIOREAL = 6) then
+        begin       
+            SELECT COALESCE(PRECIO3,0) FROM PRODUCTO WHERE ID = :PRODUCTOID INTO :PRECIOREAL;
+        end
+        else if(:TIPOPRECIOREAL = 7) then
+        begin          
+            SELECT COALESCE(PRECIO4,0) FROM PRODUCTO WHERE ID = :PRODUCTOID INTO :PRECIOREAL;
+        end
+        else if(:TIPOPRECIOREAL = 8) then
+        begin   
+            SELECT COALESCE(PRECIO5,0) FROM PRODUCTO WHERE ID = :PRODUCTOID INTO :PRECIOREAL;
+        end
+        else
+        begin   
+            SELECT COALESCE(PRECIO4,0) FROM PRODUCTO WHERE ID = :PRODUCTOID INTO :PRECIOREAL;
+        end
+        PRECIO = :PRECIOREAL;
+   END
+   
+   ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1051;
+      SUSPEND;
+   END 
+END

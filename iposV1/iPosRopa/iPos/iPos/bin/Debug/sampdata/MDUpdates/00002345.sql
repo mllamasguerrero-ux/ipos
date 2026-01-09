@@ -1,0 +1,1 @@
+insert into estatusrebaja(id, clave, nombre, clavesis) values (2, 'REVISADA', 'REVISADA', 'REVISADA');

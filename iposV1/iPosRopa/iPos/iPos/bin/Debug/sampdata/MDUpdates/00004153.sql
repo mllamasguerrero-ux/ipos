@@ -1,0 +1,53 @@
+execute block
+as
+begin
+
+  
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (287, 'Utilerias Sistema');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (288, 'Importacion de Clientes desde Excel');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (289, 'Catalogo Gastos Adicionales');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10098, 'Otorgar Descuentos por Linea a Clientes');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (1289, 'Gastos Adicionales - Edicion');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (2289, 'Gastos Adicionales - Eliminacion');
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (3289, 'Gastos Adicionales -  Insercion');
+  	
+	INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+	VALUES (287, 263, 'Utilerias Sistema', 'Utilerias Sistema', 287, 2, 13);
+
+	INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+	VALUES (288, 287, 'Importacion de Clientes desde Excel', 'Importacion de Clientes desde Excel', 288, 2, 1);
+
+	INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) 
+	VALUES (289, 1, 'Gastos Adicionales', 'Gastos Adicionales', 289, 2, 24);
+
+	
+	
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 287);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 287);
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 288);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 288);
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 289);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 289);
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10098);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10098);
+
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 1289);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 1289);
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 2289);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 2289);
+
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 3289);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 3289);
+
+
+
+
+
+
+end

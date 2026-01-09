@@ -1,0 +1,21 @@
+CREATE GENERATOR SEQ_SAT_TIPOCOMPROBANTE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

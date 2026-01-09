@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/14/2015 08:54:46" ReportInfo.Modified="10/28/2015 15:31:20" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    
+    public long lineaId = 0;
+    
+
+    private void CBLinea_TextChanged(object sender, EventArgs e)
+    {
+      
+      string[] split = CBLinea.Text.Split(new string[] { &quot;# Linea: &quot; }, StringSplitOptions.None);
+      string strNumCliente = &quot;0&quot;;
+      if(split.Length &gt; 1)     
+        strNumCliente = split[1];
+      
+      try
+      {
+        lineaId = long.Parse(strNumCliente);
+        Report.SetParameterValue(&quot;lineaid&quot;, lineaId);
+      }
+      catch{
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlsyr2eXbo0s7yLJSd6PztSl+O4lDOjzfB6CFy9oUhmKX+1kkLXQujJLqapmlmWSJF52p72FDzX4mpry/08/yeYu7laTFish7c1WbwHueAQwQQQ/tTwmrziYbvm8BH92lp/63tBDJaJl+whxszh+k1aFc=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select linea.clave,&#13;&#10;linea.nombre,&#13;&#10;sum(coalesce(producto.existencia,0)) existenciaencantidad,&#13;&#10;sum(coalesce(producto.costoreposicion,0) * coalesce(producto.existencia,0)) importecostoreposicion,&#13;&#10;sum(coalesce(producto.costopromedio,0) * coalesce(producto.existencia,0)) importecostopromedio&#13;&#10;from producto&#13;&#10;    inner join linea on producto.lineaid = linea.id&#13;&#10;where (@lineaid = 0 or linea.id = @lineaid)&#13;&#10;group by linea.clave, linea.nombre&#13;&#10;">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="IMPORTECOSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="IMPORTECOSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAENCANTIDAD" DataType="System.Decimal"/>
+        <CommandParameter Name="lineaid" DataType="1" Expression="[lineaid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="linea" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Linea: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Linea: ' || cast(id as varchar(13)) nombre from linea&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="lineaid" DataType="System.Int64"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="56.7">
+      <TextObject Name="Text21" Left="151.2" Top="9.45" Width="453.6" Height="28.35" Text="Inventario actual por linea" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text22" Left="670.95" Top="9.45" Width="141.75" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="60.7" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Width="198.45" Height="18.9" Text="NOMBRE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text20" Left="500.85" Width="94.5" Height="28.35" Text="IMPORTE COSTO PROM" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="396.9" Width="94.5" Height="28.35" Text="IMPORTE COSTO REPO." Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="292.95" Width="94.5" Height="28.35" Text="EXISTENCIA EN CANTIDAD" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="93.05" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="94.5" Width="198.45" Height="18.9" Text="[Table.NOMBRE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text19" Left="500.85" Width="94.5" Height="18.9" Text="[Table.IMPORTECOSTOPROMEDIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text5" Left="396.9" Width="94.5" Height="18.9" Text="[Table.IMPORTECOSTOREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="292.95" Width="94.5" Height="18.9" Text="[Table.EXISTENCIAENCANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="115.95" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="206" AcceptButton="btnOk" CancelButton="btnCancel" BackColor="HotTrack">
+    <ButtonControl Name="btnOk" Left="118" Top="147" Anchor="Bottom, Right" BackColor="HotTrack" Font="Tahoma, 8pt" ForeColor="White" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="147" Anchor="Bottom, Right" BackColor="HotTrack" Font="Tahoma, 8pt" ForeColor="White" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <ComboBoxControl Name="CBLinea" Left="20" Top="92" Width="249" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Linea: 0" TextChangedEvent="CBLinea_TextChanged" DataColumn="linea.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+    <LabelControl Name="Label1" Left="20" Top="72" Width="32" Height="13" BackColor="HotTrack" Font="Tahoma, 8pt" ForeColor="White" TabIndex="3" Text="Linea"/>
+    <LabelControl Name="Label2" Left="12" Top="16" Width="174" BackColor="HotTrack" Font="Tahoma, 14.25pt" ForeColor="White" TabIndex="3" Text="Inventario por linea"/>
+  </DialogPage>
+</Report>

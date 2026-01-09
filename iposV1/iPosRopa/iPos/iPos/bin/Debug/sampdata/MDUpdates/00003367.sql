@@ -1,0 +1,1 @@
+update cuenta set orden = tipolineapolizaid where tipolineapolizaid in (11,12,13) and coalesce(cuenta.esfact,'N') = 'N'

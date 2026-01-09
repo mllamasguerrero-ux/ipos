@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/11/2017 14:27:40" ReportInfo.Modified="04/11/2017 16:13:56" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2eE+5tvbIlXwnofBBp8CVpA=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;select&#13;&#10;persona.clave usuario_perfil, &#13;&#10;corte.fechacorte,&#13;&#10;corte.id,&#13;&#10;corte.inicia,&#13;&#10;corte.termina,&#13;&#10;corte.saldofinal,&#13;&#10;corte.saldoreal,&#13;&#10;corte.diferencia&#13;&#10;&#13;&#10;  from corte&#13;&#10;  left join persona on persona.id = corte.cajeroid&#13;&#10;  where corte.fechacorte &gt;= @fechaini and corte.fechacorte &lt;= @fechafin&#13;&#10;  and (@cajeroid = 0 or  corte.cajeroid = @cajeroid)">
+        <Column Name="USUARIO_PERFIL" DataType="System.String"/>
+        <Column Name="FECHACORTE" DataType="System.DateTime"/>
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="INICIA" DataType="System.DateTime"/>
+        <Column Name="TERMINA" DataType="System.DateTime"/>
+        <Column Name="SALDOFINAL" DataType="System.Decimal"/>
+        <Column Name="SALDOREAL" DataType="System.Decimal"/>
+        <Column Name="DIFERENCIA" DataType="System.Decimal"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01.01.2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01.01.2001"/>
+        <CommandParameter Name="cajeroid" DataType="6" Expression="[cajeroid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="cajeroid" DataType="System.Decimal"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="718.2" Height="28.35">
+      <TextObject Name="Text2" Left="9.45" Width="113.4" Height="28.35" Text="USUARIO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="122.85" Width="103.95" Height="28.35" Text="FECHACORTE" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text6" Left="226.8" Width="94.5" Height="18.9" Text="INICIA" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="321.3" Width="94.5" Height="18.9" Text="TERMINA" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text10" Left="425.25" Width="94.5" Height="18.9" Text="SALDOFINAL" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text12" Left="519.75" Width="94.5" Height="18.9" Text="SALDOREAL" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text14" Left="614.25" Width="94.5" Height="18.9" Text="DIFERENCIA" Font="Arial, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="74.15" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Left="9.45" Width="113.4" Height="18.9" Text="[Table.USUARIO_PERFIL]" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="122.85" Width="103.95" Height="18.9" Text="[Table.FECHACORTE]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="226.8" Width="94.5" Height="18.9" Text="[Table.INICIA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text7" Left="321.3" Width="94.5" Height="18.9" Text="[Table.TERMINA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="425.25" Width="94.5" Height="18.9" Text="[Table.SALDOFINAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="519.75" Width="94.5" Height="18.9" Text="[Table.SALDOREAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="614.25" Width="94.5" Height="18.9" Text="[Table.DIFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="97.05" Width="718.2" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

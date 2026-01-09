@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" StartReportEvent="_StartReport" ReportInfo.Created="01/16/2016 18:13:21" ReportInfo.Modified="09/22/2016 16:17:24" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    
+
+    private void _StartReport(object sender, EventArgs e)
+    {                                                                                                                                                                                         
+    }
+
+    private void btnOk_Click(object sender, EventArgs e)
+    {
+                                                                               
+    }
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
+              
+    }
+
+    private void Page1_StartPage(object sender, EventArgs e)
+    {
+     
+      Report.Dictionary.Connections[0].Tables[0].SelectCommand =  Report.Dictionary.Connections[0].Tables[0].SelectCommand.Replace(&quot;0,1,2,3,4&quot;,((String)Report.GetParameterValue(&quot;PRODUCTOIDS&quot;)));
+                                                                                 
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9ugAPZ5jRa+EsJHpjBOMKvN4=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT        P.modificado FECHA, P.ID PRODUCTOID, ROUND((P.PRECIO1 * (1 + P.TASAIEPS / 100.00)) * (1 + P.TASAIVA / 100.00), 2) AS PRECIO1,&#13;&#10;                         ROUND((P.PRECIO2 * (1 + P.TASAIEPS / 100.00)) * (1 + P.TASAIVA / 100.00), 2) AS PRECIO2, ROUND((P.PRECIO3 * (1 + P.TASAIEPS / 100.00)) * (1 + P.TASAIVA / 100.00), 2) AS PRECIO3,&#13;&#10;                         ROUND((P.PRECIO4 * (1 + P.TASAIEPS / 100.00)) * (1 + P.TASAIVA / 100.00), 2) AS PRECIO4, ROUND((P.PRECIO5 * (1 + P.TASAIEPS / 100.00)) * (1 + P.TASAIVA / 100.00), 2) AS PRECIO5,  P.CLAVE,&#13;&#10;                         P.NOMBRE, P.DESCRIPCION1&#13;&#10;FROM            PRODUCTO P&#13;&#10;WHERE   P.ID IN (0,1,2,3,4)">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRECIO1" DataType="System.Decimal"/>
+        <Column Name="PRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIO3" DataType="System.Decimal"/>
+        <Column Name="PRECIO4" DataType="System.Decimal"/>
+        <Column Name="PRECIO5" DataType="System.Decimal"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="PRODUCTOIDS" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" RawPaperSize="1" FirstPageSource="15" OtherPagesSource="15" Columns.Count="3" Columns.Width="65.3" Columns.Positions="0,65.3,130.6" StartPageEvent="Page1_StartPage">
+    <DataBand Name="Data1" Width="246.83" Height="160.65" DataSource="Table" KeepDetail="true">
+      <TableObject Name="Table1" Width="245.68" Height="160.65" Border.Lines="All" Border.Style="Dash">
+        <TableColumn Name="Column1" Width="245.68"/>
+        <TableRow Name="Row1" Height="12.6">
+          <TableCell Name="Cell1" Text="[Table.NOMBRE]" HorzAlign="Center" VertAlign="Center" Font="Arial, 7pt"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="31.5">
+          <TableCell Name="Cell6" CanBreak="false" Text="[Table.DESCRIPCION1]" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="107.1">
+          <TableCell Name="Cell11" Text="[Table.PRECIO1]" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" Font="Arial, 28pt, style=Bold"/>
+        </TableRow>
+        <TableRow Name="Row4" Height="9.45">
+          <TableCell Name="Cell12" Text="[Table.FECHA]" Format="Date" Format.Format="dd/MM/yyyy" Font="Arial, 5pt"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+  </ReportPage>
+</Report>

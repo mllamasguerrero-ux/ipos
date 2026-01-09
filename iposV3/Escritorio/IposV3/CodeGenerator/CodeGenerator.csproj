@@ -1,0 +1,436 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>AnyCPU;x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseWPF>False</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Plantillas\**" />
+    <EmbeddedResource Remove="Plantillas\**" />
+    <None Remove="Plantillas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="GENERADOR\I__nombreTabla__ControllerProvider.cs" />
+    <Compile Remove="GENERADOR\I__nombreTabla__ControllerProviderGenerated.cs" />
+    <Compile Remove="GENERADOR\I__nombreTabla__DaoProvider.cs" />
+    <Compile Remove="GENERADOR\I__nombreTabla__DaoProviderGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ V3.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__-copia.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__AddEditCommandView.xaml.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__AddEditSubView.xaml.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__AddEditView.xaml.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__BaseUnitTest.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__BaseUnitTestSubProcPart.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__BaseUnitTestSubViewPart.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__BindingModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__BindingModelGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__CommunicationParameters.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__Controller.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ControllerGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ControllerUnitTest.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ControllerUnitTestSubProcPart.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ControllerUnitTestSubViewPart.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ControllerW.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__Dao.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__DaoUnitTest.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__DaoUnitTestSubProcPart.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__DaoUnitTestSubViewPart.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__Generated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__GeneratedCommandDao.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__GeneratedDao.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__GeneratedImpoDao.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__GeneratedListDao.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ImpoExpoService.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__IQueriesGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ItemCommandViewModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ItemCommandViewModelGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ItemCommandViewModelViejo.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ItemSubViewModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ItemSubViewModelGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ItemSubViewModelViejo.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ItemViewModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ItemViewModelGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ItemViewModelViejo.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListCommandView.xaml.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListCommandViewModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListCommandViewModelGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListCommandViewModelViejo.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListSubView.xaml.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListSubViewModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListSubViewModelGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListSubViewModelViejo.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListView.xaml.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListViewModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListViewModelGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ListViewModelViejo.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__Param.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ParamBindingModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ParamBindingModelGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ParamGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__PQueriesGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__Queries.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__QueriesGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__Result.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ResultBindingModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ResultBindingModelGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ResultGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__SelectorDao.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__ViewModelUnitTest.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__VQueriesGenerated.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__WebController.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__WFBindingModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__WFView.xaml.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla__WFViewModel.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla___ApiController.cs" />
+    <Compile Remove="GENERADOR\__nombreTabla___ApiParam.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="GENERADOR\__nombreTabla__AddEditView.xaml.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla___ApiController.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__BindingModel.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__BindingModelGenerated.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__CommunicationParameters.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__Controller.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__ImpoExpoService.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__ItemViewModel.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__ListView.xaml.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__ListViewModel.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__Param.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__ParamGenerated.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__WebController.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__WFBindingModel.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__WFViewModel.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla__WFView.xaml.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GENERADOR\__nombreTabla___ApiParam.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.OleDb" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DSGeneracion.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DSGeneracion.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="ExcelWebCustomCtrls.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExcelWebCustomCtrls.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DSGeneracion.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DSGeneracion.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="ExcelWebCustomCtrls.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ExcelWebCustomCtrls.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="GENERADOR\admin-layout.component.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\admin.po.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\admin.routing.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\data-context.service---apirest.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\index---apimodels.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\index---apirest.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\index.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\miscelaneawpf.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_container_viewmodel_edit.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_container_viewmodel_lst.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_container_viewmodel_sublist_edit.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_container_viewmodel_sublist_lst.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_container_viewmodel_subproc_edit.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_container_viewmodel_subproc_lst.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_controller_dao.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_viewlocator_general_edit.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_viewlocator_general_lst.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_viewlocator_sublist_edit.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_viewlocator_sublist_lst.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_viewlocator_subproc_edit.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__bootstraper_viewlocator_subproc_lst.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__catalog_selector_1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__catalog_selector_2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__catalog_selector_3.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__catalog_selector_4.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__catalog_selector_5.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__catalog_selector_6.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__catalog_selector_7.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__main_view_menu_general_lst_1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__main_view_menu_general_lst_2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__main_view_menu_sublist_edit_1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__main_view_menu_sublist_edit_2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__main_view_menu_sublist_lst_1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__main_view_menu_sublist_lst_2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__main_view_menu_subproc_edit_1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__main_view_menu_subproc_edit_2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__main_view_menu_subproc_lst_1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\misc___nombreTabla__main_view_menu_subproc_lst_2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\moldepruebasunitarias.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\service.module.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__-interface.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__-item.component.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__-item.component.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__-item.e2e.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__-item.po.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__-list.component.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__-list.component.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__-list.e2e.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__-list.po.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__-o-data-api.service.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__.component.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__.component.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__.metadata.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTablaGuionizado__.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__AddEditCommandView.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__AddEditCommandView.xaml.bak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__AddEditSubView.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__AddEditSubView.xaml.bak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__AddEditView.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__CommandControllerPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__CommandDaoPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__CommandIControllerPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__CommandIDaoPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__CreatePruebasUnitarias.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ImpoExpoControllerPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ImpoExpoDaoPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ImpoExpoIControllerPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ImpoExpoIDaoPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__InsertPruebasUnitarias.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ItemCommandViewModel.cs.bak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ListCommandView.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ListCommandView.xaml.bak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ListSubView.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ListSubView.xaml.bak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ListView.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__ListView.xaml.bak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__SelectListControllerPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__SelectListDaoPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__SelectListIControllerPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__SelectListIDaoPart.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__StoreProcs.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GENERADOR\__nombreTabla__WFView.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="molde.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IposV3\IposV3.csproj" />
+  </ItemGroup>
+
+</Project>

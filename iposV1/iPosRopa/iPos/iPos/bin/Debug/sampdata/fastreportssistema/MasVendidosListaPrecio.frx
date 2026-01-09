@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/28/2015 17:19:23" ReportInfo.Modified="12/01/2017 19:59:37" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void NumericUpDown1_Click(object sender, EventArgs e)
+    {
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29iylxlz281QHEmEGuYLY19gtpAFwwXrDVuSZpfKeuv4EoGwF8wkHw7a1m9PbbvgrjaM=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;select   first @NUMREG&#13;&#10;    linea.id lineaid,&#13;&#10;    linea.clave lineaclave,&#13;&#10;    linea.nombre lineanombre,&#13;&#10;     subquery.*,&#13;&#10;     producto.clave,&#13;&#10;     producto.descripcion ,&#13;&#10;&#13;&#10;     case when @listaprecio = 1 then producto.precio1&#13;&#10;          when @listaprecio = 2 then producto.precio2  &#13;&#10;          when @listaprecio = 3 then producto.precio3&#13;&#10;          when @listaprecio = 4 then producto.precio4&#13;&#10;          when @listaprecio = 5 then producto.precio5&#13;&#10;          end preciolista,&#13;&#10;&#13;&#10;     (case when @listaprecio = 1 then producto.precio1&#13;&#10;          when @listaprecio = 2 then producto.precio2  &#13;&#10;          when @listaprecio = 3 then producto.precio3&#13;&#10;          when @listaprecio = 4 then producto.precio4&#13;&#10;          when @listaprecio = 5 then producto.precio5&#13;&#10;        else producto.precio1&#13;&#10;          end) *&#13;&#10;          (&#13;&#10;             case when coalesce(parametro.desgloseieps, 'N') = 'S' then&#13;&#10;                    (1.00 + coalesce(producto.tasaieps, 0.0)/100.00 )&#13;&#10;                  else&#13;&#10;                     1.0&#13;&#10;                   end&#13;&#10;           ) *&#13;&#10;           (1.00 + coalesce(producto.tasaiva, 0.0)/100.00 )&#13;&#10;           preciomasimpuesto&#13;&#10;&#13;&#10;&#13;&#10;from&#13;&#10;(&#13;&#10;select movto.productoid,&#13;&#10;sum(movto.cantidad * (case when docto.tipodoctoid = 21 then 1 else -1 end)) cantidad,&#13;&#10;count(distinct (case when  docto.tipodoctoid = 21 then docto.id else null end)) cantTickets ,&#13;&#10;sum(movto.importe * (case when docto.tipodoctoid = 21 then 1 else -1 end)) importe,&#13;&#10;sum(movto.total * (case when docto.tipodoctoid = 21 then 1 else -1 end)) total ,&#13;&#10;sum( (coalesce(movto.precio,0) - coalesce(movto.costopromedio,0)) * coalesce(movto.cantidad,0) * (case when docto.tipodoctoid = 21 then 1 else -1 end) )  utilidad&#13;&#10; from docto&#13;&#10;left join movto  on docto.id = movto.doctoid&#13;&#10;where    docto.estatusdoctoid = 1 and&#13;&#10;        docto.tipodoctoid in (21,22)&#13;&#10;        and docto.fecha &gt;= @FECHAINICIO and docto.fecha &lt;= @FECHAFIN&#13;&#10;group by movto.productoid&#13;&#10;order by&#13;&#10;    case when @TIPO = 'POR CANTIDAD' then sum(movto.cantidad * (case when docto.tipodoctoid = 21 then 1 else -1 end))&#13;&#10;         when @TIPO = 'POR UTILIDAD' then sum( (coalesce(movto.precio,0) - coalesce(movto.costopromedio,0)) * coalesce(movto.cantidad,0) * (case when docto.tipodoctoid = 21 then 1 else -1 end) )&#13;&#10;         else count(docto.id)  end  desc&#13;&#10;) subquery&#13;&#10;left join producto  on producto.id = subquery.productoid&#13;&#10;left join linea on linea.id = producto.lineaid&#13;&#10;left join parametro on 1 = 1">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="CANTTICKETS" DataType="System.Int32"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="UTILIDAD" DataType="System.Decimal"/>
+        <Column Name="LINEAID" DataType="System.Int64"/>
+        <Column Name="LINEACLAVE" DataType="System.String"/>
+        <Column Name="LINEANOMBRE" DataType="System.String"/>
+        <Column Name="PRECIOLISTA" DataType="System.Decimal"/>
+        <Column Name="PRECIOMASIMPUESTO" DataType="System.Decimal"/>
+        <CommandParameter Name="NUMREG" DataType="10" Expression="[cantidad]" DefaultValue="100"/>
+        <CommandParameter Name="FECHAINICIO" DataType="5" Expression="[fechainicio]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2020"/>
+        <CommandParameter Name="TIPO" DataType="16" Expression="[tipo]" DefaultValue="'POR CANTIDAD'"/>
+        <CommandParameter Name="listaprecio" DataType="10" Expression="[listaPrecio]" DefaultValue="1"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="tipo" DataType="System.String"/>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="cantidad" DataType="System.Decimal"/>
+    <Parameter Name="listaPrecio" DataType="System.Int32"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" RawPaperSize="1" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="740.5" Height="66.15">
+      <TextObject Name="Text13" Left="207.9" Top="9.45" Width="387.45" Height="18.9" Text="MAS VENDIDOS LISTA PRECIO" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text14" Left="94.5" Top="28.35" Width="113.4" Height="18.9" Text="fecha de:" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text19" Left="207.9" Top="28.35" Width="387.45" Height="18.9" Text="[fechainicio] a [fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text22" Left="595.35" Top="9.45" Width="122.85" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text26" Left="94.5" Top="47.25" Width="113.4" Height="18.9" Text="Lista precio:" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text27" Left="207.9" Top="47.25" Width="387.45" Height="18.9" Text="[listaPrecio]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="70.15" Width="740.5" Height="18.9">
+      <TextObject Name="Text2" Left="94.5" Width="113.4" Height="18.9" Text="PRODUCTO" Font="Arial, 9pt, style=Italic, Underline"/>
+      <TextObject Name="Text4" Left="207.9" Width="387.45" Height="18.9" Text="DESCRIPCION" Font="Arial, 9pt, style=Italic, Underline"/>
+      <TextObject Name="Text25" Width="94.5" Height="18.9" Text="LINEA" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="595.35" Width="122.85" Height="18.9" Text="PRECIO LISTA [listaPrecio]" Font="Arial, 9pt, style=Italic, Underline"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="93.05" Width="740.5" Height="18.9" Condition="[Table.LINEAID]">
+      <TextObject Name="Text23" Width="94.5" Height="18.9" Text="[Table.LINEACLAVE]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text24" Left="94.5" Width="500.85" Height="18.9" Text="[Table.LINEANOMBRE]" Font="Arial, 8pt, style=Bold"/>
+      <DataBand Name="Data1" Top="115.95" Width="740.5" Height="18.9" DataSource="Table">
+        <TextObject Name="Text1" Left="94.5" Width="94.5" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text3" Left="189" Width="406.35" Height="18.9" CanShrink="true" CanBreak="false" Text="[Table.DESCRIPCION]" Font="Arial, 8pt"/>
+        <TextObject Name="Text7" Left="595.35" Width="122.85" Height="18.9" Text="[Table.PRECIOMASIMPUESTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="138.85" Width="740.5" Height="9.45"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="152.3" Width="740.5" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="386" Height="386" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="86" Top="295" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="169" Top="295" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="36" Top="80" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fechainicio" FilterOperation="GreaterThanOrEqual" Value="2017-01-01"/>
+    <LabelControl Name="Label1" Left="36" Top="64" Width="62" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Fecha inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="40" Top="136" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="2017-11-02"/>
+    <LabelControl Name="Label2" Left="40" Top="120" Width="51" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha fin"/>
+    <LabelControl Name="Label3" Left="40" Top="168" Width="27" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="Tipo"/>
+    <NumericUpDownControl Name="NumericUpDown1" Left="196" Top="188" Font="Tahoma, 8pt" TabIndex="8" Text="10000" ClickEvent="NumericUpDown1_Click" ReportParameter="cantidad" FilterOperation="GreaterThanOrEqual" Maximum="100000" Value="10000"/>
+    <LabelControl Name="Label4" Left="196" Top="172" Width="48" Height="13" Font="Tahoma, 8pt" TabIndex="9" Text="cantidad"/>
+    <ComboBoxControl Name="ComboBox1" Left="40" Top="188" Font="Tahoma, 8pt" TabIndex="10" Text="POR CANTIDAD" ReportParameter="tipo" ItemHeight="13" ItemsText="POR CANTIDAD&#13;&#10;POR UTILIDAD&#13;&#10;POR NUMERO DE TICKETS"/>
+    <LabelControl Name="Label5" Left="36" Top="20" Width="258" Height="19" Font="Tahoma, 12pt, style=Bold" TabIndex="3" Text="MAS VENDIDOS LISTA PRECIO"/>
+    <NumericUpDownControl Name="NumericUpDown2" Left="44" Top="248" Font="Tahoma, 8pt" TabIndex="11" Text="1" ReportParameter="listaPrecio" FilterOperation="LessThanOrEqual" Value="1"/>
+    <LabelControl Name="Label6" Left="44" Top="232" Width="110" Height="13" Font="Tahoma, 8pt" TabIndex="12" Text="Lista Precio a mostrar"/>
+  </DialogPage>
+</Report>

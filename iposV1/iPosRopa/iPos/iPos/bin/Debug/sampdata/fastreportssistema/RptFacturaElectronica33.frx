@@ -1,0 +1,1581 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" StartReportEvent="_StartReport" ReportInfo.Created="09/23/2016 12:06:05" ReportInfo.Modified="11/28/2022 09:57:53" ReportInfo.CreatorVersion="2014.2.10.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;                              
+
+using System.IO;     
+using System.Text;
+using System.Globalization;
+
+namespace FastReport
+{
+  public class ReportScript
+  {                                                          
+    private Image waterMarkImage;
+
+    private void Picture1_BeforePrint(object sender, EventArgs e)
+    {
+      Picture1.ImageLocation =  ((String)Report.GetParameterValue(&quot;logoEmpresa&quot;)).Replace(&quot;{BaseDirectory}&quot;, System.IO.Path.GetDirectoryName(Report.FileName ) + &quot;\\..\\..&quot; ) ;  
+      //Text14.Text =  ((String)Report.GetColumnValue(&quot;Cfdi.LOGOEMPRESA&quot;)).Replace(&quot;{BaseDirectory}&quot;, System.IO.Path.GetDirectoryName(Report.FileName ) + &quot;\\..\\..&quot; ) ;                                                                              
+    }
+    
+    
+    private void Picture2_BeforePrint(object sender, EventArgs e)
+    {
+      Picture2.ImageLocation = ((String)Report.GetParameterValue(&quot;imagenBicode&quot;)).Replace(&quot;{BaseDirectory}&quot;, System.IO.Path.GetDirectoryName(Report.FileName) + &quot;\\..\\..&quot;);
+    }  
+        
+
+    private void ReportSummary1_BeforePrint(object sender, EventArgs e)
+    {
+      float topCurrent = TextDescuento.Top;
+      
+      bool bHideIva16 = (((String)Report.GetColumnValue(&quot;Cfdi.HIDEIVA16&quot;)).Trim().Equals(&quot;True&quot;));  
+      bool bHideIva0 = (((String)Report.GetColumnValue(&quot;Cfdi.HIDEIVA0&quot;)).Trim().Equals(&quot;True&quot;)); 
+      
+      topCurrent +=  !bHideIva16 ? TextIva16.Height : 0;
+      TextIva16.Top = topCurrent;
+      TextLabelIva16.Top = topCurrent;
+      topCurrent +=  !bHideIva0 ? TextIva0.Height : 0;
+      TextIva0.Top = topCurrent;
+      TextLabelIva0.Top = topCurrent;
+      
+      TextIva16.Visible = !bHideIva16; 
+      TextLabelIva16.Visible = !bHideIva16;
+      
+      TextIva0.Visible = !bHideIva0; 
+      TextLabelIva0.Visible = !bHideIva0;
+      
+      bool hideIvaRetenido = ((String)Report.GetColumnValue(&quot;Cfdi.HIDEIVARETENIDO&quot;)).Trim().Equals(&quot;True&quot;);
+      bool hideIsrRetenido = ((String)Report.GetColumnValue(&quot;Cfdi.HIDEISRRETENIDO&quot;)).Trim().Equals(&quot;True&quot;);
+      
+      topCurrent +=  !hideIvaRetenido ? TextIva16.Height : 0;
+      TextIvaRetenido.Top = topCurrent;
+      TextLabelIvaRetenido.Top = topCurrent;
+      topCurrent +=  !hideIsrRetenido ? TextIva0.Height : 0;
+      TextIsrRetenido.Top = topCurrent;
+      TextLabelIsrRetenido.Top = topCurrent;
+      
+      TextIvaRetenido.Visible = !hideIvaRetenido;
+      TextLabelIvaRetenido.Visible = !hideIvaRetenido;
+      
+      TextIsrRetenido.Visible = !hideIsrRetenido;
+      TextLabelIsrRetenido.Visible = !hideIsrRetenido;
+      
+      List&lt;TextObject&gt; labelFields = new List&lt;TextObject&gt;();
+      labelFields.Add(TextLabelIeps1);
+      labelFields.Add(TextLabelIeps2);
+      labelFields.Add(TextLabelIeps3);
+      labelFields.Add(TextLabelIeps4);
+      labelFields.Add(TextLabelIeps5);
+      labelFields.Add(TextLabelIeps6);
+      
+      List&lt;TextObject&gt; textFields = new List&lt;TextObject&gt;();
+      textFields.Add(TextIeps1);
+      textFields.Add(TextIeps2);
+      textFields.Add(TextIeps3);
+      textFields.Add(TextIeps4);
+      textFields.Add(TextIeps5);
+      textFields.Add(TextIeps6);
+      
+      
+      for(int i = 0; i &lt; 6; i++)
+      {
+        string hideIepsStr= &quot;Cfdi.HIDEIEPS&quot; + (i+1).ToString();
+        bool hideField = ((String)Report.GetColumnValue(hideIepsStr)).Trim().Equals(&quot;True&quot;);
+        
+        topCurrent += !hideField ? textFields[i].Height : 0;
+        
+        labelFields[i].Top = topCurrent;
+        textFields[i].Top = topCurrent;
+        labelFields[i].Visible = !hideField;
+        textFields[i].Visible = !hideField;                                                                
+      }
+        
+      TextTotal.Top = topCurrent + TextTotal.Height; 
+      TextLabelTotal.Top = topCurrent + TextTotal.Height;
+      
+    }
+
+    private void Text16_BeforePrint(object sender, EventArgs e)
+    {
+      if(((String)Report.GetColumnValue(&quot;Cfdi.HIDERECIBOHONORARIOS&quot;)).Trim().Equals(&quot;True&quot;))
+      {
+        Text16.Visible = false;
+      }
+    }
+
+    private void Text55_BeforePrint(object sender, EventArgs e)
+    {
+      
+      if(((String)Report.GetColumnValue(&quot;Cfdi.HIDERECIBOHONORARIOS&quot;)).Trim().Equals(&quot;True&quot;))
+      {
+        Text55.Visible = false;
+      }
+    }
+
+    private void Text58_BeforePrint(object sender, EventArgs e)
+    {
+      
+      if(((String)Report.GetColumnValue(&quot;Cfdi.HIDEPAGARE&quot;)).Trim().Equals(&quot;True&quot;))
+      {
+        Text58.Visible = false;
+      }
+      if(((Decimal)Report.GetColumnValue(&quot;Cfdi.SALDO&quot;))&lt;=0)
+        Text58.Visible = false;
+      {
+      }
+               
+      //if(Engine.TotalPages == Engine.CurPage + 1)                                
+      //{  
+      
+      //  Text58.Visible = true;
+        Text58.Text = Text58.Text.Replace(&quot;(CANTIDAD CON LETRA)&quot;,NumaletRpt.ToCardinal(((Decimal)Report.GetColumnValue(&quot;Cfdi.TOTAL&quot;))).ToUpper()); 
+      
+      //}
+      //else 
+      //{
+      //  Text58.Visible = false;       
+      //}
+    }
+
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+      
+      try{
+        
+      
+        Data1.Visible =((String)Report.GetParameterValue(&quot;desgloseKits&quot;)).Trim().Equals(&quot;True&quot;) &amp;&amp; ((Int64)Report.GetColumnValue(&quot;Table.KITMOVTOID&quot;)) &gt; 0;
+      }
+      catch(Exception Exception)
+      {
+        Data1.Visible = false;
+      }  
+    }
+
+    private void TextOrdenCompra_BeforePrint(object sender, EventArgs e)
+    {
+       
+    }
+
+    private void _StartReport(object sender, EventArgs e)
+    {
+      //Convertir base64 imagen y fijar a marca de agua
+      
+      string bgImage = (string)Report.GetParameterValue(&quot;bgImage&quot;);
+      
+      if(bgImage != &quot;&quot; &amp;&amp; bgImage != null)
+      {
+        byte[] imageBytes = Convert.FromBase64String(bgImage);
+      
+        using(MemoryStream ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
+        {
+          waterMarkImage = Image.FromStream(ms, true);
+        }
+      
+        Watermark waterMark = new Watermark();
+        waterMark.Enabled = true;
+        waterMark.Image = waterMarkImage;
+      
+        Page1.Watermark = waterMark;
+    }
+      
+      Page2.Visible = ((String)Report.GetParameterValue(&quot;containsCartaPorte&quot;)) == &quot;S&quot;;                     
+  }
+
+    private void Text51_BeforePrint(object sender, EventArgs e)
+    {
+      if(((String)Report.GetColumnValue(&quot;Cfdi.HIDEDESCUENTO&quot;)).Trim().Equals(&quot;True&quot;))
+      {
+        Text51.Visible = false;
+      }
+      
+    }
+
+    private void Text79_BeforePrint(object sender, EventArgs e)
+    {
+      if(((String)Report.GetColumnValue(&quot;Cfdi.HIDEDESCUENTO&quot;)).Trim().Equals(&quot;True&quot;))
+      {
+        Text79.Visible = false;
+      }
+      else
+      {
+        if(((Decimal)Report.GetColumnValue(&quot;Table.DESCUENTOPORCENTAJE&quot;)) &lt; 0)
+        {
+          Text79.Text = &quot;0&quot;;
+        }
+      }
+      
+    }
+
+    private void Text60_BeforePrint(object sender, EventArgs e)
+    {
+      Text60.Visible = ((String)Report.GetColumnValue(&quot;Cfdi.HIDEPZACAJA&quot;)) == &quot;False&quot;;  
+    }
+
+    private void Text57_BeforePrint(object sender, EventArgs e)
+    {
+      
+      
+      //if(Engine.TotalPages == Engine.CurPage + 1)                                
+      //{  
+      
+        Text57.Visible = true;
+        Text57.Text = Text57.Text.Replace(&quot;(CANTIDAD CON LETRA)&quot;,NumaletRpt.ToCardinal(((Decimal)Report.GetColumnValue(&quot;Cfdi.TOTAL&quot;))).ToUpper()); 
+                        
+        
+     //}
+     //else 
+     // {
+      //  Text57.Visible = false;                                                              
+      //}
+    }
+           
+
+    private void Data2_BeforePrint(object sender, EventArgs e)
+    {
+      
+      //Text62.Visible = ((Decimal)Report.GetColumnValue(&quot;ImpuestosDetalle.CFDIIEPS_TASA&quot;)) &gt; 0; 
+      //Text63.Visible = ((Decimal)Report.GetColumnValue(&quot;ImpuestosDetalle.CFDIIEPS_TASA&quot;)) &gt; 0;
+      
+      //Text65.Visible = ((Decimal)Report.GetColumnValue(&quot;ImpuestosDetalle.CFDIIVA_TASA&quot;)) &gt; 0; 
+      //Text61.Visible = ((Decimal)Report.GetColumnValue(&quot;ImpuestosDetalle.CFDIIVA_TASA&quot;)) &gt; 0;
+    }
+
+    private void GroupFooter2_BeforePrint(object sender, EventArgs e)
+    {                                                                                         
+      
+    }
+
+    private void GroupHeader2_BeforePrint(object sender, EventArgs e)
+    {
+      
+      //GroupFooter2.Visible = ((String)Report.GetColumnValue(&quot;Table.ESKIT&quot;)).Trim().Equals(&quot;S&quot;);
+      //Text75.Visible = !((String)Report.GetColumnValue(&quot;Table.ESKIT&quot;)).Trim().Equals(&quot;S&quot;);   
+      //Text77.Visible = !((String)Report.GetColumnValue(&quot;Table.ESKIT&quot;)).Trim().Equals(&quot;S&quot;);
+      
+      bool visibleIeps1 = (((Decimal)Report.GetColumnValue(&quot;Table.IEPS_01_PORC&quot;)) &gt; 0);
+      bool visibleIeps2 = (((Decimal)Report.GetColumnValue(&quot;Table.IEPS_02_PORC&quot;)) &gt; 0);
+      bool visibleIeps3 = (((Decimal)Report.GetColumnValue(&quot;Table.IEPS_03_PORC&quot;)) &gt; 0);
+      bool visibleIeps4 = (((Decimal)Report.GetColumnValue(&quot;Table.IEPS_04_PORC&quot;)) &gt; 0);
+      
+      Text150.Visible = visibleIeps1; 
+      Text151.Visible = visibleIeps1;
+      
+      Text153.Visible = visibleIeps2;
+      Text154.Visible = visibleIeps2;
+      
+      Text156.Visible = visibleIeps3;
+      Text155.Visible = visibleIeps3;
+      
+      Text158.Visible = visibleIeps4;
+      Text157.Visible = visibleIeps4;    
+      
+    }
+
+    private void GroupHeader1_BeforePrint(object sender, EventArgs e)
+    {                                                                             
+            
+      Child1.Visible = ((Int64)Report.GetColumnValue(&quot;Cfdi.TIPODOCTOID&quot;)) == 205;
+      
+                                          
+      string strCtaOrd = ((String)Report.GetColumnValue(&quot;PagosSat.CTAORDENANTE&quot;));
+      GroupFooter1.Visible = ((Int64)Report.GetColumnValue(&quot;Cfdi.TIPODOCTOID&quot;)) == 205 &amp;&amp; ((Int64)Report.GetColumnValue(&quot;PagosSat.BANCORECEPTORID&quot;)) &gt; 0 &amp;&amp; strCtaOrd != null &amp;&amp; strCtaOrd.Length &gt; 0;
+                                                                                ;
+     
+    }
+
+    private void Child2_BeforePrint(object sender, EventArgs e)
+    {                                                                                                     
+    }
+
+    private void Text111_BeforePrint(object sender, EventArgs e)
+    {
+      string strTipoRelacion =  ((String)Report.GetColumnValue(&quot;CfdiRel.TIPORELACION&quot;));
+      Text111.Visible =   strTipoRelacion != null &amp;&amp; strTipoRelacion.Length &gt; 0 ;
+    }
+
+    private void Text110_BeforePrint(object sender, EventArgs e)
+    {
+                                                                                      
+      string strTipoRelacion =  ((String)Report.GetColumnValue(&quot;CfdiRel.TIPORELACION&quot;));
+      Text110.Visible =   strTipoRelacion != null &amp;&amp; strTipoRelacion.Length &gt; 0 ;
+    }
+
+    private void Data3_BeforePrint(object sender, EventArgs e)
+    {
+                                                                                                          
+    }
+       
+                  
+
+    private void PageHeader1_BeforePrint(object sender, EventArgs e)
+    {
+        
+      if( ((String)Report.GetParameterValue(&quot;tipoComprobante&quot;)) == &quot;T&quot;)
+      {
+        Text32.Visible = false;  
+        Text33.Visible = false;
+      }
+    }
+
+    private void PageHeader2_BeforePrint(object sender, EventArgs e)
+    {
+       Page2.Visible = ((String)Report.GetColumnValue(&quot;CartaPorte.TRANSPINTERNAC&quot;)) != null;
+    }
+  }
+
+
+
+
+
+  /// &lt;summary&gt;
+  /// Convierte números en su expresión numérica a su numeral cardinal
+  /// &lt;/summary&gt;
+  public sealed class NumaletRpt
+  {
+    #region Miembros estáticos
+
+    private const int UNI = 0, DIECI = 1, DECENA = 2, CENTENA = 3;
+    private static string[,] _matriz = new string[CENTENA + 1, 10]
+      {
+      {null,&quot; uno&quot;, &quot; dos&quot;, &quot; tres&quot;, &quot; cuatro&quot;, &quot; cinco&quot;, &quot; seis&quot;, &quot; siete&quot;, &quot; ocho&quot;, &quot; nueve&quot;},
+      {&quot; diez&quot;,&quot; once&quot;,&quot; doce&quot;,&quot; trece&quot;,&quot; catorce&quot;,&quot; quince&quot;,&quot; dieciséis&quot;,&quot; diecisiete&quot;,&quot; dieciocho&quot;,&quot; diecinueve&quot;},
+      {null,null,null,&quot; treinta&quot;,&quot; cuarenta&quot;,&quot; cincuenta&quot;,&quot; sesenta&quot;,&quot; setenta&quot;,&quot; ochenta&quot;,&quot; noventa&quot;},
+      {null,null,null,null,null,&quot; quinientos&quot;,null,&quot; setecientos&quot;,null,&quot; novecientos&quot;}
+      };
+
+    private const Char sub = (Char)26;
+    //Cambiar acá si se quiere otro comportamiento en los métodos de clase
+    public const String SeparadorDecimalSalidaDefault = &quot;pesos con&quot;;
+    public const String MascaraSalidaDecimalDefault = &quot;00'/100.-' M. N.&quot;;
+    public const Int32 DecimalesDefault = 2;
+    public const Boolean LetraCapitalDefault = false;
+    public const Boolean ConvertirDecimalesDefault = false;
+    public const Boolean ApocoparUnoParteEnteraDefault = false;
+    public const Boolean ApocoparUnoParteDecimalDefault = false;
+
+
+
+    #endregion
+
+    #region Propiedades
+
+    private Int32 _decimales = DecimalesDefault;
+    private CultureInfo _cultureInfo = CultureInfo.CurrentCulture;
+    private String _separadorDecimalSalida = SeparadorDecimalSalidaDefault;
+    private Int32 _posiciones = DecimalesDefault;
+    private String _mascaraSalidaDecimal, _mascaraSalidaDecimalInterna = MascaraSalidaDecimalDefault;
+    private Boolean _esMascaraNumerica = true;
+    private Boolean _letraCapital = LetraCapitalDefault;
+    private Boolean _convertirDecimales = ConvertirDecimalesDefault;
+    private Boolean _apocoparUnoParteEntera = false;
+    private Boolean _apocoparUnoParteDecimal;
+
+    /// &lt;summary&gt;
+    /// Indica la cantidad de decimales que se pasarán a entero para la conversión
+    /// &lt;/summary&gt;
+    /// &lt;remarks&gt;Esta propiedad cambia al cambiar MascaraDecimal por un valor que empieze con '0'&lt;/remarks&gt;
+    public Int32 Decimales
+    {
+      get { return _decimales; }
+      set
+      {
+        if (value &gt; 10) throw new ArgumentException(value.ToString() + &quot; excede el número máximo de decimales admitidos, solo se admiten hasta 10.&quot;);
+        _decimales = value;
+      }
+    }
+
+    /// &lt;summary&gt;
+    /// Objeto CultureInfo utilizado para convertir las cadenas de entrada en números
+    /// &lt;/summary&gt;
+    public CultureInfo CultureInfo
+    {
+      get { return _cultureInfo; }
+      set { _cultureInfo = value; }
+    }
+
+    /// &lt;summary&gt;
+    /// Indica la cadena a intercalar entre la parte entera y la decimal del número
+    /// &lt;/summary&gt;
+    public String SeparadorDecimalSalida
+    {
+      get { return _separadorDecimalSalida; }
+      set
+      {
+        _separadorDecimalSalida = value;
+        //Si el separador decimal es compuesto, infiero que estoy cuantificando algo,
+        //por lo que apocopo el &quot;uno&quot; convirtiéndolo en &quot;un&quot;
+        if (value.Trim().IndexOf(&quot; &quot;) &gt; 0)
+          _apocoparUnoParteEntera = true;
+        else _apocoparUnoParteEntera = false;
+      }
+    }
+
+    /// &lt;summary&gt;
+    /// Indica el formato que se le dara a la parte decimal del número
+    /// &lt;/summary&gt;
+    public String MascaraSalidaDecimal
+    {
+      get
+      {
+        if (!String.IsNullOrEmpty(_mascaraSalidaDecimal))
+          return _mascaraSalidaDecimal;
+        else return &quot;&quot;;
+      }
+      set
+      {
+        //determino la cantidad de cifras a redondear a partir de la cantidad de '0' o '#' 
+        //que haya al principio de la cadena, y también si es una máscara numérica
+        int i = 0;
+        while (i &lt; value.Length
+          &amp;&amp; (value[i] == '0')
+          | value[i] == '#')
+          i++;
+        _posiciones = i;
+        if (i &gt; 0)
+        {
+          _decimales = i;
+          _esMascaraNumerica = true;
+        }
+        else _esMascaraNumerica = false;
+        _mascaraSalidaDecimal = value;
+        if (_esMascaraNumerica)
+          _mascaraSalidaDecimalInterna = value.Substring(0, _posiciones) + &quot;'&quot;
+            + value.Substring(_posiciones)
+            .Replace(&quot;''&quot;, sub.ToString())
+            .Replace(&quot;'&quot;, String.Empty)
+            .Replace(sub.ToString(), &quot;'&quot;) + &quot;'&quot;;
+        else
+          _mascaraSalidaDecimalInterna = value
+            .Replace(&quot;''&quot;, sub.ToString())
+            .Replace(&quot;'&quot;, String.Empty)
+            .Replace(sub.ToString(), &quot;'&quot;);
+      }
+    }
+
+    /// &lt;summary&gt;
+    /// Indica si la primera letra del resultado debe estár en mayúscula
+    /// &lt;/summary&gt;
+    public Boolean LetraCapital
+    {
+      get { return _letraCapital; }
+      set { _letraCapital = value; }
+    }
+
+    /// &lt;summary&gt;
+    /// Indica si se deben convertir los decimales a su expresión nominal
+    /// &lt;/summary&gt;
+    public Boolean ConvertirDecimales
+    {
+      get { return _convertirDecimales; }
+      set
+      {
+        _convertirDecimales = value;
+        _apocoparUnoParteDecimal = value;
+        if (value)
+        {// Si la máscara es la default, la borro
+          if (_mascaraSalidaDecimal == MascaraSalidaDecimalDefault)
+            MascaraSalidaDecimal = &quot;&quot;;
+        }
+        else if (String.IsNullOrEmpty(_mascaraSalidaDecimal))
+          //Si no hay máscara dejo la default
+          MascaraSalidaDecimal = MascaraSalidaDecimalDefault;
+      }
+    }
+
+    /// &lt;summary&gt;
+    /// Indica si de debe cambiar &quot;uno&quot; por &quot;un&quot; en las unidades.
+    /// &lt;/summary&gt;
+    public Boolean ApocoparUnoParteEntera
+    {
+      get { return _apocoparUnoParteEntera; }
+      set { _apocoparUnoParteEntera = value; }
+    }
+
+    /// &lt;summary&gt;
+    /// Determina si se debe apococopar el &quot;uno&quot; en la parte decimal
+    /// &lt;/summary&gt;
+    /// &lt;remarks&gt;El valor de esta propiedad cambia al setear ConvertirDecimales&lt;/remarks&gt;
+    public Boolean ApocoparUnoParteDecimal
+    {
+      get { return _apocoparUnoParteDecimal; }
+      set { _apocoparUnoParteDecimal = value; }
+    }
+
+    #endregion
+
+    #region Constructores
+
+    public NumaletRpt()
+    {
+      MascaraSalidaDecimal = MascaraSalidaDecimalDefault;
+      SeparadorDecimalSalida = SeparadorDecimalSalidaDefault;
+      LetraCapital = LetraCapitalDefault;
+      ConvertirDecimales = _convertirDecimales;
+    }
+
+    public NumaletRpt(Boolean ConvertirDecimales, String MascaraSalidaDecimal, String SeparadorDecimalSalida, Boolean LetraCapital)
+    {
+      if (!String.IsNullOrEmpty(MascaraSalidaDecimal))
+        this.MascaraSalidaDecimal = MascaraSalidaDecimal;
+      if (!String.IsNullOrEmpty(SeparadorDecimalSalida))
+        _separadorDecimalSalida = SeparadorDecimalSalida;
+      _letraCapital = LetraCapital;
+      _convertirDecimales = ConvertirDecimales;
+    }
+    #endregion
+
+    #region Conversores de instancia
+
+    public String ToCustomCardinal(Double Numero)
+    { return Convertir((Decimal)Numero, _decimales, _separadorDecimalSalida, _mascaraSalidaDecimalInterna, _esMascaraNumerica, _letraCapital, _convertirDecimales, _apocoparUnoParteEntera, _apocoparUnoParteDecimal); }
+
+    public String ToCustomCardinal(String Numero)
+    {
+      Double dNumero;
+      if (Double.TryParse(Numero, NumberStyles.Float, _cultureInfo, out dNumero))
+        return ToCustomCardinal(dNumero);
+      else throw new ArgumentException(&quot;'&quot; + Numero + &quot;' no es un número válido.&quot;);
+    }
+
+    public String ToCustomCardinal(Decimal Numero)
+    { return ToCardinal((Numero)); }
+
+    public String ToCustomCardinal(Int32 Numero)
+    { return Convertir((Decimal)Numero, 0, _separadorDecimalSalida, _mascaraSalidaDecimalInterna, _esMascaraNumerica, _letraCapital, _convertirDecimales, _apocoparUnoParteEntera, false); }
+
+    #endregion
+
+    #region Conversores estáticos
+
+    public static String ToCardinal(Int32 Numero)
+    {
+      return Convertir((Decimal)Numero, 0, null, null, true, LetraCapitalDefault, ConvertirDecimalesDefault, ApocoparUnoParteEnteraDefault, ApocoparUnoParteDecimalDefault);
+    }
+
+    public static String ToCardinal(Double Numero)
+    {
+      return ToCardinal((Decimal)Numero);
+    }
+
+    public static String ToCardinal(String Numero, CultureInfo ReferenciaCultural)
+    {
+      Double dNumero;
+      if (Double.TryParse(Numero, NumberStyles.Float, ReferenciaCultural, out dNumero))
+        return ToCardinal(dNumero);
+      else throw new ArgumentException(&quot;'&quot; + Numero + &quot;' no es un número válido.&quot;);
+    }
+
+    public static String ToCardinal(String Numero)
+    {
+      return NumaletRpt.ToCardinal(Numero, CultureInfo.CurrentCulture);
+    }
+
+    public static String ToCardinal(Decimal Numero)
+    {
+      return Convertir(Numero, DecimalesDefault, SeparadorDecimalSalidaDefault, MascaraSalidaDecimalDefault, true, LetraCapitalDefault, ConvertirDecimalesDefault, ApocoparUnoParteEnteraDefault, ApocoparUnoParteDecimalDefault);
+    }
+
+    #endregion
+
+    private static String Convertir(Decimal Numero, Int32 Decimales, String SeparadorDecimalSalida, String MascaraSalidaDecimal, Boolean EsMascaraNumerica, Boolean LetraCapital, Boolean ConvertirDecimales, Boolean ApocoparUnoParteEntera, Boolean ApocoparUnoParteDecimal)
+    {
+      Int64 Num;
+      Int32 terna, centenaTerna, decenaTerna, unidadTerna, iTerna;
+      String cadTerna;
+      StringBuilder Resultado = new StringBuilder();
+
+      Num = (Int64)Math.Abs(Numero);
+
+      if (Num &gt;= 1000000000000 || Num &lt; 0) throw new ArgumentException(&quot;El número '&quot; + Numero.ToString() + &quot;' excedió los límites del conversor: [0;1.000.000.000.000)&quot;);
+      if (Num == 0)
+        Resultado.Append(&quot; cero&quot;);
+      else
+      {
+        iTerna = 0;
+        while (Num &gt; 0)
+        {
+          iTerna++;
+          cadTerna = String.Empty;
+          terna = (Int32)(Num % 1000);
+
+          centenaTerna = (Int32)(terna / 100);
+          decenaTerna = terna % 100;
+          unidadTerna = terna % 10;
+
+          if ((decenaTerna &gt; 0) &amp;&amp; (decenaTerna &lt; 10))
+            cadTerna = _matriz[UNI, unidadTerna] + cadTerna;
+          else if ((decenaTerna &gt;= 10) &amp;&amp; (decenaTerna &lt; 20))
+            cadTerna = cadTerna + _matriz[DIECI, unidadTerna];
+          else if (decenaTerna == 20)
+            cadTerna = cadTerna + &quot; veinte&quot;;
+          else if ((decenaTerna &gt; 20) &amp;&amp; (decenaTerna &lt; 30))
+            cadTerna = &quot; veinti&quot; + _matriz[UNI, unidadTerna].Substring(1);
+          else if ((decenaTerna &gt;= 30) &amp;&amp; (decenaTerna &lt; 100))
+            if (unidadTerna != 0)
+              cadTerna = _matriz[DECENA, (Int32)(decenaTerna / 10)] + &quot; y&quot; + _matriz[UNI, unidadTerna] + cadTerna;
+            else
+              cadTerna += _matriz[DECENA, (Int32)(decenaTerna / 10)];
+
+          switch (centenaTerna)
+          {
+            case 1:
+              if (decenaTerna &gt; 0) cadTerna = &quot; ciento&quot; + cadTerna;
+              else cadTerna = &quot; cien&quot; + cadTerna;
+              break;
+            case 5:
+            case 7:
+            case 9:
+              cadTerna = _matriz[CENTENA, (Int32)(terna / 100)] + cadTerna;
+              break;
+            default:
+              if ((Int32)(terna / 100) &gt; 1) cadTerna = _matriz[UNI, (Int32)(terna / 100)] + &quot;cientos&quot; + cadTerna;
+              break;
+          }
+          //Reemplazo el 'uno' por 'un' si no es en las únidades o si se solicító apocopar
+          if ((iTerna &gt; 1 | ApocoparUnoParteEntera) &amp;&amp; decenaTerna == 21)
+            cadTerna = cadTerna.Replace(&quot;veintiuno&quot;, &quot;veintiún&quot;);
+          else if ((iTerna &gt; 1 | ApocoparUnoParteEntera) &amp;&amp; unidadTerna == 1 &amp;&amp; decenaTerna != 11)
+            cadTerna = cadTerna.Substring(0, cadTerna.Length - 1);
+            //Acentúo 'veintidós', 'veintitrés' y 'veintiséis'
+          else if (decenaTerna == 22) cadTerna = cadTerna.Replace(&quot;veintidos&quot;, &quot;veintidós&quot;);
+          else if (decenaTerna == 23) cadTerna = cadTerna.Replace(&quot;veintitres&quot;, &quot;veintitrés&quot;);
+          else if (decenaTerna == 26) cadTerna = cadTerna.Replace(&quot;veintiseis&quot;, &quot;veintiséis&quot;);
+
+          //Completo miles y millones
+          switch (iTerna)
+          {
+            case 3:
+              if (Numero &lt; 2000000) cadTerna += &quot; millón&quot;;
+              else cadTerna += &quot; millones&quot;;
+              break;
+            case 2:
+            case 4:
+              if (terna &gt; 0) cadTerna += &quot; mil&quot;;
+              break;
+          }
+          Resultado.Insert(0, cadTerna);
+          Num = (Int32)(Num / 1000);
+        } //while
+      }
+
+      //Se agregan los decimales si corresponde
+      if (Decimales &gt; 0)
+      {
+        Resultado.Append(&quot; &quot; + SeparadorDecimalSalida + &quot; &quot;);
+        Int32 EnteroDecimal = (Int32)Math.Round((Double)(Numero - (Int64)Numero) * Math.Pow(10, Decimales), 0);
+        if (ConvertirDecimales)
+        {
+          Boolean esMascaraDecimalDefault = MascaraSalidaDecimal == MascaraSalidaDecimalDefault;
+          Resultado.Append(Convertir((Decimal)EnteroDecimal, 0, null, null, EsMascaraNumerica, false, false, (ApocoparUnoParteDecimal &amp;&amp; !EsMascaraNumerica/*&amp;&amp; !esMascaraDecimalDefault*/), false) + &quot; &quot;
+            + (EsMascaraNumerica ? &quot;&quot; : MascaraSalidaDecimal));
+        }
+        else
+          if (EsMascaraNumerica) Resultado.Append(EnteroDecimal.ToString(MascaraSalidaDecimal));
+        else Resultado.Append(EnteroDecimal.ToString() + &quot; &quot; + MascaraSalidaDecimal);
+      }
+      //Se pone la primer letra en mayúscula si corresponde y se retorna el resultado
+      if (LetraCapital)
+        return Resultado[1].ToString().ToUpper() + Resultado.ToString(2, Resultado.Length - 2);
+      else
+        return Resultado.ToString().Substring(1);
+    }
+  }
+  
+
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybne9yJZoIkACQeehwv9JZpDhEFNhcb9D117VEJRFrKE5eCmkFIQaFKV3kRdYUKyFf55qBsCnQeJFmVEXjn8efPzA=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select rd.*, p.descripcion2,&#13;&#10;   CASE&#13;&#10;         WHEN DOCTO.TIPODOCTOID = 205 then&#13;&#10;              '1' &#13;&#10;         WHEN COALESCE(PARAMETRO.mostrarpzacajaenfactura, 'N') = 'S' then rd.DESCPZACAJA else cast(COALESCE(RD.cantidad, 0.0) as varchar(100)) end  as CANTIDADFACTURA ,&#13;&#10;    cfdi_conc.CANTIDAD cfdi_cantidad,&#13;&#10;    cfdi_conc.UNIDAD   cfdi_UNIDAD ,&#13;&#10;    cfdi_conc.DESCRIPCION  cfdi_DESCRIPCION ,&#13;&#10;    cfdi_conc.VALORUNITARIO  cfdi_VALORUNITARIO ,&#13;&#10;    cfdi_conc.IMPORTE     cfdi_IMPORTE,&#13;&#10;    cfdi_conc.NOIDENTIFICACION  cfdi_NOIDENTIFICACION  ,&#13;&#10;    cfdi_conc.CUENTAPREDIAL   cfdi_CUENTAPREDIAL ,&#13;&#10;     coalesce(cfdi_conc.CLAVEPRODSERV,rd.SAT_CLAVEPRODSERV) cfdi_CLAVEPRODSERV, &#13;&#10;    coalesce(cfdi_conc.CLAVEUNIDAD,rd.SAT_CLAVEUNIDAD)  cfdi_CLAVEUNIDAD,&#13;&#10;    cfdi_conc.DESCUENTO   cfdi_DESCUENTO,&#13;&#10;    cfdi_conc.CFDIID    cfdi_CFDIID,&#13;&#10;    cfdi_conc.MOVTOID   cfdi_MOVTOID,&#13;&#10;    cfdi_conc.CONSECUTIVO  cfdi_CONSECUTIVO  ,&#13;&#10;    cfdi_conc.objetoimp,&#13;&#10;    cfdi_conc_part.CLAVEPRODSERV CFDI_KITCLAVEPRODSERV,&#13;&#10;    cfdi_conc_part.NOIDENTIFICACION CFDI_KITNOIDENTIFICACION,&#13;&#10;    cfdi_conc_part.CANTIDAD CFDI_KITCANTIDAD,&#13;&#10;    cfdi_conc_part.UNIDAD CFDI_KITUNIDAD,&#13;&#10;    cfdi_conc_part.DESCRIPCION CFDI_KITDESCRIPCION,&#13;&#10;    cfdi_conc_part.VALORUNITARIO CFDI_KITVALORUNITARIO,&#13;&#10;    cfdi_conc_part.IMPORTE CFDI_KITIMPORTE,&#13;&#10;    cfdi_conc_part.NUMEROPEDIMENTO CFDI_KITNUMEROPEDIMENTO,&#13;&#10;    cfdi_conc_part.MOVTOKITID CFDI_KITMOVTOKITID,&#13;&#10;  cast(@doctoid as bigint) DOCTOID  ,&#13;&#10;                    FACTIMPUESTO.CFDI_TASAIVA,&#13;&#10;                    FACTIMPUESTO.CFDI_IVA,&#13;&#10;                    FACTIMPUESTO.IEPS_01_IMPORTE ,&#13;&#10;                    FACTIMPUESTO.IEPS_01_PORC ,&#13;&#10;                    FACTIMPUESTO.IEPS_02_IMPORTE ,&#13;&#10;                    FACTIMPUESTO.IEPS_02_PORC ,&#13;&#10;                    FACTIMPUESTO.IEPS_03_IMPORTE ,&#13;&#10;                    FACTIMPUESTO.IEPS_03_PORC ,&#13;&#10;                    FACTIMPUESTO.IEPS_04_IMPORTE ,&#13;&#10;                    FACTIMPUESTO.IEPS_04_PORC ,&#13;&#10;                    FACTIMPUESTO.IEPS_05_IMPORTE ,&#13;&#10;                    FACTIMPUESTO.IEPS_05_PORC ,&#13;&#10;                    FACTIMPUESTO.IEPS_06_IMPORTE ,&#13;&#10;                    FACTIMPUESTO.IEPS_06_PORC ,&#13;&#10;                    FACTIMPUESTO.IEPS_07_IMPORTE ,&#13;&#10;                    FACTIMPUESTO.IEPS_07_PORC ,&#13;&#10;                    FACTIMPUESTO.IEPS_08_IMPORTE ,&#13;&#10;                    FACTIMPUESTO.IEPS_08_PORC ,&#13;&#10;                    FACTIMPUESTO.IEPS_09_IMPORTE ,&#13;&#10;                    FACTIMPUESTO.IEPS_09_PORC ,&#13;&#10;                    FACTIMPUESTO.IEPS_10_IMPORTE ,&#13;&#10;                    FACTIMPUESTO.IEPS_10_PORC ,&#13;&#10;                    FACTIMPUESTO.CFDI_IVARETENIDO,&#13;&#10;                    FACTIMPUESTO.CFDI_IVARETENIDO_PORC,&#13;&#10;                    FACTIMPUESTO.CFDI_ISRRETENIDO,&#13;&#10;                    FACTIMPUESTO.CFDI_ISRRETENIDO_PORC,&#13;&#10;       FACTIMPUESTO.IEPS CFDI_IEPS,&#13;&#10;DOCTO.TIPODOCTOID,&#13;&#10;case when coalesce(plazo.comisionista,'N') = 'S' then coalesce(plazo.leyenda,'') else '' end leyendaplazo,&#13;&#10;&#13;&#10;vendedor.clave vendedorclienteclave,&#13;&#10;vendedor.nombre vendedorclientenombre,&#13;&#10;vendedor.nombres vendedorclientenomres,&#13;&#10;vendedor.apellidos vendedorclienteapellidos,&#13;&#10;&#13;&#10;case when coalesce(doctoTras.folio,0) &lt;&gt; 0 then ' Traslado :' ||  cast(coalesce(doctoTras.folio,0) as varchar(30)) else '' end referenciatraslado&#13;&#10;  &#13;&#10;&#13;&#10;&#13;&#10;  from REP_FACTURAELECTRONICA_DET(@doctoId, @desgloseKits) rd&#13;&#10;     left join producto p on p.id = rd.productoid&#13;&#10;    left join MOVTO MKITREF ON MKITREF.ID = RD.KITMOVTOID&#13;&#10;    left JOIN PRODUCTO PKITREF ON MKITREF.productoid = PKITREF.ID&#13;&#10;    left JOIN PARAMETRO ON 1 = 1  &#13;&#10;    left join cfdi on cfdi.doctoid = @doctoId and &#13;&#10;	( coalesce(@tipoComprobante, ' ') = cfdi.tipocomprobante or &#13;&#10;           	 (coalesce(@tipoComprobante,' ') &lt;&gt; 'T' and coalesce	(cfdi.tipocomprobante,'') in  ('I','E','P') ) )&#13;&#10;     left join cfdi_conc ON CFDI_CONC.cfdiid = cfdi.id and   CFDI_CONC.movtoid = RD.MOVTOID&#13;&#10;     left join cfdi_conc_part ON cfdi_conc_part.cfdi_conc_id = cfdi_conc.id and cfdi_conc_part.movtokitid = RD.KITMOVTOID&#13;&#10;   left join DOCTO on DOCTO.ID = @doctoid&#13;&#10;left join persona on persona.id = docto.personaid&#13;&#10;left join persona vendedor on vendedor.id = persona.vendedorid&#13;&#10;left join plazo on plazo.id = docto.plazoid&#13;&#10;left join DOCTO DOCTOTRAS ON DOCTOTRAS.ID = DOCTO.DOCTOREFID and DOCTOTRAS.tipodoctoid = 31&#13;&#10;   LEFT JOIN (SELECT&#13;&#10;                    TASA_IVA  CFDI_TASAIVA,&#13;&#10;                    IVA  CFDI_IVA,&#13;&#10;                    IEPS_01_IMPORTE ,&#13;&#10;                    IEPS_01_PORC ,&#13;&#10;                    IEPS_02_IMPORTE ,&#13;&#10;                    IEPS_02_PORC ,&#13;&#10;                    IEPS_03_IMPORTE ,&#13;&#10;                    IEPS_03_PORC ,&#13;&#10;                    IEPS_04_IMPORTE ,&#13;&#10;                    IEPS_04_PORC ,&#13;&#10;                    IEPS_05_IMPORTE ,&#13;&#10;                    IEPS_05_PORC ,&#13;&#10;                    IEPS_06_IMPORTE ,&#13;&#10;                    IEPS_06_PORC ,&#13;&#10;                    IEPS_07_IMPORTE ,&#13;&#10;                    IEPS_07_PORC ,&#13;&#10;                    IEPS_08_IMPORTE ,&#13;&#10;                    IEPS_08_PORC ,&#13;&#10;                    IEPS_09_IMPORTE ,&#13;&#10;                    IEPS_09_PORC ,&#13;&#10;                    IEPS_10_IMPORTE ,&#13;&#10;                    IEPS_10_PORC ,&#13;&#10;                    IVARETENIDO  CFDI_IVARETENIDO,&#13;&#10;                    IVARETENIDO_PORC CFDI_IVARETENIDO_PORC,&#13;&#10;                    ISRRETENIDO CFDI_ISRRETENIDO,&#13;&#10;                    ISRRETENIDO_PORC CFDI_ISRRETENIDO_PORC ,&#13;&#10;                    CFDI_CONC_ID,&#13;&#10;      IEPS &#13;&#10;                 FROM FACTURACIONDETALLE_AUXREPORTE(@doctoid,@tipoComprobante)) FACTIMPUESTO ON cfdi_conc.ID =  FACTIMPUESTO.CFDI_CONC_ID&#13;&#10;">
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="PRECIOLISTA" DataType="System.Decimal"/>
+        <Column Name="DESCUENTOPORCENTAJE" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="CAJAS" DataType="System.Decimal"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="ESKIT" DataType="System.String"/>
+        <Column Name="NUMERO" DataType="System.Int32"/>
+        <Column Name="TURNOCLAVE" DataType="System.String"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="SUCURSALT" DataType="System.String"/>
+        <Column Name="TIPODOC" DataType="System.String"/>
+        <Column Name="PORCENTAJEIVA" DataType="System.Decimal"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO1" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO2" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO3" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO4" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO5" DataType="System.String"/>
+        <Column Name="PRODUCTOTEXTO6" DataType="System.String"/>
+        <Column Name="PRODUCTONUMERO1" DataType="System.Decimal"/>
+        <Column Name="PRODUCTONUMERO2" DataType="System.Decimal"/>
+        <Column Name="PRODUCTONUMERO3" DataType="System.Decimal"/>
+        <Column Name="PRODUCTONUMERO4" DataType="System.Decimal"/>
+        <Column Name="PRODUCTOFECHA1" DataType="System.DateTime"/>
+        <Column Name="PRODUCTOFECHA2" DataType="System.DateTime"/>
+        <Column Name="CUENTAPREDIAL" DataType="System.String"/>
+        <Column Name="PIEZASSUELTAS" DataType="System.Decimal"/>
+        <Column Name="PORCENTAJEIEPS" DataType="System.Decimal"/>
+        <Column Name="ESPARTEKIT" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="MOVTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="DOCTOKITREFID" DataType="System.Int64"/>
+        <Column Name="MOVTOREFID" DataType="System.Int64"/>
+        <Column Name="KITMOVTOID" DataType="System.Int64"/>
+        <Column Name="KITPRODCLAVE" DataType="System.String"/>
+        <Column Name="KITPRODNOMBRE" DataType="System.String"/>
+        <Column Name="KITPRECIOLISTA" DataType="System.Decimal"/>
+        <Column Name="KITPRECIO" DataType="System.Decimal"/>
+        <Column Name="KITTASAIVA" DataType="System.Decimal"/>
+        <Column Name="KITTASAIEPS" DataType="System.Decimal"/>
+        <Column Name="KITIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="KITIVA" DataType="System.Decimal"/>
+        <Column Name="KITIEPS" DataType="System.Decimal"/>
+        <Column Name="KITSUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="KITTOTAL" DataType="System.Decimal"/>
+        <Column Name="KITCANTIDAD" DataType="System.Decimal"/>
+        <Column Name="KITDESCPZACAJA" DataType="System.String"/>
+        <Column Name="DESCPZACAJA" DataType="System.String"/>
+        <Column Name="STRPEDIMENTO" DataType="System.String"/>
+        <Column Name="KITPRODUCTOID" DataType="System.Int64"/>
+        <Column Name="KITPRODDESCRIPCION1" DataType="System.String"/>
+        <Column Name="KITTASAIMPUESTO" DataType="System.Decimal"/>
+        <Column Name="SAT_CLAVEPRODSERV" DataType="System.String"/>
+        <Column Name="SAT_CLAVEUNIDAD" DataType="System.String"/>
+        <Column Name="SAT_DESCRIPCIONUNIDAD" DataType="System.String"/>
+        <Column Name="IVARETENIDO" DataType="System.Decimal"/>
+        <Column Name="ISRRETENIDO" DataType="System.Decimal"/>
+        <Column Name="SAT_NOMBRE_UNIDAD" DataType="System.String"/>
+        <Column Name="SAT_IVATRASLADADO_CONC" DataType="System.String"/>
+        <Column Name="SAT_IEPSTRASLADADO_CONC" DataType="System.String"/>
+        <Column Name="PLAZOCLAVE" DataType="System.String"/>
+        <Column Name="CANTIDADFACTURA" DataType="System.String"/>
+        <Column Name="CFDI_CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="CFDI_UNIDAD" DataType="System.String"/>
+        <Column Name="CFDI_DESCRIPCION" DataType="System.String"/>
+        <Column Name="CFDI_VALORUNITARIO" DataType="System.Decimal"/>
+        <Column Name="CFDI_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="CFDI_NOIDENTIFICACION" DataType="System.String"/>
+        <Column Name="CFDI_CUENTAPREDIAL" DataType="System.String"/>
+        <Column Name="CFDI_CLAVEPRODSERV" DataType="System.String"/>
+        <Column Name="CFDI_CLAVEUNIDAD" DataType="System.String"/>
+        <Column Name="CFDI_DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="CFDI_CFDIID" DataType="System.Int64"/>
+        <Column Name="CFDI_MOVTOID" DataType="System.Int64"/>
+        <Column Name="CFDI_CONSECUTIVO" DataType="System.Int32"/>
+        <Column Name="CFDI_KITCLAVEPRODSERV" DataType="System.String"/>
+        <Column Name="CFDI_KITNOIDENTIFICACION" DataType="System.String"/>
+        <Column Name="CFDI_KITCANTIDAD" DataType="System.Decimal"/>
+        <Column Name="CFDI_KITUNIDAD" DataType="System.String"/>
+        <Column Name="CFDI_KITDESCRIPCION" DataType="System.String"/>
+        <Column Name="CFDI_KITVALORUNITARIO" DataType="System.Decimal"/>
+        <Column Name="CFDI_KITIMPORTE" DataType="System.Decimal"/>
+        <Column Name="CFDI_KITNUMEROPEDIMENTO" DataType="System.String"/>
+        <Column Name="CFDI_KITMOVTOKITID" DataType="System.Int64"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="CFDI_TASAIVA" DataType="System.Decimal"/>
+        <Column Name="CFDI_IVA" DataType="System.Decimal"/>
+        <Column Name="IEPS_01_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_01_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_02_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_02_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_03_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_03_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_04_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_04_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_05_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_05_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_06_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_06_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_07_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_07_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_08_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_08_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_09_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_09_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_10_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_10_PORC" DataType="System.Decimal"/>
+        <Column Name="CFDI_IVARETENIDO" DataType="System.Decimal"/>
+        <Column Name="CFDI_IVARETENIDO_PORC" DataType="System.Decimal"/>
+        <Column Name="CFDI_ISRRETENIDO" DataType="System.Decimal"/>
+        <Column Name="CFDI_ISRRETENIDO_PORC" DataType="System.Decimal"/>
+        <Column Name="CFDI_IEPS" DataType="System.Decimal"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="LEYENDAPLAZO" DataType="System.String"/>
+        <Column Name="VENDEDORCLIENTECLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORCLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORCLIENTENOMRES" DataType="System.String"/>
+        <Column Name="VENDEDORCLIENTEAPELLIDOS" DataType="System.String"/>
+        <Column Name="REFERENCIATRASLADO" DataType="System.String"/>
+        <Column Name="OBJETOIMP" DataType="System.String"/>
+        <CommandParameter Name="doctoId" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+        <CommandParameter Name="desgloseKits" DataType="16" Size="1" Expression="[desgloseKits]" DefaultValue="N"/>
+        <CommandParameter Name="tipoComprobante" DataType="16" Size="1" Expression="[tipoComprobante]"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Sumatorias" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 (CASE WHEN (docto.tipodoctoid in  (41)) THEN cast(movto.cantidadsurtida as numeric(18,3)) ELSE cast(movto.cantidad as numeric(18,3)) END )&#13;&#10;           &#13;&#10;            else&#13;&#10;                0.00&#13;&#10;&#13;&#10;        end)  KILOGRAMOS,&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 0.00&#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 0.00&#13;&#10;            else&#13;&#10;                trunc(coalesce(     (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END   )   ,0)/coalesce(producto.pzacaja,1))&#13;&#10;        end )  CAJAS ,&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 0.00&#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END )&#13;&#10;            else&#13;&#10;                mod(coalesce(    (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END )   ,0),coalesce(producto.pzacaja,1))&#13;&#10;        end ) PIEZAS&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;        FROM&#13;&#10;        docto&#13;&#10;        left join MOVTO on docto.id = movto.doctoid&#13;&#10;        left JOIN PRODUCTO ON MOVTO.productoid = PRODUCTO.ID&#13;&#10;        left join parametro on 1 = 1&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;where docto.id = @doctoid">
+        <Column Name="KILOGRAMOS" DataType="System.Decimal"/>
+        <Column Name="CAJAS" DataType="System.Decimal"/>
+        <Column Name="PIEZAS" DataType="System.Decimal"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Cfdi" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;CFDI.DOCTOID,&#13;&#10;                                  CFDI.SERIE,&#13;&#10;                                  CFDI.FOLIO,&#13;&#10;                                  CFDI.FECHA,&#13;&#10;                                  CFDI.TIPOCOMPROBANTE,&#13;&#10;                                  COALESCE(CFDI.FORMAPAGO,'99') FORMAPAGO,&#13;&#10;                                  CFDI.SUBTOTAL,&#13;&#10;                                  CFDI.DESCUENTO,&#13;&#10;                                  CFDI.TOTAL,&#13;&#10;                                  CFDI.MONEDA,&#13;&#10;                                  CFDI.TIPOCAMBIO,&#13;&#10;                                  CFDI.CONDICIONESPAGO,&#13;&#10;                                  CFDI.METODOPAGO,&#13;&#10;                                  CFDI.MOTIVODESCUENTO,&#13;&#10;                                  CFDI.LUGAREXPEDICION,&#13;&#10;                                  CFDI.EX_LUGAREXPEDICION,&#13;&#10;                                  CFDI.EX_NUMEROCTAPAGO,&#13;&#10;                                  CFDI.EX_SERIEFOLIOFISCALORIGINAL,&#13;&#10;                                  CFDI.EX_FOLIOFISCALORIGINAL,&#13;&#10;                                  CFDI.EX_MONTOFOLIOFISCALORIGINAL,&#13;&#10;                                  CFDI.EX_FECHAFOLIOFISCALORIGINAL,&#13;&#10;                                  CFDI.EM_RFC,&#13;&#10;                                  CFDI.EM_RAZONSOCIAL,&#13;&#10;                                  CFDI.EM_REGIMENFISCAL,&#13;&#10;                                  CFDI.EM_CALLE,&#13;&#10;                                  CFDI.EM_NOEXTERIOR,&#13;&#10;                                  CFDI.EM_NOINTERIOR,&#13;&#10;                                  CFDI.EM_COLONIA,&#13;&#10;                                  CFDI.EM_LOCALIDAD,&#13;&#10;                                  CFDI.EM_REFERENCIA,&#13;&#10;                                  CFDI.EM_MUNICIPIO,&#13;&#10;                                  CFDI.EM_ESTADO,&#13;&#10;                                  CFDI.EM_PAIS,&#13;&#10;                                  CFDI.EM_CODIGOPOSTAL,&#13;&#10;                                  CFDI.EE_CALLE,&#13;&#10;                                  CFDI.EE_NOEXTERIOR,&#13;&#10;                                  CFDI.EE_NOINTERIOR,&#13;&#10;                                  CFDI.EE_COLONIA,&#13;&#10;                                  CFDI.EE_LOCALIDAD,&#13;&#10;                                  CFDI.EE_REFERENCIA,&#13;&#10;                                  CFDI.EE_MUNICIPIO,&#13;&#10;                                  CFDI.EE_ESTADO,&#13;&#10;                                  CFDI.EE_PAIS,&#13;&#10;                                  CFDI.EE_CODIGOPOSTAL,&#13;&#10;                                  CFDI.RC_RFC,&#13;&#10;                                  CFDI.RC_RAZONSOCIAL,&#13;&#10;                                  CFDI.RC_RESIDENCIAFISCAL,&#13;&#10;                                  CFDI.RC_NOMBRE,&#13;&#10;                                  CFDI.RC_NUMREGIDTRIB,&#13;&#10;                                  CFDI.RC_USOCFDI,&#13;&#10;                                  CFDI.RC_CALLE,&#13;&#10;                                  CFDI.RC_NOEXTERIOR,&#13;&#10;                                  CFDI.RC_NOINTERIOR,&#13;&#10;                                  CFDI.RC_COLONIA,&#13;&#10;                                  CFDI.RC_LOCALIDAD,&#13;&#10;                                  CFDI.RC_REFERENCIA,&#13;&#10;                                  CFDI.RC_MUNICIPIO,&#13;&#10;                                  CFDI.RC_ESTADO,&#13;&#10;                                  CFDI.RC_PAIS,&#13;&#10;                                  CFDI.RC_CODIGOPOSTAL,&#13;&#10;                                  CFDI.TOTALTRASLADOS,&#13;&#10;                                  CFDI.TOTALRETENCIONES,&#13;&#10;                                  CFDI.RC_REGIMENFISCAL ,&#13;&#10;CFDI.EXPORTACION,&#13;&#10;CFDI.PERIODICIDAD,&#13;&#10;CFDI.MESES,&#13;&#10;CFDI.ANIO,&#13;&#10;CFDI.RC_DOMICILIOFISCAL,    &#13;&#10;&#13;&#10;&#13;&#10;                                  COALESCE( DOCTOCOMPROBANTE.timbradouuid, DOCTO.timbradouuid) timbradouuid,&#13;&#10;                                  COALESCE( DOCTOCOMPROBANTE.timbradofecha, DOCTO.timbradofecha) timbradofecha,&#13;&#10;                                  COALESCE( DOCTOCOMPROBANTE.timbradocertsat, DOCTO.timbradocertsat) timbradocertsat,&#13;&#10;                                  COALESCE( DOCTOCOMPROBANTE.timbradosellosat, DOCTO.timbradosellosat) timbradosellosat,&#13;&#10;                                  COALESCE( DOCTOCOMPROBANTE.timbradosellocfdi, DOCTO.timbradosellocfdi) timbradosellocfdi,&#13;&#10;                                  DOCTO.timbradofechafactura,&#13;&#10;                                  DOCTO.timbradoformapagosat,&#13;&#10;                                  CASE WHEN COALESCE(PARAMETRO.timbradoarchivocertificado,'') &lt;&gt; '' AND&#13;&#10;                                            CHAR_LENGTH(PARAMETRO.timbradoarchivocertificado) &gt; 4 then&#13;&#10;                                               substring(PARAMETRO.timbradoarchivocertificado from 1 for CHAR_LENGTH(PARAMETRO.timbradoarchivocertificado) -  4 )&#13;&#10;                                       ELSE&#13;&#10;                                            ''&#13;&#10;                                        END num_serie_cert_csd,&#13;&#10;&#13;&#10;                                  DOCTO.folio doctofolio,&#13;&#10;                                  DOCTO.serie doctoserie ,&#13;&#10;                                  DOCTO.SALDO,&#13;&#10;                                  DOCTO.vence  ,&#13;&#10;                                  PERSONA.clave PERSONACLAVE,&#13;&#10;                                  VENDEDOR.CLAVE VENDEDORCLIENTECLAVE,&#13;&#10;                                  vendedor.NOMBRES || ' ' || vendedor.APELLIDOS VENDEDORCLIENTENOMBRE,&#13;&#10;&#13;&#10;&#13;&#10;                                  CASE WHEN COALESCE(SUCURSALDESTINO.ID ,0) &gt; 0 THEN&#13;&#10;                                         SUCURSALDESTINO.entregacalle || ' ' || ' Ext. ' || COALESCE(sucursalDestino.ENTREGANUMEROEXTERIOR,'') ||&#13;&#10;                                             (CASE WHEN COALESCE(SUCURSALDESTINO.entreganumerointerior,'') &lt;&gt; '' THEN  ' , Int. ' || sucursalDestino.ENTREGANUMEROINTERIOR ELSE '' END)&#13;&#10;                                       WHEN COALESCE(DOCTO.USARDATOSENTREGA,'S') &lt;&gt; 'S' or COALESCE(PERSONA.entregacalle, '') = '' THEN   &#13;&#10;                                         COALESCE(PERSONA.DOMICILIO, '') || ' ' || ' Ext. ' || COALESCE(PERSONA.numeroexterior,'') ||&#13;&#10;                                             (CASE WHEN COALESCE(PERSONA.numerointerior,'') &lt;&gt; '' THEN  ' , Int. ' || PERSONA.NUMEROINTERIOR ELSE '' END)&#13;&#10;                                       ELSE    &#13;&#10;                                         COALESCE(PERSONA.entregacalle, '' ) || ' ' || ' Ext. ' || COALESCE(PERSONA.entreganumeroexterior,'') ||&#13;&#10;                                             (CASE WHEN COALESCE(PERSONA.entreganumerointerior,'') &lt;&gt; '' THEN  ' , Int. ' || PERSONA.entreganumerointerior ELSE '' END)&#13;&#10;                                  END ENTREGADIRECCION  ,&#13;&#10;&#13;&#10;                                  CASE WHEN COALESCE(SUCURSALDESTINO.ID ,0) &gt; 0 THEN&#13;&#10;                                         COALESCE(SUCURSALDESTINO.entregacolonia,'')&#13;&#10;                                       WHEN COALESCE(DOCTO.USARDATOSENTREGA,'S') &lt;&gt; 'S' or COALESCE(PERSONA.entregacalle, '') = '' THEN   &#13;&#10;                                         COALESCE(PERSONA.colonia, '')&#13;&#10;                                       ELSE    &#13;&#10;                                         COALESCE(PERSONA.entregacolonia, '' )&#13;&#10;                                  END ENTREGACOLONIA ,&#13;&#10;&#13;&#10;                                  CASE WHEN COALESCE(SUCURSALDESTINO.ID ,0) &gt; 0 THEN&#13;&#10;                                         COALESCE(SUCURSALDESTINO.entregamunicipio,'')&#13;&#10;                                       WHEN COALESCE(DOCTO.USARDATOSENTREGA,'S') &lt;&gt; 'S' or COALESCE(PERSONA.entregacalle, '') = '' THEN   &#13;&#10;                                         COALESCE(PERSONA.municipio, '')&#13;&#10;                                       ELSE    &#13;&#10;                                         COALESCE(PERSONA.entregamunicipio, '' )&#13;&#10;                                  END ENTREGAMUNICIPIO  ,&#13;&#10;&#13;&#10;                                  CASE WHEN COALESCE(SUCURSALDESTINO.ID ,0) &gt; 0 THEN&#13;&#10;                                         COALESCE(SUCURSALDESTINO.entregacodigopostal,'')&#13;&#10;                                       WHEN COALESCE(DOCTO.USARDATOSENTREGA,'S') &lt;&gt; 'S' or COALESCE(PERSONA.entregacalle, '') = '' THEN   &#13;&#10;                                         COALESCE(PERSONA.codigopostal, '')&#13;&#10;                                       ELSE    &#13;&#10;                                         COALESCE(PERSONA.entregacodigopostal, '' )&#13;&#10;                                  END ENTREGACODIGOPOSTAL    ,&#13;&#10;&#13;&#10;                                  CASE WHEN COALESCE(SUCURSALDESTINO.ID ,0) &gt; 0 THEN&#13;&#10;                                         COALESCE(SUCURSALDESTINO.entregaestado,'')&#13;&#10;                                       WHEN COALESCE(DOCTO.USARDATOSENTREGA,'S') &lt;&gt; 'S' or COALESCE(PERSONA.entregacalle, '') = '' THEN   &#13;&#10;                                         COALESCE(PERSONA.estado, '')&#13;&#10;                                       ELSE    &#13;&#10;                                         COALESCE(PERSONA.entregaestado, '' )&#13;&#10;                                  END ENTREGAESTADO   ,&#13;&#10;&#13;&#10;                                  CASE WHEN COALESCE(SUCURSALDESTINO.ID ,0) &gt; 0 THEN&#13;&#10;                                         'México'&#13;&#10;                                       WHEN COALESCE(DOCTO.USARDATOSENTREGA,'S') &lt;&gt; 'S' or COALESCE(PERSONA.entregacalle, '') = '' THEN   &#13;&#10;                                         COALESCE(PERSONA.PAIS, 'México')&#13;&#10;                                       ELSE    &#13;&#10;                                         COALESCE(PERSONA.PAIS, 'México' )&#13;&#10;                                  END ENTREGAPAIS,&#13;&#10;                                  '' ENTREGARFC,&#13;&#10;&#13;&#10;                                  CASE WHEN DOCTO.TIPODOCTOID = 205 AND COALESCE(DOCTOPAGO.cuentapagocredito,'') &lt;&gt; '' THEN&#13;&#10;                                            DOCTOPAGO.CUENTAPAGOCREDITO&#13;&#10;                                       WHEN DOCTOPAGO.formapagoid IN (2,3,15) AND COALESCE(DOCTOPAGO.referenciabancaria, '') &lt;&gt; '' THEN&#13;&#10;                                            DOCTOPAGO.referenciabancaria&#13;&#10;                                       WHEN DOCTOPAGO.formapagoid IN (4) AND COALESCE(PERSONA.CREDITOREFERENCIAABONOS, '')  &lt;&gt; '' THEN&#13;&#10;                                            PERSONA.CREDITOREFERENCIAABONOS&#13;&#10;                                       ELSE&#13;&#10;                                            'N / A'&#13;&#10;                                  END CUENTAPAGO ,&#13;&#10;&#13;&#10;                                  COALESCE(FORMAPAGOSAT.nombre,'POR DEFINIR') FORMAPAGONOMBRE,&#13;&#10;                                  SAT_USOCFDI.sat_clave USOCFDICLAVE,&#13;&#10;                                  SAT_USOCFDI.sat_descripcion USOCFDIDESCRIPCION,&#13;&#10;                                  CASE WHEN COALESCE(DOCTO.notapago, '') = '' THEN '' ELSE 'Nota : ' || DOCTO.notapago END NOTAPAGO, &#13;&#10;                                  CASE WHEN COALESCE(DOCTO.ordencompra, '') = '' THEN '' ELSE 'Orden de compra : ' || DOCTO.ordencompra END ORDENCOMPRA,&#13;&#10;&#13;&#10;                                  CASE WHEN COALESCE(PARAMETRO.footer,'') = '' THEN  ''&#13;&#10;                                       ELSE REPLACE(PARAMETRO.footer , '[nombreVendedor]',VENDEDOR.NOMBRE)&#13;&#10;                                       END TEXTOFOOTER ,&#13;&#10;&#13;&#10;&#13;&#10;                                  '||1.0|' || COALESCE( DOCTOCOMPROBANTE.TIMBRADOUUID, COALESCE(DOCTO.TIMBRADOUUID,''))&#13;&#10;                                  || '|' || COALESCE( DOCTOCOMPROBANTE.TIMBRADOFECHA, COALESCE(DOCTO.TIMBRADOFECHA,''))&#13;&#10;                                  || '|' || COALESCE( DOCTOCOMPROBANTE.TIMBRADOSELLOCFDI, COALESCE(DOCTO.TIMBRADOSELLOCFDI,''))&#13;&#10;                                  || '|' || COALESCE( DOCTOCOMPROBANTE.TIMBRADOCERTSAT, COALESCE(DOCTO.TIMBRADOCERTSAT,''))&#13;&#10;                                  || '||'  CADENAORIGINALSAT ,&#13;&#10;&#13;&#10;                                  RUTAEMBARQUE.clave RUTAEMBARQUECLAVE,&#13;&#10;&#13;&#10;                                  CASE WHEN COALESCE(REFERENCIAPREDIAL.CUENTA, 0) = 0 AND COALESCE(PARAMETRO.arrendatario, 'N') &lt;&gt; 'S' THEN&#13;&#10;                                       ''&#13;&#10;                                       WHEN COALESCE(PARAMETRO.arrendatario, 'N') = 'S' THEN&#13;&#10;                                       'Recibo arrendatario'&#13;&#10;                                       WHEN COALESCE(REFERENCIAPREDIAL.CUENTA, 0) &gt; 0  THEN&#13;&#10;                                       'Recibo de honorarios'&#13;&#10;                                       ELSE&#13;&#10;                                       ''&#13;&#10;                                   END TIPORECIBO ,&#13;&#10;                                   PARAMETRO.FISCALNOMBRE ,&#13;&#10;&#13;&#10;&#13;&#10;                                   CASE WHEN DOCTO.TIPODOCTOID = 22 OR DOCTO.TIPODOCTOID = 702 THEN 'DEVOLUCION'&#13;&#10;                                        WHEN  DOCTO.TIPODOCTOID = 205 THEN 'COMPROBANTE DE ABONO'&#13;&#10;                                        ELSE 'FACTURA'&#13;&#10;                                    END TIPODOCUMENTO,&#13;&#10;&#13;&#10;                                   CASE WHEN  DOCTO.TIPODOCTOID = 22 AND COALESCE(DOCTO.DOCTOREFID,0) &gt; 0 AND COALESCE(DOCTOREF.FOLIO,0) &lt;&gt; 0 AND COALESCE(DOCTOREF.foliosat, 0) &lt;&gt; 0 AND COALESCE(DOCTOREF.seriesat, '') &lt;&gt; '' THEN&#13;&#10;                                       'Devolucion de venta : '  || CAST(DOCTOREF.folio as VARCHAR(20)) || ' Folio Sat : ' || CAST(DOCTOREF.foliosat AS VARCHAR(20)) || DOCTOREF.SERIESAT&#13;&#10;                                       WHEN  DOCTO.TIPODOCTOID = 31 AND COALESCE(DOCTO.DOCTOREFID,0) &gt; 0 AND COALESCE(DOCTOREF.FOLIO,0) &lt;&gt; 0  THEN&#13;&#10;                                       'Traspaso con venta: : '  || CAST(DOCTOREF.folio as VARCHAR(20)) ||&#13;&#10;                                           CASE WHEN COALESCE(DOCTOREF.foliosat, 0) &lt;&gt; 0 AND COALESCE(DOCTOREF.seriesat, '') &lt;&gt; '' THEN ' Folio Sat : ' || CAST(DOCTOREF.foliosat AS VARCHAR(20)) || DOCTOREF.SERIESAT ELSE '' END&#13;&#10;                                       WHEN  DOCTO.TIPODOCTOID = 205 AND COALESCE(DOCTO.DOCTOREFID,0) &gt; 0 AND COALESCE(DOCTOREF.FOLIO,0) &lt;&gt; 0  THEN&#13;&#10;                                       'Comprobante de abono de venta: : '  || CAST(DOCTOREF.folio as VARCHAR(20))&#13;&#10;&#13;&#10;                                       ELSE&#13;&#10;                                       ''&#13;&#10;                                   END FOLIOPADRE,&#13;&#10;&#13;&#10;&#13;&#10;                                   CASE WHEN COALESCE(PERSONA.desgloseieps,'N') = 'S' or DOCTO.TIPODOCTOID = 701  THEN 'True' ELSE 'False' END clienteDesglosaIEPS,&#13;&#10;                                   CASE WHEN COALESCE(PARAMETRO.desgloseieps,'N') = 'S' THEN 'True' ELSE 'False' END empresaDesglosaIEPS,&#13;&#10;&#13;&#10;&#13;&#10;                                   CASE WHEN CFDI.formapago = '99' or docto.tipodoctoid = 205  THEN 'True' ELSE 'False' END HIDEPAGARE,&#13;&#10;                                   &#13;&#10;                                  CASE WHEN COALESCE(REFERENCIAPREDIAL.CUENTA, 0) = 0 AND COALESCE(PARAMETRO.arrendatario, 'N') &lt;&gt; 'S' THEN&#13;&#10;                                       'False'&#13;&#10;                                       WHEN COALESCE(PARAMETRO.arrendatario, 'N') = 'S' THEN&#13;&#10;                                       'True'&#13;&#10;                                       WHEN COALESCE(REFERENCIAPREDIAL.CUENTA, 0) &gt; 0  THEN&#13;&#10;                                       'False'&#13;&#10;                                       ELSE&#13;&#10;                                       'False'&#13;&#10;                                   END HIDEDATOSENTREGA,  &#13;&#10;                                     &#13;&#10;                                  CASE WHEN COALESCE(REFERENCIAPREDIAL.CUENTA, 0) = 0 AND COALESCE(PARAMETRO.arrendatario, 'N') &lt;&gt; 'S' THEN&#13;&#10;                                       'True'&#13;&#10;                                       WHEN COALESCE(PARAMETRO.arrendatario, 'N') = 'S' THEN&#13;&#10;                                       'False'&#13;&#10;                                       WHEN COALESCE(REFERENCIAPREDIAL.CUENTA, 0) &gt; 0  THEN&#13;&#10;                                       'True'&#13;&#10;                                       ELSE&#13;&#10;                                       'True'&#13;&#10;                                   END HIDECTAPREDIAL ,&#13;&#10;&#13;&#10;                                   CASE WHEN COALESCE(PERSONA.retieneisr, 'N') = 'S' OR  COALESCE(PERSONA.retieneiva, 'N') = 'S' THEN&#13;&#10;                                        'False'&#13;&#10;                                   ELSE&#13;&#10;                                        'True'&#13;&#10;                                   END HIDERECIBOHONORARIOS,&#13;&#10;&#13;&#10;                                   CASE WHEN COALESCE(PARAMETRO.mostrardescuentofactura, 'N') = 'S' THEN 'False' else 'True' END  HIDEDESCUENTO,&#13;&#10;&#13;&#10;                                   DOCTO.ivaretenido,&#13;&#10;                                   DOCTO.isrretenido,&#13;&#10;&#13;&#10;                                   CASE WHEN COALESCE(PERSONA.retieneiva, 'N') = 'S' THEN 'False' ELSE 'True' END HIDEIVARETENIDO ,&#13;&#10;                                   CASE WHEN COALESCE(PERSONA.retieneisr, 'N') = 'S' THEN 'False' ELSE 'True' END HIDEISRRETENIDO ,&#13;&#10;                                   CASE WHEN COALESCE(PARAMETRO.mostrarpzacajaenfactura, 'N') = 'S' THEN 'False' Else 'True' END  HIDEPZACAJA,&#13;&#10;&#13;&#10;                                   CASE WHEN COALESCE(CUENTASIVAS.CUENTAIVA0, 0) &gt; 0 THEN 'False' ELSE 'True' END HIDEIVA0,   &#13;&#10;                                   CASE WHEN COALESCE(CUENTASIVAS.CUENTAIVA16, 0) &gt; 0  or (DOCTO.TIPODOCTOID = 701 AND COALESCE(DOCTO.IVA,0) &gt; 0)  THEN 'False' ELSE 'True' END HIDEIVA16,&#13;&#10;&#13;&#10;                                    CASE WHEN COALESCE(PARAMETRO.DESGLOSEIEPS, 'N') = 'S' THEN 'False' ELSE 'True' END HIDEIEPSDETALLE,&#13;&#10;&#13;&#10;                                    &#13;&#10;                                    FACTIMPUESTO.IEPS_01_IMPORTE IEPS1,&#13;&#10;                                    FACTIMPUESTO.IEPS_01_PORC PORCIEPS1,&#13;&#10;                                    CASE WHEN FACTIMPUESTO.IEPS_01_PORC = -1 THEN 'True' ELSE 'False' END HIDEIEPS1,&#13;&#10;                                    FACTIMPUESTO.IEPS_02_IMPORTE IEPS2,&#13;&#10;                                    FACTIMPUESTO.IEPS_02_PORC PORCIEPS2,&#13;&#10;                                    CASE WHEN FACTIMPUESTO.IEPS_02_PORC = -1 THEN 'True' ELSE 'False' END HIDEIEPS2,&#13;&#10;                                    FACTIMPUESTO.IEPS_03_IMPORTE IEPS3,&#13;&#10;                                    FACTIMPUESTO.IEPS_03_PORC PORCIEPS3,&#13;&#10;                                    CASE WHEN FACTIMPUESTO.IEPS_03_PORC = -1 THEN 'True' ELSE 'False' END HIDEIEPS3,&#13;&#10;                                    FACTIMPUESTO.IEPS_04_IMPORTE IEPS4,&#13;&#10;                                    FACTIMPUESTO.IEPS_04_PORC PORCIEPS4,&#13;&#10;                                    CASE WHEN FACTIMPUESTO.IEPS_04_PORC = -1 THEN 'True' ELSE 'False' END HIDEIEPS4,&#13;&#10;                                    FACTIMPUESTO.IEPS_05_IMPORTE IEPS5,&#13;&#10;                                    FACTIMPUESTO.IEPS_05_PORC PORCIEPS5,&#13;&#10;                                    CASE WHEN FACTIMPUESTO.IEPS_05_PORC = -1 THEN 'True' ELSE 'False' END HIDEIEPS5,&#13;&#10;                                    FACTIMPUESTO.IEPS_06_IMPORTE IEPS6,&#13;&#10;                                    FACTIMPUESTO.IEPS_06_PORC PORCIEPS6,&#13;&#10;                                    CASE WHEN FACTIMPUESTO.IEPS_06_PORC = -1 THEN 'True' ELSE 'False' END HIDEIEPS6,&#13;&#10;                                    FACTIMPUESTO.IEPS_07_IMPORTE IEPS7,&#13;&#10;                                    FACTIMPUESTO.IEPS_07_PORC PORCIEPS7,&#13;&#10;                                    CASE WHEN FACTIMPUESTO.IEPS_07_PORC = -1 THEN 'True' ELSE 'False' END HIDEIEPS7,&#13;&#10;                                    FACTIMPUESTO.IEPS_08_IMPORTE IEPS8,&#13;&#10;                                    FACTIMPUESTO.IEPS_08_PORC PORCIEPS8,&#13;&#10;                                    CASE WHEN FACTIMPUESTO.IEPS_08_PORC = -1 THEN 'True' ELSE 'False' END HIDEIEPS8,&#13;&#10;                                    FACTIMPUESTO.IEPS_09_IMPORTE IEPS9,&#13;&#10;                                    FACTIMPUESTO.IEPS_09_PORC PORCIEPS9,&#13;&#10;                                    CASE WHEN FACTIMPUESTO.IEPS_09_PORC = -1 THEN 'True' ELSE 'False' END HIDEIEPS9,&#13;&#10;                                    FACTIMPUESTO.IEPS_10_IMPORTE IEPS10,&#13;&#10;                                    FACTIMPUESTO.IEPS_10_PORC PORCIEPS10,&#13;&#10;                                    CASE WHEN FACTIMPUESTO.IEPS_10_PORC = -1 THEN 'True' ELSE 'False' END HIDEIEPS10 ,&#13;&#10;&#13;&#10;                                    DOCTO.iva DOCTOIVA,&#13;&#10;                                    FACTIMPUESTO.IVA FACTIVA,&#13;&#10;                                    DOCTO.TIPODOCTOID,&#13;&#10;                                    SAT_REGIMENFISCAL.sat_descripcion REGIMENFISCALDESCRIPCION ,&#13;&#10;                                    SAT_METODOPAGO.sat_descripcion METODOPAGODESCRIPCION ,&#13;&#10;&#13;&#10;                                    SAT_TIPOCOMPROBANTE.sat_descripcion TIPOCOMPROBANTEDESCRIPCION,&#13;&#10;&#13;&#10;                                    PARAMETRO.VERSIONCFDI ,&#13;&#10;                                    SAT_REGIMENFISCAL_RC.sat_descripcion RC_REGIMENFISCALDESCRIPCION&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; from cfdi &#13;&#10;left join docto on cfdi.doctoid = docto.id&#13;&#10;left join persona on persona.id = docto.personaid&#13;&#10;left join persona vendedor on vendedor.id = persona.vendedorid&#13;&#10;left join PARAMETRO ON 1 = 1&#13;&#10;left join SUCURSAL sucursaldestino on sucursaldestino.id = docto.sucursaltid&#13;&#10;left join DOCTOPAGO ON DOCTOPAGO.ID = DOCTO.DOCTOPAGOSAT&#13;&#10;left join FORMAPAGOSAT ON FORMAPAGOSAT.clave = CFDI.formapago&#13;&#10;left join SAT_USOCFDI ON SAT_USOCFDI.sat_clave = cfdi.RC_USOCFDI&#13;&#10;left join RUTAEMBARQUE ON RUTAEMBARQUE.ID = DOCTO.rutaembarqueid&#13;&#10;LEFT JOIN (SELECT COUNT(*) CUENTA FROM MOVTO LEFT JOIN PRODUCTO ON PRODUCTO.ID = MOVTO.PRODUCTOID WHERE MOVTO.DOCTOID = @doctoid AND COALESCE(PRODUCTO.CUENTAPREDIAL,'') &lt;&gt; '' ) REFERENCIAPREDIAL  ON 1 = 1&#13;&#10;left join DOCTO DOCTOREF ON DOCTOREF.ID = DOCTO.DOCTOREFID&#13;&#10;LEFT JOIN SAT_REGIMENFISCAL ON SAT_REGIMENFISCAL.SAT_CLAVE = CFDI.EM_REGIMENFISCAL&#13;&#10;LEFT JOIN SAT_METODOPAGO ON SAT_METODOPAGO.SAT_CLAVE = CFDI.METODOPAGO&#13;&#10;left join SAT_TIPOCOMPROBANTE ON SAT_TIPOCOMPROBANTE.sat_clave = CFDI.tipocomprobante&#13;&#10;LEFT JOIN DOCTOCOMPROBANTE ON DOCTOCOMPROBANTE.doctoid = DOCTO.id AND DOCTOCOMPROBANTE.tipocomprobante =  coalesce(@tipoComprobante,' ')&#13;&#10;                             &#13;&#10;LEFT JOIN SAT_REGIMENFISCAL SAT_REGIMENFISCAL_RC ON SAT_REGIMENFISCAL_RC.SAT_CLAVE = CFDI.RC_REGIMENFISCAL&#13;&#10;&#13;&#10;LEFT JOIN (SELECT SUM(CASE WHEN COALESCE(MOVTO.TASAIVA, 0.0) = 0.0 THEN 0 ELSE 1 end  ) CUENTAIVA0,&#13;&#10;                  SUM(CASE WHEN COALESCE(MOVTO.TASAIVA, 16.0) = 0.0 THEN 0 ELSE 1 end  ) CUENTAIVA16 FROM MOVTO WHERE MOVTO.DOCTOID = @DOCTOID   )  CUENTASIVAS ON 1 = 1&#13;&#10;LEFT JOIN (SELECT&#13;&#10;                    TASA_IVA ,&#13;&#10;                    IVA ,&#13;&#10;                    IEPS_01_IMPORTE ,&#13;&#10;                    IEPS_01_PORC ,&#13;&#10;                    IEPS_02_IMPORTE ,&#13;&#10;                    IEPS_02_PORC ,&#13;&#10;                    IEPS_03_IMPORTE ,&#13;&#10;                    IEPS_03_PORC ,&#13;&#10;                    IEPS_04_IMPORTE ,&#13;&#10;                    IEPS_04_PORC ,&#13;&#10;                    IEPS_05_IMPORTE ,&#13;&#10;                    IEPS_05_PORC ,&#13;&#10;                    IEPS_06_IMPORTE ,&#13;&#10;                    IEPS_06_PORC ,&#13;&#10;                    IEPS_07_IMPORTE ,&#13;&#10;                    IEPS_07_PORC ,&#13;&#10;                    IEPS_08_IMPORTE ,&#13;&#10;                    IEPS_08_PORC ,&#13;&#10;                    IEPS_09_IMPORTE ,&#13;&#10;                    IEPS_09_PORC ,&#13;&#10;                    IEPS_10_IMPORTE ,&#13;&#10;                    IEPS_10_PORC ,&#13;&#10;                    IVARETENIDO ,&#13;&#10;                    ISRRETENIDO&#13;&#10;                 FROM FACTURACIONXML_AUXREPORTE(@DOCTOID,@tipoComprobante)) FACTIMPUESTO ON 1 = 1&#13;&#10;&#13;&#10;where CFDI.doctoid = @doctoid  and &#13;&#10;( coalesce(@tipoComprobante, ' ') = cfdi.tipocomprobante or &#13;&#10;            (coalesce(@tipoComprobante,' ') &lt;&gt; 'T' and coalesce(cfdi.tipocomprobante,'') in  ('I','E','P') ) )">
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="SERIE" DataType="System.String"/>
+        <Column Name="FOLIO" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="TIPOCOMPROBANTE" DataType="System.String"/>
+        <Column Name="FORMAPAGO" DataType="System.String"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="MONEDA" DataType="System.String"/>
+        <Column Name="TIPOCAMBIO" DataType="System.String"/>
+        <Column Name="CONDICIONESPAGO" DataType="System.String"/>
+        <Column Name="METODOPAGO" DataType="System.String"/>
+        <Column Name="MOTIVODESCUENTO" DataType="System.String"/>
+        <Column Name="LUGAREXPEDICION" DataType="System.String"/>
+        <Column Name="EX_LUGAREXPEDICION" DataType="System.String"/>
+        <Column Name="EX_NUMEROCTAPAGO" DataType="System.String"/>
+        <Column Name="EX_SERIEFOLIOFISCALORIGINAL" DataType="System.String"/>
+        <Column Name="EX_FOLIOFISCALORIGINAL" DataType="System.String"/>
+        <Column Name="EX_MONTOFOLIOFISCALORIGINAL" DataType="System.Decimal"/>
+        <Column Name="EX_FECHAFOLIOFISCALORIGINAL" DataType="System.DateTime"/>
+        <Column Name="EM_RFC" DataType="System.String"/>
+        <Column Name="EM_RAZONSOCIAL" DataType="System.String"/>
+        <Column Name="EM_REGIMENFISCAL" DataType="System.String"/>
+        <Column Name="EM_CALLE" DataType="System.String"/>
+        <Column Name="EM_NOEXTERIOR" DataType="System.String"/>
+        <Column Name="EM_NOINTERIOR" DataType="System.String"/>
+        <Column Name="EM_COLONIA" DataType="System.String"/>
+        <Column Name="EM_LOCALIDAD" DataType="System.String"/>
+        <Column Name="EM_REFERENCIA" DataType="System.String"/>
+        <Column Name="EM_MUNICIPIO" DataType="System.String"/>
+        <Column Name="EM_ESTADO" DataType="System.String"/>
+        <Column Name="EM_PAIS" DataType="System.String"/>
+        <Column Name="EM_CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="EE_CALLE" DataType="System.String"/>
+        <Column Name="EE_NOEXTERIOR" DataType="System.String"/>
+        <Column Name="EE_NOINTERIOR" DataType="System.String"/>
+        <Column Name="EE_COLONIA" DataType="System.String"/>
+        <Column Name="EE_LOCALIDAD" DataType="System.String"/>
+        <Column Name="EE_REFERENCIA" DataType="System.String"/>
+        <Column Name="EE_MUNICIPIO" DataType="System.String"/>
+        <Column Name="EE_ESTADO" DataType="System.String"/>
+        <Column Name="EE_PAIS" DataType="System.String"/>
+        <Column Name="EE_CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="RC_RFC" DataType="System.String"/>
+        <Column Name="RC_RAZONSOCIAL" DataType="System.String"/>
+        <Column Name="RC_RESIDENCIAFISCAL" DataType="System.String"/>
+        <Column Name="RC_NOMBRE" DataType="System.String"/>
+        <Column Name="RC_NUMREGIDTRIB" DataType="System.String"/>
+        <Column Name="RC_USOCFDI" DataType="System.String"/>
+        <Column Name="RC_CALLE" DataType="System.String"/>
+        <Column Name="RC_NOEXTERIOR" DataType="System.String"/>
+        <Column Name="RC_NOINTERIOR" DataType="System.String"/>
+        <Column Name="RC_COLONIA" DataType="System.String"/>
+        <Column Name="RC_LOCALIDAD" DataType="System.String"/>
+        <Column Name="RC_REFERENCIA" DataType="System.String"/>
+        <Column Name="RC_MUNICIPIO" DataType="System.String"/>
+        <Column Name="RC_ESTADO" DataType="System.String"/>
+        <Column Name="RC_PAIS" DataType="System.String"/>
+        <Column Name="RC_CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="TOTALTRASLADOS" DataType="System.Decimal"/>
+        <Column Name="TOTALRETENCIONES" DataType="System.Decimal"/>
+        <Column Name="TIMBRADOUUID" DataType="System.String"/>
+        <Column Name="TIMBRADOFECHA" DataType="System.String"/>
+        <Column Name="TIMBRADOCERTSAT" DataType="System.String"/>
+        <Column Name="TIMBRADOSELLOSAT" DataType="System.String"/>
+        <Column Name="TIMBRADOSELLOCFDI" DataType="System.String"/>
+        <Column Name="TIMBRADOFECHAFACTURA" DataType="System.DateTime"/>
+        <Column Name="TIMBRADOFORMAPAGOSAT" DataType="System.String"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="DOCTOSERIE" DataType="System.String"/>
+        <Column Name="VENCE" DataType="System.DateTime"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORCLIENTECLAVE" DataType="System.String"/>
+        <Column Name="VENDEDORCLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="NUM_SERIE_CERT_CSD" DataType="System.String"/>
+        <Column Name="ENTREGADIRECCION" DataType="System.String"/>
+        <Column Name="ENTREGACOLONIA" DataType="System.String"/>
+        <Column Name="ENTREGAMUNICIPIO" DataType="System.String"/>
+        <Column Name="ENTREGACODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="ENTREGAESTADO" DataType="System.String"/>
+        <Column Name="ENTREGAPAIS" DataType="System.String"/>
+        <Column Name="ENTREGARFC" DataType="System.String"/>
+        <Column Name="CUENTAPAGO" DataType="System.String"/>
+        <Column Name="FORMAPAGONOMBRE" DataType="System.String"/>
+        <Column Name="USOCFDICLAVE" DataType="System.String"/>
+        <Column Name="USOCFDIDESCRIPCION" DataType="System.String"/>
+        <Column Name="NOTAPAGO" DataType="System.String"/>
+        <Column Name="ORDENCOMPRA" DataType="System.String"/>
+        <Column Name="TEXTOFOOTER" DataType="System.String"/>
+        <Column Name="CADENAORIGINALSAT" DataType="System.String"/>
+        <Column Name="RUTAEMBARQUECLAVE" DataType="System.String"/>
+        <Column Name="TIPORECIBO" DataType="System.String"/>
+        <Column Name="HIDEDATOSENTREGA" DataType="System.String"/>
+        <Column Name="HIDECTAPREDIAL" DataType="System.String"/>
+        <Column Name="FISCALNOMBRE" DataType="System.String"/>
+        <Column Name="TIPODOCUMENTO" DataType="System.String"/>
+        <Column Name="FOLIOPADRE" DataType="System.String"/>
+        <Column Name="CLIENTEDESGLOSAIEPS" DataType="System.String"/>
+        <Column Name="EMPRESADESGLOSAIEPS" DataType="System.String"/>
+        <Column Name="HIDEPAGARE" DataType="System.String"/>
+        <Column Name="HIDERECIBOHONORARIOS" DataType="System.String"/>
+        <Column Name="HIDEDESCUENTO" DataType="System.String"/>
+        <Column Name="IVARETENIDO" DataType="System.Decimal"/>
+        <Column Name="ISRRETENIDO" DataType="System.Decimal"/>
+        <Column Name="HIDEIVARETENIDO" DataType="System.String"/>
+        <Column Name="HIDEISRRETENIDO" DataType="System.String"/>
+        <Column Name="HIDEPZACAJA" DataType="System.String"/>
+        <Column Name="HIDEIVA0" DataType="System.String"/>
+        <Column Name="HIDEIVA16" DataType="System.String"/>
+        <Column Name="HIDEIEPSDETALLE" DataType="System.String"/>
+        <Column Name="IEPS1" DataType="System.Decimal"/>
+        <Column Name="PORCIEPS1" DataType="System.Decimal"/>
+        <Column Name="HIDEIEPS1" DataType="System.String"/>
+        <Column Name="IEPS2" DataType="System.Decimal"/>
+        <Column Name="PORCIEPS2" DataType="System.Decimal"/>
+        <Column Name="HIDEIEPS2" DataType="System.String"/>
+        <Column Name="IEPS3" DataType="System.Decimal"/>
+        <Column Name="PORCIEPS3" DataType="System.Decimal"/>
+        <Column Name="HIDEIEPS3" DataType="System.String"/>
+        <Column Name="IEPS4" DataType="System.Decimal"/>
+        <Column Name="PORCIEPS4" DataType="System.Decimal"/>
+        <Column Name="HIDEIEPS4" DataType="System.String"/>
+        <Column Name="IEPS5" DataType="System.Decimal"/>
+        <Column Name="PORCIEPS5" DataType="System.Decimal"/>
+        <Column Name="HIDEIEPS5" DataType="System.String"/>
+        <Column Name="IEPS6" DataType="System.Decimal"/>
+        <Column Name="PORCIEPS6" DataType="System.Decimal"/>
+        <Column Name="HIDEIEPS6" DataType="System.String"/>
+        <Column Name="IEPS7" DataType="System.Decimal"/>
+        <Column Name="PORCIEPS7" DataType="System.Decimal"/>
+        <Column Name="HIDEIEPS7" DataType="System.String"/>
+        <Column Name="IEPS8" DataType="System.Decimal"/>
+        <Column Name="PORCIEPS8" DataType="System.Decimal"/>
+        <Column Name="HIDEIEPS8" DataType="System.String"/>
+        <Column Name="IEPS9" DataType="System.Decimal"/>
+        <Column Name="PORCIEPS9" DataType="System.Decimal"/>
+        <Column Name="HIDEIEPS9" DataType="System.String"/>
+        <Column Name="IEPS10" DataType="System.Decimal"/>
+        <Column Name="PORCIEPS10" DataType="System.Decimal"/>
+        <Column Name="HIDEIEPS10" DataType="System.String"/>
+        <Column Name="DOCTOIVA" DataType="System.Decimal"/>
+        <Column Name="FACTIVA" DataType="System.Decimal"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="REGIMENFISCALDESCRIPCION" DataType="System.String"/>
+        <Column Name="METODOPAGODESCRIPCION" DataType="System.String"/>
+        <Column Name="TIPOCOMPROBANTEDESCRIPCION" DataType="System.String"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="VERSIONCFDI" DataType="System.String"/>
+        <Column Name="RC_REGIMENFISCAL" DataType="System.String"/>
+        <Column Name="EXPORTACION" DataType="System.String"/>
+        <Column Name="PERIODICIDAD" DataType="System.String"/>
+        <Column Name="MESES" DataType="System.String"/>
+        <Column Name="ANIO" DataType="System.String"/>
+        <Column Name="RC_DOMICILIOFISCAL" DataType="System.String"/>
+        <Column Name="RC_REGIMENFISCALDESCRIPCION" DataType="System.String"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+        <CommandParameter Name="tipoComprobante" DataType="16" Size="1" Expression="[tipoComprobante]"/>
+      </TableDataSource>
+      <TableDataSource Name="Table3" Alias="CajasPiezas" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 (CASE WHEN (docto.tipodoctoid in  (41)) THEN cast(movto.cantidadsurtida as numeric(18,3)) ELSE cast(movto.cantidad as numeric(18,3)) END )&#13;&#10;           &#13;&#10;            else&#13;&#10;                0.00&#13;&#10;&#13;&#10;        end)  KILOGRAMOS,&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 0.00&#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 0.00&#13;&#10;            else&#13;&#10;                trunc(coalesce(     (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END   )   ,0)/coalesce(producto.pzacaja,1))&#13;&#10;        end )  CAJAS ,&#13;&#10;&#13;&#10;        sum(case&#13;&#10;            when  producto.unidad = 'KG' then&#13;&#10;                 0.00&#13;&#10;            when  ( coalesce(producto.pzacaja,0) = 0 or  coalesce(producto.pzacaja,0) = 1 ) then&#13;&#10;                 (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END )&#13;&#10;            else&#13;&#10;                mod(coalesce(    (CASE WHEN (docto.tipodoctoid in  (41)) THEN movto.cantidadsurtida ELSE movto.cantidad END )   ,0),coalesce(producto.pzacaja,1))&#13;&#10;        end ) PIEZAS&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;        FROM&#13;&#10;        docto&#13;&#10;        left join MOVTO on docto.id = movto.doctoid&#13;&#10;        left JOIN PRODUCTO ON MOVTO.productoid = PRODUCTO.ID&#13;&#10;        left join parametro on 1 = 1&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;where docto.id = @doctoid">
+        <Column Name="KILOGRAMOS" DataType="System.Decimal"/>
+        <Column Name="CAJAS" DataType="System.Decimal"/>
+        <Column Name="PIEZAS" DataType="System.Decimal"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table4" Alias="ImpuestosDetalle" DataType="System.Int32" Enabled="true" ForceLoadData="true" SelectCommand="&#13;&#10;   SELECT&#13;&#10;      movto.id movtoid,&#13;&#10;    cfdiiva.BASEIMP CFDIIVA_BASEIMP,&#13;&#10;    cfdiiva.TIPOFACTOR CFDIIVA_TIPOFACTOR,&#13;&#10;    cfdiiva.TASACUOTA CFDIIVA_TASACUOTA,&#13;&#10;    cfdiiva.TASA CFDIIVA_TASA,&#13;&#10;    cfdiiva.IMPUESTO CFDIIVA_IMPUESTO,&#13;&#10;    cfdiiva.IMPORTE CFDIIVA_IMPORTE ,&#13;&#10;&#13;&#10;    &#13;&#10;    cfdiieps.BASEIMP CFDIIEPS_BASEIMP,&#13;&#10;    cfdiieps.TIPOFACTOR CFDIIEPS_TIPOFACTOR,&#13;&#10;    cfdiieps.TASACUOTA CFDIIEPS_TASACUOTA,&#13;&#10;    cfdiieps.TASA CFDIIEPS_TASA,&#13;&#10;    cfdiieps.IMPUESTO CFDIIEPS_IMPUESTO,&#13;&#10;    cfdiieps.IMPORTE CFDIIEPS_IMPORTE&#13;&#10;&#13;&#10;    FROM MOVTO&#13;&#10;       left join cfdi on cfdi.doctoid = MOVTO.DOCTOID and &#13;&#10;          ( coalesce(@tipoComprobante, ' ') = cfdi.tipocomprobante or &#13;&#10;            (coalesce(@tipoComprobante,' ') &lt;&gt; 'T' and coalesce(cfdi.tipocomprobante,'') in  ('I','E','P') ) )&#13;&#10;     left join cfdi_conc ON CFDI_CONC.cfdiid = cfdi.id and   CFDI_CONC.movtoid = MOVTO.ID&#13;&#10;     left join cfdi_conc_imp cfdiiva on   cfdiiva.tipolinea = 'CONCEPTO_IVA' and cfdiiva.cfdi_conc_id = cfdi_conc.id&#13;&#10;     left join cfdi_conc_imp cfdiieps on  cfdiieps.tipolinea = 'CONCEPTO_IEPS' and cfdiieps.cfdi_conc_id = cfdi_conc.id&#13;&#10;     where movto.doctoid = @doctoid and movto.id = @movtoid">
+        <Column Name="MOVTOID" DataType="System.Int64"/>
+        <Column Name="CFDIIVA_BASEIMP" DataType="System.Decimal"/>
+        <Column Name="CFDIIVA_TIPOFACTOR" DataType="System.String"/>
+        <Column Name="CFDIIVA_TASACUOTA" DataType="System.String"/>
+        <Column Name="CFDIIVA_TASA" DataType="System.Decimal"/>
+        <Column Name="CFDIIVA_IMPUESTO" DataType="System.String"/>
+        <Column Name="CFDIIVA_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="CFDIIEPS_BASEIMP" DataType="System.Decimal"/>
+        <Column Name="CFDIIEPS_TIPOFACTOR" DataType="System.String"/>
+        <Column Name="CFDIIEPS_TASACUOTA" DataType="System.String"/>
+        <Column Name="CFDIIEPS_TASA" DataType="System.Decimal"/>
+        <Column Name="CFDIIEPS_IMPUESTO" DataType="System.String"/>
+        <Column Name="CFDIIEPS_IMPORTE" DataType="System.Decimal"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[Table.DOCTOID]" DefaultValue="0"/>
+        <CommandParameter Name="movtoid" DataType="1" Expression="[Table.MOVTOID]" DefaultValue="0"/>
+        <CommandParameter Name="tipoComprobante" DataType="16" Size="1" Expression="[tipoComprobante]"/>
+      </TableDataSource>
+      <TableDataSource Name="Table5" Alias="CfdiRel" DataType="System.Int32" Enabled="true" ForceLoadData="true" SelectCommand="Select&#13;&#10;    CFDI_REL.TIPORELACION,&#13;&#10;    CFDI_REL.UUID ,&#13;&#10;    CFDI_REL.CFDIID&#13;&#10; from CFDI&#13;&#10;     LEFT JOIN CFDI_REL ON CFDI_REL.cfdiid = CFDI.ID&#13;&#10;     WHERE CFDI.doctoid = @doctoid and &#13;&#10;          ( coalesce(@tipoComprobante, ' ') = cfdi.tipocomprobante or &#13;&#10;            (coalesce(cfdi.tipocomprobante,' ') &lt;&gt; 'T' and coalesce(@tipoComprobante,'') in  ('I','E','P',' ') ) )">
+        <Column Name="TIPORELACION" DataType="System.String"/>
+        <Column Name="UUID" DataType="System.String"/>
+        <Column Name="CFDIID" DataType="System.Int64"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[Cfdi.DOCTOID]" DefaultValue="0"/>
+        <CommandParameter Name="tipoComprobante" DataType="16" Size="1" Expression="[tipoComprobante]"/>
+      </TableDataSource>
+      <TableDataSource Name="Table6" Alias="PagosSat" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;    pagosat.fechapago,&#13;&#10;    pagosat.formadepagop,&#13;&#10;    formapagosat.nombre formapagonombre,&#13;&#10;    pagodoctosat.imppagado,&#13;&#10;    pagodoctosat.monedadr, &#13;&#10;    pagodoctosat.tipocambiodr,&#13;&#10;    pagodoctosat.iddocumento,&#13;&#10;    pagodoctosat.metododepagodr metodopagoclave,&#13;&#10;    pagodoctosat.numparcialidad,&#13;&#10;    pagodoctosat.impsaldoant,&#13;&#10;    pagodoctosat.imppagado,&#13;&#10;    pagodoctosat.impsaldoinsoluto,&#13;&#10;    sat_metodopago.sat_descripcion metodopagodesc,&#13;&#10;    pagosat.ctaordenante,&#13;&#10;    pagosat.ctabeneficiario,&#13;&#10;    bancos.nombre banconombre,&#13;&#10;    bancoreceptor.nombre bancoreceptornombre ,&#13;&#10;    coalesce(bancoreceptor.id,0) bancoreceptorid,&#13;&#10;   pago.referenciabancaria&#13;&#10;&#13;&#10;&#13;&#10;   &#13;&#10;    from&#13;&#10;    pagosat&#13;&#10;    left join pagodoctosat on pagodoctosat.pagosatid = pagosat.id&#13;&#10;    left join formapagosat on formapagosat.clave = pagosat.formadepagop&#13;&#10;    left join sat_metodopago on sat_metodopago.sat_clave = pagodoctosat.metododepagodr&#13;&#10;    left join pago on pago.reciboelectronicoid = @doctoid&#13;&#10;    left join bancos on bancos.id = pago.banco&#13;&#10;    left join cuentabanco on cuentabanco.id = pago.cuentabancoempresaid&#13;&#10;    left join bancos bancoreceptor on bancoreceptor.id = cuentabanco.bancoid&#13;&#10;    where pagosat.doctosatid = @doctoid">
+        <Column Name="FECHAPAGO" DataType="System.DateTime"/>
+        <Column Name="FORMADEPAGOP" DataType="System.String"/>
+        <Column Name="IMPPAGADO" DataType="System.Decimal"/>
+        <Column Name="MONEDADR" DataType="System.String"/>
+        <Column Name="TIPOCAMBIODR" DataType="System.String"/>
+        <Column Name="IDDOCUMENTO" DataType="System.String"/>
+        <Column Name="METODOPAGOCLAVE" DataType="System.String"/>
+        <Column Name="NUMPARCIALIDAD" DataType="System.Int32"/>
+        <Column Name="IMPSALDOANT" DataType="System.Decimal"/>
+        <Column Name="IMPPAGADO1" DataType="System.Decimal"/>
+        <Column Name="IMPSALDOINSOLUTO" DataType="System.Decimal"/>
+        <Column Name="METODOPAGODESC" DataType="System.String"/>
+        <Column Name="FORMAPAGONOMBRE" DataType="System.String"/>
+        <Column Name="CTAORDENANTE" DataType="System.String"/>
+        <Column Name="CTABENEFICIARIO" DataType="System.String"/>
+        <Column Name="BANCONOMBRE" DataType="System.String"/>
+        <Column Name="BANCORECEPTORNOMBRE" DataType="System.String"/>
+        <Column Name="BANCORECEPTORID" DataType="System.Int64"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <CommandParameter Name="doctoid" DataType="1" Expression="[Cfdi.DOCTOID]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table7" Alias="CartaPorte" DataType="System.Int32" Enabled="true" SelectCommand="Select first 1&#13;&#10;&#13;&#10;    TRANSPINTERNAC ,&#13;&#10;    ENTRADASALIDAMERC   ,&#13;&#10;    PAISORIGENDESTINO   ,&#13;&#10;    VIAENTRADASALIDA   ,&#13;&#10;    TOTALDISTREC       &#13;&#10;&#13;&#10;from cartaporte&#13;&#10;where doctoid = @DOCTOID">
+        <Column Name="TRANSPINTERNAC" DataType="System.String"/>
+        <Column Name="ENTRADASALIDAMERC" DataType="System.String"/>
+        <Column Name="PAISORIGENDESTINO" DataType="System.String"/>
+        <Column Name="VIAENTRADASALIDA" DataType="System.String"/>
+        <Column Name="TOTALDISTREC" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table8" Alias="CartaPorteMercancia" DataType="System.Int32" Enabled="true" SelectCommand="Select &#13;&#10;&#13;&#10;                        cartaportemercancia.BIENESTRANSP ,&#13;&#10;                        cartaportemercancia.CLAVESTCC ,&#13;&#10;                        cartaportemercancia.DESCRIPCION ,&#13;&#10;                        cartaportemercancia.CANTIDAD ,&#13;&#10;                        cartaportemercancia.CLAVEUNIDAD ,&#13;&#10;                        cartaportemercancia.UNIDAD ,&#13;&#10;                        cartaportemercancia.DIMENSIONES ,&#13;&#10;                        cartaportemercancia. MATERIALPELIGROSO ,&#13;&#10;                        cartaportemercancia.CVEMATERIALPELIGROSO ,&#13;&#10;                        cartaportemercancia.EMBALAJE ,&#13;&#10;                        cartaportemercancia.DESCRIPEMBALAJE ,&#13;&#10;                        cartaportemercancia.PESOENKG ,&#13;&#10;                        cartaportemercancia.VALORMERCANCIA ,&#13;&#10;                        cartaportemercancia.MONEDA ,&#13;&#10;                        cartaportemercancia. FRACCIONARANCELARIA ,&#13;&#10;                        cartaportemercancia.UUIDCOMERCIOEXT ,&#13;&#10;                        cartaportemercancia.UNIDADPESOMERC ,&#13;&#10;                        cartaportemercancia.PESOBRUTO ,&#13;&#10;                        cartaportemercancia.PESONETO ,&#13;&#10;                       cartaportemercancia. PESOTARA ,&#13;&#10;                       cartaportemercancia. NUMPIEZAS    &#13;&#10;&#13;&#10;from &#13;&#10;cartaporte&#13;&#10;left join  cartaportemercancia on cartaporte.id = cartaportemercancia.cartaporteid&#13;&#10;&#13;&#10;where cartaporte.doctoid = @DOCTOID">
+        <Column Name="BIENESTRANSP" DataType="System.String"/>
+        <Column Name="CLAVESTCC" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.String"/>
+        <Column Name="CLAVEUNIDAD" DataType="System.String"/>
+        <Column Name="UNIDAD" DataType="System.String"/>
+        <Column Name="DIMENSIONES" DataType="System.String"/>
+        <Column Name="MATERIALPELIGROSO" DataType="System.String"/>
+        <Column Name="CVEMATERIALPELIGROSO" DataType="System.String"/>
+        <Column Name="EMBALAJE" DataType="System.String"/>
+        <Column Name="DESCRIPEMBALAJE" DataType="System.String"/>
+        <Column Name="PESOENKG" DataType="System.String"/>
+        <Column Name="VALORMERCANCIA" DataType="System.String"/>
+        <Column Name="MONEDA" DataType="System.String"/>
+        <Column Name="FRACCIONARANCELARIA" DataType="System.String"/>
+        <Column Name="UUIDCOMERCIOEXT" DataType="System.String"/>
+        <Column Name="UNIDADPESOMERC" DataType="System.String"/>
+        <Column Name="PESOBRUTO" DataType="System.String"/>
+        <Column Name="PESONETO" DataType="System.String"/>
+        <Column Name="PESOTARA" DataType="System.String"/>
+        <Column Name="NUMPIEZAS" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table9" Alias="CartaPorteTotalMercancia" DataType="System.Int32" Enabled="true" SelectCommand="Select &#13;&#10;  cartaportetotalmercancias.PESOBRUTOTOTAL,&#13;&#10;  cartaportetotalmercancias.UNIDADPESO, &#13;&#10;  cartaportetotalmercancias.PESONETOTOTAL, &#13;&#10;  cartaportetotalmercancias.NUMTOTALMERCANCIAS, &#13;&#10;  cartaportetotalmercancias.CARGOPORTASACION&#13;&#10;&#13;&#10;&#13;&#10;from &#13;&#10;cartaporte&#13;&#10;left join  cartaportetotalmercanciaS on cartaporte.id = cartaportetotalmercanciaS.cartaporteid&#13;&#10;&#13;&#10;where cartaporte.doctoid = @DOCTOID">
+        <Column Name="PESOBRUTOTOTAL" DataType="System.String"/>
+        <Column Name="UNIDADPESO" DataType="System.String"/>
+        <Column Name="PESONETOTOTAL" DataType="System.String"/>
+        <Column Name="NUMTOTALMERCANCIAS" DataType="System.String"/>
+        <Column Name="CARGOPORTASACION" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table10" Alias="CartaPorteAutoTrans" DataType="System.Int32" Enabled="true" SelectCommand="Select &#13;&#10;	 CARTAPORTEAUTOTRANSP.PERMSCT,&#13;&#10;	 CARTAPORTEAUTOTRANSP.NUMPERMISOSCT,&#13;&#10;	 CARTAPORTEAUTOTRANSP.CONFIGVEHICULAR,&#13;&#10;	 CARTAPORTEAUTOTRANSP.PLACAVM,&#13;&#10;	 CARTAPORTEAUTOTRANSP.ANIOMODELOVM,&#13;&#10;	 CARTAPORTEAUTOTRANSP.ASEGURARESPCIVIL,&#13;&#10;	 CARTAPORTEAUTOTRANSP.POLIZARESPCIVIL,&#13;&#10;	 CARTAPORTEAUTOTRANSP.ASEGURAMEDAMBIENTE,&#13;&#10;	 CARTAPORTEAUTOTRANSP.POLIZAMEDAMBIENTE,&#13;&#10;	 CARTAPORTEAUTOTRANSP.ASEGURACARGA,&#13;&#10;	 CARTAPORTEAUTOTRANSP.POLIZACARGA,&#13;&#10;	 CARTAPORTEAUTOTRANSP.PRIMASEGURO,&#13;&#10;	 CARTAPORTEAUTOTRANSP.SUBTIPOREM1,&#13;&#10;	 CARTAPORTEAUTOTRANSP.PLACA1,&#13;&#10;	 CARTAPORTEAUTOTRANSP.SUBTIPOREM2,&#13;&#10;	 CARTAPORTEAUTOTRANSP.PLACA2,&#13;&#10;	cat.DESCRIPCION CONFIGVEHICULAR_DESCRIPCION&#13;&#10;from &#13;&#10;cartaporte&#13;&#10;left join  CARTAPORTEAUTOTRANSP on cartaporte.id = CARTAPORTEAUTOTRANSP.cartaporteid&#13;&#10;left join SAT_CONFIGAUTOTRANSPORTE cat on cat.clave = CARTAPORTEAUTOTRANSP.CONFIGVEHICULAR&#13;&#10;where cartaporte.doctoid = @DOCTOID">
+        <Column Name="PERMSCT" DataType="System.String"/>
+        <Column Name="NUMPERMISOSCT" DataType="System.String"/>
+        <Column Name="CONFIGVEHICULAR" DataType="System.String"/>
+        <Column Name="PLACAVM" DataType="System.String"/>
+        <Column Name="ANIOMODELOVM" DataType="System.String"/>
+        <Column Name="ASEGURARESPCIVIL" DataType="System.String"/>
+        <Column Name="POLIZARESPCIVIL" DataType="System.String"/>
+        <Column Name="ASEGURAMEDAMBIENTE" DataType="System.String"/>
+        <Column Name="POLIZAMEDAMBIENTE" DataType="System.String"/>
+        <Column Name="ASEGURACARGA" DataType="System.String"/>
+        <Column Name="POLIZACARGA" DataType="System.String"/>
+        <Column Name="PRIMASEGURO" DataType="System.String"/>
+        <Column Name="SUBTIPOREM1" DataType="System.String"/>
+        <Column Name="PLACA1" DataType="System.String"/>
+        <Column Name="SUBTIPOREM2" DataType="System.String"/>
+        <Column Name="PLACA2" DataType="System.String"/>
+        <Column Name="CONFIGVEHICULAR_DESCRIPCION" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table11" Alias="CartaPorteCantTransp" DataType="System.Int32" Enabled="true" SelectCommand="Select &#13;&#10;CARTAPORTECANTTRANSP.CANTIDAD ,&#13;&#10;CARTAPORTECANTTRANSP.IDORIGEN ,&#13;&#10;CARTAPORTECANTTRANSP.IDDESTINO ,&#13;&#10;CARTAPORTECANTTRANSP.CVESTRANSPORTE&#13;&#10;&#13;&#10;from &#13;&#10;cartaporte&#13;&#10;left join  CARTAPORTECANTTRANSP on cartaporte.id = CARTAPORTECANTTRANSP.cartaporteid&#13;&#10;&#13;&#10;where cartaporte.doctoid = @DOCTOID">
+        <Column Name="CANTIDAD" DataType="System.String"/>
+        <Column Name="IDORIGEN" DataType="System.String"/>
+        <Column Name="IDDESTINO" DataType="System.String"/>
+        <Column Name="CVESTRANSPORTE" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table12" Alias="CartaPorteUbicacionEmisor" DataType="System.Int32" Enabled="true" SelectCommand="Select first 1&#13;&#10;&#13;&#10; CARTAPORTEUBICACION.TIPOUBICACION, &#13;&#10; CARTAPORTEUBICACION.IDUBICACION ,&#13;&#10; CARTAPORTEUBICACION.RFCREMITENTEDESTINATARIO ,&#13;&#10; CARTAPORTEUBICACION.NOMBREREMITENTEDESTINATARIO ,&#13;&#10; CARTAPORTEUBICACION.NUMREGIDTRIB ,&#13;&#10; CARTAPORTEUBICACION.RESIDENCIAFISCAL, &#13;&#10; CARTAPORTEUBICACION.NUMESTACION ,&#13;&#10; CARTAPORTEUBICACION.NOMBREESTACION ,&#13;&#10; CARTAPORTEUBICACION.NAVEGACIONTRAFICO ,&#13;&#10; CARTAPORTEUBICACION.FECHAHORASALIDALLEGADA ,&#13;&#10; CARTAPORTEUBICACION.TIPOESTACION ,&#13;&#10; CARTAPORTEUBICACION.DISTANCIARECORRIDA, &#13;&#10; CARTAPORTEUBICACION.CALLE ,&#13;&#10; CARTAPORTEUBICACION.NUMEROEXTERIOR ,&#13;&#10; CARTAPORTEUBICACION.NUMEROINTERIOR ,&#13;&#10; CARTAPORTEUBICACION.COLONIA ,&#13;&#10; CARTAPORTEUBICACION.LOCALIDAD ,&#13;&#10; CARTAPORTEUBICACION.REFERENCIA ,&#13;&#10; CARTAPORTEUBICACION.MUNICIPIO ,&#13;&#10; CARTAPORTEUBICACION.ESTADO ,&#13;&#10; CARTAPORTEUBICACION.PAIS ,&#13;&#10; CARTAPORTEUBICACION.CODIGOPOSTAL,&#13;&#10; colonia.NOMBRE COLONIA_NOMBRE,&#13;&#10; localidad.DESCRIPCION LOCALIDAD_DESCRIPCION,&#13;&#10;municipio.DESCRIPCION MUNICIPIO_DESCRIPCION,&#13;&#10;estado.NOMBRE ESTADO_NOMBRE&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;from &#13;&#10;cartaporte&#13;&#10;left join  CARTAPORTEUBICACION on cartaporte.id = CARTAPORTEUBICACION.cartaporteid&#13;&#10;left join  SAT_COLONIA colonia on colonia.colonia = CARTAPORTEUBICACION.COLONIA and colonia.CODIGOPOSTAL = CARTAPORTEUBICACION.CODIGOPOSTAL&#13;&#10;left join  SAT_LOCALIDAD localidad on localidad.clave_localidad = CARTAPORTEUBICACION.LOCALIDAD  and localidad.clave_estado =  CARTAPORTEUBICACION.ESTADO&#13;&#10;left join  SAT_MUNICIPIO municipio on municipio.clave_municipio = CARTAPORTEUBICACION.MUNICIPIO  and municipio.clave_estado =  CARTAPORTEUBICACION.ESTADO&#13;&#10;left join  ESTADO estado on estado.acronimo =  CARTAPORTEUBICACION.ESTADO&#13;&#10;&#13;&#10;where cartaporte.doctoid = @DOCTOID AND &#13;&#10; CARTAPORTEUBICACION.TIPOUBICACION  = 'Origen'">
+        <Column Name="TIPOUBICACION" DataType="System.String"/>
+        <Column Name="IDUBICACION" DataType="System.String"/>
+        <Column Name="RFCREMITENTEDESTINATARIO" DataType="System.String"/>
+        <Column Name="NOMBREREMITENTEDESTINATARIO" DataType="System.String"/>
+        <Column Name="NUMREGIDTRIB" DataType="System.String"/>
+        <Column Name="RESIDENCIAFISCAL" DataType="System.String"/>
+        <Column Name="NUMESTACION" DataType="System.String"/>
+        <Column Name="NOMBREESTACION" DataType="System.String"/>
+        <Column Name="NAVEGACIONTRAFICO" DataType="System.String"/>
+        <Column Name="FECHAHORASALIDALLEGADA" DataType="System.String"/>
+        <Column Name="TIPOESTACION" DataType="System.String"/>
+        <Column Name="DISTANCIARECORRIDA" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="REFERENCIA" DataType="System.String"/>
+        <Column Name="MUNICIPIO" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="PAIS" DataType="System.String"/>
+        <Column Name="CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="COLONIA_NOMBRE" DataType="System.String"/>
+        <Column Name="LOCALIDAD_DESCRIPCION" DataType="System.String"/>
+        <Column Name="MUNICIPIO_DESCRIPCION" DataType="System.String"/>
+        <Column Name="ESTADO_NOMBRE" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table13" Alias="CartaPorteUbicacionReceptor" DataType="System.Int32" Enabled="true" SelectCommand="Select  first 1&#13;&#10;&#13;&#10; CARTAPORTEUBICACION.TIPOUBICACION, &#13;&#10; CARTAPORTEUBICACION.IDUBICACION ,&#13;&#10; CARTAPORTEUBICACION.RFCREMITENTEDESTINATARIO ,&#13;&#10; CARTAPORTEUBICACION.NOMBREREMITENTEDESTINATARIO ,&#13;&#10; CARTAPORTEUBICACION.NUMREGIDTRIB ,&#13;&#10; CARTAPORTEUBICACION.RESIDENCIAFISCAL, &#13;&#10; CARTAPORTEUBICACION.NUMESTACION ,&#13;&#10; CARTAPORTEUBICACION.NOMBREESTACION ,&#13;&#10; CARTAPORTEUBICACION.NAVEGACIONTRAFICO ,&#13;&#10; CARTAPORTEUBICACION.FECHAHORASALIDALLEGADA ,&#13;&#10; CARTAPORTEUBICACION.TIPOESTACION ,&#13;&#10; CARTAPORTEUBICACION.DISTANCIARECORRIDA, &#13;&#10; CARTAPORTEUBICACION.CALLE ,&#13;&#10; CARTAPORTEUBICACION.NUMEROEXTERIOR ,&#13;&#10; CARTAPORTEUBICACION.NUMEROINTERIOR ,&#13;&#10; CARTAPORTEUBICACION.COLONIA ,&#13;&#10; CARTAPORTEUBICACION.LOCALIDAD ,&#13;&#10; CARTAPORTEUBICACION.REFERENCIA ,&#13;&#10; CARTAPORTEUBICACION.MUNICIPIO ,&#13;&#10; CARTAPORTEUBICACION.ESTADO ,&#13;&#10; CARTAPORTEUBICACION.PAIS ,&#13;&#10; CARTAPORTEUBICACION.CODIGOPOSTAL,&#13;&#10; colonia.NOMBRE COLONIA_NOMBRE,&#13;&#10; localidad.DESCRIPCION LOCALIDAD_DESCRIPCION,&#13;&#10;municipio.DESCRIPCION MUNICIPIO_DESCRIPCION,&#13;&#10;estado.NOMBRE ESTADO_NOMBRE&#13;&#10;&#13;&#10;&#13;&#10;from &#13;&#10;cartaporte&#13;&#10;left join  CARTAPORTEUBICACION on cartaporte.id = CARTAPORTEUBICACION.cartaporteid&#13;&#10;left join  SAT_COLONIA colonia on colonia.colonia = CARTAPORTEUBICACION.COLONIA and colonia.CODIGOPOSTAL = CARTAPORTEUBICACION.CODIGOPOSTAL&#13;&#10;left join  SAT_LOCALIDAD localidad on localidad.clave_localidad = CARTAPORTEUBICACION.LOCALIDAD  and localidad.clave_estado =  CARTAPORTEUBICACION.ESTADO&#13;&#10;left join  SAT_MUNICIPIO municipio on municipio.clave_municipio = CARTAPORTEUBICACION.MUNICIPIO  and municipio.clave_estado =  CARTAPORTEUBICACION.ESTADO&#13;&#10;left join  ESTADO estado on estado.acronimo =  CARTAPORTEUBICACION.ESTADO&#13;&#10;&#13;&#10;&#13;&#10;where cartaporte.doctoid = @DOCTOID AND &#13;&#10; CARTAPORTEUBICACION.TIPOUBICACION  = 'Destino'">
+        <Column Name="TIPOUBICACION" DataType="System.String"/>
+        <Column Name="IDUBICACION" DataType="System.String"/>
+        <Column Name="RFCREMITENTEDESTINATARIO" DataType="System.String"/>
+        <Column Name="NOMBREREMITENTEDESTINATARIO" DataType="System.String"/>
+        <Column Name="NUMREGIDTRIB" DataType="System.String"/>
+        <Column Name="RESIDENCIAFISCAL" DataType="System.String"/>
+        <Column Name="NUMESTACION" DataType="System.String"/>
+        <Column Name="NOMBREESTACION" DataType="System.String"/>
+        <Column Name="NAVEGACIONTRAFICO" DataType="System.String"/>
+        <Column Name="FECHAHORASALIDALLEGADA" DataType="System.String"/>
+        <Column Name="TIPOESTACION" DataType="System.String"/>
+        <Column Name="DISTANCIARECORRIDA" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="REFERENCIA" DataType="System.String"/>
+        <Column Name="MUNICIPIO" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="PAIS" DataType="System.String"/>
+        <Column Name="CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="COLONIA_NOMBRE" DataType="System.String"/>
+        <Column Name="LOCALIDAD_DESCRIPCION" DataType="System.String"/>
+        <Column Name="MUNICIPIO_DESCRIPCION" DataType="System.String"/>
+        <Column Name="ESTADO_NOMBRE" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table14" Alias="CartePorteTipoFiguraOperador" DataType="System.Int32" Enabled="true" SelectCommand="Select FIRST 1&#13;&#10;&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.TIPOFIGURA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.RFCFIGURA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.NUMLICENCIA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.NOMBREFIGURA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.NUMREGIDTRIBFIGURA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.RESIDENCIAFISCALFIGURA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.PARTETRANSPORTE ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.CALLE ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.NUMEROEXTERIOR ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.NUMEROINTERIOR ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.COLONIA, &#13;&#10;CARTAPORTETRANSPTIPOFIGURA.LOCALIDAD, &#13;&#10;CARTAPORTETRANSPTIPOFIGURA.REFERENCIA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.MUNICIPIO, &#13;&#10;CARTAPORTETRANSPTIPOFIGURA.ESTADO ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.PAIS ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.CODIGOPOSTAL,&#13;&#10;cat.DESCRIPCION TIPOFIGURA_DESCRIPCION&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;from &#13;&#10;cartaporte&#13;&#10;left join CARTAPORTETRANSPTIPOFIGURA on cartaporte.id = CARTAPORTETRANSPTIPOFIGURA.cartaporteid&#13;&#10;left join SAT_FIGURATRANSPORTE cat on &#13;&#10;cat.clave = CARTAPORTETRANSPTIPOFIGURA.TIPOFIGURA&#13;&#10;&#13;&#10;where cartaporte.doctoid = @DOCTOID AND &#13;&#10; CARTAPORTETRANSPTIPOFIGURA.TIPOFIGURA = '01'">
+        <Column Name="TIPOFIGURA" DataType="System.String"/>
+        <Column Name="RFCFIGURA" DataType="System.String"/>
+        <Column Name="NUMLICENCIA" DataType="System.String"/>
+        <Column Name="NOMBREFIGURA" DataType="System.String"/>
+        <Column Name="NUMREGIDTRIBFIGURA" DataType="System.String"/>
+        <Column Name="RESIDENCIAFISCALFIGURA" DataType="System.String"/>
+        <Column Name="PARTETRANSPORTE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="REFERENCIA" DataType="System.String"/>
+        <Column Name="MUNICIPIO" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="PAIS" DataType="System.String"/>
+        <Column Name="CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="TIPOFIGURA_DESCRIPCION" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table15" Alias="CortePorteTipoFiguraOtro" DataType="System.Int32" Enabled="true" SelectCommand="Select FIRST 1&#13;&#10;&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.TIPOFIGURA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.RFCFIGURA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.NUMLICENCIA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.NOMBREFIGURA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.NUMREGIDTRIBFIGURA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.RESIDENCIAFISCALFIGURA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.PARTETRANSPORTE ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.CALLE ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.NUMEROEXTERIOR ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.NUMEROINTERIOR ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.COLONIA, &#13;&#10;CARTAPORTETRANSPTIPOFIGURA.LOCALIDAD, &#13;&#10;CARTAPORTETRANSPTIPOFIGURA.REFERENCIA ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.MUNICIPIO, &#13;&#10;CARTAPORTETRANSPTIPOFIGURA.ESTADO ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.PAIS ,&#13;&#10;CARTAPORTETRANSPTIPOFIGURA.CODIGOPOSTAL,&#13;&#10;cat.DESCRIPCION TIPOFIGURA_DESCRIPCION&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;from &#13;&#10;cartaporte&#13;&#10;left join CARTAPORTETRANSPTIPOFIGURA on cartaporte.id = CARTAPORTETRANSPTIPOFIGURA.cartaporteid&#13;&#10;left join SAT_FIGURATRANSPORTE cat on &#13;&#10;cat.clave = CARTAPORTETRANSPTIPOFIGURA.TIPOFIGURA&#13;&#10;&#13;&#10;where cartaporte.doctoid = @DOCTOID AND &#13;&#10; CARTAPORTETRANSPTIPOFIGURA.TIPOFIGURA &lt;&gt; '01'">
+        <Column Name="TIPOFIGURA" DataType="System.String"/>
+        <Column Name="RFCFIGURA" DataType="System.String"/>
+        <Column Name="NUMLICENCIA" DataType="System.String"/>
+        <Column Name="NOMBREFIGURA" DataType="System.String"/>
+        <Column Name="NUMREGIDTRIBFIGURA" DataType="System.String"/>
+        <Column Name="RESIDENCIAFISCALFIGURA" DataType="System.String"/>
+        <Column Name="PARTETRANSPORTE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="REFERENCIA" DataType="System.String"/>
+        <Column Name="MUNICIPIO" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="PAIS" DataType="System.String"/>
+        <Column Name="CODIGOPOSTAL" DataType="System.String"/>
+        <Column Name="TIPOFIGURA_DESCRIPCION" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[doctoId]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Relation Name="Table_Table4" ParentDataSource="Table" ChildDataSource="Table4" ParentColumns="MOVTOID" ChildColumns="MOVTOID" Enabled="true"/>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="doctoId" DataType="System.Decimal"/>
+    <Parameter Name="desgloseKits" DataType="System.String"/>
+    <Parameter Name="imagenBicode" DataType="System.String"/>
+    <Parameter Name="logoEmpresa" DataType="System.String"/>
+    <Parameter Name="bgImage" DataType="System.String"/>
+    <Parameter Name="num_serie_cert_csd" DataType="System.String"/>
+    <Parameter Name="tipoComprobante" DataType="System.String"/>
+    <Parameter Name="containsCartaPorte" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" FirstPageSource="15" OtherPagesSource="15" Guides="737.1" Border.Lines="All">
+    <PageHeaderBand Name="PageHeader1" Width="740.5" Height="362.88" BeforePrintEvent="PageHeader1_BeforePrint">
+      <TextObject Name="Text42" Left="5.45" Top="237.25" Width="359.1" Height="106.79" Border.Lines="All" Fill.Color="WhiteSmoke" Text="[Cfdi.RC_NOMBRE]&#13;&#10;&#13;&#10;[Cfdi.RC_CALLE] [Cfdi.RC_NOEXTERIOR] [Cfdi.RC_NOINTERIOR]&#13;&#10;[Cfdi.RC_COLONIA]&#13;&#10;[Cfdi.RC_MUNICIPIO]&#13;&#10;[Cfdi.RC_CODIGOPOSTAL], [Cfdi.RC_ESTADO], [Cfdi.RC_PAIS]&#13;&#10;[Cfdi.RC_RFC]&#13;&#10;[Cfdi.RC_LOCALIDAD]  [Cfdi.RC_REFERENCIA]&#13;&#10;Regimen: [Cfdi.RC_REGIMENFISCAL] [Cfdi.RC_REGIMENFISCALDESCRIPCION]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text44" Left="5.45" Top="347.65" Width="79.1" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="PRODUCTO" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text46" Left="74.15" Top="347.65" Width="35" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="U.M." VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text47" Left="174.65" Top="347.65" Width="203.36" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="DESCRIPCION" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text48" Left="378" Top="347.65" Width="37.41" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="IEPS" VertAlign="Center" Font="Arial, 6pt"/>
+      <TextObject Name="Text49" Left="414.8" Top="347.65" Width="37.41" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="IVA" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text50" Left="451.6" Top="347.65" Width="61.43" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="PRECIO" HorzAlign="Center" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text51" Left="513.3" Top="347.65" Width="37.41" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" BeforePrintEvent="Text51_BeforePrint" Text="%DES" VertAlign="Center" Font="Arial, 5pt"/>
+      <TextObject Name="Text52" Left="551.1" Top="347.65" Width="52.24" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="PRE. D/I" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text53" Left="602.81" Top="347.65" Width="64.29" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="IMPORTE" HorzAlign="Center" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text54" Left="667.36" Top="347.65" Width="64.29" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="TOTAL" HorzAlign="Right" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text43" Left="368.88" Top="237.25" Width="364.39" Height="106.79" Border.Lines="All" Fill.Color="WhiteSmoke" Text="&#13;&#10;[Cfdi.ENTREGADIRECCION]&#13;&#10;[Cfdi.ENTREGACOLONIA]&#13;&#10;[Cfdi.ENTREGAMUNICIPIO]&#13;&#10;[Cfdi.ENTREGACODIGOPOSTAL], [Cfdi.ENTREGAESTADO], [Cfdi.ENTREGAPAIS]&#13;&#10;[Cfdi.ENTREGARFC]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text40" Left="5.45" Top="224.91" Width="359.1" Height="12.48" Border.Lines="All" Fill.Color="SkyBlue" Text="DATOS DEL CLIENTE:" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text41" Left="368.93" Top="224.91" Width="364.39" Height="12.48" Border.Lines="All" Fill.Color="SkyBlue" Text="LUGAR DE ENTREGA:" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text22" Left="5" Top="208.35" Width="93.13" Height="13.01" Border.Lines="All" Text="Cliente: [Cfdi.PERSONACLAVE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text34" Left="102.95" Top="208.9" Width="262.52" Height="13.01" Border.Lines="All" Text="Vend: [Table.VENDEDORCLIENTENOMBRE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text35" Left="368.55" Top="208.9" Width="114.68" Height="13.01" Border.Lines="All" Text="Vence:[Format(&quot;{0:dd/MM/yyyy}&quot;,[Cfdi.VENCE])]" Font="Arial, 7pt"/>
+      <TextObject Name="Text36" Left="485.95" Top="208.9" Width="74.01" Height="13.01" Border.Lines="All" Text="Serie:[Cfdi.DOCTOSERIE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text37" Left="563" Top="208.9" Width="82.54" Height="13.01" Border.Lines="All" Text="Vta: [Cfdi.DOCTOFOLIO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text21" Left="5" Top="192.45" Width="93.13" Height="12.96" Border.Lines="All" Text="[Cfdi.MONEDA]" Font="Arial, 7pt"/>
+      <TextObject Name="Text24" Left="102.95" Top="192.45" Width="147.8" Height="12.96" Border.Lines="All" Text="[Cfdi.TIMBRADOCERTSAT]" VertAlign="Center" Font="Arial, 6pt"/>
+      <TextObject Name="Text26" Left="253.6" Top="192.45" Width="183.71" Height="12.96" Border.Lines="All" Text="[Cfdi.TIMBRADOUUID]" VertAlign="Center" Font="Arial, 6pt"/>
+      <TextObject Name="Text28" Left="439.15" Top="192.45" Width="151.96" Height="12.96" Border.Lines="All" Text="[Cfdi.TIMBRADOFECHA]" Font="Arial, 7pt"/>
+      <TextObject Name="Text30" Left="593.72" Top="192.45" Width="50.89" Height="12.96" Border.Lines="All" Text="[Cfdi.SERIE] [Cfdi.FOLIO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text20" Left="5" Top="180" Width="93.13" Height="12.48" Border.Lines="All" Text="MONEDA" Font="Arial, 7pt"/>
+      <TextObject Name="Text23" Left="102.95" Top="180" Width="147.71" Height="12.48" Border.Lines="All" Text="NO DE SERIE DEL CERTIFICADO DEL SAT" VertAlign="Center" WordWrap="false" Font="Arial, 5pt"/>
+      <TextObject Name="Text25" Left="253.6" Top="180" Width="183.84" Height="12.48" Border.Lines="All" Text="FOLIO FISCAL" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text27" Left="439.15" Top="180" Width="152" Height="12.48" Border.Lines="All" Text="FECHA Y HORA DE CERTIFICACION" VertAlign="Center" Font="Arial, 5pt"/>
+      <TextObject Name="Text29" Left="593.72" Top="180" Width="50.89" Height="12.48" Border.Lines="All" Text="[Cfdi.TIPODOCUMENTO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text19" Left="104.4" Top="163.3" Width="283.48" Height="13.44" Border.Lines="All" Text="[num_serie_cert_csd]" HorzAlign="Center" VertAlign="Center" Font="Arial, 6pt"/>
+      <TextObject Name="Text18" Left="104.4" Top="156.11" Width="283.48" Height="7" Border.Lines="All" Text="# DE SERIE DEL CERTIFICADO DEL CSD" HorzAlign="Center" Font="Arial, 5pt"/>
+      <TextObject Name="Text33" Left="650.54" Top="151.96" Width="83.16" Height="37.8" Border.Lines="All" Text="[Cfdi.METODOPAGO] [Cfdi.METODOPAGODESCRIPCION]&#13;&#10;[Cfdi.FORMAPAGO] [Cfdi.FORMAPAGONOMBRE]" Font="Arial, 5pt, style=Bold"/>
+      <TextObject Name="Text32" Left="650.54" Top="137.97" Width="83.16" Height="14.04" Border.Lines="All" Text="METODO DE PAGO" VertAlign="Center" Font="Arial, 6pt"/>
+      <PictureObject Name="Picture2" Left="612.28" Top="9.45" Width="124.82" Height="115.37" BeforePrintEvent="Picture2_BeforePrint"/>
+      <PictureObject Name="Picture1" Left="9.45" Top="9.45" Width="167.02" Height="107.73" BeforePrintEvent="Picture1_BeforePrint"/>
+      <TextObject Name="Text16" Left="9.45" Top="161.65" Width="91.01" Height="13.44" Border.Lines="All" BeforePrintEvent="Text16_BeforePrint" Text="[Cfdi.TIPORECIBO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text105" Left="387.45" Top="132.3" Width="207.9" Height="9.45" Text="[Cfdi.RUTAEMBARQUECLAVE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text8" Left="179.55" Top="116.85" Width="207.9" Height="9.45" Text="[Cfdi.EM_RFC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text13" Left="387.45" Top="116.85" Width="207.9" Height="9.45" Text="[Cfdi.EM_RFC]" Font="Arial, 7pt"/>
+      <TextObject Name="Text6" Left="179.55" Top="85.05" Width="207.9" Height="9.45" Text="[Cfdi.EM_MUNICIPIO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text7" Left="179.55" Top="99.95" Width="207.9" Height="9.45" Text="[Cfdi.EM_CODIGOPOSTAL], [Cfdi.EM_ESTADO], México" Font="Arial, 7pt"/>
+      <TextObject Name="Text11" Left="387.45" Top="85.05" Width="207.9" Height="9.45" Text="[Cfdi.EE_MUNICIPIO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text12" Left="387.45" Top="99.05" Width="207.9" Height="9.45" Text="[Cfdi.EE_CODIGOPOSTAL], [Cfdi.EE_MUNICIPIO]," Font="Arial, 7pt"/>
+      <TextObject Name="Text2" Left="179.55" Top="71.6" Width="207.9" Height="9.45" Text="[Cfdi.EM_COLONIA]" Font="Arial, 7pt"/>
+      <TextObject Name="Text10" Left="387.45" Top="71.15" Width="207.9" Height="9.45" Text="[Cfdi.EE_COLONIA]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="179.55" Top="56.7" Width="206.69" Height="9.45" Text="[Cfdi.EM_CALLE] [Cfdi.EM_NOEXTERIOR] [Cfdi.EM_NOINTERIOR]" Font="Arial, 7pt"/>
+      <TextObject Name="Text9" Left="387.45" Top="56.7" Width="206.69" Height="9.45" Text="[Cfdi.EE_CALLE] [Cfdi.EE_NOEXTERIOR] [Cfdi.EE_NOINTERIOR]" Font="Arial, 7pt"/>
+      <TextObject Name="Text3" Left="387.45" Top="37.8" Width="206.69" Height="18.9" Text="LUGAR DE EXPEDICION" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text4" Left="179.55" Top="37.8" Width="206.69" Height="18.9" Text="LUGAR DE EXPEDICION" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text1" Left="179.55" Top="9.45" Width="422.58" Height="19" Text="[Cfdi.EM_RAZONSOCIAL]" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text14" Left="391.99" Top="164.05" Width="123.61" Height="12.85" Border.Lines="All" Text="[Cfdi.RC_USOCFDI] [Cfdi.USOCFDIDESCRIPCION]" Font="Arial, 6pt"/>
+      <TextObject Name="Text109" Left="391.99" Top="151.2" Width="123.65" Height="12.48" Border.Lines="All" Text="USO CFDI" VertAlign="Center" Font="Arial, 5pt"/>
+      <TextObject Name="Text110" Left="103.95" Top="145.15" Width="284.26" Height="11.34" Border.Lines="All" BeforePrintEvent="Text110_BeforePrint" Text="[CfdiRel.TIPORELACION] [CfdiRel.UUID]" Font="Arial, 5pt"/>
+      <TextObject Name="Text111" Left="103.95" Top="132.3" Width="284.3" Height="12.48" Border.Lines="All" BeforePrintEvent="Text111_BeforePrint" Text="CFDI RELACIONADO" VertAlign="Center" Font="Arial, 5pt"/>
+      <TextObject Name="Text45" Left="109.24" Top="347.65" Width="64.69" Height="12.53" Border.Lines="All" Fill.Color="SkyBlue" Text="CANTIDAD" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text159" Left="651.25" Top="206.39" Width="75.6" Height="12.85" Border.Lines="All" BeforePrintEvent="Text110_BeforePrint" Text="[Cfdi.TIPOCOMPROBANTE] [Cfdi.TIPOCOMPROBANTEDESCRIPCION]" Font="Arial, 6pt"/>
+      <TextObject Name="Text160" Left="651.25" Top="194.67" Width="75.6" Height="12.48" Border.Lines="All" BeforePrintEvent="Text111_BeforePrint" Text="TIPO COMP." VertAlign="Center" Font="Arial, 5pt"/>
+      <TextObject Name="Text31" Left="9.45" Top="132.3" Width="94.5" Height="28.35" Text="FAC ORIGEN: &#13;&#10;[Cfdi.EX_FOLIOFISCALORIGINAL]" Font="Arial, 6pt"/>
+      <TextObject Name="Text63" Left="519.75" Top="151.2" Width="132.3" Height="28.35" Text="[Table.REFERENCIATRASLADO]" Font="Arial, 6pt"/>
+      <TextObject Name="Text65" Left="392.8" Top="2.9" Width="94.5" Height="18.9" Text="[tipoComprobante]"/>
+      <TextObject Name="Text93" Left="614.25" Top="122.85" Width="122.85" Height="13.23" Text="Version CFDI: [Cfdi.VERSIONCFDI]" Font="Arial, 8pt"/>
+      <TextObject Name="Text271" Left="387.45" Top="18.9" Width="217.35" Height="13.23" Text="Exportacion: No aplica [Cfdi.EXPORTACION]" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="366.88" Width="740.5" BeforePrintEvent="GroupHeader1_BeforePrint" Condition="[Table.DOCTOFOLIO]">
+      <GroupHeaderBand Name="GroupHeader2" Top="370.88" Width="740.5" Height="9.45" CanGrow="true" BeforePrintEvent="GroupHeader2_BeforePrint" Condition="[Table.MOVTOID]">
+        <TextObject Name="Text68" Left="176.9" Width="199.96" Height="9.45" CanGrow="true" Text="[Table.PRODUCTODESCRIPCION]  [IIf([Table.CUENTAPREDIAL] != &quot;&quot;&amp;&amp; [Cfdi.HIDECTAPREDIAL] != &quot;True&quot; ,&quot;Cta. Predial: &quot; + [Table.CUENTAPREDIAL],&quot;&quot;)]  [IIf([Table.PRODUCTOTEXTO1] != &quot;&quot;,[Table.PRODUCTOTEXTO1],&quot;&quot;)] [Table.DESCRIPCION2] [Table.STRPEDIMENTO]" Font="Arial, 6pt"/>
+        <TextObject Name="Text69" Left="6.45" Width="68.8" Height="9.45" Text="[Table.PRODUCTOCLAVE]" Font="Arial, 6pt"/>
+        <TextObject Name="Text75" Left="378" Width="37.8" Height="9.45" Text="[IIf( [Table.TIPODOCTOID] == 701 || [tipoComprobante] == &quot;T&quot;, [Table.CFDI_IEPS],[Table.IEPS])]&#13;&#10;" HorzAlign="Right" Font="Arial, 6pt"/>
+        <TextObject Name="Text77" Left="415.8" Width="37.8" Height="9.45" Text="[IIf( [Table.TIPODOCTOID] == 701 || [tipoComprobante] == &quot;T&quot;, [Table.CFDI_IVA],[Table.IVA])]" HorzAlign="Right" Font="Arial, 6pt"/>
+        <TextObject Name="Text79" Left="513.3" Width="37.8" Height="9.45" BeforePrintEvent="Text79_BeforePrint" Text="[IIf( [Table.TIPODOCTOID] == 701 || [tipoComprobante] == &quot;T&quot;, &quot;0.00&quot;,[Table.DESCUENTOPORCENTAJE])]" HorzAlign="Right" Font="Arial, 6pt"/>
+        <TextObject Name="Text83" Left="453.6" Width="58.59" Height="9.45" Text="[IIf( [Table.TIPODOCTOID] == 701 || [tipoComprobante] == &quot;T&quot;, [Table.CFDI_VALORUNITARIO] + [Table.CFDI_IVA] + [Table.CFDI_IEPS] - [Table.CFDI_DESCUENTO], IIf(Trim([Cfdi.CLIENTEDESGLOSAIEPS]) == &quot;True&quot; &amp;&amp; Trim([Cfdi.EMPRESADESGLOSAIEPS]) == &quot;True&quot;,IIf(Trim([Cfdi.HIDEDESCUENTO]) != &quot;True&quot;,[Table.PRECIOLISTA],[Table.PRECIO]),IIf(Trim([Cfdi.HIDEDESCUENTO]) != &quot;True&quot; &amp;&amp; [Table.DESCUENTOPORCENTAJE] &gt;= 0 ,[Table.PRECIOLISTA]*(1+([Table.PORCENTAJEIEPS]/100)),[Table.PRECIO]*(1+([Table.PORCENTAJEIEPS]/100)))))]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text87" Left="604.8" Width="60.48" Height="9.45" Text="[IIf( [Table.TIPODOCTOID] == 701 || [tipoComprobante] == &quot;T&quot;, [Table.CFDI_VALORUNITARIO], IIf(Trim([Cfdi.CLIENTEDESGLOSAIEPS]) == &quot;True&quot; &amp;&amp; Trim([Cfdi.EMPRESADESGLOSAIEPS]) == &quot;True&quot;,[Table.SUBTOTAL],[Table.SUBTOTAL]+[Table.IEPS]))]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text104" Left="73.71" Width="35.91" Height="9.45" Text="[Table.UNIDAD]" Font="Arial, 6pt"/>
+        <TextObject Name="Text106" Left="548.1" Width="58.59" Height="9.45" Text="[IIf( [Table.TIPODOCTOID] == 701 || [tipoComprobante] == &quot;T&quot;, [Table.CFDI_VALORUNITARIO], IIf(Trim([Cfdi.CLIENTEDESGLOSAIEPS]) == &quot;True&quot; &amp;&amp; Trim([Cfdi.EMPRESADESGLOSAIEPS]) == &quot;True&quot;,[Table.PRECIO],[Table.PRECIO]*(1+([Table.PORCENTAJEIEPS]/100))))]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text81" Left="669.06" Width="64.26" Height="9.45" Text="[IIf( [Table.TIPODOCTOID] == 701 || [tipoComprobante] == &quot;T&quot;, [Table.CFDI_VALORUNITARIO] + [Table.CFDI_IVA] + [Table.CFDI_IEPS] - [Table.CFDI_DESCUENTO],[Table.TOTAL])]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 6pt"/>
+        <TextObject Name="Text71" Left="109.24" Width="64.26" Height="9.45" Text="[Table.CANTIDADFACTURA]" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+        <ChildBand Name="Child3" Top="384.33" Width="740.5" Height="9.45">
+          <TextObject Name="Text38" Left="9.45" Width="66.15" Height="9.45" Text="[Table.CFDI_CLAVEPRODSERV]" Font="Arial, 6pt"/>
+          <TextObject Name="Text39" Left="73.71" Width="35.91" Height="9.45" Text="[Table.CFDI_CLAVEUNIDAD]" Font="Arial, 6pt"/>
+          <TextObject Name="Text148" Left="113.4" Width="41.58" Height="9.45" Text="IVA [Table.CFDI_TASAIVA]" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text62" Left="160.65" Width="47.25" Height="9.45" Text="[Table.CFDI_IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text150" Left="264.6" Width="54.81" Height="9.45" Text="IEPS [Table.IEPS_01_PORC]" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt, style=Bold" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text151" Left="325.08" Width="47.25" Height="9.45" Text="[Table.IEPS_01_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text153" Left="378" Width="54.81" Height="9.45" Text="IEPS [Table.IEPS_02_PORC]" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt, style=Bold" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text154" Left="438.48" Width="47.25" Height="9.45" Text="[Table.IEPS_02_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text155" Left="491.4" Width="54.81" Height="9.45" Text="IEPS [Table.IEPS_03_PORC]" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt, style=Bold" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text156" Left="551.88" Width="47.25" Height="9.45" Text="[Table.IEPS_03_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text157" Left="610.47" Width="54.81" Height="9.45" Text="IEPS [Table.IEPS_04_PORC]" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt, style=Bold" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text158" Left="670.95" Width="47.25" Height="9.45" Text="[Table.IEPS_04_IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+        </ChildBand>
+        <DataBand Name="Data1" Top="397.78" Width="740.5" Height="9.45" CanGrow="true" BeforePrintEvent="Data1_BeforePrint" DataSource="Table">
+          <TextObject Name="Text15" Left="75.6" Width="64.26" Height="9.45" Text="[Table.KITDESCPZACAJA]" Font="Arial, 6pt, style=Italic"/>
+          <TextObject Name="Text17" Left="6.43" Width="68.8" Height="9.45" Text="[Table.CFDI_KITCLAVEPRODSERV] [Table.KITPRODCLAVE]" Font="Arial, 6pt, style=Italic"/>
+          <TextObject Name="Text59" Left="176.9" Width="199.96" Height="9.45" Text="[Table.KITPRODDESCRIPCION1]" Font="Arial, 6pt, style=Italic"/>
+        </DataBand>
+        <GroupFooterBand Name="GroupFooter2" Top="411.23" Width="740.5" BeforePrintEvent="GroupFooter2_BeforePrint"/>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="415.23" Width="740.5" Height="28.35">
+        <TextObject Name="Text61" Left="614.25" Width="94.5" Height="18.9" Text="[PagosSat.REFERENCIABANCARIA]" Font="Arial, 6pt"/>
+        <TextObject Name="Text144" Left="9.45" Width="41.58" Height="18.9" Text="CUENTA ORD." Font="Arial, 6pt, style=Bold"/>
+        <TextObject Name="Text88" Left="52.92" Width="94.5" Height="18.9" Text="[PagosSat.CTAORDENANTE]" Font="Arial, 6pt"/>
+        <TextObject Name="Text90" Left="189" Width="94.5" Height="18.9" Text="[PagosSat.BANCONOMBRE]" Font="Arial, 6pt"/>
+        <TextObject Name="Text91" Left="472.5" Width="94.5" Height="18.9" Text="[PagosSat.BANCORECEPTORNOMBRE]" Font="Arial, 6pt"/>
+        <TextObject Name="Text92" Left="336.42" Width="94.5" Height="18.9" Text="[PagosSat.CTABENEFICIARIO]" Font="Arial, 6pt"/>
+        <TextObject Name="Text145" Left="151.2" Width="37.8" Height="18.9" Text="BANCO ORD." Font="Arial, 6pt, style=Bold"/>
+        <TextObject Name="Text146" Left="292.95" Width="41.58" Height="18.9" Text="CUENTA REC." Font="Arial, 6pt, style=Bold"/>
+        <TextObject Name="Text147" Left="434.7" Width="37.8" Height="18.9" Text="BANCO REC." Font="Arial, 6pt, style=Bold"/>
+        <TextObject Name="Text152" Left="576.45" Width="37.8" Height="18.9" Text="REF. BANC." Font="Arial, 6pt, style=Bold"/>
+        <ChildBand Name="Child1" Top="447.58" Width="740.5" Height="47.25">
+          <SubreportObject Name="Subreport2" Left="18.9" Top="18.9" Width="718.2" Height="28.35" ReportPage="Page3"/>
+          <TextObject Name="Text133" Left="18.9" Width="66.15" Height="18.9" Text="FECHA PAGO" Font="Arial, 6pt, style=Bold"/>
+          <TextObject Name="Text134" Left="85.05" Width="94.5" Height="18.9" Text="FORMA DE PAGO" Font="Arial, 6pt, style=Bold"/>
+          <TextObject Name="Text135" Left="179.55" Width="56.7" Height="18.9" Text="IMPORTE" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt, style=Bold" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text136" Left="245.7" Width="37.8" Height="18.9" Text="MONEDA" Font="Arial, 6pt, style=Bold"/>
+          <TextObject Name="Text137" Left="274.05" Width="28.35" Height="18.9" Text="T/C" Font="Arial, 6pt, style=Bold"/>
+          <TextObject Name="Text138" Left="302.4" Width="132.3" Height="18.9" Text="ID DOCUMENTO" Font="Arial, 6pt, style=Bold"/>
+          <TextObject Name="Text139" Left="434.7" Width="85.05" Height="18.9" Text="METODO PAGO" Font="Arial, 6pt, style=Bold"/>
+          <TextObject Name="Text140" Left="557.55" Width="56.7" Height="18.9" Text="IMP. SALDO ANT" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt, style=Bold" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text141" Left="670.95" Width="56.7" Height="18.9" Text="SALDO INSOLUTO" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt, style=Bold" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text142" Left="614.25" Width="56.7" Height="18.9" Text="IMP. PAGADO" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt, style=Bold" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text143" Left="519.75" Width="37.8" Height="18.9" Text="PARC." Font="Arial, 6pt, style=Bold"/>
+          <ChildBand Name="Child4" Top="498.83" Width="740.5" Height="141.81">
+            <TextObject Name="Text103" Left="18.9" Top="113.4" Width="718.2" Height="28.41" Border.Lines="All" Border.Style="Dash" Text="[Cfdi.TIMBRADOSELLOCFDI]" Font="Arial, 6pt"/>
+            <TextObject Name="Text102" Left="18.9" Top="94.5" Width="718.2" Height="18.96" Border.Lines="All" Border.Style="Dash" Text="SELLO DIGITAL DEL CFDI" Font="Arial, 6pt"/>
+            <TextObject Name="Text101" Left="18.9" Top="66.15" Width="718.2" Height="28.41" Border.Lines="All" Border.Style="Dash" Text="[Cfdi.TIMBRADOSELLOSAT]" Font="Arial, 6pt"/>
+            <TextObject Name="Text100" Left="18.9" Top="47.25" Width="718.2" Height="18.96" Border.Lines="All" Border.Style="Dash" Text="SELLO DEL SAT" Font="Arial, 6pt"/>
+            <TextObject Name="Text99" Left="18.9" Top="18.9" Width="718.2" Height="28.41" Border.Lines="All" Border.Style="Dash" Text="[Cfdi.CADENAORIGINALSAT]" Font="Arial, 6pt"/>
+            <TextObject Name="Text66" Left="18.9" Width="718.2" Height="18.96" Border.Lines="All" Border.Style="Dash" Text="CADENA ORIGINAL DEL COMPLEMENTO DE CERTIFICACIÓN DIGITAL DEL SAT" Font="Arial, 6pt"/>
+          </ChildBand>
+        </ChildBand>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="644.64" Width="740.5" Height="330.73" BeforePrintEvent="ReportSummary1_BeforePrint">
+      <ShapeObject Name="Shape2" Left="2" Top="18.9" Width="729.54" Height="13.44" Border.Color="Transparent"/>
+      <ShapeObject Name="Shape3" Left="1.33" Top="18.9" Width="733.32" Height="207.88"/>
+      <TextObject Name="TextLabelIeps6" Left="456.62" Top="167.45" Width="125.12" Height="13.61" Border.Lines="All" Text="I.E.P.S. [Cfdi.PORCIEPS6]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIeps4" Left="456.62" Top="139.86" Width="125.12" Height="13.61" Border.Lines="All" Text="I.E.P.S. [Cfdi.PORCIEPS4]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIeps3" Left="456.62" Top="126.63" Width="125.12" Height="13.61" Border.Lines="All" Text="I.E.P.S. [Cfdi.PORCIEPS3]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIeps2" Left="456.62" Top="113.4" Width="125.12" Height="13.61" Border.Lines="All" Text="I.E.P.S. [Cfdi.PORCIEPS2]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="Text55" Left="8.45" Top="26.8" Width="441.3" Height="26.88" Border.Lines="All" BeforePrintEvent="Text55_BeforePrint" Text="Impuesto retenido de conformidad con los artículos 1-A y 3, tercer párrafo de la ley del Impuesto al Valor Agregado" HorzAlign="Center" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text56" Left="8.45" Top="60.6" Width="441.3" Height="10.56" Border.Lines="All" Text="IMPORTE EN LETRAS" Font="Arial, 7pt"/>
+      <TextObject Name="Text57" Left="8.45" Top="71.05" Width="441.3" Height="24.3" Border.Lines="All" BeforePrintEvent="Text57_BeforePrint" Text="(CANTIDAD CON LETRA)" Font="Arial, 7pt"/>
+      <TextObject Name="Text58" Left="8.45" Top="101.4" Width="441.3" Height="116.29" Border.Lines="All" Border.LeftLine.Style="Dash" Border.RightLine.Style="Dash" BeforePrintEvent="Text58_BeforePrint" Text="[Cfdi.EE_MUNICIPIO], [Cfdi.EE_ESTADO]  DEBO Y PAGARE INCONDICIONALMENTE A LA ORDEN DE [Cfdi.FISCALNOMBRE]&#13;&#10;&#13;&#10;                           ________________________________________&#13;&#10;EN [Cfdi.EE_MUNICIPIO], [Cfdi.EE_ESTADO] O EN CUALQUIER PARTE REQUERIDA EL DIA [Format(&quot;{0:dd/MM/yyyy}&quot;,[Cfdi.VENCE])]&#13;&#10;LA CANTIDAD DE : $[Cfdi.TOTAL] (CANTIDAD CON LETRA)&#13;&#10;ESTE PAGARE ES MERCANTIL Y ESTA REGUIDO POR LA LEY GENERAL DE TITULOS Y OPREACIONES DE CREDITO &#13;&#10;EN SU ARTICULO 173 PARTE FINAL Y CORRELATIVA, QUEDO CONVENIDO QUE SI NO ES PAGADA A SU VENCIMIENTO CAUSARA INTERESES MORATORIOS A RAZON DEL 7.5% MENSUAL&#13;&#10;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIva16" Left="456.62" Top="45.36" Width="125.12" Height="13.61" Border.Lines="All" Text="I.V.A. 16 %" Font="Arial, 7pt"/>
+      <TextObject Name="TextIva16" Left="581.74" Top="45.36" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="[IIf( [tipoComprobante] == &quot;T&quot;, &quot;$0.00&quot;,&quot;$&quot; + FormatNumber([Cfdi.DOCTOIVA],2))]&#13;&#10;" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIva0" Left="456.62" Top="58.59" Width="125.12" Height="13.61" Border.Lines="All" Text="I.V.A. 0%" HideValue="0" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIvaRetenido" Left="456.62" Top="71.82" Width="125.12" Height="13.61" Border.Lines="All" Text="I.V.A. RETENIDO" HideValue="0" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIsrRetenido" Left="456.62" Top="85.81" Width="125.12" Height="13.61" Border.Lines="All" Text="I.S.R. RETENIDO" HideValue="0" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIeps1" Left="456.62" Top="100.17" Width="125.12" Height="13.61" Border.Lines="All" Text="I.E.P.S. [Cfdi.PORCIEPS1]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelSubtotal" Left="456.62" Top="19.35" Width="125.12" Height="13.44" Border.Lines="All" Text="SUBTOTAL" Font="Arial, 7pt"/>
+      <TextObject Name="TextSubtotal" Left="581.9" Top="19.35" Width="143.64" Height="13.44" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[FormatNumber([Cfdi.SUBTOTAL],2)]" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelIeps5" Left="456.62" Top="154.22" Width="125.12" Height="13.61" Border.Lines="All" Text="I.E.P.S. [Cfdi.PORCIEPS5]%" HideValue="&quot;I.E.P.S. 0.00%&quot;" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelTotal" Left="456.62" Top="180.68" Width="125.12" Height="13.61" Border.Lines="All" Text="TOTAL" Font="Arial, 7pt"/>
+      <TextObject Name="Text85" Left="3.45" Top="229.35" Width="443.27" Height="55.12" Border.Lines="All" Border.Style="Dash" Text="FORMA DE PAGO: [Cfdi.FORMAPAGONOMBRE]&#13;&#10;REGIMEN TRIBUTARIO: [Cfdi.EM_REGIMENFISCAL] [Cfdi.REGIMENFISCALDESCRIPCION]&#13;&#10;ESTE DOCUMENTO ES UNA REPRESENTACION IMPRESA DE UN CFDI" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text86" Left="451.6" Top="229.8" Width="285.5" Height="55.19" Border.Lines="All" Border.Style="Dash" Text="[Cfdi.NOTAPAGO]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextIva0" Left="581.74" Top="58.59" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="$0.00" HideZeros="true" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIvaRetenido" Left="581.74" Top="71.82" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="[IIf([Cfdi.IVARETENIDO] &gt; 0,'-',' ')]$[FormatNumber([Cfdi.IVARETENIDO],2)]" HideZeros="true" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIsrRetenido" Left="581.74" Top="85.81" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="[IIf([Cfdi.ISRRETENIDO] &gt; 0,'-',' ')]$[FormatNumber([Cfdi.ISRRETENIDO],2)]" HideZeros="true" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps1" Left="581.74" Top="100.17" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" BeforePrintEvent="Text92_BeforePrint" Text="$[FormatNumber([Cfdi.IEPS1],2)]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps2" Left="581.74" Top="113.4" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[FormatNumber([Cfdi.IEPS2],2)]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps3" Left="581.74" Top="126.63" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[FormatNumber([Cfdi.IEPS3],2)]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps4" Left="581.74" Top="139.86" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[FormatNumber([Cfdi.IEPS4],2)]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps5" Left="581.74" Top="154.22" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[FormatNumber([Cfdi.IEPS5],2)]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextIeps6" Left="581.74" Top="167.45" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[FormatNumber([Cfdi.IEPS6],2)]" HideZeros="true" HideValue="$0.00" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextTotal" Left="581.74" Top="180.68" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="$[FormatNumber([Cfdi.TOTAL],2)]" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextOrdenCompra" Left="463.05" Top="198.45" Width="255.15" Height="18.9" BeforePrintEvent="TextOrdenCompra_BeforePrint" Text="[Cfdi.ORDENCOMPRA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text107" Left="0.88" Top="283.5" Width="736.22" Height="45.67" Border.Lines="All" Border.Style="Dash" Text="[Cfdi.TEXTOFOOTER]" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text60" Left="18.9" Width="255.15" Height="18.9" BeforePrintEvent="Text60_BeforePrint" Text="Cajas: [CajasPiezas.CAJAS] Piezas: [CajasPiezas.PIEZAS] " WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter">
+        <Formats>
+          <NumberFormat/>
+          <GeneralFormat/>
+        </Formats>
+      </TextObject>
+      <TextObject Name="TextDescuento" Left="581.74" Top="32.51" Width="143.64" Height="13.61" Border.Lines="All" Border.RightLine.Style="Dash" Text="[IIf([Cfdi.DESCUENTO] &gt; 0,'-',' ')]$[FormatNumber([Cfdi.DESCUENTO],2)]" HorzAlign="Right" Font="Arial, 7pt"/>
+      <TextObject Name="TextLabelDescuento" Left="456.62" Top="32.51" Width="125.12" Height="13.61" Border.Lines="All" Text="DESCUENTO:" Font="Arial, 7pt"/>
+      <TextObject Name="Text161" Left="2.85" Top="18.9" Width="450.75" Height="36.33" Border.Lines="All" BeforePrintEvent="Text55_BeforePrint" Text="[Table.LEYENDAPLAZO]" HorzAlign="Center" VertAlign="Center" Font="Arial, 7pt"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="979.37" Width="740.5" Height="18.9">
+      <TextObject Name="Text64" Left="567" Width="170.1" Height="18.9" Text="[Page#] DE [TotalPages#]"/>
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <ReportPage Name="Page3">
+    <DataBand Name="Data3" Width="718.2" Height="18.9" BeforePrintEvent="Data3_BeforePrint" DataSource="Table6">
+      <TextObject Name="Text67" Width="66.15" Height="18.9" Text="[PagosSat.FECHAPAGO]" Font="Arial, 6pt"/>
+      <TextObject Name="Text70" Left="66.15" Width="94.5" Height="18.9" Text="[PagosSat.FORMADEPAGOP] [PagosSat.FORMAPAGONOMBRE]" Font="Arial, 6pt"/>
+      <TextObject Name="Text72" Left="160.65" Width="56.7" Height="18.9" Text="[PagosSat.IMPPAGADO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text73" Left="217.35" Width="37.8" Height="18.9" Text="[PagosSat.MONEDADR]" Font="Arial, 6pt"/>
+      <TextObject Name="Text74" Left="255.15" Width="28.35" Height="18.9" Text="[PagosSat.TIPOCAMBIODR]" Font="Arial, 6pt"/>
+      <TextObject Name="Text76" Left="283.5" Width="132.3" Height="18.9" Text="[PagosSat.IDDOCUMENTO]" Font="Arial, 6pt"/>
+      <TextObject Name="Text78" Left="415.8" Width="85.05" Height="18.9" Text="[PagosSat.METODOPAGOCLAVE] [PagosSat.METODOPAGODESC]" Font="Arial, 6pt"/>
+      <TextObject Name="Text80" Left="538.65" Width="56.7" Height="18.9" Text="[PagosSat.IMPSALDOANT]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text82" Left="652.05" Width="56.7" Height="18.9" Text="[PagosSat.IMPSALDOINSOLUTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text84" Left="595.35" Width="56.7" Height="18.9" Text="[PagosSat.IMPPAGADO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 6pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text89" Left="500.85" Width="37.8" Height="18.9" Text="[PagosSat.NUMPARCIALIDAD]" Font="Arial, 6pt"/>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page2" PaperWidth="215.9" PaperHeight="279.4" RawPaperSize="1">
+    <PageHeaderBand Name="PageHeader2" Width="740.5" Height="548.1" BeforePrintEvent="PageHeader2_BeforePrint">
+      <ShapeObject Name="Shape4" Left="9.45" Top="519.75" Width="727.65" Height="18.9" Fill.Color="Gray"/>
+      <ShapeObject Name="Shape1" Left="9.45" Top="28.35" Width="727.65" Height="18.9" Fill.Color="Gray"/>
+      <TextObject Name="Text94" Left="160.65" Top="47.25" Width="28.35" Height="18.9" Text="[CartaPorte.TRANSPINTERNAC]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text98" Left="463.05" Top="47.25" Width="245.7" Height="18.9" Text="[CartaPorte.TOTALDISTREC]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text186" Left="9.45" Top="330.75" Width="85.05" Height="18.9" Text="[CartaPorteUbicacionEmisor.TIPOUBICACION]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text187" Left="94.5" Top="330.75" Width="103.95" Height="18.9" Text="[CartaPorteUbicacionEmisor.IDUBICACION]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text188" Left="311.85" Top="330.75" Width="103.95" Height="18.9" Text="[CartaPorteUbicacionEmisor.RFCREMITENTEDESTINATARIO]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text193" Left="9.45" Top="406.35" Width="85.05" Height="18.9" Text="[CartaPorteUbicacionReceptor.TIPOUBICACION]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text194" Left="94.5" Top="406.35" Width="103.95" Height="18.9" Text="[CartaPorteUbicacionReceptor.IDUBICACION]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text199" Left="151.2" Top="226.8" Width="37.8" Height="18.9" Text="[CartePorteTipoFiguraOperador.TIPOFIGURA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text200" Left="330.75" Top="245.7" Width="132.3" Height="18.9" Text="[CartePorteTipoFiguraOperador.RFCFIGURA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text201" Left="529.2" Top="245.7" Width="179.55" Height="18.9" Text="[CartePorteTipoFiguraOperador.NUMLICENCIA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text204" Left="151.2" Top="264.6" Width="37.8" Height="18.9" Text="[CortePorteTipoFiguraOtro.TIPOFIGURA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text205" Left="330.75" Top="283.5" Width="132.3" Height="18.9" Text="[CortePorteTipoFiguraOtro.RFCFIGURA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text207" Left="189" Top="283.5" Width="94.5" Height="18.9" Text="[CortePorteTipoFiguraOtro.NOMBREFIGURA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text96" Left="37.8" Top="9.45" Width="652.05" Height="18.9" Text="COMPLEMENTO CARTA PORTE PARA TRASLADO DE MERCANCIAS VERSION 2.0" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text108" Left="18.9" Top="28.35" Width="396.9" Height="18.9" Text="Folio Fiscal: [Cfdi.TIMBRADOUUID]" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text179" Left="623.7" Top="28.35" Width="94.5" Height="18.9" Text="VERSION 2.0" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text180" Left="9.45" Top="47.25" Width="151.2" Height="18.9" Text="Transporte Internacional: " VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text181" Left="321.3" Top="47.25" Width="141.75" Height="18.9" Text="Total distancia recorrida:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text208" Left="9.45" Top="94.5" Width="122.85" Height="18.9" Text="Autotransporte" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text209" Left="18.9" Top="113.4" Width="85.05" Height="18.9" Text="Permiso SCT:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text166" Left="94.5" Top="113.4" Width="94.5" Height="18.9" Text="[CartaPorteAutoTrans.PERMSCT]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text167" Left="189" Top="113.4" Width="274.05" Height="18.9" Text="[CartaPorteAutoTrans.NUMPERMISOSCT]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text210" Left="463.05" Top="113.4" Width="245.7" Height="18.9" Text="Num. de permiso SCT : NO APLICA" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text211" Left="9.45" Top="226.8" Width="141.75" Height="18.9" Text="Configuracion vahicular:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text212" Left="189" Top="245.7" Width="94.5" Height="18.9" Text="[CartePorteTipoFiguraOperador.NOMBREFIGURA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text213" Left="292.95" Top="245.7" Width="37.8" Height="18.9" Text="RFC:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text214" Left="463.05" Top="245.7" Width="66.15" Height="18.9" Text="LICENCIA:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text215" Left="9.45" Top="302.4" Width="122.85" Height="18.9" Text="Ubicaciones" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text95" Left="491.4" Top="330.75" Width="207.9" Height="18.9" Text="[CartaPorteUbicacionEmisor.FECHAHORASALIDALLEGADA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text216" Left="207.9" Top="330.75" Width="103.95" Height="18.9" Text="RFC Remitente:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text97" Left="56.7" Top="349.65" Width="94.5" Height="18.9" Text="[CartaPorteUbicacionEmisor.PAIS]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text217" Left="9.45" Top="349.65" Width="47.25" Height="18.9" Text="Pais:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text190" Left="264.6" Top="349.65" Width="66.15" Height="18.9" Text="[CartaPorteUbicacionEmisor.ESTADO]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text218" Left="207.9" Top="349.65" Width="56.7" Height="18.9" Text="Estado:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text202" Left="56.7" Top="368.55" Width="321.3" Height="18.9" Text="[CartaPorteUbicacionEmisor.CALLE]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text219" Left="9.45" Top="368.55" Width="47.25" Height="18.9" Text="Calle:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text220" Left="378" Top="368.55" Width="75.6" Height="18.9" Text="Numero ext:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text203" Left="453.6" Top="368.55" Width="94.5" Height="18.9" Text="[CartaPorteUbicacionEmisor.NUMEROEXTERIOR]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text221" Left="548.1" Top="368.55" Width="75.6" Height="18.9" Text="Numero int:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text206" Left="623.7" Top="368.55" Width="94.5" Height="18.9" Text="[CartaPorteUbicacionEmisor.NUMEROINTERIOR]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text222" Left="75.6" Top="387.45" Width="56.7" Height="18.9" Text="[CartaPorteUbicacionEmisor.MUNICIPIO]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text223" Left="9.45" Top="387.45" Width="66.15" Height="18.9" Text="Municipio:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text224" Left="292.95" Top="387.45" Width="66.15" Height="18.9" Text="Colonia:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text225" Left="359.1" Top="387.45" Width="56.7" Height="18.9" Text="[CartaPorteUbicacionEmisor.COLONIA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text226" Left="595.35" Top="387.45" Width="28.35" Height="18.9" Text="CP:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text227" Left="623.7" Top="387.45" Width="94.5" Height="18.9" Text="[CartaPorteUbicacionEmisor.CODIGOPOSTAL]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text228" Left="198.45" Top="406.35" Width="103.95" Height="18.9" Text="RFC Destinatario:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text189" Left="302.4" Top="406.35" Width="113.4" Height="18.9" Text="[CartaPorteUbicacionReceptor.RFCREMITENTEDESTINATARIO]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text229" Left="9.45" Top="425.25" Width="47.25" Height="18.9" Text="Pais:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text230" Left="9.45" Top="444.15" Width="47.25" Height="18.9" Text="Calle:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text231" Left="207.9" Top="425.25" Width="56.7" Height="18.9" Text="Estado:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text232" Left="378" Top="444.15" Width="75.6" Height="18.9" Text="Numero ext:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text233" Left="548.1" Top="444.15" Width="75.6" Height="18.9" Text="Numero int:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text234" Left="9.45" Top="463.05" Width="66.15" Height="18.9" Text="Municipio:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text235" Left="292.95" Top="463.05" Width="66.15" Height="18.9" Text="Colonia:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text236" Left="595.35" Top="463.05" Width="28.35" Height="18.9" Text="CP:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text191" Left="56.7" Top="425.25" Width="94.5" Height="18.9" Text="[CartaPorteUbicacionReceptor.PAIS]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text192" Left="264.6" Top="425.25" Width="66.15" Height="18.9" Text="[CartaPorteUbicacionReceptor.ESTADO]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text195" Left="56.7" Top="444.15" Width="321.3" Height="18.9" Text="[CartaPorteUbicacionReceptor.CALLE]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text196" Left="453.6" Top="444.15" Width="94.5" Height="18.9" Text="[CartaPorteUbicacionReceptor.NUMEROEXTERIOR]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text197" Left="623.7" Top="444.15" Width="94.5" Height="18.9" Text="[CartaPorteUbicacionReceptor.NUMEROINTERIOR]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text198" Left="623.7" Top="463.05" Width="94.5" Height="18.9" Text="[CartaPorteUbicacionReceptor.CODIGOPOSTAL]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text237" Left="359.1" Top="463.05" Width="56.7" Height="18.9" Text="[CartaPorteUbicacionReceptor.COLONIA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text238" Left="75.6" Top="463.05" Width="66.15" Height="18.9" Text="[CartaPorteUbicacionReceptor.MUNICIPIO]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text239" Left="9.45" Top="481.95" Width="122.85" Height="18.9" Text="Mercancias" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text240" Left="9.45" Top="207.9" Width="141.75" Height="18.9" Text="Figura Transporte" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text241" Left="9.45" Top="132.3" Width="141.75" Height="18.9" Text="Configuración Vehícular:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text242" Left="151.2" Top="132.3" Width="37.8" Height="18.9" Text="[CartaPorteAutoTrans.CONFIGVEHICULAR]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text243" Left="18.9" Top="151.2" Width="47.25" Height="18.9" Text="Placa:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text244" Left="56.7" Top="151.2" Width="94.5" Height="18.9" Text="[CartaPorteAutoTrans.PLACAVM]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text245" Left="151.2" Top="151.2" Width="75.6" Height="18.9" Text="Año Modelo:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text246" Left="226.8" Top="151.2" Width="56.7" Height="18.9" Text="[CartaPorteAutoTrans.ANIOMODELOVM]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text247" Left="9.45" Top="170.1" Width="198.45" Height="18.9" Text="Aseguradora responsabilidad civil:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text248" Left="207.9" Top="170.1" Width="500.85" Height="18.9" Text="[CartaPorteAutoTrans.ASEGURARESPCIVIL]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text249" Left="18.9" Top="189" Width="56.7" Height="18.9" Text="Póliza:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text250" Left="66.15" Top="189" Width="189" Height="18.9" Text="[CartaPorteAutoTrans.POLIZARESPCIVIL]" VertAlign="Center" Font="Arial, 8pt"/>
+      <LineObject Name="Line4" Top="481.95" Width="740.88" Diagonal="true"/>
+      <TextObject Name="Text251" Left="9.45" Top="500.85" Width="122.85" Height="18.9" Text="Total de mercancias:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text149" Left="132.3" Top="500.85" Width="94.5" Height="18.9" Text="[CartaPorteTotalMercancia.NUMTOTALMERCANCIAS]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text252" Left="226.8" Top="500.85" Width="122.85" Height="18.9" Text="Peso bruto Total:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text162" Left="349.65" Top="500.85" Width="94.5" Height="18.9" Text="[CartaPorteTotalMercancia.PESOBRUTOTOTAL]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text253" Left="444.15" Top="500.85" Width="94.5" Height="18.9" Text="Unidad de peso:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text163" Left="538.65" Top="500.85" Width="94.5" Height="18.9" Text="[CartaPorteTotalMercancia.UNIDADPESO]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text164" Left="9.45" Top="66.15" Width="113.4" Height="18.9" Text="CFDI Relacionado:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text165" Left="122.85" Top="66.15" Width="245.7" Height="18.9" Text="[CfdiRel.UUID]" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text259" Left="368.55" Top="66.15" Width="113.4" Height="18.9" Text="Tipo Relacion:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text168" Left="481.95" Top="66.15" Width="56.7" Height="18.9" Text="[CfdiRel.TIPORELACION]" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text169" Left="538.65" Top="66.15" Width="170.1" Height="18.9" Text="[CfdiRel.CFDIID]" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <LineObject Name="Line5" Top="302.4" Width="740.88" Diagonal="true"/>
+      <LineObject Name="Line6" Top="207.9" Width="740.88" Diagonal="true"/>
+      <LineObject Name="Line7" Top="85.05" Width="740.88" Diagonal="true"/>
+      <TextObject Name="Text260" Left="415.8" Top="330.75" Width="75.6" Height="18.9" Text="Hora salida:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text261" Left="415.8" Top="406.35" Width="85.05" Height="18.9" Text="Hora llegada:" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text170" Left="500.85" Top="406.35" Width="198.45" Height="18.9" Text="[CartaPorteUbicacionReceptor.FECHAHORASALIDALLEGADA]" VertAlign="Center" Font="Arial, 8pt"/>
+      <LineObject Name="Line8" Top="519.75" Width="740.88" Diagonal="true"/>
+      <TextObject Name="Text113" Left="9.45" Top="519.75" Width="85.05" Height="18.9" Text="CLAVESAT" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text262" Left="94.5" Top="519.75" Width="56.7" Height="18.9" Text="PIEZAS" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text263" Left="151.2" Top="519.75" Width="47.25" Height="18.9" Text="UNID" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text264" Left="198.45" Top="519.75" Width="236.25" Height="18.9" Text="DESCRIPCION" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text265" Left="434.7" Top="519.75" Width="37.8" Height="18.9" Text="MN" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text266" Left="472.5" Top="519.75" Width="66.15" Height="18.9" Text="VALOR" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text267" Left="538.65" Top="519.75" Width="94.5" Height="18.9" Text="EMBALAJE" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text268" Left="633.15" Top="519.75" Width="28.35" Height="18.9" Text="MP" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text269" Left="661.5" Top="519.75" Width="47.25" Height="18.9" Text="PESO" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text270" Left="708.75" Top="519.75" Width="28.35" Height="18.9" Text="U.P" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt, style=Bold" TextFill.Color="White"/>
+      <TextObject Name="Text117" Left="189" Top="132.3" Width="274.05" Height="18.9" Text="[CartaPorteAutoTrans.CONFIGVEHICULAR_DESCRIPCION]" Font="Arial, 8pt"/>
+      <TextObject Name="Text118" Left="189" Top="226.8" Width="274.05" Height="18.9" Text="[CartePorteTipoFiguraOperador.TIPOFIGURA_DESCRIPCION]" Font="Arial, 8pt"/>
+      <TextObject Name="Text120" Left="189" Top="264.6" Width="274.05" Height="18.9" Text="[CortePorteTipoFiguraOtro.TIPOFIGURA_DESCRIPCION]" Font="Arial, 8pt"/>
+      <TextObject Name="Text126" Left="330.75" Top="349.65" Width="217.35" Height="18.9" Text="[CartaPorteUbicacionEmisor.ESTADO_NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text127" Left="132.3" Top="387.45" Width="160.65" Height="18.9" Text="[CartaPorteUbicacionEmisor.MUNICIPIO_DESCRIPCION]" Font="Arial, 8pt"/>
+      <TextObject Name="Text129" Left="415.8" Top="387.45" Width="179.55" Height="18.9" Text="[CartaPorteUbicacionEmisor.COLONIA_NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text130" Left="330.75" Top="425.25" Width="217.35" Height="18.9" Text="[CartaPorteUbicacionReceptor.ESTADO_NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text131" Left="141.75" Top="463.05" Width="151.2" Height="18.9" Text="[CartaPorteUbicacionReceptor.MUNICIPIO_DESCRIPCION]" Font="Arial, 8pt"/>
+      <TextObject Name="Text132" Left="415.8" Top="463.05" Width="179.55" Height="18.9" Text="[CartaPorteUbicacionReceptor.COLONIA_NOMBRE]" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data2" Top="552.1" Width="740.5" Height="18.9" DataSource="Table8">
+      <TextObject Name="Text112" Left="9.45" Width="85.05" Height="18.9" Text="[CartaPorteMercancia.BIENESTRANSP]" VertAlign="Bottom" Font="Arial, 7pt"/>
+      <TextObject Name="Text114" Left="198.45" Width="236.25" Height="18.9" Text="[CartaPorteMercancia.DESCRIPCION]" VertAlign="Bottom" Font="Arial, 7pt"/>
+      <TextObject Name="Text115" Left="94.5" Width="56.7" Height="18.9" Text="[CartaPorteMercancia.CANTIDAD]" VertAlign="Bottom" Font="Arial, 7pt"/>
+      <TextObject Name="Text116" Left="151.2" Width="47.25" Height="18.9" Text="[CartaPorteMercancia.CLAVEUNIDAD]" VertAlign="Bottom" Font="Arial, 7pt"/>
+      <TextObject Name="Text119" Left="633.15" Width="28.35" Height="18.9" Text="[CartaPorteMercancia.MATERIALPELIGROSO]" VertAlign="Bottom" Font="Arial, 7pt"/>
+      <TextObject Name="Text122" Left="576.45" Width="56.7" Height="18.9" Text="[CartaPorteMercancia.DESCRIPEMBALAJE]" VertAlign="Bottom" Font="Arial, 7pt"/>
+      <TextObject Name="Text124" Left="472.5" Width="66.15" Height="18.9" Text="[CartaPorteMercancia.VALORMERCANCIA]" VertAlign="Bottom" Font="Arial, 7pt"/>
+      <TextObject Name="Text125" Left="434.7" Width="37.8" Height="18.9" Text="[CartaPorteMercancia.MONEDA]" VertAlign="Bottom" Font="Arial, 7pt"/>
+      <TextObject Name="Text121" Left="538.65" Width="37.8" Height="18.9" Text="[CartaPorteMercancia.EMBALAJE]" VertAlign="Bottom" Font="Arial, 7pt"/>
+      <TextObject Name="Text123" Left="661.5" Width="47.25" Height="18.9" Text="[CartaPorteMercancia.PESOENKG]" VertAlign="Bottom" Font="Arial, 7pt"/>
+      <TextObject Name="Text128" Left="708.75" Width="28.35" Height="18.9" Text="[CartaPorteMercancia.UNIDADPESOMERC]" VertAlign="Bottom" Font="Arial, 7pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter2" Top="575" Width="740.5" Height="18.9">
+      <TextObject Name="Text254" Left="557.55" Width="170.1" Height="18.9" Text="[Page#] DE [TotalPages#]"/>
+      <TextObject Name="Text255" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text256" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text257" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text258" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

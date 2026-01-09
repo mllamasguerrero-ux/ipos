@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DSImportaciones2" targetNamespace="http://tempuri.org/DSImportaciones2.xsd" xmlns:mstns="http://tempuri.org/DSImportaciones2.xsd" xmlns="http://tempuri.org/DSImportaciones2.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="ConnectionIpos" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionIpos (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.iPos.Properties.Settings.GlobalReference.Default.ConnectionIpos" Provider="FirebirdSql.Data.FirebirdClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="PROVEEDORTableAdapter" GeneratorDataComponentClassName="PROVEEDORTableAdapter" Name="PROVEEDOR" UserDataComponentName="PROVEEDORTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>select id, activo, tipopersonaid, nombre, nombres, apellidos, razonsocial, rfc, clave
+from persona where tipopersonaid = 40</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ID" DataSetColumn="ID" />
+              <Mapping SourceColumn="ACTIVO" DataSetColumn="ACTIVO" />
+              <Mapping SourceColumn="TIPOPERSONAID" DataSetColumn="TIPOPERSONAID" />
+              <Mapping SourceColumn="NOMBRE" DataSetColumn="NOMBRE" />
+              <Mapping SourceColumn="NOMBRES" DataSetColumn="NOMBRES" />
+              <Mapping SourceColumn="APELLIDOS" DataSetColumn="APELLIDOS" />
+              <Mapping SourceColumn="RAZONSOCIAL" DataSetColumn="RAZONSOCIAL" />
+              <Mapping SourceColumn="RFC" DataSetColumn="RFC" />
+              <Mapping SourceColumn="CLAVE" DataSetColumn="CLAVE" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="SUCURSALTableAdapter" GeneratorDataComponentClassName="SUCURSALTableAdapter" Name="SUCURSAL" UserDataComponentName="SUCURSALTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>select id, clave, nombre from sucursal</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ID" DataSetColumn="ID" />
+              <Mapping SourceColumn="CLAVE" DataSetColumn="CLAVE" />
+              <Mapping SourceColumn="NOMBRE" DataSetColumn="NOMBRE" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="PRODUCTOTableAdapter" GeneratorDataComponentClassName="PRODUCTOTableAdapter" Name="PRODUCTO" UserDataComponentName="PRODUCTOTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionIpos (Settings)" DbObjectName="PRODUCTO" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT ID, CLAVE, NOMBRE, DESCRIPCION, DESCRIPCION1
+FROM PRODUCTO</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ID" DataSetColumn="ID" />
+              <Mapping SourceColumn="CLAVE" DataSetColumn="CLAVE" />
+              <Mapping SourceColumn="NOMBRE" DataSetColumn="NOMBRE" />
+              <Mapping SourceColumn="DESCRIPCION" DataSetColumn="DESCRIPCION" />
+              <Mapping SourceColumn="DESCRIPCION1" DataSetColumn="DESCRIPCION1" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DSImportaciones2" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DSImportaciones2" msprop:Generator_UserDSName="DSImportaciones2">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="EXISTENCIAPROVESUC" msprop:Generator_TableClassName="EXISTENCIAPROVESUCDataTable" msprop:Generator_TableVarName="tableEXISTENCIAPROVESUC" msprop:Generator_RowChangedName="EXISTENCIAPROVESUCRowChanged" msprop:Generator_TablePropName="EXISTENCIAPROVESUC" msprop:Generator_RowDeletingName="EXISTENCIAPROVESUCRowDeleting" msprop:Generator_RowChangingName="EXISTENCIAPROVESUCRowChanging" msprop:Generator_RowEvHandlerName="EXISTENCIAPROVESUCRowChangeEventHandler" msprop:Generator_RowDeletedName="EXISTENCIAPROVESUCRowDeleted" msprop:Generator_RowClassName="EXISTENCIAPROVESUCRow" msprop:Generator_UserTableName="EXISTENCIAPROVESUC" msprop:Generator_RowEvArgName="EXISTENCIAPROVESUCRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PRODUCTOCLAVE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTOCLAVE" msprop:Generator_ColumnPropNameInRow="PRODUCTOCLAVE" msprop:Generator_ColumnPropNameInTable="PRODUCTOCLAVEColumn" msprop:Generator_UserColumnName="PRODUCTOCLAVE" type="xs:string" minOccurs="0" />
+              <xs:element name="PRODUCTODESCRIPCION" msprop:Generator_ColumnVarNameInTable="columnPRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInRow="PRODUCTODESCRIPCION" msprop:Generator_ColumnPropNameInTable="PRODUCTODESCRIPCIONColumn" msprop:Generator_UserColumnName="PRODUCTODESCRIPCION" type="xs:string" minOccurs="0" />
+              <xs:element name="CANTIDAD" msprop:Generator_ColumnVarNameInTable="columnCANTIDAD" msprop:Generator_ColumnPropNameInRow="CANTIDAD" msprop:Generator_ColumnPropNameInTable="CANTIDADColumn" msprop:Generator_UserColumnName="CANTIDAD" type="xs:decimal" minOccurs="0" />
+              <xs:element name="PROVEEDORCLAVE" msprop:Generator_ColumnVarNameInTable="columnPROVEEDORCLAVE" msprop:Generator_ColumnPropNameInRow="PROVEEDORCLAVE" msprop:Generator_ColumnPropNameInTable="PROVEEDORCLAVEColumn" msprop:Generator_UserColumnName="PROVEEDORCLAVE" type="xs:string" minOccurs="0" />
+              <xs:element name="PROVEEDORNOMBRE" msprop:Generator_ColumnVarNameInTable="columnPROVEEDORNOMBRE" msprop:Generator_ColumnPropNameInRow="PROVEEDORNOMBRE" msprop:Generator_ColumnPropNameInTable="PROVEEDORNOMBREColumn" msprop:Generator_UserColumnName="PROVEEDORNOMBRE" type="xs:string" minOccurs="0" />
+              <xs:element name="SUCURSALCLAVE" msprop:Generator_ColumnVarNameInTable="columnSUCURSALCLAVE" msprop:Generator_ColumnPropNameInRow="SUCURSALCLAVE" msprop:Generator_ColumnPropNameInTable="SUCURSALCLAVEColumn" msprop:Generator_UserColumnName="SUCURSALCLAVE" type="xs:string" minOccurs="0" />
+              <xs:element name="SUCURSALNOMBRE" msprop:Generator_ColumnVarNameInTable="columnSUCURSALNOMBRE" msprop:Generator_ColumnPropNameInRow="SUCURSALNOMBRE" msprop:Generator_ColumnPropNameInTable="SUCURSALNOMBREColumn" msprop:Generator_UserColumnName="SUCURSALNOMBRE" type="xs:string" minOccurs="0" />
+              <xs:element name="FECHA" msprop:Generator_ColumnVarNameInTable="columnFECHA" msprop:Generator_ColumnPropNameInRow="FECHA" msprop:Generator_ColumnPropNameInTable="FECHAColumn" msprop:Generator_UserColumnName="FECHA" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="PRODUCTONOMBRE" msprop:Generator_ColumnVarNameInTable="columnPRODUCTONOMBRE" msprop:Generator_ColumnPropNameInRow="PRODUCTONOMBRE" msprop:Generator_ColumnPropNameInTable="PRODUCTONOMBREColumn" msprop:Generator_UserColumnName="PRODUCTONOMBRE" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PROVEEDOR" msprop:Generator_TableClassName="PROVEEDORDataTable" msprop:Generator_TableVarName="tablePROVEEDOR" msprop:Generator_RowChangedName="PROVEEDORRowChanged" msprop:Generator_TablePropName="PROVEEDOR" msprop:Generator_RowDeletingName="PROVEEDORRowDeleting" msprop:Generator_RowChangingName="PROVEEDORRowChanging" msprop:Generator_RowEvHandlerName="PROVEEDORRowChangeEventHandler" msprop:Generator_RowDeletedName="PROVEEDORRowDeleted" msprop:Generator_RowClassName="PROVEEDORRow" msprop:Generator_UserTableName="PROVEEDOR" msprop:Generator_RowEvArgName="PROVEEDORRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:long" />
+              <xs:element name="ACTIVO" msprop:Generator_ColumnVarNameInTable="columnACTIVO" msprop:Generator_ColumnPropNameInRow="ACTIVO" msprop:Generator_ColumnPropNameInTable="ACTIVOColumn" msprop:Generator_UserColumnName="ACTIVO" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TIPOPERSONAID" msprop:Generator_ColumnVarNameInTable="columnTIPOPERSONAID" msprop:Generator_ColumnPropNameInRow="TIPOPERSONAID" msprop:Generator_ColumnPropNameInTable="TIPOPERSONAIDColumn" msprop:Generator_UserColumnName="TIPOPERSONAID" type="xs:long" minOccurs="0" />
+              <xs:element name="NOMBRE" msprop:Generator_ColumnVarNameInTable="columnNOMBRE" msprop:Generator_ColumnPropNameInRow="NOMBRE" msprop:Generator_ColumnPropNameInTable="NOMBREColumn" msprop:Generator_UserColumnName="NOMBRE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NOMBRES" msprop:Generator_ColumnVarNameInTable="columnNOMBRES" msprop:Generator_ColumnPropNameInRow="NOMBRES" msprop:Generator_ColumnPropNameInTable="NOMBRESColumn" msprop:Generator_UserColumnName="NOMBRES" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="APELLIDOS" msprop:Generator_ColumnVarNameInTable="columnAPELLIDOS" msprop:Generator_ColumnPropNameInRow="APELLIDOS" msprop:Generator_ColumnPropNameInTable="APELLIDOSColumn" msprop:Generator_UserColumnName="APELLIDOS" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RAZONSOCIAL" msprop:Generator_ColumnVarNameInTable="columnRAZONSOCIAL" msprop:Generator_ColumnPropNameInRow="RAZONSOCIAL" msprop:Generator_ColumnPropNameInTable="RAZONSOCIALColumn" msprop:Generator_UserColumnName="RAZONSOCIAL" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RFC" msprop:Generator_ColumnVarNameInTable="columnRFC" msprop:Generator_ColumnPropNameInRow="RFC" msprop:Generator_ColumnPropNameInTable="RFCColumn" msprop:Generator_UserColumnName="RFC" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="32" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CLAVE" msprop:Generator_ColumnVarNameInTable="columnCLAVE" msprop:Generator_ColumnPropNameInRow="CLAVE" msprop:Generator_ColumnPropNameInTable="CLAVEColumn" msprop:Generator_UserColumnName="CLAVE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SUCURSAL" msprop:Generator_TableClassName="SUCURSALDataTable" msprop:Generator_TableVarName="tableSUCURSAL" msprop:Generator_TablePropName="SUCURSAL" msprop:Generator_RowDeletingName="SUCURSALRowDeleting" msprop:Generator_RowChangingName="SUCURSALRowChanging" msprop:Generator_RowEvHandlerName="SUCURSALRowChangeEventHandler" msprop:Generator_RowDeletedName="SUCURSALRowDeleted" msprop:Generator_UserTableName="SUCURSAL" msprop:Generator_RowChangedName="SUCURSALRowChanged" msprop:Generator_RowEvArgName="SUCURSALRowChangeEvent" msprop:Generator_RowClassName="SUCURSALRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:long" />
+              <xs:element name="CLAVE" msprop:Generator_ColumnVarNameInTable="columnCLAVE" msprop:Generator_ColumnPropNameInRow="CLAVE" msprop:Generator_ColumnPropNameInTable="CLAVEColumn" msprop:Generator_UserColumnName="CLAVE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NOMBRE" msprop:Generator_ColumnVarNameInTable="columnNOMBRE" msprop:Generator_ColumnPropNameInRow="NOMBRE" msprop:Generator_ColumnPropNameInTable="NOMBREColumn" msprop:Generator_UserColumnName="NOMBRE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PRODUCTO" msprop:Generator_TableClassName="PRODUCTODataTable" msprop:Generator_TableVarName="tablePRODUCTO" msprop:Generator_TablePropName="PRODUCTO" msprop:Generator_RowDeletingName="PRODUCTORowDeleting" msprop:Generator_RowChangingName="PRODUCTORowChanging" msprop:Generator_RowEvHandlerName="PRODUCTORowChangeEventHandler" msprop:Generator_RowDeletedName="PRODUCTORowDeleted" msprop:Generator_UserTableName="PRODUCTO" msprop:Generator_RowChangedName="PRODUCTORowChanged" msprop:Generator_RowEvArgName="PRODUCTORowChangeEvent" msprop:Generator_RowClassName="PRODUCTORow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:long" />
+              <xs:element name="CLAVE" msprop:Generator_ColumnVarNameInTable="columnCLAVE" msprop:Generator_ColumnPropNameInRow="CLAVE" msprop:Generator_ColumnPropNameInTable="CLAVEColumn" msprop:Generator_UserColumnName="CLAVE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="31" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NOMBRE" msprop:Generator_ColumnVarNameInTable="columnNOMBRE" msprop:Generator_ColumnPropNameInRow="NOMBRE" msprop:Generator_ColumnPropNameInTable="NOMBREColumn" msprop:Generator_UserColumnName="NOMBRE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="127" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DESCRIPCION" msprop:Generator_ColumnVarNameInTable="columnDESCRIPCION" msprop:Generator_ColumnPropNameInRow="DESCRIPCION" msprop:Generator_ColumnPropNameInTable="DESCRIPCIONColumn" msprop:Generator_UserColumnName="DESCRIPCION" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DESCRIPCION1" msprop:Generator_ColumnVarNameInTable="columnDESCRIPCION1" msprop:Generator_ColumnPropNameInRow="DESCRIPCION1" msprop:Generator_ColumnPropNameInTable="DESCRIPCION1Column" msprop:Generator_UserColumnName="DESCRIPCION1" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1">
+      <xs:selector xpath=".//mstns:PROVEEDOR" />
+      <xs:field xpath="mstns:ID" />
+    </xs:unique>
+    <xs:unique name="SUCURSAL_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:SUCURSAL" />
+      <xs:field xpath="mstns:ID" />
+    </xs:unique>
+    <xs:unique name="PRODUCTO_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:PRODUCTO" />
+      <xs:field xpath="mstns:ID" />
+    </xs:unique>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="PROVEEDOR_EXISTENCIAPROVESUC" msdata:parent="PROVEEDOR" msdata:child="EXISTENCIAPROVESUC" msdata:parentkey="CLAVE" msdata:childkey="PROVEEDORCLAVE" msprop:Generator_UserChildTable="EXISTENCIAPROVESUC" msprop:Generator_ChildPropName="GetEXISTENCIAPROVESUCRows" msprop:Generator_UserRelationName="PROVEEDOR_EXISTENCIAPROVESUC" msprop:Generator_ParentPropName="PROVEEDORRow" msprop:Generator_RelationVarName="relationPROVEEDOR_EXISTENCIAPROVESUC" msprop:Generator_UserParentTable="PROVEEDOR" />
+      <msdata:Relationship name="SUCURSAL_EXISTENCIAPROVESUC" msdata:parent="SUCURSAL" msdata:child="EXISTENCIAPROVESUC" msdata:parentkey="CLAVE" msdata:childkey="SUCURSALCLAVE" msprop:Generator_UserChildTable="EXISTENCIAPROVESUC" msprop:Generator_ChildPropName="GetEXISTENCIAPROVESUCRows" msprop:Generator_UserRelationName="SUCURSAL_EXISTENCIAPROVESUC" msprop:Generator_RelationVarName="relationSUCURSAL_EXISTENCIAPROVESUC" msprop:Generator_UserParentTable="SUCURSAL" msprop:Generator_ParentPropName="SUCURSALRow" />
+      <msdata:Relationship name="PRODUCTO_EXISTENCIAPROVESUC" msdata:parent="PRODUCTO" msdata:child="EXISTENCIAPROVESUC" msdata:parentkey="CLAVE" msdata:childkey="PRODUCTOCLAVE" msprop:Generator_UserChildTable="EXISTENCIAPROVESUC" msprop:Generator_ChildPropName="GetEXISTENCIAPROVESUCRows" msprop:Generator_UserRelationName="PRODUCTO_EXISTENCIAPROVESUC" msprop:Generator_RelationVarName="relationPRODUCTO_EXISTENCIAPROVESUC" msprop:Generator_UserParentTable="PRODUCTO" msprop:Generator_ParentPropName="PRODUCTORow" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

@@ -1,0 +1,14 @@
+create or alter procedure GUIADETALLE_DELETE (
+    GUIADETALLEID D_FK,
+    CAJEROID D_FK)
+returns (
+    ERRORCODE type of D_ERRORCODE)
+as
+BEGIN
+
+  -- FALTA COMPLETAR
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+END

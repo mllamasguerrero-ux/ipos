@@ -1,0 +1,2 @@
+alter table parametro
+add HABSURTIDOPOSTMOVIL D_BOOLCN

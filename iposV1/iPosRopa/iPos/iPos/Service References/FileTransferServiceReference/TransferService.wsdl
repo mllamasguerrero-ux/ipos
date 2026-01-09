@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="TransferService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="BasicHttpBinding_ITransferService1_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsoma:OptimizedMimeSerialization xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?xsd=xsd2" namespace="http://schemas.microsoft.com/Message" />
+      <xsd:import schemaLocation="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="DownloadRequest">
+    <wsdl:part name="parameters" element="tns:DownloadRequest" />
+  </wsdl:message>
+  <wsdl:message name="RemoteFileInfo">
+    <wsdl:part name="parameters" element="tns:RemoteFileInfo" />
+  </wsdl:message>
+  <wsdl:message name="RemoteFileInfo_Headers">
+    <wsdl:part name="FileName" element="tns:FileName" />
+    <wsdl:part name="Length" element="tns:Length" />
+    <wsdl:part name="Message" element="tns:Message" />
+    <wsdl:part name="Path" element="tns:Path" />
+    <wsdl:part name="Result" element="tns:Result" />
+  </wsdl:message>
+  <wsdl:message name="GenericResponse">
+    <wsdl:part name="parameters" element="tns:GenericResponse" />
+  </wsdl:message>
+  <wsdl:message name="GenericResponse_Headers">
+    <wsdl:part name="Message" element="tns:Message" />
+    <wsdl:part name="Result" element="tns:Result" />
+  </wsdl:message>
+  <wsdl:message name="ListRequest">
+    <wsdl:part name="parameters" element="tns:ListRequest" />
+  </wsdl:message>
+  <wsdl:message name="ListFileInfo">
+    <wsdl:part name="parameters" element="tns:ListFileInfo" />
+  </wsdl:message>
+  <wsdl:message name="ListFileInfo_Headers">
+    <wsdl:part name="Message" element="tns:Message" />
+    <wsdl:part name="Result" element="tns:Result" />
+  </wsdl:message>
+  <wsdl:portType name="ITransferService1">
+    <wsdl:operation name="DownloadFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransferService1/DownloadFile" name="DownloadRequest" message="tns:DownloadRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransferService1/DownloadFileResponse" name="RemoteFileInfo" message="tns:RemoteFileInfo" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransferService1/UploadFile" name="RemoteFileInfo" message="tns:RemoteFileInfo" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransferService1/UploadFileResponse" name="GenericResponse" message="tns:GenericResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ListDirectory">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransferService1/ListDirectory" name="ListRequest" message="tns:ListRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransferService1/ListDirectoryResponse" name="ListFileInfo" message="tns:ListFileInfo" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFileInfo">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransferService1/DeleteFileInfo" name="DownloadRequest" message="tns:DownloadRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransferService1/DeleteFileInfoResponse" name="GenericResponse" message="tns:GenericResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ITransferService1" type="tns:ITransferService1">
+    <wsp:PolicyReference URI="#BasicHttpBinding_ITransferService1_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="DownloadFile">
+      <soap:operation soapAction="http://tempuri.org/ITransferService1/DownloadFile" style="document" />
+      <wsdl:input name="DownloadRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RemoteFileInfo">
+        <soap:header message="tns:RemoteFileInfo_Headers" part="FileName" use="literal" />
+        <soap:header message="tns:RemoteFileInfo_Headers" part="Length" use="literal" />
+        <soap:header message="tns:RemoteFileInfo_Headers" part="Message" use="literal" />
+        <soap:header message="tns:RemoteFileInfo_Headers" part="Path" use="literal" />
+        <soap:header message="tns:RemoteFileInfo_Headers" part="Result" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadFile">
+      <soap:operation soapAction="http://tempuri.org/ITransferService1/UploadFile" style="document" />
+      <wsdl:input name="RemoteFileInfo">
+        <soap:header message="tns:RemoteFileInfo_Headers" part="FileName" use="literal" />
+        <soap:header message="tns:RemoteFileInfo_Headers" part="Length" use="literal" />
+        <soap:header message="tns:RemoteFileInfo_Headers" part="Message" use="literal" />
+        <soap:header message="tns:RemoteFileInfo_Headers" part="Path" use="literal" />
+        <soap:header message="tns:RemoteFileInfo_Headers" part="Result" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GenericResponse">
+        <soap:header message="tns:GenericResponse_Headers" part="Message" use="literal" />
+        <soap:header message="tns:GenericResponse_Headers" part="Result" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListDirectory">
+      <soap:operation soapAction="http://tempuri.org/ITransferService1/ListDirectory" style="document" />
+      <wsdl:input name="ListRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ListFileInfo">
+        <soap:header message="tns:ListFileInfo_Headers" part="Message" use="literal" />
+        <soap:header message="tns:ListFileInfo_Headers" part="Result" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFileInfo">
+      <soap:operation soapAction="http://tempuri.org/ITransferService1/DeleteFileInfo" style="document" />
+      <wsdl:input name="DownloadRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GenericResponse">
+        <soap:header message="tns:GenericResponse_Headers" part="Message" use="literal" />
+        <soap:header message="tns:GenericResponse_Headers" part="Result" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TransferService">
+    <wsdl:port name="BasicHttpBinding_ITransferService1" binding="tns:BasicHttpBinding_ITransferService1">
+      <soap:address location="http://199.89.53.90/wcfFileTransfer/TransferService1.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

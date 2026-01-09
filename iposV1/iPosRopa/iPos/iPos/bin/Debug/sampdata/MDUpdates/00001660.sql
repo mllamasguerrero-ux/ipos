@@ -1,0 +1,11 @@
+CREATE TABLE MEDICO (
+    ID                    D_PK NOT NULL /* D_PK = BIGINT NOT NULL */,
+    ACTIVO                D_BOOLCS /* D_BOOLCS = CHAR(1) DEFAULT 'S' NOT NULL CHECK (VALUE IN ('S', 'N')) */,
+    CREADO                D_TIMESTAMP /* D_TIMESTAMP = TIMESTAMP default current_timestamp NOT NULL */,
+    CREADOPOR_USERID      D_FK DEFAULT 0 /* D_FK = BIGINT */,
+    MODIFICADO            D_TIMESTAMP /* D_TIMESTAMP = TIMESTAMP default current_timestamp NOT NULL */,
+    MODIFICADOPOR_USERID  D_FK DEFAULT 0 /* D_FK = BIGINT */,
+    NOMBRE                D_STDTEXT_MEDIUM /* D_STDTEXT_MEDIUM = VARCHAR(128) */,
+    CEDULA                D_STDTEXT_MEDIUM /* D_STDTEXT_MEDIUM = VARCHAR(128) */,
+    MEDICOPROPIO          D_BOOLCN /* D_BOOLCN = CHAR(1) DEFAULT 'N' NOT NULL CHECK (VALUE IN ('S', 'N')) */
+);

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DSConvertidor" targetNamespace="http://tempuri.org/DSConvertidor.xsd" xmlns:mstns="http://tempuri.org/DSConvertidor.xsd" xmlns="http://tempuri.org/DSConvertidor.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DSConvertidor" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DSConvertidor" msprop:Generator_UserDSName="DSConvertidor">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="FORMULARIOS" msprop:Generator_TableClassName="FORMULARIOSDataTable" msprop:Generator_TableVarName="tableFORMULARIOS" msprop:Generator_RowChangedName="FORMULARIOSRowChanged" msprop:Generator_TablePropName="FORMULARIOS" msprop:Generator_RowDeletingName="FORMULARIOSRowDeleting" msprop:Generator_RowChangingName="FORMULARIOSRowChanging" msprop:Generator_RowEvHandlerName="FORMULARIOSRowChangeEventHandler" msprop:Generator_RowDeletedName="FORMULARIOSRowDeleted" msprop:Generator_RowClassName="FORMULARIOSRow" msprop:Generator_UserTableName="FORMULARIOS" msprop:Generator_RowEvArgName="FORMULARIOSRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NOMBRE" msprop:Generator_ColumnVarNameInTable="columnNOMBRE" msprop:Generator_ColumnPropNameInRow="NOMBRE" msprop:Generator_ColumnPropNameInTable="NOMBREColumn" msprop:Generator_UserColumnName="NOMBRE" type="xs:string" minOccurs="0" />
+              <xs:element name="NOMBRECOMPLETO" msprop:Generator_ColumnVarNameInTable="columnNOMBRECOMPLETO" msprop:Generator_ColumnPropNameInRow="NOMBRECOMPLETO" msprop:Generator_ColumnPropNameInTable="NOMBRECOMPLETOColumn" msprop:Generator_UserColumnName="NOMBRECOMPLETO" type="xs:string" minOccurs="0" />
+              <xs:element name="RUTA" msprop:Generator_ColumnVarNameInTable="columnRUTA" msprop:Generator_ColumnPropNameInRow="RUTA" msprop:Generator_ColumnPropNameInTable="RUTAColumn" msprop:Generator_UserColumnName="RUTA" type="xs:string" minOccurs="0" />
+              <xs:element name="ENSAMBLADOID" msprop:Generator_ColumnVarNameInTable="columnENSAMBLADOID" msprop:Generator_ColumnPropNameInRow="ENSAMBLADOID" msprop:Generator_ColumnPropNameInTable="ENSAMBLADOIDColumn" msprop:Generator_UserColumnName="ENSAMBLADOID" type="xs:int" default="0" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ARCHIVOS" msprop:Generator_TableClassName="ARCHIVOSDataTable" msprop:Generator_TableVarName="tableARCHIVOS" msprop:Generator_RowChangedName="ARCHIVOSRowChanged" msprop:Generator_TablePropName="ARCHIVOS" msprop:Generator_RowDeletingName="ARCHIVOSRowDeleting" msprop:Generator_RowChangingName="ARCHIVOSRowChanging" msprop:Generator_RowEvHandlerName="ARCHIVOSRowChangeEventHandler" msprop:Generator_RowDeletedName="ARCHIVOSRowDeleted" msprop:Generator_RowClassName="ARCHIVOSRow" msprop:Generator_UserTableName="ARCHIVOS" msprop:Generator_RowEvArgName="ARCHIVOSRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NOMBRE" msprop:Generator_ColumnVarNameInTable="columnNOMBRE" msprop:Generator_ColumnPropNameInRow="NOMBRE" msprop:Generator_ColumnPropNameInTable="NOMBREColumn" msprop:Generator_UserColumnName="NOMBRE" type="xs:string" minOccurs="0" />
+              <xs:element name="RUTA" msprop:Generator_ColumnVarNameInTable="columnRUTA" msprop:Generator_ColumnPropNameInRow="RUTA" msprop:Generator_ColumnPropNameInTable="RUTAColumn" msprop:Generator_UserColumnName="RUTA" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PROYECTOS" msprop:Generator_TableClassName="PROYECTOSDataTable" msprop:Generator_TableVarName="tablePROYECTOS" msprop:Generator_TablePropName="PROYECTOS" msprop:Generator_RowDeletingName="PROYECTOSRowDeleting" msprop:Generator_RowChangingName="PROYECTOSRowChanging" msprop:Generator_RowEvHandlerName="PROYECTOSRowChangeEventHandler" msprop:Generator_RowDeletedName="PROYECTOSRowDeleted" msprop:Generator_UserTableName="PROYECTOS" msprop:Generator_RowChangedName="PROYECTOSRowChanged" msprop:Generator_RowEvArgName="PROYECTOSRowChangeEvent" msprop:Generator_RowClassName="PROYECTOSRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NOMBRE" msprop:Generator_ColumnVarNameInTable="columnNOMBRE" msprop:Generator_ColumnPropNameInRow="NOMBRE" msprop:Generator_ColumnPropNameInTable="NOMBREColumn" msprop:Generator_UserColumnName="NOMBRE" type="xs:string" minOccurs="0" />
+              <xs:element name="FORMULARIOINICIAL" msprop:Generator_ColumnVarNameInTable="columnFORMULARIOINICIAL" msprop:Generator_ColumnPropNameInRow="FORMULARIOINICIAL" msprop:Generator_ColumnPropNameInTable="FORMULARIOINICIALColumn" msprop:Generator_UserColumnName="FORMULARIOINICIAL" type="xs:string" minOccurs="0" />
+              <xs:element name="RUTAFORMULARIOINICIAL" msprop:Generator_ColumnVarNameInTable="columnRUTAFORMULARIOINICIAL" msprop:Generator_ColumnPropNameInRow="RUTAFORMULARIOINICIAL" msprop:Generator_ColumnPropNameInTable="RUTAFORMULARIOINICIALColumn" msprop:Generator_UserColumnName="RUTAFORMULARIOINICIAL" type="xs:string" minOccurs="0" />
+              <xs:element name="RUTAPROYECTO" msprop:Generator_ColumnVarNameInTable="columnRUTAPROYECTO" msprop:Generator_ColumnPropNameInRow="RUTAPROYECTO" msprop:Generator_ColumnPropNameInTable="RUTAPROYECTOColumn" msprop:Generator_UserColumnName="RUTAPROYECTO" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="AUTOCOMPLETE" msprop:Generator_TableClassName="AUTOCOMPLETEDataTable" msprop:Generator_TableVarName="tableAUTOCOMPLETE" msprop:Generator_TablePropName="AUTOCOMPLETE" msprop:Generator_RowDeletingName="AUTOCOMPLETERowDeleting" msprop:Generator_RowChangingName="AUTOCOMPLETERowChanging" msprop:Generator_RowEvHandlerName="AUTOCOMPLETERowChangeEventHandler" msprop:Generator_RowDeletedName="AUTOCOMPLETERowDeleted" msprop:Generator_UserTableName="AUTOCOMPLETE" msprop:Generator_RowChangedName="AUTOCOMPLETERowChanged" msprop:Generator_RowEvArgName="AUTOCOMPLETERowChangeEvent" msprop:Generator_RowClassName="AUTOCOMPLETERow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="FORMULARIO" msprop:Generator_ColumnVarNameInTable="columnFORMULARIO" msprop:Generator_ColumnPropNameInRow="FORMULARIO" msprop:Generator_ColumnPropNameInTable="FORMULARIOColumn" msprop:Generator_UserColumnName="FORMULARIO" type="xs:string" minOccurs="0" />
+              <xs:element name="CAMPO" msprop:Generator_ColumnVarNameInTable="columnCAMPO" msprop:Generator_ColumnPropNameInRow="CAMPO" msprop:Generator_ColumnPropNameInTable="CAMPOColumn" msprop:Generator_UserColumnName="CAMPO" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

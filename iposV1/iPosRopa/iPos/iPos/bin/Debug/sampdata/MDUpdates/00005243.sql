@@ -1,0 +1,18 @@
+EXECUTE BLOCK
+AS
+BEGIN
+
+
+  	update or insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (1329, 'Catalogo de cuentas de banco - Edicion') MATCHING (DR_DERECHO);
+  	update or insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (2329, 'Catalogo de cuentas de banco - Elim') MATCHING (DR_DERECHO);
+  	update or insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (3329, 'Catalogo de cuentas de banco - Adic') MATCHING (DR_DERECHO);
+  	
+	update or insert INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 1329) MATCHING (PD_PERFIL, PD_DERECHO);
+	update or insert INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 1329) MATCHING (PD_PERFIL, PD_DERECHO);
+	update or insert INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 2329) MATCHING (PD_PERFIL, PD_DERECHO);
+	update or insert INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 2329) MATCHING (PD_PERFIL, PD_DERECHO);
+	update or insert INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 3329) MATCHING (PD_PERFIL, PD_DERECHO);
+	update or insert INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 3329) MATCHING (PD_PERFIL, PD_DERECHO);
+	
+
+END

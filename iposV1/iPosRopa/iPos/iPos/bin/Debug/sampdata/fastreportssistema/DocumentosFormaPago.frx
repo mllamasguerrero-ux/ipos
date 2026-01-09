@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 11:45:50" ReportInfo.Modified="07/02/2017 15:53:43" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+   
+
+    
+
+    private void Label2_Click(object sender, EventArgs e)
+    {
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls7RUhWBsEC0lPOEAnzp3ekbT1XZZBZBt2PJ7QPizYKvlFTcBOJp0ROKliZRWLPkj+9vi7YPUvcNE47vDmCmKmlJBApXlhD2JuPXWi3v5jtbh">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;sq2.doctoid,&#13;&#10;        sq2.fecha,&#13;&#10;        sq2.hora,&#13;&#10;        sq2.cajero,&#13;&#10;        sq2.folio,&#13;&#10;        sq2.subtotal,&#13;&#10;        sq2.iva,&#13;&#10;        sq2.total,&#13;&#10;        sq2.nombrecliente,&#13;&#10;        sq2.nombrescliente,&#13;&#10;        sq2.apellidoscliente,&#13;&#10;        sq2.nombreestatusdocto ,&#13;&#10;        sq2.formapagoid,&#13;&#10;        case when sq2.formapagoid = -2 then 'MULTIPLE'  else formapago.clave end AS forma_pago,&#13;&#10;        sq2.grupocajero&#13;&#10;&#13;&#10; from&#13;&#10;(&#13;&#10;&#13;&#10;select&#13;&#10;        sq.doctoid,&#13;&#10;        sq.fecha,&#13;&#10;        sq.hora,&#13;&#10;        sq.cajero,&#13;&#10;        sq.folio,&#13;&#10;        sq.subtotal,&#13;&#10;        sq.iva,&#13;&#10;        sq.total,&#13;&#10;        sq.nombrecliente,&#13;&#10;        sq.nombrescliente,&#13;&#10;        sq.apellidoscliente,&#13;&#10;        sq.nombreestatusdocto ,&#13;&#10;      sq.grupocajero,&#13;&#10;&#13;&#10;case  when coalesce(sq.efectivo,0) &gt;= sq.total - 0.01 then 1&#13;&#10;      when coalesce(sq.tarjeta,0) &gt;= sq.total - 0.01   then 2&#13;&#10;      when coalesce(sq.cheque,0) &gt;= sq.total - 0.01  then 3&#13;&#10;      when coalesce(sq.vale,0) &gt;= sq.total - 0.01  then 5&#13;&#10;      when coalesce(sq.monedero,0) &gt;= sq.total - 0.01  then 14&#13;&#10;      when coalesce(sq.transferencia,0) &gt;= sq.total - 0.01 then 15&#13;&#10;      when coalesce(sq.indefinido,0) &gt;= sq.total - 0.01 then 16   &#13;&#10;      when coalesce(sq.intercambiomercancia,0) &gt;= sq.total - 0.01 then 18&#13;&#10;      when coalesce(sq.efectivo,0)  +  coalesce(sq.tarjeta,0) + coalesce(sq.cheque,0)  + coalesce(sq.vale,0) + coalesce(sq.monedero,0) + coalesce(sq.transferencia,0) + coalesce(sq.indefinido,0)  &gt;= sq.total - 0.01 then -2&#13;&#10;      else 4&#13;&#10;end   formapagoid&#13;&#10;&#13;&#10;      from&#13;&#10;(&#13;&#10;SELECT&#13;&#10;        docto.id doctoid,&#13;&#10;        docto.fecha,&#13;&#10;        docto.fechahora AS hora,&#13;&#10;        persona.nombre AS cajero,&#13;&#10;        docto.folio,&#13;&#10;        docto.subtotal,&#13;&#10;        docto.iva,&#13;&#10;        docto.total,&#13;&#10;        cliente.nombre AS nombrecliente,&#13;&#10;        cliente.nombres AS nombrescliente,&#13;&#10;        cliente.apellidos AS apellidoscliente,&#13;&#10;        estatusdocto.nombre AS nombreestatusdocto  ,&#13;&#10;      grupousuario.nombre grupocajero,&#13;&#10;        sum(case when doctopago.formapagoid = 1 then coalesce((case when doctopago.tipoabonoid = 3 then doctopago.importe * -1 else doctopago.importe end),0) else 0 end) efectivo,&#13;&#10;        sum(case when doctopago.formapagoid = 2 then coalesce((case when doctopago.tipoabonoid = 3 then doctopago.importe * -1 else doctopago.importe end),0) else 0 end) tarjeta,&#13;&#10;        sum(case when doctopago.formapagoid = 3 then coalesce((case when doctopago.tipoabonoid = 3 then doctopago.importe * -1 else doctopago.importe end),0) else 0 end) cheque,&#13;&#10;        sum(case when doctopago.formapagoid = 4 then coalesce((case when doctopago.tipoabonoid = 3 then doctopago.importe * -1 else doctopago.importe end),0) else 0 end) credito,&#13;&#10;        sum(case when doctopago.formapagoid = 5 then coalesce((case when doctopago.tipoabonoid = 3 then doctopago.importe * -1 else doctopago.importe end),0) else 0 end) vale ,&#13;&#10;        sum(case when doctopago.formapagoid = 14 then coalesce((case when doctopago.tipoabonoid = 3 then doctopago.importe * -1 else doctopago.importe end),0) else 0 end) monedero    ,&#13;&#10;        sum(case when doctopago.formapagoid = 15 then coalesce((case when doctopago.tipoabonoid = 3 then doctopago.importe * -1 else doctopago.importe end),0) else 0 end) transferencia ,&#13;&#10;        sum(case when doctopago.formapagoid = 16 then coalesce((case when doctopago.tipoabonoid = 3 then doctopago.importe * -1 else doctopago.importe end),0) else 0 end) indefinido   ,&#13;&#10;        sum(case when doctopago.formapagoid in (18,19) then    (case when doctopago.formapagoid = 18 then 1.00 else -1.00 end) *  coalesce((case when doctopago.tipoabonoid = 3 then doctopago.importe * -1 else doctopago.importe end),0) else 0 end) intercambiomercancia&#13;&#10;FROM            docto left JOIN&#13;&#10;                         doctopago ON docto.id = doctopago.doctoid and doctopago.fecha = docto.fecha left JOIN&#13;&#10;                         persona ON docto.vendedorid = persona.id LEFT OUTER JOIN&#13;&#10;                         persona cliente ON cliente.id = docto.personaid LEFT OUTER JOIN&#13;&#10;                         estatusdocto ON estatusdocto.id = docto.estatusdoctoid LEFT OUTER JOIN&#13;&#10;                        grupousuario on grupousuario.id = persona.grupousuarioid&#13;&#10;WHERE&#13;&#10;  docto.estatusdoctoid =  1  AND&#13;&#10;    (docto.tipodoctoid = @tipodoctoid) AND&#13;&#10;    (docto.fecha &gt;= @fechaInicio) AND&#13;&#10;    (docto.fecha &lt;= @fechaFin) and&#13;&#10;    (@cajeroid = 0 or  docto.vendedorid = @cajeroid) and&#13;&#10;   (@grupocajeroid = 0 or persona.grupousuarioid = @grupocajeroid)&#13;&#10;&#13;&#10;&#13;&#10;GROUP BY&#13;&#10;        docto.id ,&#13;&#10;        docto.fecha,&#13;&#10;        docto.fechahora ,&#13;&#10;        persona.nombre ,&#13;&#10;        docto.folio,&#13;&#10;        docto.subtotal,&#13;&#10;        docto.iva,&#13;&#10;        docto.total,&#13;&#10;        cliente.nombre ,&#13;&#10;        cliente.nombres ,&#13;&#10;        cliente.apellidos,&#13;&#10;        estatusdocto.nombre,&#13;&#10;      grupousuario.nombre&#13;&#10;&#13;&#10;        )  sq&#13;&#10;&#13;&#10;    ) sq2&#13;&#10;    left join formapago on formapago.id = sq2.formapagoid&#13;&#10;    where  (@forma_pagoid = 0 or sq2.formapagoid = @forma_pagoid)">
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="HORA" DataType="System.DateTime"/>
+        <Column Name="CAJERO" DataType="System.String"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="NOMBRECLIENTE" DataType="System.String"/>
+        <Column Name="NOMBRESCLIENTE" DataType="System.String"/>
+        <Column Name="APELLIDOSCLIENTE" DataType="System.String"/>
+        <Column Name="NOMBREESTATUSDOCTO" DataType="System.String"/>
+        <Column Name="FORMAPAGOID" DataType="System.Int32"/>
+        <Column Name="FORMA_PAGO" DataType="System.String"/>
+        <Column Name="GRUPOCAJERO" DataType="System.String"/>
+        <CommandParameter Name="tipodoctoid" DataType="1" Expression="[tipodoctoid]" DefaultValue="0"/>
+        <CommandParameter Name="fechaInicio" DataType="5" Expression="[fechaInicio]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechaFin" DataType="1" Expression="[fechaFin]" DefaultValue="0"/>
+        <CommandParameter Name="cajeroid" DataType="1" Expression="[cajeroid]" DefaultValue="0"/>
+        <CommandParameter Name="forma_pagoid" DataType="1" Expression="[forma_pagoid]" DefaultValue="0"/>
+        <CommandParameter Name="grupocajeroid" DataType="1" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="tipodoctoid" DataType="System.Decimal"/>
+    <Parameter Name="fechaInicio" DataType="System.DateTime"/>
+    <Parameter Name="cajeroid" DataType="System.Decimal"/>
+    <Parameter Name="forma_pagoid" DataType="System.Decimal"/>
+    <Parameter Name="formaPagoNombre" DataType="System.String"/>
+    <Parameter Name="cajeronombre" DataType="System.String"/>
+    <Parameter Name="tipodoctonombre" DataType="System.String"/>
+    <Parameter Name="fechaFin" DataType="System.DateTime"/>
+    <Parameter Name="grupocajeroid" DataType="System.Decimal"/>
+    <Parameter Name="grupocajeronombre" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="320" PaperHeight="210" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1134" Height="207.9">
+      <TextObject Name="Text31" Left="18.9" Top="85.05" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text45" Left="113.4" Top="103.95" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="18.9" Top="103.95" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="491.4" Top="113.4" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text46" Left="576.45" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="113.4" Top="122.85" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text27" Left="18.9" Width="585.9" Height="18.9" Text="DOCUMENTOS POR FORMA DE PAGO" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text24" Left="727.65" Top="9.45" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text38" Left="18.9" Top="28.35" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="113.4" Top="47.25" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="18.9" Top="47.25" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="491.4" Top="56.7" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="576.45" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="113.4" Top="66.15" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="576.45" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="18.9" Top="66.15" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="491.4" Top="75.6" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="113.4" Top="85.05" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text36" Left="491.4" Top="94.5" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="576.45" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="18.9" Top="122.85" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text49" Left="18.9" Top="160.65" Width="122.85" Height="18.9" Text="Forma de pago:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Left="18.9" Top="189" Width="94.5" Height="18.9" Text="Fecha inicio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text51" Left="349.65" Top="189" Width="75.6" Height="18.9" Text="Fecha fin:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="151.2" Top="189" Width="94.5" Height="18.9" Text="[fechaInicio]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="444.15" Top="189" Width="94.5" Height="18.9" Text="[fechaFin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text17" Left="151.2" Top="160.65" Width="189" Height="18.9" Text="[tipodoctonombre]"/>
+      <TextObject Name="Text52" Left="689.85" Top="160.65" Width="122.85" Height="18.9" Text="Cajero:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text18" Left="822.15" Top="160.65" Width="151.2" Height="18.9" Text="[cajeronombre]"/>
+      <TextObject Name="Text53" Left="349.65" Top="160.65" Width="122.85" Height="18.9" Text="Tipo documento:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text54" Left="481.95" Top="160.65" Width="151.2" Height="18.9" Text="[tipodoctonombre]"/>
+      <TextObject Name="Text29" Left="822.15" Top="189" Width="151.2" Height="18.9" Text="[grupocajeronombre]"/>
+      <TextObject Name="Text55" Left="689.85" Top="189" Width="122.85" Height="18.9" Text="Grupo cajero:" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="211.9" Width="1134" Height="28.35">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Text="HORA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Text="CAJERO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="387.45" Width="160.65" Height="18.9" Text="NOMBRE CLIENTE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="548.1" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="642.6" Width="94.5" Height="28.35" Text="ESTATUS DOCTO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="737.1" Width="94.5" Height="18.9" Text="SUBTOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="831.6" Width="94.5" Height="18.9" Text="IVA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text22" Left="926.1" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text25" Left="1020.6" Width="113.4" Height="18.9" Text="FORMA_PAGO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text28" Left="283.5" Width="103.95" Height="18.9" Text="GRUPO CAJERO" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="244.25" Width="1134" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Text="[Table.HORA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" Text="[Table.CAJERO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="387.45" Width="160.65" Height="18.9" Text="[Table.NOMBRECLIENTE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="548.1" Width="94.5" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="642.6" Width="94.5" Height="18.9" Text="[Table.NOMBREESTATUSDOCTO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="737.1" Width="94.5" Height="18.9" Text="[Table.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="831.6" Width="94.5" Height="18.9" Text="[Table.IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="926.1" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="1020.6" Width="113.4" Height="18.9" Text="[Table.FORMA_PAGO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text26" Left="283.5" Width="103.95" Height="18.9" Text="[Table.GRUPOCAJERO]" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="267.15" Width="1134" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

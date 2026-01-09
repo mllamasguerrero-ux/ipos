@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/14/2015 08:54:46" ReportInfo.Modified="06/26/2018 22:12:13" ReportInfo.CreatorVersion="2018.3.5.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlsyr2eXbo0s7yLJSd6PztSl+O4lDOjzfB6CFy9oUhmKX+1kkLXQujJLqapmlmWSJF52p72FDzX4mpry/08/yeYu7laTFish7c1WbwHueAQwQQQ/tTwmrziYbvm8BH92lp/4q1jVgRWa0jxQ+DfX7WJdI=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TB.*, PRODUCTO.CLAVE CLAVEPRODUCTO, PRODUCTO.DESCRIPCION1&#13;&#10;&#13;&#10;  FROM REPORTE_INVFIS_DIF_COMPLETO(&#13;&#10;    @DOCTOID,&#13;&#10;    @SOLODIFERENCIAS,&#13;&#10;    @TODOSLOSPRODUCTOS) TB&#13;&#10;LEFT JOIN PRODUCTO ON TB.PRODUCTOID = PRODUCTO.ID&#13;&#10;LEFT JOIN PARAMETRO ON 1 = 1&#13;&#10;&#13;&#10;">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTODESCRIPCION" DataType="System.String"/>
+        <Column Name="PRODUCTOLOTE" DataType="System.String"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="CANTIDADTEORICA" DataType="System.Decimal"/>
+        <Column Name="CANTIDADFISICA" DataType="System.Decimal"/>
+        <Column Name="CANTIDADDIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="MOVTOID" DataType="System.Int64"/>
+        <Column Name="DIFERNECIACOSTOINVENTARIO" DataType="System.Decimal"/>
+        <Column Name="COSTOPRECIOMANEJADO" DataType="System.Decimal"/>
+        <Column Name="ERRORCODE" DataType="System.Int32"/>
+        <Column Name="CLAVEPRODUCTO" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[DOCTOID]" DefaultValue="0"/>
+        <CommandParameter Name="SOLODIFERENCIAS" DataType="12" Expression="[SOLODIFERENCIAS]" DefaultValue="0"/>
+        <CommandParameter Name="TODOSLOSPRODUCTOS" DataType="12" Expression="[TODOSLOSPRODUCTOS]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="DOCTO" DataType="System.Int32" Enabled="true" SelectCommand="SELECT DOCTO.ID, DOCTO.SUBTIPODOCTOID, SUBTIPODOCTO.NOMBRE SUBTIPODOCTO&#13;&#10;FROM DOCTO &#13;&#10;LEFT JOIN SUBTIPODOCTO ON coalesce(DOCTO.SUBTIPODOCTOID,5) = SUBTIPODOCTO.ID&#13;&#10;WHERE DOCTO.ID = @DOCTOID">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="SUBTIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="SUBTIPODOCTO" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[DOCTOID]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="DOCTOID" DataType="System.Decimal"/>
+    <Parameter Name="SOLODIFERENCIAS" DataType="System.Decimal"/>
+    <Parameter Name="TODOSLOSPRODUCTOS" DataType="System.Decimal"/>
+    <Parameter Name="TITULO" DataType="System.String"/>
+    <Total Name="TotalCantidadTeorica" Expression="[Table.CANTIDADTEORICA]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="TotalCantidadFisica" Expression="[Table.CANTIDADFISICA]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="TotalCantidadDiferencia" Expression="[Table.CANTIDADDIFERENCIA]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="TotalDiferenciaCosto" Expression="[Table.DIFERNECIACOSTOINVENTARIO]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperHeight="279" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="56.7">
+      <TextObject Name="Text21" Left="75.6" Width="292.95" Height="28.35" Text="[TITULO]" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text22" Left="642.6" Width="75.6" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text23" Top="28.35" Width="75.6" Height="18.9" Text="TIPO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text24" Left="75.6" Top="28.35" Width="292.95" Height="18.9" Text="[DOCTO.SUBTIPODOCTO]" Font="Arial, 9pt"/>
+      <TextObject Name="Text20" Left="444.15" Top="28.35" Width="94.5" Height="18.9" Text="XXX"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="60.7" Width="718.2" Height="18.9">
+      <TextObject Name="Text2" Width="75.6" Height="18.9" Text="CLAVE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text4" Left="75.6" Width="292.95" Height="18.9" Text="DESCRIPCION1" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text6" Left="368.55" Width="56.7" Height="18.9" Text="TEORICA" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text8" Left="425.25" Width="47.25" Height="18.9" Text="FISICA" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text10" Left="472.5" Width="56.7" Height="18.9" Text="DIF" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text14" Left="529.2" Width="47.25" Height="18.9" Text="COSTO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text12" Left="576.45" Width="66.15" Height="18.9" Text="IMPORTE" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text25" Left="642.6" Width="75.6" Height="18.9" Text="NOTAS" Font="Arial, 7pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="83.6" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="75.6" Height="18.9" Text="[Table.CLAVEPRODUCTO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text3" Left="75.6" Width="292.95" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="368.55" Width="56.7" Height="18.9" Text="[Table.CANTIDADTEORICA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="425.25" Width="47.25" Height="18.9" Text="[Table.CANTIDADFISICA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="472.5" Width="56.7" Height="18.9" Text="[Table.CANTIDADDIFERENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="529.2" Width="47.25" Height="18.9" Text="[Table.COSTOPRECIOMANEJADO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="576.45" Width="66.15" Height="18.9" Text="[Table.DIFERNECIACOSTOINVENTARIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text26" Left="642.6" Width="75.6" Height="18.9" Text="&#13;&#10;------------------------------------------------" Font="Arial, 7pt"/>
+      <Sort>
+        <Sort Expression="[Table.PRODUCTODESCRIPCION]"/>
+      </Sort>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="106.5" Width="718.2" Height="18.9">
+      <TextObject Name="Text15" Left="368.55" Width="56.7" Height="18.9" Text="[TotalCantidadTeorica]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 6pt, style=Bold"/>
+      <TextObject Name="Text16" Left="425.25" Width="47.25" Height="18.9" Text="[TotalCantidadFisica]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 6pt, style=Bold"/>
+      <TextObject Name="Text17" Left="472.5" Width="56.7" Height="18.9" Text="[TotalCantidadDiferencia]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 6pt, style=Bold"/>
+      <TextObject Name="Text18" Left="576.45" Width="66.15" Height="18.9" Text="[TotalDiferenciaCosto]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 6pt, style=Bold"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="129.4" Width="718.2" Height="18.9">
+      <TextObject Name="Text19" Left="604.8" Width="94.5" Height="18.9" Text="[Page] DE [TotalPages#]" Font="Arial, 6pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

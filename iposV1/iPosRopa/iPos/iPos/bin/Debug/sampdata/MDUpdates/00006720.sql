@@ -1,0 +1,39 @@
+create or alter procedure INVFIS_FIS_FINEDICION (
+    DOCTOID D_FK)
+returns (
+    ERRORCODE D_ERRORCODE)
+as   
+declare variable ACTIVO D_BOOLCS;
+BEGIN
+
+            
+   SELECT ACTIVO FROM DOCTO WHERE ID = :DOCTOID INTO :ACTIVO;
+
+   SELECT ERRORCODE FROM INVFIS_PREPARARCIERRE (:DOCTOID) INTO :ERRORCODE;
+
+   IF(COALESCE(:ERRORCODE,0) <> 0) THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+
+   UPDATE DOCTO
+   SET ESTATUSDOCTOID = 3
+   WHERE ID = :DOCTOID;
+
+   --si es inventario ciclico
+   IF(COALESCE(:ACTIVO,'S') = 'N') THEN
+   BEGIN
+         
+    SELECT ERRORCODE
+    FROM DOCTO_SAVE(:DOCTOID)
+    INTO :ERRORCODE;
+          
+    IF (:ERRORCODE <> 0) THEN
+    BEGIN
+      SUSPEND;
+      EXIT;
+    END
+   END
+
+END

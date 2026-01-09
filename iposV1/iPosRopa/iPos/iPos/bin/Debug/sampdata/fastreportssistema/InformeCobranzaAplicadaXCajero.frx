@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/08/2014 19:23:29" ReportInfo.Modified="02/19/2017 13:54:05" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    public long vendedorId = 0;
+    public string esFacturaElectronicaV  = &quot;T&quot;;
+
+   
+
+    private void CBVendedor_TextChanged(object sender, EventArgs e)
+    {
+      string[] split = CBVendedor.Text.Split(new string[] { &quot;# Vendedor: &quot; }, StringSplitOptions.None);
+      string strNumCliente = &quot;0&quot;;
+      if(split.Length &gt; 1)     
+        strNumCliente = split[1];
+      
+      try
+      {
+        vendedorId = long.Parse(strNumCliente);
+      }
+      catch{
+      }
+    }
+        
+  
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
+           CBFacturaRemision.SelectedIndex = 0;
+    }
+                     
+
+    private void CBFacturaRemision_TextChanged(object sender, EventArgs e)
+    {         
+      TxtHeaderTipo.Text =  CBFacturaRemision.Text; 
+      
+      switch(CBFacturaRemision.Text)
+      {
+        case &quot;Todos&quot; : esFacturaElectronicaV = &quot;T&quot;; break; 
+        case &quot;Factura&quot; : esFacturaElectronicaV = &quot;S&quot;; break;
+        case &quot;Remision&quot; : esFacturaElectronicaV = &quot;N&quot;; break;
+        default :  esFacturaElectronicaV = &quot;T&quot;; break; 
+      }
+                                             
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29iylxlz281QHEmEGuYLY19gtpAFwwXrDVuSZpfKeuv4EoFEcKWWy2Rt8qrt9EjghbUY=">
+      <TableDataSource Name="Table1" Alias="vendedor" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Vendedor: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Vendedor: ' || cast(id as varchar(13)) nombre from persona where tipopersonaid  in (20)&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Main" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;doctopago.id as foliopago ,&#13;&#10;case when coalesce(docto.esfacturaelectronica ,'N') = 'S' then 'FACTURA' else 'REMISION' end ESTATUS,&#13;&#10;doctopago.fecha fechacobro,&#13;&#10;docto.folio,&#13;&#10;persona.clave clienteclave,&#13;&#10;persona.nombre clientenombre,&#13;&#10;docto.fecha,&#13;&#10;docto.abono, &#13;&#10;docto.total,&#13;&#10;    case when doctopago.formapagoid in (1) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;                else 0&#13;&#10;     end&#13;&#10;     totalefectivo   ,&#13;&#10;    case when doctopago.formapagoid in (3) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;                else 0&#13;&#10;     end&#13;&#10;     totalcheque  ,&#13;&#10;&#13;&#10;    case when doctopago.formapagoid in (15) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;                else 0&#13;&#10;     end&#13;&#10;     totaltransferencia    ,&#13;&#10;&#13;&#10;    case when doctopago.formapagoid in (2) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;                else 0&#13;&#10;     end&#13;&#10;     totaltarjeta,&#13;&#10;&#13;&#10;     case when doctopago.formapagoid  in (5,14,16) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;                else 0&#13;&#10;     end&#13;&#10;     totalotros,&#13;&#10;docto.saldo,&#13;&#10;docto.vence, &#13;&#10;&#13;&#10;vendedor.nombre vendedordelcliente  ,&#13;&#10;case when docto.saldo &gt; 0 and coalesce(persona.dias,0) &gt; 0 then datediff (day,  coalesce(dateadd(coalesce(persona.dias,0) day to docto.fecha), current_date),current_date)&#13;&#10;     else 0 end diasvencidos  ,&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;case when doctopago.formapagoid in (1,2,3,5, 14,15,16) then null else coalesce(doctopago.banco,'') || ' ' || coalesce(doctopago.notas,'') || ' ' || coalesce(doctopago.referenciabancaria,'')   end notaspago,&#13;&#10;&#13;&#10;sum(case when dp2.id &lt; doctopago.id and dp2.formapagoid in (1,2,3,5, 14,15,16) then &#13;&#10;                        case when dp2.tipopagoid = 2 then&#13;&#10;                            coalesce(dp2.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(dp2.importe,0)&#13;&#10;                        end&#13;&#10;else 0&#13;&#10;end) importeanterior ,&#13;&#10;&#13;&#10;docto.total -&#13;&#10;sum(case when dp2.id &lt; doctopago.id and dp2.formapagoid in (1,2,3,5, 14,15,16) then &#13;&#10;                        case when dp2.tipopagoid = 2 then&#13;&#10;                            coalesce(dp2.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(dp2.importe,0)&#13;&#10;                        end&#13;&#10;else 0&#13;&#10;end) -&#13;&#10;(&#13;&#10;      case when doctopago.formapagoid  in (1,2,3,5, 14,15,16) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;      else 0&#13;&#10;     end&#13;&#10;)  as saldorelativo,&#13;&#10;&#13;&#10; case when doctopago.formapagoid  in (1,2,3,5, 14,15,16) then&#13;&#10;                        case when doctopago.tipopagoid = 2 then&#13;&#10;                            coalesce(doctopago.importe,0) * -1&#13;&#10;                        else&#13;&#10;                            coalesce(doctopago.importe,0)&#13;&#10;                        end&#13;&#10;      else 0&#13;&#10;     end AS totalpagoimporte,&#13;&#10;&#13;&#10;cajero.nombre cajeronombre,&#13;&#10;cajero.clave cajeroclave,&#13;&#10;cast(@usuarioid as int) as usuarioid,&#13;&#10;&#13;&#10;bancos.nombre banconombre,&#13;&#10;doctopago.referenciabancaria,&#13;&#10;&#13;&#10;doctopago.fechaelaboracion,&#13;&#10;doctopago.fecharecepcion&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; from docto&#13;&#10; left  join persona on persona.id = docto.personaid&#13;&#10; left join persona vendedor on vendedor.id = persona.vendedorid&#13;&#10; inner join doctopago on doctopago.doctoid = docto.id&#13;&#10; left join doctopago dp2 on dp2.doctoid = docto.id&#13;&#10;left join corte on corte.id = doctopago.corteid&#13;&#10;left join persona cajero on cajero.id = corte.cajeroid&#13;&#10;left join bancos on bancos.id = doctopago.banco&#13;&#10;&#13;&#10; where docto.tipodoctoid in ( 21,24,25,201,31 )   /*and docto.personaid &lt;&gt; 1*/&#13;&#10; and docto.estatusdoctoid = 1 and doctopago.formapagoid in (1,2,3,5, 14,15,16)&#13;&#10; and (@usuarioid = 0 or @usuarioid =  corte.cajeroid)&#13;&#10; and docto.fecha &gt;= @fechainicio and docto.fecha &lt;= @fechafin&#13;&#10;and dp2.formapagoid in (1,2,3,5, 14,15,16)&#13;&#10;&#13;&#10;and (coalesce(@esfacturaelectronica,'T') = docto.esfacturaelectronica  or coalesce(@esfacturaelectronica,'T') = 'T')&#13;&#10;and doctopago.fecha&lt;&gt;docto.fecha&#13;&#10;&#13;&#10;group by &#13;&#10;doctopago.id,&#13;&#10;docto.esfacturaelectronica ,&#13;&#10;doctopago.fecha ,&#13;&#10;docto.folio,&#13;&#10;persona.clave ,&#13;&#10;persona.nombre,&#13;&#10;docto.fecha,&#13;&#10;docto.abono, &#13;&#10;docto.total,&#13;&#10;doctopago.formapagoid, &#13;&#10;doctopago.tipopagoid,&#13;&#10;vendedor.nombre,&#13;&#10;doctopago.importe,&#13;&#10;docto.saldo,&#13;&#10;docto.vence,&#13;&#10;persona.dias,&#13;&#10;doctopago.banco,&#13;&#10;doctopago.referenciabancaria,&#13;&#10;doctopago.notas,&#13;&#10;cajero.nombre,&#13;&#10;cajero.clave,&#13;&#10;&#13;&#10;bancos.nombre ,&#13;&#10;&#13;&#10;doctopago.fechaelaboracion,&#13;&#10;doctopago.fecharecepcion&#13;&#10;">
+        <Column Name="FOLIOPAGO" DataType="System.Int64"/>
+        <Column Name="ESTATUS" DataType="System.String"/>
+        <Column Name="FECHACOBRO" DataType="System.DateTime"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="CLIENTECLAVE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="TOTALEFECTIVO" DataType="System.Decimal"/>
+        <Column Name="TOTALCHEQUE" DataType="System.Decimal"/>
+        <Column Name="TOTALTRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="TOTALTARJETA" DataType="System.Decimal"/>
+        <Column Name="TOTALOTROS" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="VENCE" DataType="System.DateTime"/>
+        <Column Name="VENDEDORDELCLIENTE" DataType="System.String"/>
+        <Column Name="DIASVENCIDOS" DataType="System.Int64"/>
+        <Column Name="NOTASPAGO" DataType="System.String"/>
+        <Column Name="ABONO" DataType="System.Decimal"/>
+        <Column Name="IMPORTEANTERIOR" DataType="System.Decimal"/>
+        <Column Name="SALDORELATIVO" DataType="System.Decimal"/>
+        <Column Name="TOTALPAGOIMPORTE" DataType="System.Decimal"/>
+        <Column Name="CAJERONOMBRE" DataType="System.String"/>
+        <Column Name="CAJEROCLAVE" DataType="System.String"/>
+        <Column Name="USUARIOID" DataType="System.Int32"/>
+        <Column Name="BANCONOMBRE" DataType="System.String"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="FECHAELABORACION" DataType="System.DateTime"/>
+        <Column Name="FECHARECEPCION" DataType="System.DateTime"/>
+        <CommandParameter Name="fechainicio" DataType="5" Expression="[fechainicio]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="usuarioid" DataType="1" Expression="vendedorId" DefaultValue="0"/>
+        <CommandParameter Name="esfacturaelectronica" DataType="16" Size="1" Expression="esFacturaElectronicaV"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="vendedorid" DataType="System.Decimal"/>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="esfacturaelectronica" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="710" PaperHeight="420.1" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="2608.2" Height="170.1">
+      <TextObject Name="Text29" Left="103.95" Top="75.6" Width="94.5" Height="18.9" Text="Vendedor" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text31" Left="217.35" Top="75.6" Width="302.4" Height="18.9" Text="[CBVendedor.Text]" Font="Arial, 9pt"/>
+      <TextObject Name="Text30" Left="103.95" Top="103.95" Width="94.5" Height="18.9" Text="Fecha Inicio" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text32" Left="548.1" Top="103.95" Width="94.5" Height="18.9" Text="Fecha fin" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text33" Left="217.35" Top="103.95" Width="302.4" Height="18.9" Text="[fechainicio]"/>
+      <TextObject Name="Text34" Left="661.5" Top="103.95" Width="302.4" Height="18.9" Text="[fechafin]"/>
+      <TextObject Name="Text47" Left="179.55" Top="9.45" Width="774.9" Height="37.8" Text="REPORTE DE COBRANZA APLICADA POR CAJERO" Font="Arial, 22pt, style=Bold"/>
+      <TextObject Name="Text48" Left="1001.7" Top="56.7" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text58" Left="548.1" Top="75.6" Width="94.5" Height="18.9" Text="Tipo" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="TxtHeaderTipo" Left="661.5" Top="75.6" Width="302.4" Height="18.9" Text="Todos" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="174.1" Width="2608.2" Height="37.8">
+      <TextObject Name="Text2" Width="94.5" Height="28.35" Text="FOLIO COBRANZA" Font="Arial, 8pt"/>
+      <TextObject Name="Text6" Left="189" Width="103.95" Height="37.8" Text="TIPO ( FACT./REM. )" Font="Arial, 8pt"/>
+      <TextObject Name="Text8" Left="292.95" Width="85.05" Height="18.9" Text="CLIENTE CLAVE" Font="Arial, 8pt"/>
+      <TextObject Name="Text10" Left="378" Width="198.45" Height="18.9" Text="CLIENTE NOMBRE" Font="Arial, 8pt"/>
+      <TextObject Name="Text12" Left="576.45" Width="75.6" Height="28.35" Text="FECHA VENTA" Font="Arial, 8pt"/>
+      <TextObject Name="Text14" Left="841.05" Width="85.05" Height="18.9" Text="TOTAL" Font="Arial, 8pt"/>
+      <TextObject Name="Text16" Left="1096.2" Width="85.05" Height="28.35" Text="TOTAL EFECTIVO" Font="Arial, 8pt"/>
+      <TextObject Name="Text18" Left="1181.25" Width="85.05" Height="28.35" Text="TOTAL CHEQUE" Font="Arial, 8pt"/>
+      <TextObject Name="Text20" Left="1266.3" Width="85.05" Height="28.35" Text="TOTAL TRANSF." Font="Arial, 8pt"/>
+      <TextObject Name="Text22" Left="1351.35" Width="85.05" Height="28.35" Text="TOTAL TARJETA" Font="Arial, 8pt"/>
+      <TextObject Name="Text24" Left="1436.4" Width="85.05" Height="28.35" Text="TOTAL OTROS" Font="Arial, 8pt"/>
+      <TextObject Name="Text28" Left="1606.5" Width="85.05" Height="18.9" Text="VENCE" Font="Arial, 8pt"/>
+      <TextObject Name="Text36" Left="2230.2" Width="160.65" Height="28.35" Text="VENDEDOR DEL CLIENTE" Font="Arial, 8pt"/>
+      <TextObject Name="Text38" Left="2135.7" Width="94.5" Height="18.9" Text="DIAS VENCIDOS" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="1927.8" Width="207.9" Height="18.9" Text="NOTAS" Font="Arial, 8pt"/>
+      <TextObject Name="Text42" Left="926.1" Width="85.05" Height="28.35" Text="IMPORTE ANTERIOR" Font="Arial, 8pt"/>
+      <TextObject Name="Text44" Left="1011.15" Width="85.05" Height="28.35" Text="IMPORTE PAGO" Font="Arial, 8pt"/>
+      <TextObject Name="Text46" Left="2390.85" Width="198.45" Height="18.9" Text="CAJERONOMBRE" Font="Arial, 8pt"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Text="FOLIO VENTA" Font="Arial, 8pt"/>
+      <TextObject Name="Text26" Left="1521.45" Width="85.05" Height="18.9" Text="SALDO" Font="Arial, 8pt"/>
+      <TextObject Name="Text51" Left="652.05" Width="94.5" Height="37.8" Text="FECHA  ELABORACION PAGO" Font="Arial, 8pt"/>
+      <TextObject Name="Text53" Left="1691.55" Width="94.5" Height="18.9" Text="BANCO" Font="Arial, 8pt"/>
+      <TextObject Name="Text55" Left="1786.05" Width="141.75" Height="28.35" Text="REFERENCIA BANCARIA" Font="Arial, 8pt"/>
+      <TextObject Name="Text56" Left="746.55" Width="94.5" Height="37.8" Text="FECHA  RECEPCION PAGO" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="215.9" Width="2608.2" Height="18.9" CanGrow="true" DataSource="Table2">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Main.FOLIOPAGO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Text="[Main.FOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="189" Width="103.95" Height="18.9" Text="[Main.ESTATUS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="292.95" Width="85.05" Height="18.9" Text="[Main.CLIENTECLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="378" Width="198.45" Height="18.9" CanGrow="true" Text="[Main.CLIENTENOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="576.45" Width="75.6" Height="18.9" Text="[Main.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="841.05" Width="85.05" Height="18.9" Text="[Main.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="1181.25" Width="85.05" Height="18.9" Text="[Main.TOTALCHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="1266.3" Width="85.05" Height="18.9" Text="[Main.TOTALTRANSFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="1351.35" Width="85.05" Height="18.9" Text="[Main.TOTALTARJETA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="1436.4" Width="85.05" Height="18.9" Text="[Main.TOTALOTROS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="1606.5" Width="85.05" Height="18.9" Text="[Main.VENCE]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text35" Left="2230.2" Width="160.65" Height="18.9" Text="[Main.VENDEDORDELCLIENTE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text37" Left="2135.7" Width="94.5" Height="18.9" Text="[Main.DIASVENCIDOS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text39" Left="1927.8" Width="207.9" Height="18.9" Text="[Main.NOTASPAGO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text25" Left="1521.45" Width="85.05" Height="18.9" Text="[Main.SALDORELATIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text41" Left="926.1" Width="85.05" Height="18.9" Text="[Main.IMPORTEANTERIOR]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text43" Left="1011.15" Width="85.05" Height="18.9" Text="[Main.TOTALPAGOIMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text45" Left="2390.85" Width="198.45" Height="18.9" Text="[Main.CAJERONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text15" Left="1096.2" Width="85.05" Height="18.9" Text="[Main.TOTALEFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text50" Left="652.05" Width="94.5" Height="18.9" Text="[Main.FECHAELABORACION]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text52" Left="1691.55" Width="94.5" Height="18.9" Text="[Main.BANCONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text54" Left="1786.05" Width="141.75" Height="18.9" Text="[Main.REFERENCIABANCARIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text57" Left="746.55" Width="94.5" Height="18.9" Text="[Main.FECHARECEPCION]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="238.8" Width="2608.2" Height="28.35">
+      <TextObject Name="Text49" Left="1001.7" Top="9.45" Width="94.5" Height="18.9" Text="[Page]"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="386" AcceptButton="btnOk" CancelButton="btnCancel" LoadEvent="Form1_Load">
+    <ButtonControl Name="btnOk" Left="118" Top="327" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" ClickEvent="" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="327" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <ComboBoxControl Name="CBVendedor" Left="36" Top="164" Width="165" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Vendedor: 0" TextChangedEvent="CBVendedor_TextChanged" DataColumn="vendedor.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+    <LabelControl Name="Label1" Left="36" Top="148" Width="53" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Vendedor"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="36" Top="72" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechainicio" FilterOperation="GreaterThanOrEqual" Value="12/12/2014 07:55:43"/>
+    <LabelControl Name="Label2" Left="36" Top="56" Width="62" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="36" Top="116" Font="Tahoma, 8pt" TabIndex="6" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="12/12/2014 07:55:45"/>
+    <LabelControl Name="Label3" Left="36" Top="100" Width="51" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="Fecha fin" ClickEvent=""/>
+    <LabelControl Name="Label4" Left="40" Top="12" Width="214" Height="19" Font="Tahoma, 12pt" TabIndex="8" Text="Cobranza aplicada por cajero"/>
+    <ComboBoxControl Name="CBFacturaRemision" Left="36" Top="232" Font="Tahoma, 8pt" TabIndex="9" TextChangedEvent="CBFacturaRemision_TextChanged" ItemHeight="13" ItemsText="Todos&#13;&#10;Remision&#13;&#10;Factura"/>
+    <LabelControl Name="Label5" Left="36" Top="208" Width="151" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Tipo (factura/remision/todos):"/>
+  </DialogPage>
+</Report>

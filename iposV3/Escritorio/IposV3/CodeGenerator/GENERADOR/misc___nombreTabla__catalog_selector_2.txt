@@ -1,0 +1,4 @@
+|||||100+++++//,IDaoSelectorProvider<(nombreTabla), (nombreTabla)Param>
+                               ,IDaoSelectorProvider<(nombreTabla), (nombreTabla)Param> (nombreTablaMinPrimeraLetra)Dao
+                               !!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

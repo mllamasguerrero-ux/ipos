@@ -1,0 +1,4 @@
+|||||100+++++//,new (nombreTabla)Dao(strConnection)
+                                ,new (nombreTabla)Dao(strConnection)
+                                !!!!!
+100;0;0;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;IGNORAR;0

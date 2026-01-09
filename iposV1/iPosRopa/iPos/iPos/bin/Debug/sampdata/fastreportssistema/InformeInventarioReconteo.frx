@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/14/2015 08:54:46" ReportInfo.Modified="11/04/2022 14:14:00" ReportInfo.CreatorVersion="2014.2.10.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlsyr2eXbo0s7yLJSd6PztSl+O4lDOjzfB6CFy9oUhmKX+1kkLXQujJLqapmlmWSJF52p72FDzX4mpry/08/yeYu7laTFish7c1WbwHueAQwQQQ/tTwmrziYbvm8BH92lp/7jbe+wkOD3iLiMSstW4X4E=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select PRODUCTOID,PRODUCTOCLAVE,  SUM(CANTIDADSURTIDA) CANTIDADSURTIDA, sum(CAJAS) CAJAS, SUM(PIEZAS) PIEZAS, NOMBRE, DESCRIPCION1, ANAQUELID, ANAQUELCLAVE, ANAQUELNOMBRE, LOCALIDAD &#13;&#10;from (&#13;&#10;      SELECT PRODUCTO.ID PRODUCTOID, PRODUCTO.CLAVE PRODUCTOCLAVE,&#13;&#10;           SUM(COALESCE(CANTIDADSURTIDA,0)) CANTIDADSURTIDA,  &#13;&#10;           FLOOR( sum(COALESCE(CANTIDADSURTIDA,0))/(CASE WHEN COALESCE(PRODUCTO.pzacaja,0)= 0 THEN 1 else producto.pzacaja END)) CAJAS,&#13;&#10;           MOD( sum(COALESCE(CANTIDADSURTIDA,0)), (CASE WHEN COALESCE(PRODUCTO.pzacaja,0)= 0 THEN 1 else PRODUCTO.pzacaja END)) PIEZAS,&#13;&#10;           PRODUCTO.NOMBRE,&#13;&#10;           PRODUCTO.DESCRIPCION1 ,&#13;&#10;           MOVTO.ANAQUELID,&#13;&#10;           COALESCE(ANAQUEL.clave, 'Libre') ANAQUELCLAVE,&#13;&#10;           COALESCE(ANAQUEL.NOMBRE, 'Libre') ANAQUELNOMBRE,&#13;&#10;           MOVTO.LOCALIDAD&#13;&#10;       FROM PRODUCTO&#13;&#10;          INNER JOIN MOVTO ON PRODUCTO.ID = MOVTO.PRODUCTOID&#13;&#10;          LEFT JOIN ANAQUEL ON ANAQUEL.ID = MOVTO.ANAQUELID&#13;&#10;       WHERE (MOVTO.DOCTOID = @DOCTOID) AND&#13;&#10;    PRODUCTO.ID IN ( SELECT BUFFERVALUEID FROM BUFFERTEXT &#13;&#10;WHERE BUFFERGROUP = @BUFFERGROUP )&#13;&#10;&#13;&#10;          GROUP BY&#13;&#10;            PRODUCTO.ID,&#13;&#10;           PRODUCTO.CLAVE ,&#13;&#10;           PRODUCTO.NOMBRE,&#13;&#10;           PRODUCTO.DESCRIPCION1,&#13;&#10;           PRODUCTO.pzacaja,&#13;&#10;           MOVTO.ANAQUELID,     &#13;&#10;           ANAQUEL.clave ,&#13;&#10;           ANAQUEL.NOMBRE,&#13;&#10;           MOVTO.LOCALIDAD&#13;&#10;&#13;&#10;       union&#13;&#10;&#13;&#10;       SELECT PRODUCTO.ID PRODUCTOID,&#13;&#10;        PRODUCTO.CLAVE PRODUCTOCLAVE,&#13;&#10;           0 CANTIDADSURTIDA,&#13;&#10;           0 CAJAS,&#13;&#10;           0 PIEZAS,&#13;&#10;           PRODUCTO.NOMBRE,&#13;&#10;           PRODUCTO.DESCRIPCION1,&#13;&#10;           PRODUCTOLOCATIONS.ANAQUELID,&#13;&#10;           ANAQUEL.clave ANAQUELCLAVE,&#13;&#10;           ANAQUEL.NOMBRE ANAQUELNOMBRE,&#13;&#10;           PRODUCTOLOCATIONS.LOCALIDAD&#13;&#10;       FROM PRODUCTO&#13;&#10;       INNER JOIN  PRODUCTOLOCATIONS ON PRODUCTO.id = PRODUCTOLOCATIONS.PRODUCTOID &#13;&#10;          LEFT JOIN ANAQUEL ON ANAQUEL.ID = PRODUCTOLOCATIONS.ANAQUELID&#13;&#10;       WHERE &#13;&#10;    PRODUCTO.ID IN ( SELECT BUFFERVALUEID FROM BUFFERTEXT &#13;&#10;WHERE BUFFERGROUP = @BUFFERGROUP ) AND&#13;&#10;   PRODUCTOLOCATIONS.ALMACENID = (SELECT ALMACENID FROM DOCTO WHERE ID = @DOCTOID)&#13;&#10;&#13;&#10;               )&#13;&#10;group by PRODUCTOID,PRODUCTOCLAVE, NOMBRE, DESCRIPCION1, ANAQUELID, ANAQUELCLAVE, ANAQUELNOMBRE, LOCALIDAD&#13;&#10;       order by  PRODUCTOID">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="CANTIDADSURTIDA" DataType="System.Decimal"/>
+        <Column Name="CAJAS" DataType="System.Int64"/>
+        <Column Name="PIEZAS" DataType="System.Decimal"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="ANAQUELID" DataType="System.Int64"/>
+        <Column Name="ANAQUELCLAVE" DataType="System.String"/>
+        <Column Name="ANAQUELNOMBRE" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[DOCTOID]" DefaultValue="0"/>
+        <CommandParameter Name="BUFFERGROUP" DataType="13" Size="10000" Expression="[BUFFERGROUP]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="DOCTO" DataType="System.Int32" Enabled="true" SelectCommand="SELECT DOCTO.ID, DOCTO.SUBTIPODOCTOID, SUBTIPODOCTO.NOMBRE SUBTIPODOCTO&#13;&#10;FROM DOCTO &#13;&#10;LEFT JOIN SUBTIPODOCTO ON coalesce(DOCTO.SUBTIPODOCTOID,5) = SUBTIPODOCTO.ID&#13;&#10;WHERE DOCTO.ID = @DOCTOID">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="SUBTIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="SUBTIPODOCTO" DataType="System.String"/>
+        <CommandParameter Name="DOCTOID" DataType="1" Expression="[DOCTOID]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="DOCTOID" DataType="System.Decimal"/>
+    <Parameter Name="TITULO" DataType="System.String"/>
+    <Parameter Name="BUFFERGROUP" DataType="System.Int32"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperHeight="279" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="47.25">
+      <TextObject Name="Text21" Left="75.6" Width="292.95" Height="28.35" Text="[TITULO]" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text22" Left="642.6" Width="75.6" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="51.25" Width="718.2" Height="28.35">
+      <TextObject Name="Text2" Width="151.2" Height="18.9" Text="PRODUCTO" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text8" Left="359.1" Top="9.45" Width="160.65" Height="18.9" Text="EXISTENCIA" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text4" Left="151.2" Top="9.45" Width="94.5" Height="18.9" Text="ANAQUEL" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text6" Left="245.7" Top="9.45" Width="103.95" Height="18.9" Text="LOCALIDAD" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text23" Left="529.2" Top="9.45" Width="85.05" Height="18.9" Text="CAJAS" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text24" Left="623.7" Top="9.45" Width="85.05" Height="18.9" Text="PIEZAS" Font="Arial, 7pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="83.6" Width="718.2" Height="18.9" Condition="[Table.PRODUCTOID]">
+      <TextObject Name="Text1" Width="245.7" Height="18.9" Text="[Table.PRODUCTOCLAVE] [Table.NOMBRE]" Font="Arial, 7pt"/>
+      <DataBand Name="Data1" Top="106.5" Width="718.2" Height="18.9" DataSource="Table">
+        <TextObject Name="Text3" Left="151.2" Width="94.5" Height="18.9" Text="[Table.ANAQUELCLAVE]" Font="Arial, 7pt"/>
+        <TextObject Name="Text5" Left="245.7" Width="103.95" Height="18.9" Text="[Table.LOCALIDAD]" Font="Arial, 7pt"/>
+        <TextObject Name="Text7" Left="359.1" Width="160.65" Height="18.9" Text="[Table.CANTIDADSURTIDA] ( [Table.CAJAS] Cajas / [Table.PIEZAS] Pzas )" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter">
+          <Formats>
+            <GeneralFormat/>
+            <GeneralFormat/>
+            <GeneralFormat/>
+          </Formats>
+        </TextObject>
+        <TextObject Name="Text25" Left="529.2" Width="85.05" Height="18.9" Text="______________" Font="Arial, 12pt, style=Bold"/>
+        <TextObject Name="Text26" Left="623.7" Width="85.05" Height="18.9" Text="______________" Font="Arial, 12pt, style=Bold"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="129.4" Width="718.2"/>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="133.4" Width="718.2"/>
+    <PageFooterBand Name="PageFooter1" Top="137.4" Width="718.2" Height="18.9">
+      <TextObject Name="Text19" Left="642.6" Width="75.6" Height="18.9" Text="[Page] DE [TotalPages#]" Font="Arial, 6pt"/>
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

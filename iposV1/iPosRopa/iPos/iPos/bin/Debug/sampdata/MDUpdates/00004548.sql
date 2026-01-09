@@ -1,0 +1,16 @@
+EXECUTE BLOCK
+AS
+BEGIN
+
+
+  	insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (11004, 'Condonar comision tarjeta');
+  	
+	
+	
+
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 11004);
+	INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 11004);
+
+  
+
+END

@@ -1,0 +1,1 @@
+update menuitems set mn_desc = 'Bitacora de cobranza' , mn_etiqueta = 'Bitacora de cobranza' where mn_id  = 321;

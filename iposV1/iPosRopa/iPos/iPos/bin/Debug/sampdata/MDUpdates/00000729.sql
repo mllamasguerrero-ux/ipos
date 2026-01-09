@@ -1,0 +1,20 @@
+CREATE OR ALTER TRIGGER MOVTO_AD20 FOR MOVTO
+ACTIVE AFTER DELETE POSITION 20
+AS        
+declare variable TIPODOCTOID type of D_FK;
+begin
+  /* Trigger text */
+
+   IF ((OLD.ESTATUSMOVTOID = 0 AND OLD.registroprocesosalida = 'S') )THEN
+   BEGIN
+        SELECT TIPODOCTOID FROM DOCTO WHERE ID = OLD.DOCTOID INTO :TIPODOCTOID;
+         /*Quita la canitdad de pedidos*/
+         IF(:tipodoctoid IN (21,25,12,31) ) THEN
+         BEGIN
+            UPDATE PRODUCTO
+            SET ENPROCESODESALIDA = IIF(((COALESCE(ENPROCESODESALIDA,0) - COALESCE(OLD.CANTIDAD,0)) > 0),(COALESCE(ENPROCESODESALIDA,0) - COALESCE(OLD.CANTIDAD,0)),0)
+            WHERE ID = OLD.PRODUCTOID ;
+
+         END
+     END
+end

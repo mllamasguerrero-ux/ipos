@@ -1,0 +1,83 @@
+CREATE OR ALTER PROCEDURE EMIDA_GENERARVENTA (
+    EMIDAPRODUCTOID D_FK,
+    USERID D_FK,
+    CLIENTEID D_FK,
+    PRODUCTOID D_FK,
+    PRECIO D_PRECIO,
+    EMIDAREQUESTID D_FK,
+    EMIDAINVOICENO D_CLAVE_NULL,
+    NUMEROTELEFONO D_LOTE,
+    ESSERVICIO D_BOOLCN,
+    COMISION D_PRECIO)
+RETURNS (
+    MOVTOID D_FK,
+    DOCTOID D_FK,
+    ERRORCODE D_ERRORCODE)
+AS
+declare variable SUCURSALID D_FK;
+BEGIN
+
+        ERRORCODE = 0;
+
+
+      SELECT FIRST 1 PARAMETRO.sucursalid FROM parametro INTO :SUCURSALID;
+
+
+      
+      SELECT DOCTOID, ERRORCODE
+      FROM DOCTO_INSERT (
+         :USERID,
+         1,
+         :SUCURSALID,
+         21,
+         0,
+         0,
+         :CLIENTEID,
+         :USERID,
+         1,
+         '',
+         '',
+         NULL,
+         NULL,
+         CURRENT_DATE,
+         CURRENT_DATE ,
+         NULL ,
+         'S' ,
+         1
+      ) INTO :DOCTOID, :ERRORCODE;
+
+      
+        UPDATE DOCTO SET SUBTIPODOCTOID = CASE WHEN COALESCE(:ESSERVICIO,'N') = 'N' THEN 22 ELSE 24 END
+         WHERE ID = :DOCTOID;
+
+
+      IF (:ERRORCODE > 0) THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+
+      SELECT ERRORCODE,MOVTOID --, DOCTOID
+      FROM MOVTO_INSERT (
+         :DOCTOID, 0, 1, :SUCURSALID, 21, 0, 0, :CLIENTEID, :USERID, 1,
+         0, :PRODUCTOID, :NUMEROTELEFONO, NULL,  1, 0, 0, 0, 0, :PRECIO, 0,
+         '', '', :PRECIO, NULL, NULL, 'N',
+         0, CURRENT_DATE, CURRENT_DATE, 0.00 ,NULL,NULL,NULL,NULL,NULL , NULL, NULL, NULL , NULL, NULL
+      ) INTO :ERRORCODE,:MOVTOID/*, :DOCTOID*/;
+
+      
+        IF(COALESCE(:ERRORCODE ,0) <> 0) then
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+
+        UPDATE MOVTO SET EMIDAREQUESTID = :EMIDAREQUESTID , EMIDAINVOICENO = :EMIDAINVOICENO , EMIDACOMISION = :COMISION
+        WHERE ID = :MOVTOID;
+
+
+
+SUSPEND;
+END
+
+

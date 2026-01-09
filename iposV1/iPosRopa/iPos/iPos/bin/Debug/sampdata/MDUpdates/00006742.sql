@@ -1,0 +1,18 @@
+create or alter procedure BUFFERTEXT_DELGROUP (
+    BUFFERGROUP integer)
+returns (
+    ERRORCODE D_ERRORCODE)
+as
+BEGIN
+  ERRORCODE = 0;
+
+    DELETE FROM BUFFERTEXT WHERE BUFFERGROUP = :BUFFERGROUP;
+   
+   SUSPEND;
+   
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1006;
+      SUSPEND;
+   END
+ END

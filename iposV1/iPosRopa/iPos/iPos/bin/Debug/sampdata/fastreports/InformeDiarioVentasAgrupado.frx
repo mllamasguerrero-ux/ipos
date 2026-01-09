@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" StartReportEvent="_StartReport" ReportInfo.Created="05/06/2014 21:00:03" ReportInfo.Modified="09/06/2017 08:37:50" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  
+  public class TextPositions
+  {
+       public TextObject textField;
+       public float initialX;
+       public string strField;
+    public TextPositions(ref TextObject p_textField)
+    {
+      textField = p_textField;
+      initialX = p_textField.Left;
+    }
+    
+    public TextPositions(ref TextObject p_textField, string p_strField)
+    {
+      textField = p_textField;
+      initialX = p_textField.Left;
+      strField = p_strField;
+    }
+    
+    
+    
+  }
+  
+  public class ReportScript
+  {
+     
+    static float posicionInicioTextFlex;
+    static TextPositions[] textFlex;    
+    static TextPositions[] textIEPSPorc; 
+    
+         
+    private void ReportTitle1_BeforePrint(object sender, EventArgs e)
+    {      
+      
+                        
+            
+    }
+            
+    
+       
+
+    private void CBFacturaRemision_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      Report.SetParameterValue(&quot;REMISIONFACTURADESC&quot;, CBFacturaRemision.Text);
+      
+      switch(CBFacturaRemision.SelectedIndex)
+      {
+        case 0:   Report.SetParameterValue(&quot;REMISIONFACTURA&quot;, &quot;T&quot;); break; 
+        case 1:   Report.SetParameterValue(&quot;REMISIONFACTURA&quot;, &quot;F&quot;); break;
+        case 2:   Report.SetParameterValue(&quot;REMISIONFACTURA&quot;, &quot;R&quot;); break;
+        default: Report.SetParameterValue(&quot;REMISIONFACTURA&quot;, &quot;T&quot;); break;
+       
+      }
+    }
+
+    private void _StartReport(object sender, EventArgs e)
+    {
+      Report.SetParameterValue(&quot;REMISIONFACTURA&quot;, &quot;T&quot;); 
+      Report.SetParameterValue(&quot;MOSTRARVENTA&quot;, &quot;S&quot;);   
+      Report.SetParameterValue(&quot;MOSTRARTRASPASO&quot;, &quot;S&quot;);  
+      Report.SetParameterValue(&quot;MOSTRARNC&quot;, &quot;S&quot;);          
+      Report.SetParameterValue(&quot;REMISIONFACTURADESC&quot;, &quot;TODOS&quot;);
+      
+      
+    }
+
+    private void CBTipoDocto_Click(object sender, EventArgs e)
+    {
+      
+    }
+
+    private void btnOk_Click(object sender, EventArgs e)
+    {
+      //Get Sucursal_Clave from sucursal combobox
+      if(sucursalCheckBox.Checked)
+      {
+        Report.SetParameterValue(&quot;sucursal&quot;, &quot;TODOS&quot;);
+        //MessageBox.Show(&quot;TODOS&quot;);
+      }
+      else
+      {
+        String[] sucData = sucursalComboBox.Text.Split('-');
+        Report.SetParameterValue(&quot;sucursal&quot;, sucData[0]);
+        
+        //MessageBox.Show(sucData[0]);
+      }
+    }
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
+      
+    }
+
+    private void Form1_Shown(object sender, EventArgs e)
+    {
+      
+    }
+
+    private void ComboBox1_DataLoaded(object sender, EventArgs e)
+    {
+     
+    }
+
+    private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      
+    }
+
+    private void CBVentas_CheckedChanged(object sender, EventArgs e)
+    {
+      Report.SetParameterValue(&quot;MOSTRARVENTA&quot;, CBVentas.Checked ? &quot;S&quot; : &quot;N&quot;);
+    }
+
+    private void CBTraspaso_CheckedChanged(object sender, EventArgs e)
+    {
+      
+      Report.SetParameterValue(&quot;MOSTRARTRASPASO&quot;, CBTraspaso.Checked ? &quot;S&quot; : &quot;N&quot;);
+    }
+
+    private void CBNotaCredito_CheckedChanged(object sender, EventArgs e)
+    {
+           
+      Report.SetParameterValue(&quot;MOSTRARNC&quot;, CBNotaCredito.Checked ? &quot;S&quot; : &quot;N&quot;);
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29izDhiy+8Awj/+LeDV/2ybkkaRwuppBeY+kFp2ZduFz9uqGZVRMD6lIky6FW8Cqg03E=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;      D.FECHA,&#13;&#10;      D.timbradofechafactura,&#13;&#10;      D.FECHAHORA,&#13;&#10;      D.FOLIO DOCTOFOLIO,&#13;&#10;      D.FOLIOSAT,&#13;&#10;      D.IMPORTE,&#13;&#10;      D.DESCUENTO,&#13;&#10;      D.SUBTOTAL,&#13;&#10;      D.IVA,&#13;&#10;      D.TOTAL - COALESCE(D.montorebaja, 0) TOTAL,&#13;&#10;      coalesce(S.NOMBRE,' ') as SUCURSALT ,&#13;&#10;      coalesce(TD.nombre, ' ') AS TIPODOC,&#13;&#10;      P.NOMBRE as PERSONA ,&#13;&#10;      D.SALDO, &#13;&#10;      D.esfacturaelectronica ,&#13;&#10;     coalesce(D.foliosat,'') SERIEFOLIOSAT ,&#13;&#10;      U.nombre VENDEDOR ,&#13;&#10;      coalesce(P.vendedorid,0) VENDEDORDELCLIENTEID,&#13;&#10;      coalesce(uc.nombre,'') VENDEDORDELCLIENTENOMBRE ,&#13;&#10;      coalesce(uc.clave,'') VENDEDORDELCLIENTECLAVE,&#13;&#10;&#13;&#10;      D.IEPS,&#13;&#10;      D.IMPUESTO ,&#13;&#10;&#13;&#10;      p.clave PERSONACLAVE,&#13;&#10;      p.nombres PERSONANOMBRES,&#13;&#10;      p.apellidos PERSONAAPELLIDOS, &#13;&#10;      p.rfc,&#13;&#10;      D.VENCE FECHAVENCE,&#13;&#10;      D.ID ,&#13;&#10;      D.VENDEDORID,&#13;&#10;&#13;&#10;      CASE WHEN COALESCE(D.ESFACTURAELECTRONICA,'N') &lt;&gt; 'S' THEN 'REMISION' ELSE 'FACTURA' END ESTATUS,&#13;&#10;      COALESCE(D.doctokitrefid,0) DOCTOKITREFID ,&#13;&#10;      COALESCE(D.ALMACENID,0) ALMACENID,&#13;&#10;      COALESCE(D.VENDEDORID, 0) VENDEDORID,&#13;&#10;      D.almacentid  ,&#13;&#10;      A.nombre NOMBREALMACEN  ,&#13;&#10;      ALT.nombre NOMBREALMACENTRASPASO ,&#13;&#10;      D.MONTOREBAJA,&#13;&#10;     '' SUCURSAL_CLAVE,&#13;&#10;    &#13;&#10;     ( (D.TOTAL - COALESCE(D.montorebaja, 0)) * &#13;&#10;        CASE WHEN D.TIPODOCTOID IN (22) THEN -1 ELSE 1 END) TOTALBALANCE,&#13;&#10;&#13;&#10;cast(EXTRACT(MONTH FROM d.fecha) as varchar(10)) || '--'  || cast(EXTRACT(YEAR FROM d.fecha) as varchar(10))MES&#13;&#10;&#13;&#10;   FROM  DOCTO D &#13;&#10;       left join SUCURSAL S&#13;&#10;         ON S.ID = D.SUCURSALTID &#13;&#10;        left join TIPODOCTO  TD&#13;&#10;         on  TD.id = d.tipodoctoid &#13;&#10;         left join PERSONA P&#13;&#10;          on P.id = D.personaid &#13;&#10;            left join PERSONA U&#13;&#10;                on D.vendedorid = u.id  &#13;&#10;            left join PERSONA Uc&#13;&#10;                on P.vendedorid = uc.id&#13;&#10;                  left join almacen A on A.ID = D.almacenid &#13;&#10;                    left join almacen ALT on ALT.ID = D.almacentid &#13;&#10;&#13;&#10;&#13;&#10; WHERE &#13;&#10;&#13;&#10;(&#13;&#10;(@MOSTRARVENTA = 'S' AND TIPODOCTOID = 21) OR&#13;&#10;(@MOSTRARTRASPASO = 'S' AND TIPODOCTOID IN (31,81)) OR&#13;&#10;(@MOSTRARNC = 'S' AND TIPODOCTOID IN (22))&#13;&#10;)&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;AND&#13;&#10;(TIPODOCTOID &lt;&gt; 21 OR COALESCE(SUBTIPODOCTOID,0) NOT IN (7,8))&#13;&#10;     AND D.FECHA &gt;= cast(@FECHAINI as date) AND D.FECHA &lt;= cast(@FECHAFIN AS DATE)&#13;&#10;     AND D.ESTATUSDOCTOID = 1 &#13;&#10;	 AND ( @STR_REMISIONFACTURA = 'T' OR ( @STR_REMISIONFACTURA = 'F' AND  D.ESFACTURAELECTRONICA = 'S') OR ( @STR_REMISIONFACTURA = 'R' AND  D.ESFACTURAELECTRONICA = 'N') )&#13;&#10;&#13;&#10;		&#13;&#10;					&#13;&#10;  &#13;&#10;&#13;&#10;     ORDER BY d.fecha  , D.FECHAHORA">
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="FECHAHORA" DataType="System.DateTime"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="SUCURSALT" DataType="System.String"/>
+        <Column Name="TIPODOC" DataType="System.String"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="ESFACTURAELECTRONICA" DataType="System.String"/>
+        <Column Name="SERIEFOLIOSAT" DataType="System.String"/>
+        <Column Name="PERSONA" DataType="System.String"/>
+        <Column Name="VENDEDORDELCLIENTEID" DataType="System.Int64"/>
+        <Column Name="VENDEDORDELCLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORDELCLIENTECLAVE" DataType="System.String"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="NOMBREALMACEN" DataType="System.String"/>
+        <Column Name="ESTATUS" DataType="System.String"/>
+        <Column Name="ALMACENTID" DataType="System.Int64"/>
+        <Column Name="NOMBREALMACENTRASPASO" DataType="System.String"/>
+        <Column Name="MONTOREBAJA" DataType="System.Decimal"/>
+        <Column Name="TIMBRADOFECHAFACTURA" DataType="System.DateTime"/>
+        <Column Name="FOLIOSAT" DataType="System.Int32"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="VENDEDORID" DataType="System.Int64"/>
+        <Column Name="DOCTOKITREFID" DataType="System.Int64"/>
+        <Column Name="ALMACENID" DataType="System.Int64"/>
+        <Column Name="VENDEDORID1" DataType="System.Int64"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="VENDEDOR" DataType="System.String"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="SUCURSAL_CLAVE" DataType="System.String"/>
+        <Column Name="TOTALBALANCE" DataType="System.Decimal"/>
+        <Column Name="MES" DataType="System.Int32"/>
+        <CommandParameter Name="FECHAINI" DataType="4" Expression="[FECHAINI]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="FECHAFIN" DataType="4" Expression="[FECHAFIN]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="STR_REMISIONFACTURA" DataType="22" Size="64" Expression="[REMISIONFACTURA]" DefaultValue="T"/>
+        <CommandParameter Name="sucursal" DataType="22" Expression="[sucursal]"/>
+        <CommandParameter Name="MOSTRARVENTA" DataType="22" Expression="[MOSTRARVENTA]" DefaultValue="S"/>
+        <CommandParameter Name="MOSTRARTRASPASO" DataType="22" Expression="[MOSTRARTRASPASO]" DefaultValue="S"/>
+        <CommandParameter Name="MOSTRARNC" DataType="22" Expression="[MOSTRARNC]" DefaultValue="S"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Sucursal" DataType="System.Int32" Enabled="true" SelectCommand="SELECT (SUCURSAL_CLAVE + '-' + SUC.NOMBRE) AS SUCURSAL_DATOS	 &#13;&#10;&#13;&#10;FROM REPSUC&#13;&#10;LEFT JOIN SUCURSAL SUC &#13;&#10;ON SUC.CLAVE = REPSUC.SUCURSAL_CLAVE ">
+        <Column Name="SUCURSAL_DATOS" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="FECHAINI" DataType="System.DateTime" Expression="DateTimePicker1.Value"/>
+    <Parameter Name="FECHAFIN" DataType="System.DateTime" Expression="DateTimePicker2.Value"/>
+    <Parameter Name="TIPODOCTOID" DataType="System.Int32"/>
+    <Parameter Name="TIPODOCTONOMBRE" DataType="System.String"/>
+    <Parameter Name="REMISIONFACTURA" DataType="System.String"/>
+    <Parameter Name="REMISIONFACTURADESC" DataType="System.String"/>
+    <Parameter Name="sucursal" DataType="System.String"/>
+    <Parameter Name="MOSTRARVENTA" DataType="System.String"/>
+    <Parameter Name="MOSTRARTRASPASO" DataType="System.String"/>
+    <Parameter Name="MOSTRARNC" DataType="System.String"/>
+    <Total Name="TotalParaBalance" Expression="[Table.TOTALBALANCE]" Evaluator="Data1"/>
+    <Total Name="TotalParaBalanceMesSucursal" Expression="[Table.TOTALBALANCE]" Evaluator="Data1" PrintOn="GroupFooter2"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="960">
+    <ReportTitleBand Name="ReportTitle1" Width="3553.2" Height="122.85" BeforePrintEvent="ReportTitle1_BeforePrint">
+      <TextObject Name="Text67" Left="302.4" Top="9.45" Width="444.15" Height="28.35" Text="REPORTE DE VENTAS" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text68" Left="160.65" Top="37.8" Width="94.5" Height="18.9" Text="De la fecha:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text69" Left="510.3" Top="37.8" Width="94.5" Height="18.9" Text="a:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text70" Left="160.65" Top="66.15" Width="141.75" Height="18.9" Text="MOSTRAR VENTAS:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text71" Left="264.6" Top="37.8" Width="103.95" Height="18.9" Text="[FECHAINI]" Format="Date" Format.Format="d" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text72" Left="633.15" Top="37.8" Width="170.1" Height="18.9" Text="[FECHAFIN]" Format="Date" Format.Format="d" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text73" Left="302.4" Top="66.15" Width="66.15" Height="18.9" Text="[MOSTRARVENTA]"/>
+      <TextObject Name="Text74" Left="916.65" Top="18.9" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text85" Left="510.3" Top="94.5" Width="94.5" Height="18.9" Text="Rem./Fact.:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text86" Left="633.15" Top="94.5" Width="160.65" Height="18.9" Text="[REMISIONFACTURADESC]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text23" Left="103.95" Top="94.5" Width="198.45" Height="18.9" Text="[sucursal]"/>
+      <TextObject Name="Text24" Left="9.45" Top="94.5" Width="94.5" Height="18.9" Text="SUCURSAL:"/>
+      <TextObject Name="Text89" Left="378" Top="66.15" Width="179.55" Height="18.9" Text="MOSTRAR TRASPASOS:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text90" Left="557.55" Top="66.15" Width="66.15" Height="18.9" Text="[MOSTRARVENTA]"/>
+      <TextObject Name="Text91" Left="642.6" Top="66.15" Width="226.8" Height="18.9" Text="MOSTRAR NOTAS DE CREDITO:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text92" Left="869.4" Top="66.15" Width="66.15" Height="18.9" Text="[MOSTRARVENTA]"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="126.85" Width="3553.2" Height="37.8">
+      <TextObject Name="Text2" Left="94.5" Width="94.5" Height="18.9" Text="TIPO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="189" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="481.95" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="576.45" Width="94.5" Height="18.9" Text="IMPORTE" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="670.95" Width="94.5" Height="18.9" Text="DESCUENTO" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="765.45" Width="94.5" Height="18.9" Text="SUBTOTAL" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="859.95" Width="94.5" Height="18.9" Text="IVA" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="1143.45" Width="94.5" Height="18.9" Text="TOTAL" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="1237.95" Width="94.5" Height="18.9" Text="SUC. DEST." Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text22" Left="1426.95" Width="94.5" Height="18.9" Text="SALDO" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text26" Left="1521.45" Width="94.5" Height="18.9" Text="VENDEDOR" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text28" Left="1615.95" Width="94.5" Height="28.35" Text="SERIE FOLIO SAT" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text66" Left="954.45" Width="94.5" Height="18.9" Text="IEPS" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="387.45" Width="94.5" Height="18.9" Text="ALMACEN" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text80" Left="1332.45" Width="94.5" Height="28.35" Text="ALM. TRASPASO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text84" Left="283.5" Width="103.95" Height="18.9" Text="HORA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text88" Left="1058.4" Width="85.05" Height="28.35" Text="DESC. X N.C." Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text30" Left="1710.45" Width="94.5" Height="28.35" Text="ES FACTURA ELECTRONICA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text32" Left="1804.95" Width="94.5" Height="37.8" Text="VENDEDOR DEL CLIENTE CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text34" Left="1899.45" Width="94.5" Height="37.8" Text="VENDEDOR DEL CLIENTE NOMBRE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text36" Left="1993.95" Width="94.5" Height="28.35" Text="PERSONA CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text38" Left="2088.45" Width="94.5" Height="18.9" Text="PERSONA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text40" Left="2182.95" Width="94.5" Height="28.35" Text="PERSONA NOMBRES" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text42" Left="2277.45" Width="94.5" Height="28.35" Text="PERSONA APELLIDOS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text44" Left="2371.95" Width="94.5" Height="18.9" Text="FECHA VENCE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text46" Width="94.5" Height="18.9" Text="SUCURSAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text48" Left="2466.45" Width="94.5" Height="28.35" Text="TOTAL PARA BALANCE" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="168.65" Width="3553.2" Condition="[Table.SUCURSAL_CLAVE]">
+      <GroupHeaderBand Name="GroupHeader2" Top="172.65" Width="3553.2" Height="18.9" Condition="[Table.MES]">
+        <TextObject Name="Text52" Left="103.95" Width="94.5" Height="18.9" Text="[[Table.MES]]" Font="Arial, 9pt"/>
+        <TextObject Name="Text94" Left="9.45" Width="94.5" Height="18.9" Text="MES:" Font="Arial, 9pt"/>
+        <DataBand Name="Data1" Top="195.55" Width="3553.2" Height="18.9" DataSource="Table">
+          <TextObject Name="Text1" Left="122.85" Width="94.5" Height="18.9" Text="[Table.TIPODOC]" Font="Arial, 8pt"/>
+          <TextObject Name="Text3" Left="217.35" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+          <TextObject Name="Text7" Left="510.3" Width="94.5" Height="18.9" Text="[Table.DOCTOFOLIO]" Font="Arial, 8pt"/>
+          <TextObject Name="Text9" Left="604.8" Width="94.5" Height="18.9" Text="[Table.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text11" Left="699.3" Width="94.5" Height="18.9" Text="[Table.DESCUENTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text13" Left="793.8" Width="94.5" Height="18.9" Text="[Table.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text15" Left="888.3" Width="94.5" Height="18.9" Text="[Table.IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text17" Left="1171.8" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text19" Left="1266.3" Width="94.5" Height="18.9" Text="[Table.SUCURSALT]" Font="Arial, 8pt"/>
+          <TextObject Name="Text21" Left="1455.3" Width="94.5" Height="18.9" Text="[Table.SALDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text27" Left="1644.3" Width="94.5" Height="18.9" Text="[Table.SERIEFOLIOSAT]" Font="Arial, 8pt"/>
+          <TextObject Name="Text65" Left="982.8" Width="94.5" Height="18.9" Text="[Table.IEPS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text5" Left="415.8" Width="94.5" Height="18.9" Text="[Table.NOMBREALMACEN]" Font="Arial, 8pt"/>
+          <TextObject Name="Text25" Left="1549.8" Width="94.5" Height="18.9" Text="[Table.VENDEDOR]" Font="Arial, 8pt"/>
+          <TextObject Name="Text79" Left="1360.8" Width="94.5" Height="18.9" Text="[Table.NOMBREALMACENTRASPASO]" Font="Arial, 8pt"/>
+          <TextObject Name="Text83" Left="311.85" Width="103.95" Height="18.9" Text="[Table.FECHAHORA]" Format="Time" Format.Format="t" Font="Arial, 8pt"/>
+          <TextObject Name="Text87" Left="1086.75" Width="85.05" Height="18.9" Text="[Table.MONTOREBAJA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+          <TextObject Name="Text29" Left="1738.8" Width="94.5" Height="18.9" Text="[Table.ESFACTURAELECTRONICA]" Font="Arial, 8pt"/>
+          <TextObject Name="Text31" Left="1833.3" Width="94.5" Height="18.9" Text="[Table.VENDEDORDELCLIENTECLAVE]" Font="Arial, 8pt"/>
+          <TextObject Name="Text33" Left="1927.8" Width="94.5" Height="18.9" Text="[Table.VENDEDORDELCLIENTENOMBRE]" Font="Arial, 8pt"/>
+          <TextObject Name="Text35" Left="2022.3" Width="94.5" Height="18.9" Text="[Table.PERSONACLAVE]" Font="Arial, 8pt"/>
+          <TextObject Name="Text37" Left="2116.8" Width="94.5" Height="18.9" Text="[Table.PERSONA]" Font="Arial, 8pt"/>
+          <TextObject Name="Text39" Left="2211.3" Width="94.5" Height="18.9" Text="[Table.PERSONANOMBRES]" Font="Arial, 8pt"/>
+          <TextObject Name="Text41" Left="2305.8" Width="94.5" Height="18.9" Text="[Table.PERSONAAPELLIDOS]" Font="Arial, 8pt"/>
+          <TextObject Name="Text43" Left="2400.3" Width="94.5" Height="18.9" Text="[Table.FECHAVENCE]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+          <TextObject Name="Text45" Left="28.35" Width="94.5" Height="18.9" Text="[Table.SUCURSAL_CLAVE]" Font="Arial, 8pt"/>
+          <TextObject Name="Text47" Left="2494.8" Width="94.5" Height="18.9" Text="[Table.TOTALBALANCE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        </DataBand>
+        <GroupFooterBand Name="GroupFooter2" Top="218.45" Width="3553.2" Height="18.9">
+          <TextObject Name="Text53" Left="2428.65" Width="132.3" Height="18.9" Text="[TotalParaBalanceMesSucursal]" Font="Arial, 9pt"/>
+          <TextObject Name="Text95" Left="2211.3" Width="207.9" Height="18.9" Text="Total para balance mes-sucursal" Font="Arial, 9pt, style=Italic, Underline"/>
+        </GroupFooterBand>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="241.35" Width="3553.2"/>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="245.35" Width="3553.2" Height="18.9">
+      <TextObject Name="Text49" Left="2428.65" Width="132.3" Height="18.9" Text="[TotalParaBalance]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text50" Left="2211.3" Width="207.9" Height="18.9" Text="Total para balance" Font="Arial, 10pt, style=Bold"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="268.25" Width="3553.2"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="442" Height="334" AcceptButton="btnOk" CancelButton="btnCancel" LoadEvent="Form1_Load" ShownEvent="Form1_Shown">
+    <ButtonControl Name="btnCancel" Left="332" Top="264" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <ButtonControl Name="btnOk" Left="200" Top="264" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" ClickEvent="btnOk_Click" DialogResult="OK"/>
+    <CheckBoxControl Name="sucursalCheckBox" Left="180" Top="204" Width="55" Height="17" Font="Tahoma, 8pt" TabIndex="10" Text="Todas"/>
+    <LabelControl Name="Label1" Left="28" Top="4" Width="66" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Fecha Inicial"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="28" Top="24" Width="204" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="FECHAINI" FilterOperation="GreaterThanOrEqual" Value="09/01/2017 12:00:00"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="28" Top="68" Width="204" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="FECHAFIN" FilterOperation="LessThanOrEqual" Value="09/01/2017 23:59:00"/>
+    <LabelControl Name="Label2" Left="28" Top="48" Width="61" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha Final"/>
+    <LabelControl Name="Label3" Left="28" Top="96" Width="99" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Tipo de Documento"/>
+    <ComboBoxControl Name="CBFacturaRemision" Left="28" Top="164" Width="205" Font="Tahoma, 8pt" TabIndex="6" Text="TODOS" ClickEvent="" DropDownWidth="205" ItemHeight="13" ItemsText="TODOS&#13;&#10;FACTURA&#13;&#10;REMISION" SelectedIndexChangedEvent="CBFacturaRemision_SelectedIndexChanged"/>
+    <LabelControl Name="Label4" Left="28" Top="144" Width="89" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Factura Remisión"/>
+    <LabelControl Name="Label5" Left="28" Top="204" Width="47" Height="13" Font="Tahoma, 8pt" TabIndex="8" Text="Sucursal"/>
+    <ComboBoxControl Name="sucursalComboBox" Left="28" Top="228" Width="205" Font="Tahoma, 8pt" TabIndex="12" DataColumn="Sucursal.SUCURSAL_DATOS" DataLoadedEvent="ComboBox1_DataLoaded" DropDownWidth="205" ItemHeight="13" SelectedIndexChangedEvent="ComboBox1_SelectedIndexChanged"/>
+    <CheckBoxControl Name="CBVentas" Left="36" Top="116" Width="59" Height="17" Font="Tahoma, 8pt" TabIndex="13" Text="Ventas" Checked="true" CheckState="Checked" CheckedChangedEvent="CBVentas_CheckedChanged"/>
+    <CheckBoxControl Name="CBTraspaso" Left="128" Top="116" Width="75" Height="17" Font="Tahoma, 8pt" TabIndex="14" Text="Traspasos" Checked="true" CheckState="Checked" CheckedChangedEvent="CBTraspaso_CheckedChanged"/>
+    <CheckBoxControl Name="CBNotaCredito" Left="224" Top="116" Width="105" Height="17" Font="Tahoma, 8pt" TabIndex="15" Text="Notas de credito" Checked="true" CheckState="Checked" CheckedChangedEvent="CBNotaCredito_CheckedChanged"/>
+  </DialogPage>
+</Report>

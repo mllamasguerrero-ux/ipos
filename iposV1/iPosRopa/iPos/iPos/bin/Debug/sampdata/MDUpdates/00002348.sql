@@ -1,0 +1,1 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN) VALUES (187, 12, 'Autorizacion rebajas x NC', 'Autorizacion rebajas x NC', 187, 1, 18);

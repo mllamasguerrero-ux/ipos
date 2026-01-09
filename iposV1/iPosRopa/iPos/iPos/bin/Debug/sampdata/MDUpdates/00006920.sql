@@ -1,0 +1,481 @@
+create or alter procedure DOCTO_PAGOS (
+    DOCTOID D_FK,
+    FECHA D_FECHA,
+    FECHAHORA D_TIMESTAMP,
+    VENDEDORID D_FK,
+    IMPORTETOTALAPAGAR D_IMPORTE,
+    IMPORTEEFECTIVO D_IMPORTE,
+    IMPORTETARJETA D_IMPORTE,
+    BANCOTARJETA D_FK,
+    IMPORTECREDITO D_IMPORTE,
+    IMPORTEVALE D_IMPORTE,
+    IMPORTEEFECTIVORECIBIDO D_IMPORTE,
+    IMPORTECAMBIOCHEQUE D_IMPORTE,
+    TIPOPAGOID D_FK,
+    DOCTOSALIDAID D_FK,
+    ESAPARTADO D_BOOLCN,
+    IMPORTECREDITOAUTOMATICO D_IMPORTE,
+    IMPORTECREDITOMANUAL D_IMPORTE,
+    IMPORTECREDITOREVERTIDO D_IMPORTE,
+    REFERENCIABANCARIATARJETA D_STDTEXT_LIGHT,
+    IMPORTECHEQUE D_IMPORTE,
+    BANCOCHEQUE D_FK,
+    REFERENCIABANCARIACHEQUE D_STDTEXT_LIGHT,
+    ESPAGOINICIAL D_BOOLCN,
+    IMPORTEMONEDERO D_IMPORTE,
+    REFERENCIAMONEDERO D_STDTEXT_LIGHT,
+    IMPORTETRANSFERENCIA D_IMPORTE,
+    BANCOTRANSFERENCIA D_FK,
+    REFERENCIABANCARIATRANSFERENCIA D_STDTEXT_LIGHT,
+    TARJETAFORMAPAGOSATID D_FK,
+    BANCOMERPARAMID D_FK,
+    CHEQUE_CUENTAPAGOCREDITO D_STDTEXT_LIGHT,
+    CHEQUE_CUENTABANCOEMPRESAID D_FK,
+    TRANS_CUENTAPAGOCREDITO D_STDTEXT_LIGHT,
+    TRANS_CUENTABANCOEMPRESAID D_FK,
+    TARJ_CUENTAPAGOCREDITO D_STDTEXT_LIGHT,
+    TARJ_CUENTABANCOEMPRESAID D_FK,
+    VERIFONEPAYMENTID D_FK)
+returns (
+    DOCTOPAGOIDEFECTIVO D_FK,
+    DOCTOPAGOIDCHEQUE D_FK,
+    DOCTOPAGOIDTARJETA D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable FORMAPAGOID D_FK;
+declare variable IMPORTECAMBIO D_IMPORTE;
+declare variable IMPORTEEFECTIVONETO D_IMPORTE;
+declare variable CORTEID D_FK;
+declare variable HAYCORTEACTIVO D_BOOLCN;
+declare variable PERSONAID D_FK;
+declare variable SALDOSPOSITIVOS D_PRECIO;
+declare variable SALDOSNEGATIVOS D_PRECIO;
+declare variable SALDOAPARTADOPOSITIVO D_PRECIO;
+declare variable SALDOAPARTADONEGATIVO D_PRECIO;
+BEGIN
+
+      
+    DOCTOPAGOIDEFECTIVO = 0;
+    DOCTOPAGOIDCHEQUE = 0;
+    DOCTOPAGOIDTARJETA = 0;
+    /*
+   IF (:IMPORTECHEQUE > 0.00) THEN
+   BEGIN
+     insert into traza(valor) values('importe cheque mayor que cero');
+   END
+
+
+
+   
+     insert into traza(valor) values('si entra');
+   
+      ERRORCODE = 1016;
+      SUSPEND;
+      EXIT;*/
+
+   SELECT HAYCORTEACTIVO,CORTEID,ERRORCODE
+   FROM HAY_CORTE_ACTIVO(:VENDEDORID)
+   INTO :HAYCORTEACTIVO, :CORTEID, :ERRORCODE;
+
+
+   IF (:ERRORCODE > 0) THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+
+   
+   IF (:HAYCORTEACTIVO <> 'S') THEN
+   BEGIN
+      ERRORCODE = 1016;
+      SUSPEND;
+      EXIT;
+   END
+
+
+   IMPORTEEFECTIVO = COALESCE(:IMPORTEEFECTIVO, 0.0000);
+   IMPORTETARJETA = COALESCE(:IMPORTETARJETA, 0.0000);
+   IMPORTECHEQUE = COALESCE(:IMPORTECHEQUE, 0.0000);
+   IMPORTECREDITO = COALESCE(:IMPORTECREDITO, 0.0000);
+   IMPORTEVALE =    COALESCE(:IMPORTEVALE, 0.0000);  
+   IMPORTEMONEDERO =    COALESCE(:IMPORTEMONEDERO, 0.0000);
+   
+   IMPORTETRANSFERENCIA = COALESCE(:IMPORTETRANSFERENCIA, 0.0000);
+
+   
+   IMPORTECREDITOAUTOMATICO = COALESCE(:IMPORTECREDITOAUTOMATICO, 0.0000);
+   IMPORTECREDITOMANUAL = COALESCE(:IMPORTECREDITOMANUAL, 0.0000);
+  
+   IMPORTEEFECTIVONETO = :IMPORTETOTALAPAGAR - :IMPORTETARJETA - :IMPORTECHEQUE - :IMPORTECREDITO - :IMPORTEVALE + :IMPORTECAMBIOCHEQUE - :IMPORTECREDITOAUTOMATICO - :IMPORTECREDITOMANUAL - :IMPORTEMONEDERO - :IMPORTETRANSFERENCIA;
+
+   IMPORTECAMBIO = :IMPORTEEFECTIVORECIBIDO - :IMPORTEEFECTIVONETO;
+  
+   IF (:IMPORTEEFECTIVONETO > 0.00) THEN
+   BEGIN
+      FORMAPAGOID = 1; -- Efectivo
+      SELECT ERRORCODE, DOCTOPAGOID
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         :FORMAPAGOID,
+         :FECHA, :FECHAHORA, :CORTEID,
+         :IMPORTEEFECTIVONETO,
+         :IMPORTEEFECTIVORECIBIDO,
+         :IMPORTECAMBIO ,
+         :TIPOPAGOID,
+         :DOCTOSALIDAID,
+         :ESAPARTADO ,
+         1,
+         NULL,
+         NULL,
+         NULL,
+         CURRENT_DATE ,
+         CURRENT_DATE,
+         :ESPAGOINICIAL,
+         1,
+         NULL,
+         1 ,
+         NULL ,
+         NULL ,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         :VERIFONEPAYMENTID
+      ) INTO :ERRORCODE, :DOCTOPAGOIDEFECTIVO;
+   END
+
+   IF (:IMPORTETARJETA > 0.00) THEN
+   BEGIN
+      FORMAPAGOID = 2; -- Tarjeta
+      SELECT ERRORCODE , DOCTOPAGOID
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         :FORMAPAGOID,
+         :FECHA, :FECHAHORA, :CORTEID,
+         :IMPORTETARJETA, 0.00, 0.00 ,
+         :TIPOPAGOID,
+         :DOCTOSALIDAID,
+         :ESAPARTADO  ,
+         1  ,
+         :BANCOTARJETA,
+         :REFERENCIABANCARIATARJETA ,
+         NULL  ,
+         CURRENT_DATE,
+         CURRENT_DATE ,
+         :ESPAGOINICIAL ,
+         1,
+         NULL,
+         :TARJETAFORMAPAGOSATID ,
+         :BANCOMERPARAMID ,
+         NULL   ,
+         :TARJ_CUENTAPAGOCREDITO,
+         :TARJ_CUENTABANCOEMPRESAID,
+         NULL,
+         NULL ,
+         NULL,
+         NULL,
+         :VERIFONEPAYMENTID
+      ) INTO :ERRORCODE, :DOCTOPAGOIDTARJETA;
+   END
+
+   IF (:IMPORTECHEQUE > 0.00) THEN
+   BEGIN
+
+
+
+      FORMAPAGOID = 3; -- Cheque
+      SELECT ERRORCODE , DOCTOPAGOID
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         :FORMAPAGOID,
+         :FECHA, :FECHAHORA, :CORTEID,
+         :IMPORTECHEQUE - :IMPORTECAMBIOCHEQUE,
+         :IMPORTECHEQUE,
+         :IMPORTECAMBIOCHEQUE ,
+         :TIPOPAGOID,
+         :DOCTOSALIDAID,
+         :ESAPARTADO ,
+         1 ,
+         :BANCOCHEQUE,
+         :REFERENCIABANCARIACHEQUE,
+         NULL  ,
+         CURRENT_DATE,
+         CURRENT_DATE,
+         :ESPAGOINICIAL ,
+         1,
+         NULL ,
+         2  ,
+         NULL,
+         NULL ,
+         :CHEQUE_CUENTAPAGOCREDITO,
+         :CHEQUE_CUENTABANCOEMPRESAID,
+         NULL,
+         NULL,
+         NULL,
+         NULL ,
+         :VERIFONEPAYMENTID
+
+      ) INTO :ERRORCODE, :DOCTOPAGOIDCHEQUE;
+   END
+
+   IF (:IMPORTECREDITO > 0.00) THEN
+   BEGIN
+      FORMAPAGOID = 4; -- Credito
+      SELECT ERRORCODE
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         :FORMAPAGOID,
+         :FECHA, :FECHAHORA, :CORTEID,
+         :IMPORTECREDITO, 0.00, 0.00 ,
+         :TIPOPAGOID,
+         :DOCTOSALIDAID ,
+         :ESAPARTADO  ,
+         1 ,
+         NULL,
+         NULL,
+         NULL  ,
+         CURRENT_DATE,
+         CURRENT_DATE,
+         :ESPAGOINICIAL,
+         1,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL ,
+         NULL ,
+         NULL ,
+         :VERIFONEPAYMENTID
+      ) INTO :ERRORCODE;
+   END
+
+   
+   IF (:IMPORTEVALE > 0.00) THEN
+   BEGIN
+      FORMAPAGOID = 5; -- vALE
+      SELECT ERRORCODE
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         :FORMAPAGOID,
+         :FECHA, :FECHAHORA, :CORTEID,
+         :IMPORTEVALE, 0.00, 0.00  ,
+         :TIPOPAGOID,
+         :DOCTOSALIDAID,
+         :ESAPARTADO,
+         1 ,
+         NULL,
+         NULL,
+         NULL,
+         CURRENT_DATE,
+         CURRENT_DATE,
+         :ESPAGOINICIAL,
+         1,
+         NULL ,
+         8  ,
+         NULL,
+         NULL ,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL ,
+         :VERIFONEPAYMENTID
+      ) INTO :ERRORCODE;
+   END
+
+         
+   IF (:IMPORTEMONEDERO > 0.00) THEN
+   BEGIN
+      FORMAPAGOID = 14; -- Monedero
+      SELECT ERRORCODE
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         :FORMAPAGOID,
+         :FECHA, :FECHAHORA, :CORTEID,
+         :IMPORTEMONEDERO, 0.00, 0.00 ,
+         :TIPOPAGOID,
+         :DOCTOSALIDAID,
+         :ESAPARTADO  ,
+         1  ,
+         NULL,
+         :REFERENCIAMONEDERO ,
+         NULL  ,
+         CURRENT_DATE,
+         CURRENT_DATE ,
+         :ESPAGOINICIAL ,
+         1,
+         NULL ,
+         5  ,
+         NULL ,
+         NULL ,
+         NULL,
+         NULL,
+         NULL,
+         NULL ,
+         NULL ,
+         NULL ,
+         :VERIFONEPAYMENTID
+      ) INTO :ERRORCODE;
+   END
+   
+   IF (:IMPORTECREDITOAUTOMATICO > 0.00) THEN
+   BEGIN
+      FORMAPAGOID = 4; -- Credito
+      SELECT ERRORCODE
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         :FORMAPAGOID,
+         :FECHA, :FECHAHORA, :CORTEID,
+         :IMPORTECREDITOAUTOMATICO, 0.00, 0.00 ,
+         :TIPOPAGOID,
+         :DOCTOSALIDAID ,
+         :ESAPARTADO  ,
+         2  ,
+         NULL,
+         NULL,
+         NULL,
+         CURRENT_DATE,
+         CURRENT_DATE ,
+         :ESPAGOINICIAL,
+         1,
+         NULL ,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL ,
+         NULL ,
+         NULL ,
+         :VERIFONEPAYMENTID
+      ) INTO :ERRORCODE;
+   END
+
+
+   
+   IF (:IMPORTECREDITOMANUAL > 0.00) THEN
+   BEGIN
+      FORMAPAGOID = 4; -- Credito
+      SELECT ERRORCODE
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         :FORMAPAGOID,
+         :FECHA, :FECHAHORA, :CORTEID,
+         :IMPORTECREDITOMANUAL, 0.00, 0.00 ,
+         :TIPOPAGOID,
+         :DOCTOSALIDAID ,
+         :ESAPARTADO  ,
+         3  ,
+         NULL,
+         NULL,
+         NULL,
+         CURRENT_DATE,
+         CURRENT_DATE,
+         :ESPAGOINICIAL  ,
+         1,
+         NULL  ,
+         NULL  ,
+         NULL   ,
+         NULL   ,
+         NULL,
+         NULL,
+         NULL,
+         NULL ,
+         NULL,
+         NULL ,
+         :VERIFONEPAYMENTID
+      ) INTO :ERRORCODE;
+   END
+
+
+   
+   IF (:IMPORTECREDITOREVERTIDO > 0.00) THEN
+   BEGIN
+      FORMAPAGOID = 4; -- Credito
+      SELECT ERRORCODE
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         :FORMAPAGOID,
+         :FECHA, :FECHAHORA, :CORTEID,
+         :IMPORTECREDITOREVERTIDO, 0.00, 0.00 ,
+         :TIPOPAGOID,
+         :DOCTOSALIDAID ,
+         :ESAPARTADO  ,
+         4 ,
+         NULL,
+         NULL,
+         NULL,
+         CURRENT_DATE,
+         CURRENT_DATE,
+         :ESPAGOINICIAL ,
+         1,
+         NULL ,
+         NULL ,
+         NULL ,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         NULL ,
+         NULL ,
+         :VERIFONEPAYMENTID
+      ) INTO :ERRORCODE;
+   END
+
+
+   
+   IF (:IMPORTETRANSFERENCIA > 0.00) THEN
+   BEGIN
+      FORMAPAGOID = 15; -- TRANSF
+      SELECT ERRORCODE
+      FROM DOCTOPAGO_INSERT (
+         :DOCTOID,
+         :FORMAPAGOID,
+         :FECHA, :FECHAHORA, :CORTEID,
+         :IMPORTETRANSFERENCIA, 0.00, 0.00 ,
+         :TIPOPAGOID,
+         :DOCTOSALIDAID,
+         :ESAPARTADO  ,
+         1  ,
+         :BANCOTRANSFERENCIA,
+         :REFERENCIABANCARIATRANSFERENCIA ,
+         NULL  ,
+         CURRENT_DATE,
+         CURRENT_DATE ,
+         :ESPAGOINICIAL ,
+         1,
+         NULL  ,
+          3  ,
+          NULL ,
+         NULL,
+         :TRANS_CUENTAPAGOCREDITO,
+         :TRANS_CUENTABANCOEMPRESAID,
+         NULL,
+         NULL,
+         NULL,
+         NULL,
+         :VERIFONEPAYMENTID
+      ) INTO :ERRORCODE;
+   END
+
+
+
+
+
+   ERRORCODE = 0;
+   SUSPEND;
+
+   WHEN ANY DO
+   BEGIN
+      ERRORCODE = 1016;
+      SUSPEND;
+   END
+END

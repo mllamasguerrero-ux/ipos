@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/14/2015 08:54:46" ReportInfo.Modified="12/30/2015 13:36:14" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls0NdDH5fiOUR3jZnnK23/B7kcZ2V0nDhrjsBJAEo/OoIWscHVsQ+6IqoobGR+HhoGMjmY4dljyzReFci3JCofrk=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select producto.clave,&#13;&#10;producto.nombre,&#13;&#10;producto.descripcion,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2,&#13;&#10;producto.existencia,&#13;&#10;coalesce(producto.existenciaremisionado,0) existenciaremisionado,&#13;&#10;coalesce(producto.existenciafacturado,0) existenciafacturado,&#13;&#10;producto.costoreposicion,&#13;&#10;coalesce(producto.costoreposicion,0) * coalesce(producto.existencia,0) importecostoreposicion,&#13;&#10;producto.costopromedio,  &#13;&#10;coalesce(producto.costopromedio,0) * coalesce(producto.existencia,0) importecostopromedio  ,&#13;&#10;&#13;&#10;pc.texto1 color,&#13;&#10;pc.texto3 talla1,&#13;&#10;pc.numero1 talla2&#13;&#10;&#13;&#10;&#13;&#10;from producto&#13;&#10;left join PRODUCTOCARACTERISTICAS pc ON pc.PRODUCTOID = PRODUCTO.ID&#13;&#10;where coalesce(producto.existencia , 0) &gt; 0&#13;&#10;">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="COSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="IMPORTECOSTOREPOSICION" DataType="System.Decimal"/>
+        <Column Name="COSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="IMPORTECOSTOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAREMISIONADO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIAFACTURADO" DataType="System.Decimal"/>
+        <Column Name="COLOR" DataType="System.String"/>
+        <Column Name="TALLA1" DataType="System.String"/>
+        <Column Name="TALLA2" DataType="System.Decimal"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="420.1" PaperHeight="296.9" RawPaperSize="8">
+    <ReportTitleBand Name="ReportTitle1" Width="1512.38" Height="56.7">
+      <TextObject Name="Text21" Left="151.2" Top="9.45" Width="453.6" Height="28.35" Text="Inventario actual" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text22" Left="670.95" Top="9.45" Width="141.75" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="60.7" Width="1512.38" Height="28.35">
+      <TextObject Name="Text2" Width="85.05" Height="18.9" Text="CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="85.05" Width="85.05" Height="18.9" Text="NOMBRE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="170.1" Width="113.4" Height="18.9" Text="DESCRIPCION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="283.5" Width="122.85" Height="18.9" Text="DESCRIPCION1" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="406.35" Width="113.4" Height="18.9" Text="DESCRIPCION2" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="519.75" Width="85.05" Height="18.9" Text="EXISTENCIA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="784.35" Width="85.05" Height="28.35" Text="COSTO REPOSICION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="869.4" Width="85.05" Height="28.35" Text="IMPORTE COSTO REPO." Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="954.45" Width="85.05" Height="28.35" Text="COSTO PROMEDIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="1039.5" Width="85.05" Height="28.35" Text="IMPORTE COSTO PROM" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text24" Left="604.8" Width="85.05" Height="28.35" Text="EXISTENCIA REM." Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text26" Left="689.85" Width="94.5" Height="28.35" Text="EXISTENCIA FACTURADO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text28" Left="1124.55" Width="179.55" Height="18.9" Text="COLOR" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text30" Left="1304.1" Width="94.5" Height="18.9" Text="TALLA1" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text32" Left="1398.6" Width="94.5" Height="18.9" Text="TALLA2" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="93.05" Width="1512.38" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="85.05" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="85.05" Width="85.05" Height="18.9" Text="[Table.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="170.1" Width="113.4" Height="18.9" Text="[Table.DESCRIPCION]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="283.5" Width="122.85" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="406.35" Width="113.4" Height="18.9" Text="[Table.DESCRIPCION2]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="519.75" Width="85.05" Height="18.9" Text="[Table.EXISTENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="784.35" Width="85.05" Height="18.9" Text="[Table.COSTOREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="869.4" Width="85.05" Height="18.9" Text="[Table.IMPORTECOSTOREPOSICION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="954.45" Width="85.05" Height="18.9" Text="[Table.COSTOPROMEDIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="1039.5" Width="85.05" Height="18.9" Text="[Table.IMPORTECOSTOPROMEDIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="604.8" Width="85.05" Height="18.9" Text="[Table.EXISTENCIAREMISIONADO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="689.85" Width="94.5" Height="18.9" Text="[Table.EXISTENCIAFACTURADO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="1124.55" Width="179.55" Height="18.9" Text="[Table.COLOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text29" Left="1304.1" Width="94.5" Height="18.9" Text="[Table.TALLA1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text31" Left="1398.6" Width="94.5" Height="18.9" Text="[Table.TALLA2]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="115.95" Width="1512.38" Height="9.45"/>
+  </ReportPage>
+</Report>

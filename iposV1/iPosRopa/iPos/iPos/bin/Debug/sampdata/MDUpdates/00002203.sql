@@ -1,0 +1,1 @@
+insert into tasaiva (id, clave, nombre, tasa, fechainicia) values (-1,'VARIABLE','VARIABLE', 0, CURRENT_DATE);

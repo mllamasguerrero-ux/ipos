@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/15/2014 23:57:47" ReportInfo.Modified="02/16/2014 00:15:59" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2fN5XjSENLjSrEcvqIS3dPA=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from lotesinventarioview where productoid = @productoid">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTO" DataType="System.String"/>
+        <Column Name="LOTE" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="FECHAVENCE" DataType="System.DateTime"/>
+        <Column Name="CADUCADO" DataType="System.String"/>
+        <Column Name="PORCADUCAR" DataType="System.String"/>
+        <CommandParameter Name="productoid" DataType="10" Expression="[productoid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="productoid" DataType="System.Int64"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="85.05">
+      <TextObject Name="Text13" Left="198.45" Top="18.9" Width="311.85" Height="28.35" Text="Reporte de lotes" Font="Arial, 20pt"/>
+      <TextObject Name="Text14" Left="604.8" Top="28.35" Width="94.5" Height="18.9" Text="[Date]"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="89.05" Width="718.2" Height="28.35">
+      <TextObject Name="Text2" Left="9.45" Width="94.5" Height="18.9" Text="PRODUCTO" Font="Arial, 9pt"/>
+      <TextObject Name="Text4" Left="113.4" Width="94.5" Height="18.9" Text="LOTE" Font="Arial, 9pt"/>
+      <TextObject Name="Text6" Left="217.35" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 9pt"/>
+      <TextObject Name="Text8" Left="321.3" Width="103.95" Height="18.9" Text="FECHA VENCE" Font="Arial, 9pt"/>
+      <TextObject Name="Text10" Left="434.7" Width="94.5" Height="18.9" Text="CADUCADO" Font="Arial, 9pt"/>
+      <TextObject Name="Text12" Left="538.65" Width="113.4" Height="18.9" Text="POR CADUCAR" Font="Arial, 9pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="121.4" Width="718.2" Height="28.35" DataSource="Table">
+      <TextObject Name="Text1" Left="9.45" Width="94.5" Height="18.9" Text="[Table.PRODUCTO]"/>
+      <TextObject Name="Text3" Left="113.4" Width="94.5" Height="18.9" Text="[Table.LOTE]"/>
+      <TextObject Name="Text5" Left="217.35" Width="94.5" Height="18.9" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="321.3" Width="103.95" Height="18.9" Text="[Table.FECHAVENCE]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text9" Left="434.7" Width="94.5" Height="18.9" Text="[Table.CADUCADO]"/>
+      <TextObject Name="Text11" Left="538.65" Width="113.4" Height="18.9" Text="[Table.PORCADUCAR]"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="153.75" Width="718.2" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

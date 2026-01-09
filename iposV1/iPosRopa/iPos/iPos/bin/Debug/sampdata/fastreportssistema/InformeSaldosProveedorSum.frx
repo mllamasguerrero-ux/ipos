@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/08/2014 19:23:29" ReportInfo.Modified="02/07/2018 14:36:32" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnbvH2HsHWOfPgCFQoKr29iylxlz281QHEmEGuYLY19gtpAFwwXrDVuSZpfKeuv4EoGoT2qrnThYqBpgyklO1+wI=">
+      <TableDataSource Name="Table1" Alias="proveedor" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Vendedor: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Proveedor: ' || cast(id as varchar(13)) nombre from persona where tipopersonaid  in (40)&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Main" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;persona.clave clavepersona,&#13;&#10;persona.nombre nombrepersona,&#13;&#10;SUM(coalesce(docto.importe,0)) importe,&#13;&#10;SUM(coalesce(docto.descuento,0)) descuento,&#13;&#10;SUM(coalesce(docto.subtotal,0)) subtotal,&#13;&#10;SUM(coalesce(docto.iva,0)) iva,&#13;&#10;SUM(coalesce(docto.ieps,0)) ieps,&#13;&#10;SUM(coalesce(docto.impuesto,0)) impuesto,&#13;&#10;SUM(coalesce(docto.total,0)) total,&#13;&#10;SUM(coalesce(docto.saldo,0)) saldo&#13;&#10;from docto&#13;&#10;left join persona on persona.id = docto.personaid&#13;&#10;where &#13;&#10;docto.tipodoctoid = 11 and docto.estatusdoctoid = 1&#13;&#10;and docto.saldo &gt; 0&#13;&#10;and ( docto.vence &lt; current_date or @solovencidos &lt;&gt; 'S')&#13;&#10;and ( docto.personaid = @proveedorid or @proveedorid = 0)&#13;&#10;group by clavepersona, nombrepersona&#13;&#10;&#13;&#10;">
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="CLAVEPERSONA" DataType="System.String"/>
+        <Column Name="NOMBREPERSONA" DataType="System.String"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="DESCUENTO" DataType="System.Decimal"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <CommandParameter Name="solovencidos" DataType="16" Expression="[solovencidos]" DefaultValue="S"/>
+        <CommandParameter Name="proveedorid" DataType="1" Expression="[proveedorid]" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="proveedorid" DataType="System.Decimal"/>
+    <Parameter Name="solovencidos" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="279.4" PaperHeight="215.9" RawPaperSize="1" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="980.53" Height="132.3">
+      <TextObject Name="Text29" Left="103.95" Top="75.6" Width="94.5" Height="18.9" Text="Proveedor" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text31" Left="217.35" Top="75.6" Width="302.4" Height="18.9" Text="[proveedor.NOMBRE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text30" Left="103.95" Top="103.95" Width="94.5" Height="18.9" Text="Solo vencidos" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text47" Left="85.05" Top="9.45" Width="869.4" Height="37.8" Text="REPORTE DE SALDO DE PROVEEDORES SUMARIZADO" Font="Arial, 22pt, style=Bold"/>
+      <TextObject Name="Text48" Left="926.1" Top="56.7" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text32" Left="217.35" Top="103.95" Width="94.5" Height="18.9" Text="[solovencidos]" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="136.3" Width="980.53" Height="18.9">
+      <TextObject Name="Text8" Left="170.1" Width="368.55" Height="18.9" Text="PROVEEDOR" Font="Arial, 9pt"/>
+      <TextObject Name="Text10" Width="170.1" Height="18.9" Text="CLAVE PROV." Font="Arial, 9pt"/>
+      <TextObject Name="Text18" Left="623.7" Width="85.05" Height="18.9" Text="IMPUESTO" Font="Arial, 9pt"/>
+      <TextObject Name="Text22" Left="538.65" Width="85.05" Height="18.9" Text="SUBTOTAL" Font="Arial, 9pt"/>
+      <TextObject Name="Text24" Left="708.75" Width="85.05" Height="18.9" Text="TOTAL" Font="Arial, 9pt"/>
+      <TextObject Name="Text26" Left="793.8" Width="85.05" Height="18.9" Text="SALDO" Font="Arial, 9pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="159.2" Width="980.53" Height="18.9" CanGrow="true" DataSource="Table2">
+      <TextObject Name="Text7" Left="170.1" Width="368.55" Height="18.9" Text="[Main.NOMBREPERSONA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Width="170.1" Height="18.9" Text="[Main.CLAVEPERSONA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text17" Left="623.7" Width="85.05" Height="18.9" Text="[Main.IMPUESTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="538.65" Width="85.05" Height="18.9" Text="[Main.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="708.75" Width="85.05" Height="18.9" Text="[Main.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="793.8" Width="85.05" Height="18.9" Text="[Main.SALDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="182.1" Width="980.53" Height="28.35">
+      <TextObject Name="Text49" Left="926.1" Width="94.5" Height="18.9" Text="[Page]"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

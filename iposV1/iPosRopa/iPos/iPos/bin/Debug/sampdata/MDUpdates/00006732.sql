@@ -1,0 +1,337 @@
+create or alter procedure IMPORTAR_PEDIDO_MOVIL (
+    DOCTOACTUALID D_FK,
+    REFERENCIA D_REFERENCIA,
+    CLAVEVENDEDOR D_CLAVE,
+    PRODUCTO D_CLAVE,
+    CANTIDAD D_CANTIDAD,
+    REFERENCIAS varchar(255),
+    FECHA D_FECHA,
+    DESCRIPCION D_DESCRIPCION,
+    PRECIO D_PRECIO,
+    CLAVECLIENTE D_CLAVE,
+    OBSERVACION D_OBSERVACION,
+    ESFACTURAELECTRONICA D_BOOLCN,
+    MOVILCONTADO D_BOOLCN,
+    MOVILPLAZOS D_BOOLCN)
+returns (
+    DOCTOID D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRODUCTOID D_FK;
+declare variable PROVEEDORID D_FK;
+declare variable MOVTOID D_FK;
+declare variable PERSONAID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable VENDEDORID D_FK;
+declare variable TIPOVENDEDORMOVIL D_FK;
+declare variable MONTOREBAJA D_PRECIO;
+declare variable PRECIOMINIMO D_PRECIO;
+declare variable REBAJAESPECIAL D_BOOLCN;
+declare variable LISTAPRECIOMINIMO D_FK;
+declare variable VERSIONTOPEID D_FK;
+declare variable LIMITECREDITO D_PRECIO;
+declare variable TOTALDOCTO D_PRECIO;
+declare variable BLOQUEADO D_BOOLCN;
+declare variable SALDOCLIENTE D_PRECIO;
+declare variable KITTIENEVIG D_BOOLCN;
+declare variable VIGENCIAPRODKIT D_FECHA;
+declare variable PVCOLOREAR D_INTEGER;
+declare variable ALERTA3 D_STDTEXT_LARGE;
+
+declare variable HAB_SURTIDO_POST D_BOOLCN;
+declare variable USUARIOID D_FK;
+declare variable COUNTDERECHOBUFFER INTEGER;
+
+BEGIN
+
+   TIPODOCTOID = 331;
+   VENDEDORID = 17;
+   PERSONAID = 1;
+   HAB_SURTIDO_POST = 'N';
+
+   SELECT SUCURSALID, TIPOVENDEDORMOVIL,
+      COALESCE(REBAJAESPECIAL, 'N') , COALESCE( LISTAPRECIOMINIMO, 5) ,
+      COALESCE(VERSIONTOPEID,0), COALESCE(PVCOLOREAR,0)
+    FROM PARAMETRO INTO :SUCURSALID, :TIPOVENDEDORMOVIL,
+     :REBAJAESPECIAL, :LISTAPRECIOMINIMO,
+     :VERSIONTOPEID, :PVCOLOREAR;
+
+
+
+
+
+   SELECT ID ,KITTIENEVIG, VIGENCIAPRODKIT
+   FROM PRODUCTO
+   WHERE CLAVE = :PRODUCTO
+   INTO :PRODUCTOID, :KITTIENEVIG, :VIGENCIAPRODKIT;
+
+
+
+      IF(COALESCE(CLAVECLIENTE,'') <> '') THEN
+      BEGIN
+         SELECT first 1 id from persona where clave = :CLAVECLIENTE AND TIPOPERSONAID = 50 into :personaid;
+
+      END
+
+      IF(COALESCE(:PERSONAID,1) = 1) THEN
+      BEGIN
+         ERRORCODE = 5005;
+      END
+
+
+      
+      IF(COALESCE(CLAVEVENDEDOR,'') <> '') THEN
+      BEGIN
+         SELECT first 1 id from persona where clave = :CLAVEVENDEDOR AND TIPOPERSONAID IN (20,22) into :VENDEDORID;
+
+      END
+
+
+
+      
+   SELECT ERRORCODE FROM
+   CORTE_MOVIL_ASEGURAR(:VENDEDORID)
+   INTO :ERRORCODE;
+
+
+   IF (:ERRORCODE > 0) THEN
+   BEGIN
+      SUSPEND;
+      EXIT;
+   END
+
+   SELECT FIRST 1 ID FROM PERSONA WHERE VENDEDORID = :VENDEDORID INTO :USUARIOID;
+   IF(COALESCE(:USUARIOID,0) <> 0) THEN
+   BEGIN
+         SELECT COUNT(*) COUNTDERECHOBUFFER
+         FROM usuario_perfil UP
+         INNER JOIN PERFIL_DER PD ON UP.up_perfil = PD.pd_perfil
+         WHERE UP.up_personaid = :USUARIOID AND PD.pd_derecho = 10176
+         INTO :COUNTDERECHOBUFFER;
+
+         IF(COALESCE(:COUNTDERECHOBUFFER,0) > 0) THEN
+         BEGIN
+                HAB_SURTIDO_POST = 'S';
+         END
+   END
+   HAB_SURTIDO_POST = 'S';
+
+
+
+   IF(:PRODUCTOID is not null and COALESCE(:KITTIENEVIG,'N') = 'S' AND
+      COALESCE( :VIGENCIAPRODKIT, CURRENT_DATE) < CURRENT_DATE) THEN
+   BEGIN
+            DOCTOID = 0;
+            SUSPEND;
+            EXIT;
+   END
+
+
+   if( :PRODUCTOID is null )  then
+   begin
+      insert into producto (
+         clave,
+         nombre,
+         ean ,
+         descripcion1 ,
+         manejalote,
+         eskit,
+         negativos
+      ) values (
+         :PRODUCTO,
+         'PRODUCTO NO REGISTRADO',
+         '',
+         'PRODUCTO NO REGISTRADO',
+         'N',
+         'N',
+         'S'
+      ) RETURNING ID INTO :PRODUCTOID;
+   end
+
+
+   IF ((:DOCTOACTUALID IS NULL) or (:DOCTOACTUALID = 0)) THEN
+   BEGIN
+      SELECT DOCTOID, ERRORCODE
+      FROM DOCTO_INSERT (
+         :VENDEDORID,
+         1,
+         :SUCURSALID,
+         :TIPODOCTOID,
+         0,
+         0,
+         :PERSONAID,
+         :VENDEDORID,
+         1,
+         :REFERENCIA,
+         :REFERENCIAS,
+         0,
+         0,
+         :FECHA,
+         NULL,
+         NULL ,
+         'S' ,
+         1
+      ) INTO :DOCTOID, :ERRORCODE;
+
+      UPDATE DOCTO SET DOCTO.vendedorfinal = :vendedorid ,
+            movilcontado = :MOVILCONTADO,
+            MOVILPLAZOS = :MOVILPLAZOS
+      where ID = :DOCTOID;
+
+
+      --SI ES TIPO VENDEDOR MOVIL 4 ACTUALIZA EL ESTADO SURTIDO A REVISION DE CXC
+      IF(COALESCE(:TIPOVENDEDORMOVIL,0) = 4 or COALESCE(:HAB_SURTIDO_POST, 'N') = 'S' ) THEN
+      BEGIN
+        UPDATE DOCTO SET ESTADOSURTIDOID = 4 WHERE ID = :DOCTOID;
+      END
+
+      
+      IF( COALESCE(:HAB_SURTIDO_POST, 'N') = 'S' ) THEN
+      BEGIN
+
+        IF(COALESCE(:MOVILCONTADO,'N') = 'S') THEN
+        BEGIN      
+            UPDATE DOCTO SET ESTADOSURTIDOID = 2 WHERE ID = :DOCTOID;
+        END
+        ELSE
+        BEGIN  
+            UPDATE DOCTO SET ESTADOSURTIDOID = 4 WHERE ID = :DOCTOID;
+        END
+      END
+
+
+   END
+   ELSE
+   BEGIN
+      DOCTOID = :DOCTOACTUALID;
+   END
+
+   -- provisional mientras cambio docto_insert y movto_insert.
+   UPDATE DOCTO
+   SET REFERENCIAS = :REFERENCIAS, DESCRIPCION = :DESCRIPCION , OBSERVACION = :OBSERVACION , ESFACTURAELECTRONICA = COALESCE(:ESFACTURAELECTRONICA,'N')
+   WHERE ID = :DOCTOID;
+
+
+
+
+
+
+
+   -- Guarda el movimiento en movto
+   SELECT DOCTOID , MOVTOID
+   FROM MOVTO_INSERT (
+      :DOCTOID, 0, 1, :SUCURSALID, :TIPODOCTOID, 0, 0, :PERSONAID, :VENDEDORID, 0,
+      0, :PRODUCTOID, NULL, NULL, :CANTIDAD, 0, :CANTIDAD, 0, 0, :PRECIO, 0,
+      :REFERENCIA, :REFERENCIAS, 0, 0, 0, 'N', 0, :FECHA, NULL, 0.00, NULL,NULL,NULL,NULL,NULL , NULL, NULL, NULL  , NULL, NULL , 'N','N'
+   ) INTO :DOCTOID, :MOVTOID;
+
+
+
+   --SI ES TIPO VENDEDOR MOVIL 4 Y HAY REBAJA ACTUALIZA EL FLAG EN DOCTO
+   IF(COALESCE(:REBAJAESPECIAL,'N') = 'S' AND COALESCE(:TIPOVENDEDORMOVIL,0) in (4)) THEN
+   BEGIN
+    PRECIOMINIMO = 0;
+    SELECT
+      CASE
+            WHEN COALESCE(:VERSIONTOPEID,0) = 2 THEN
+                ROUND(PRODUCTO.PRECIOTOPE,2)
+            ELSE
+                (CASE :LISTAPRECIOMINIMO
+                            WHEN 1 THEN COALESCE(PRODUCTO.PRECIO1 ,0)
+                            WHEN 2 THEN COALESCE(PRODUCTO.PRECIO2 ,0)
+                            WHEN 3 THEN COALESCE(PRODUCTO.PRECIO3 ,0)
+                            WHEN 4 THEN COALESCE(PRODUCTO.PRECIO4 ,0)
+                            ELSE PRODUCTO.PRECIO5
+                        END
+                      )
+      END PRECIOMINIMO
+    FROM MOVTO  LEFT JOIN PRODUCTO ON PRODUCTO.ID = MOVTO.PRODUCTOID
+    LEFT JOIN PROMOCION ON PROMOCION.ID = MOVTO.PROMOCIONID
+    WHERE MOVTO.ID = :MOVTOID AND
+      MOVTO.PRECIO < (CASE
+                        WHEN COALESCE(:VERSIONTOPEID,0) = 2 THEN
+                            ROUND(PRODUCTO.PRECIOTOPE,2)
+                        ELSE
+                            (CASE :LISTAPRECIOMINIMO
+                                WHEN 1 THEN COALESCE(PRODUCTO.PRECIO1 ,0)
+                                WHEN 2 THEN COALESCE(PRODUCTO.PRECIO2 ,0)
+                                WHEN 3 THEN COALESCE(PRODUCTO.PRECIO3 ,0)
+                                WHEN 4 THEN COALESCE(PRODUCTO.PRECIO4 ,0)
+                                ELSE PRODUCTO.PRECIO5
+                            END
+                            )
+                       END
+                      )
+       AND COALESCE(PRODUCTO.PRECIOTOPE,0) > 0
+       AND COALESCE(PROMOCION.TIPOPROMOCIONID,0) <> 7
+       INTO :PRECIOMINIMO;
+      IF(COALESCE(:PRECIOMINIMO,0) > 0 AND COALESCE(:PRECIOMINIMO,0) > COALESCE(:PRECIO,0)) THEN
+      BEGIN
+            UPDATE MOVTO SET ESTADOREBAJA = 1 WHERE ID = :MOVTOID;
+            UPDATE DOCTO SET ESTADOREBAJA = 1 WHERE ID = :DOCTOID;
+      END
+
+     END
+
+
+
+     IF(COALESCE(:TIPOVENDEDORMOVIL,0) IN (3,4)  AND COALESCE(:MOVILCONTADO,'S') = 'N') THEN
+     BEGIN
+     
+        SELECT LIMITECREDITO,BLOQUEADO, SALDO FROM PERSONA WHERE ID = :PERSONAID INTO :LIMITECREDITO, :BLOQUEADO, :SALDOCLIENTE;
+        SELECT TOTAL FROM DOCTO WHERE ID = :DOCTOID INTO :TOTALDOCTO;
+
+        IF(
+            (COALESCE(:LIMITECREDITO,0) > 0 AND COALESCE(:LIMITECREDITO,0) < COALESCE(:TOTALDOCTO,0) + (COALESCE(:SALDOCLIENTE,0) * -1)) OR
+            (COALESCE(:BLOQUEADO,'N') = 'S')
+          )
+          THEN
+         BEGIN
+            UPDATE DOCTO SET  ESTADOSURTIDOID = 4 WHERE ID = :DOCTOID;
+         END
+     END
+
+
+     
+   --SI ES TIPO VENDEDOR MOVIL 3 O 4 Y HAY MODO ALERTA
+   IF(COALESCE(:PVCOLOREAR,0) = 1 AND COALESCE(:TIPOVENDEDORMOVIL,0) IN (3,4) ) THEN
+   BEGIN
+    PRECIOMINIMO = 0;
+    SELECT
+                         CASE WHEN MOVTO.PRECIO > PRODUCTO.PRECIO1 AND PRODUCTO.precio1 > MOVTO.preciolista THEN 'PRECIO MAYOR A PRECIO1 Y PRECIO LISTA'
+                         
+                               WHEN MOVTO.precio < (
+                                   (CASE WHEN COALESCE(PARAMETRO.tipoutilidadid, 0) = 2 THEN COALESCE(PRODUCTO.costopromedio, PRODUCTO.costoreposicion) WHEN COALESCE(PARAMETRO.TIPOUTILIDADID,0) = 3  THEN COALESCE(PRODUCTO.costoultimo, PRODUCTO.costoreposicion) else PRODUCTO.costoreposicion END)
+                                    ) THEN 'PRECIO MENOR AL COSTO'
+                               WHEN MOVTO.precio < (
+                                        (CASE   WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 1  THEN COALESCE(PRODUCTO.precio1, 0)
+                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 2  THEN COALESCE(PRODUCTO.PRECIO2, 0)  
+                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 3  THEN COALESCE(PRODUCTO.PRECIO3, 0)
+                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 4  THEN COALESCE(PRODUCTO.PRECIO4, 0)
+                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 5  THEN COALESCE(PRODUCTO.PRECIO5, 0)
+                                                WHEN COALESCE(PARAMETRO.LISTAPRECIOMINIMO, 0) = 6  THEN COALESCE(PRODUCTO.PRECIO6, 0)
+                                                else PRODUCTO.precio1 END
+                                        )
+                                    ) THEN 'PRECIO MENOR A PRECIO MINIMO'
+                                ELSE ''
+                         END  AS ALERTA3
+    FROM MOVTO  LEFT JOIN PRODUCTO ON PRODUCTO.ID = MOVTO.PRODUCTOID
+    LEFT OUTER JOIN PARAMETRO ON 1 = 1
+    WHERE MOVTO.ID = :MOVTOID
+       INTO :ALERTA3;
+
+
+      IF(COALESCE(:ALERTA3,'') IN ('PRECIO MENOR AL COSTO','PRECIO MENOR A PRECIO MINIMO' ) ) THEN
+      BEGIN
+            UPDATE MOVTO SET ESTADOREBAJA = 3 WHERE ID = :MOVTOID;
+            UPDATE DOCTO SET ESTADOREBAJA = 3 WHERE ID = :DOCTOID;
+      END
+
+     END
+
+
+
+   suspend;
+
+END

@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/08/2014 19:23:29" ReportInfo.Modified="03/31/2019 15:48:51" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    public long vendedorId = 0;
+    public string esFacturaElectronicaV  = &quot;T&quot;;
+
+   
+
+    private void CBVendedor_TextChanged(object sender, EventArgs e)
+    {
+      string[] split = CBVendedor.Text.Split(new string[] { &quot;# Vendedor: &quot; }, StringSplitOptions.None);
+      string strNumCliente = &quot;0&quot;;
+      if(split.Length &gt; 1)     
+        strNumCliente = split[1];
+      
+      try
+      {
+        vendedorId = long.Parse(strNumCliente);
+      }
+      catch{
+      }
+    }
+        
+  
+
+    private void Form1_Load(object sender, EventArgs e)
+    {                                         
+    }
+                     
+     
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqGXDUjVHoOo39U7VHz/cohboC87uIIffsgzROmdYrsoyLqNefFxFcJwrJj2UdQGssDygdH1v33WybpxKsRehsLaYYJhHd3d37jR6E5s5aXcYjs4SwwOJp6nOTF8aIB0KG7g2/iSAl7pKNV6hKceJCY+PrwGZoENC+eGjBMd0KWu4Gef0rNSOT/h1l/Je/4Opi">
+      <TableDataSource Name="Table1" Alias="vendedor" DataType="System.Int32" Enabled="true" SelectCommand="select 0 as id, '' as clave, 'Todos # Vendedor: 0' as nombre from RDB$DATABASE&#13;&#10;union&#13;&#10;select id, clave, nombre ||  '  # Vendedor: ' || cast(id as varchar(13)) nombre from persona where tipopersonaid  in (20)&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="Main" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;movto.productoid,&#13;&#10;producto.clave,&#13;&#10;producto.nombre,&#13;&#10;producto.descripcion,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2, &#13;&#10;sucursal.clave clavesucursal,&#13;&#10;sucursal.nombre nombresucursal ,&#13;&#10;sum( case when docto.tipodoctoid = 21 then coalesce(movto.cantidad,0) else coalesce(movto.cantidad,0) * (-1) end) cantidad,&#13;&#10;&#13;&#10;&#13;&#10;case when sum( case when docto.tipodoctoid = 21 then coalesce(movto.total,0) else coalesce(movto.total,0) * (-1) end) = 0 then&#13;&#10;  0.0&#13;&#10;  else&#13;&#10;    sum( case when docto.tipodoctoid = 21 then coalesce(movto.cantidad,0) else coalesce(movto.cantidad,0) * (-1) end) /&#13;&#10;    sum( case when docto.tipodoctoid = 21 then coalesce(movto.total,0) else coalesce(movto.total,0) * (-1) end)&#13;&#10;  end   preciopromedio,&#13;&#10;&#13;&#10;sum( case when docto.tipodoctoid = 21 then coalesce(movto.total,0) else coalesce(movto.total,0) * (-1) end)  total,&#13;&#10;cajero.clave cajeroclave,&#13;&#10;cajero.nombre cajeronombre,&#13;&#10;persona.clave clienteclave,&#13;&#10;persona.nombre clientenombre,&#13;&#10;vendcliente.clave vendclienteclave,&#13;&#10;vendcliente.nombre vendclientenombre,&#13;&#10; coalesce(producto.comision,0.0) comision,&#13;&#10; sum( (case when docto.tipodoctoid = 21 then coalesce(movto.cantidad,0) else coalesce(movto.cantidad,0) * (-1) end) * coalesce(producto.comision,0.0)) totalcomision,&#13;&#10;docto.folio,&#13;&#10;movto.PRECIOCLASIFICACION,&#13;&#10;docto.fecha&#13;&#10;&#13;&#10;from&#13;&#10;docto left join movto  on movto.doctoid = docto.id&#13;&#10;left join docto doctoref on docto.doctorefid = doctoref.id&#13;&#10;left join producto on producto.id = movto.productoid&#13;&#10;left join parametro on 1 = 1&#13;&#10;left join sucursal on sucursal.id = parametro.sucursalid&#13;&#10;left join persona cajero on (&#13;&#10;    ( (docto.tipodoctoid = 21 or coalesce(doctoref.id,0) = 0) and cajero.id = docto.vendedorid)  or &#13;&#10;     (docto.tipodoctoid = 22 and  coalesce(doctoref.id,0) &lt;&gt;  0 and cajero.id = doctoref.vendedorid))&#13;&#10;left join persona on persona.id = docto.personaid&#13;&#10;left join persona vendcliente on vendcliente.id = persona.vendedorid&#13;&#10;where docto.fecha &gt;= @fechainicio and docto.fecha &lt;= @fechafin&#13;&#10;and docto.estatusdoctoid = 1&#13;&#10;and docto.tipodoctoid in (21,22)&#13;&#10;and (cajero.id = @usuarioid  or @usuarioid = 0 )&#13;&#10;&#13;&#10;group by&#13;&#10;movto.productoid,&#13;&#10;producto.clave,&#13;&#10;producto.nombre,&#13;&#10;producto.descripcion,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2, &#13;&#10;sucursal.clave, &#13;&#10;sucursal.nombre ,&#13;&#10;cajero.clave ,&#13;&#10;cajero.nombre ,&#13;&#10;persona.clave ,&#13;&#10;persona.nombre ,&#13;&#10;vendcliente.clave ,&#13;&#10;vendcliente.nombre,&#13;&#10;producto.comision,&#13;&#10;docto.folio,&#13;&#10;movto.PRECIOCLASIFICACION,&#13;&#10;docto.fecha">
+        <Column Name="CLIENTECLAVE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="CAJERONOMBRE" DataType="System.String"/>
+        <Column Name="CAJEROCLAVE" DataType="System.String"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="CLAVESUCURSAL" DataType="System.String"/>
+        <Column Name="NOMBRESUCURSAL" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="PRECIOPROMEDIO" DataType="System.Decimal"/>
+        <Column Name="VENDCLIENTECLAVE" DataType="System.String"/>
+        <Column Name="VENDCLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="COMISION" DataType="System.Decimal"/>
+        <Column Name="TOTALCOMISION" DataType="System.Decimal"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="PRECIOCLASIFICACION" DataType="System.Int32"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <CommandParameter Name="fechainicio" DataType="5" Expression="[fechainicio]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="usuarioid" DataType="1" Expression="vendedorId" DefaultValue="0"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Int64"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="vendedorid" DataType="System.Decimal"/>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="esfacturaelectronica" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="450" PaperHeight="420.1" FirstPageSource="15" OtherPagesSource="15">
+    <PageHeaderBand Name="PageHeader1" Width="1625.4" Height="122.85">
+      <TextObject Name="Text2" Left="75.6" Top="103.95" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="CLIENTE" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="151.2" Top="103.95" Width="321.3" Height="18.9" CanShrink="true" CanBreak="false" Text="NOMBRE CLIENTE" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Top="103.95" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="CAJERO" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="869.4" Top="103.95" Width="396.9" Height="18.9" CanShrink="true" CanBreak="false" Text="DESCRIPCION1" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="1266.3" Top="103.95" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="CANTIDAD" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="1341.9" Top="103.95" Width="85.05" Height="18.9" CanShrink="true" CanBreak="false" Text="COMISION c/u" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="472.5" Top="103.95" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="VENDEDOR" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text20" Left="548.1" Top="103.95" Width="160.65" Height="18.9" CanShrink="true" CanBreak="false" Text="VENDEDOR CLIENTE" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="1426.95" Top="103.95" Width="103.95" Height="18.9" CanShrink="true" CanBreak="false" Text="TOTAL COMISION" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text30" Left="75.6" Top="75.6" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="Fecha Inicio" WordWrap="false" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text32" Left="472.5" Top="75.6" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="Fecha fin" WordWrap="false" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text33" Left="151.2" Top="75.6" Width="321.3" Height="18.9" CanShrink="true" CanBreak="false" Text="[fechainicio]" WordWrap="false"/>
+      <TextObject Name="Text34" Left="548.1" Top="75.6" Width="321.3" Height="18.9" CanShrink="true" CanBreak="false" Text="[fechafin]" WordWrap="false"/>
+      <TextObject Name="Text29" Left="75.6" Top="47.25" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="Vendedor" WordWrap="false" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text31" Left="151.2" Top="47.25" Width="321.3" Height="18.9" CanShrink="true" CanBreak="false" Text="[CBVendedor.Text]" WordWrap="false" Font="Arial, 9pt"/>
+      <TextObject Name="Text47" Left="151.2" Top="-9.45" Width="718.2" Height="37.8" CanShrink="true" CanBreak="false" Text="REPORTE DE COMISIONES POR CAJERO" WordWrap="false" Font="Arial, 22pt, style=Bold"/>
+      <TextObject Name="Text8" Left="793.8" Top="103.95" Width="75.6" Height="18.9" CanShrink="true" CanBreak="false" Text="FOLIO" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text23" Left="1530.9" Top="103.95" Width="85.05" Height="18.9" Text="Lista Precio" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text24" Left="708.75" Top="103.95" Width="85.05" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="126.85" Width="1625.4" Height="18.9" CanGrow="true" DataSource="Table2" Filter="[Main.COMISION]&gt;0">
+      <TextObject Name="Text1" Left="75.6" Width="75.6" Height="18.9" Text="[Main.CLIENTECLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="151.2" Width="321.3" Height="18.9" Text="[Main.CLIENTENOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Width="75.6" Height="18.9" Text="[Main.CAJEROCLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="869.4" Width="396.9" Height="18.9" Text="[Main.DESCRIPCION1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="1266.3" Width="75.6" Height="18.9" Text="[Main.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="1341.9" Width="85.05" Height="18.9" Text="[Main.COMISION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="472.5" Width="75.6" Height="18.9" Text="[Main.VENDCLIENTECLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text19" Left="548.1" Width="160.65" Height="18.9" Text="[Main.VENDCLIENTENOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text13" Left="1426.95" Width="103.95" Height="18.9" Text="[Main.TOTALCOMISION]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="793.8" Width="75.6" Height="18.9" Text="[Main.FOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text21" Left="1530.9" Width="85.05" Height="18.9" Text="[Main.PRECIOCLASIFICACION]" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text22" Left="708.75" Width="85.05" Height="18.9" Text="[Main.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="149.75" Width="1625.4" Height="406.35">
+      <TextObject Name="Text49" Left="1483.65" Top="9.45" Width="103.95" Height="18.9" Text="[Page]"/>
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="386" AcceptButton="btnOk" CancelButton="btnCancel" LoadEvent="Form1_Load">
+    <ButtonControl Name="btnOk" Left="118" Top="327" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" ClickEvent="" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="327" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <ComboBoxControl Name="CBVendedor" Left="36" Top="164" Width="165" Font="Tahoma, 8pt" TabIndex="2" Text="Todos # Vendedor: 0" TextChangedEvent="CBVendedor_TextChanged" DataColumn="vendedor.NOMBRE" DropDownWidth="165" ItemHeight="13"/>
+    <LabelControl Name="Label1" Left="36" Top="148" Width="39" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Cajero"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="36" Top="72" Font="Tahoma, 8pt" TabIndex="4" Text="viernes, 12 de diciembre de 2014" ReportParameter="fechainicio" FilterOperation="GreaterThanOrEqual" Value="12/12/2014 07:55:43"/>
+    <LabelControl Name="Label2" Left="36" Top="56" Width="62" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="36" Top="116" Font="Tahoma, 8pt" TabIndex="6" Text="viernes, 12 de diciembre de 2014" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="12/12/2014 07:55:45"/>
+    <LabelControl Name="Label3" Left="36" Top="100" Width="51" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="Fecha fin" ClickEvent=""/>
+    <LabelControl Name="Label4" Left="40" Top="12" Width="167" Height="19" Font="Tahoma, 12pt" TabIndex="8" Text="Comisiones por cajero"/>
+  </DialogPage>
+</Report>

@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="08/24/2016 18:14:30" ReportInfo.Modified="05/09/2018 11:08:33" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls74BYwL580BzmLnfLWb3s30bYl49kFpxSHBkLmkUUP+hg3mAiMmGBPyol0+uN7aYvsiUifxunanIiQk5YpYIhH4=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;movto.productoid,&#13;&#10;producto.clave,&#13;&#10;almacen.clave as ALMACEN,&#13;&#10;producto.descripcion,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2, &#13;&#10;sum( case when docto.tipodoctoid = 501 then coalesce(movto.cantidad,0) else coalesce(movto.cantidad,0) * (-1) end) cantidad,&#13;&#10;producto.existencia,&#13;&#10;producto.requierereceta	&#13;&#10;from&#13;&#10;docto left join movto  on movto.doctoid = docto.id&#13;&#10;left join producto on producto.id = movto.productoid&#13;&#10;left join ALMACEN  on almacen.id = docto.almacenid&#13;&#10;left join parametro on 1 = 1&#13;&#10;where &#13;&#10;docto.fecha = @fecha&#13;&#10;and docto.estatusdoctoid = 1&#13;&#10;and docto.tipodoctoid in (501,502)&#13;&#10;&#13;&#10;group by&#13;&#10;movto.productoid,&#13;&#10;producto.clave,&#13;&#10;almacen.clave,&#13;&#10;producto.descripcion,&#13;&#10;producto.descripcion1,&#13;&#10;producto.descripcion2, &#13;&#10;producto.existencia,&#13;&#10;producto.requierereceta">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="REQUIERERECETA" DataType="System.String"/>
+        <Column Name="ALMACEN" DataType="System.String"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="EMPRESA" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="fecha" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="170" PaperHeight="279.4" FirstPageSource="15" OtherPagesSource="15">
+    <PageHeaderBand Name="PageHeader1" Width="567" Height="103.95">
+      <TextObject Name="Text2" Top="85.05" Width="94.5" Height="18.9" Text="CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="94.5" Top="85.05" Width="283.5" Height="18.9" Text="DESCRIPCION1" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="378" Top="85.05" Width="75.6" Height="18.9" Text="CANTIDAD" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text9" Width="567" Height="18.9" CanShrink="true" CanBreak="false" Text="[EMPRESA.NOMBRE]" HorzAlign="Center" WordWrap="false"/>
+      <TextObject Name="Text3" Top="18.9" Width="567" Height="18.9" CanShrink="true" CanBreak="false" Text="REPORTE DE KITS ENSAMBLADOS" HorzAlign="Center" WordWrap="false" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text20" Top="37.8" Width="567" Height="18.9" CanShrink="true" CanBreak="false" Text="FECHA: [fecha]" HorzAlign="Center" WordWrap="false" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text10" Left="453.6" Top="85.05" Width="37.8" Height="18.9" Text="LOC" HorzAlign="Center" Font="Arial, 8pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="107.95" Width="567" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="94.5" Width="283.5" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="378" Width="75.6" Height="18.9" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text4" Left="453.6" Width="37.8" Height="18.9" Text="[Table.ALMACEN]" HorzAlign="Center" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="130.85" Width="567" Height="18.9">
+      <TextObject Name="Text11" Left="491.4" Width="75.6" Height="18.9" Text="[PageNofM]" HorzAlign="Center" Font="Arial, 8pt, style=Bold"/>
+     <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

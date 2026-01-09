@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/25/2014 16:22:41" ReportInfo.Modified="09/25/2014 17:00:56" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2bWYLIMSDi9FjrQZjp7aZTU=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select quota.id quotaid, quota.vendedorid, quota.anio, quota.mes, quota.quota, quota.logro, quota.utilidad,&#13;&#10;persona.nombre nombrevendedor ,&#13;&#10;case quota.mes &#13;&#10;   when 1 then 'ENERO'  &#13;&#10;   when 2 then 'FEBRERO'&#13;&#10;   when 3 then 'MARZO'&#13;&#10;   when 4 then 'ABRIL'&#13;&#10;   when 5 then 'MAYO'&#13;&#10;   when 6 then 'JUNIO'&#13;&#10;   when 7 then 'JULIO'&#13;&#10;   when 8 then 'AGOSTO'&#13;&#10;   when 9 then 'SEPTIEMBRE'&#13;&#10;   when 10 then 'OCTUBRE'&#13;&#10;   when 11 then 'NOVIEMBRE'&#13;&#10;   when 12 then 'DICIEMBRE'&#13;&#10;   ELSE  ''&#13;&#10; end  AS MESNOMBRE,&#13;&#10;&#13;&#10; CASE WHEN COALESCE(QUOTA.QUOTA,0) = 0 THEN 0 ELSE (COALESCE(QUOTA.LOGRO,0) / COALESCE(QUOTA.quota, 1))  END PORCENTAJELOGRO&#13;&#10;&#13;&#10;from quota left join persona on persona.id = quota.vendedorid&#13;&#10;where (quota.vendedorid = @VENDEDORID or (@VENDEDORID = 0))&#13;&#10;and quota.anio &gt;= @ANIOINICIAL and quota.anio &lt;= @ANIOFINAL&#13;&#10;order by quota.vendedorid, quota.anio, quota.mes&#13;&#10;">
+        <Column Name="QUOTAID" DataType="System.Int64"/>
+        <Column Name="VENDEDORID" DataType="System.Int64"/>
+        <Column Name="ANIO" DataType="System.Int32"/>
+        <Column Name="MES" DataType="System.Int32"/>
+        <Column Name="QUOTA" DataType="System.Decimal"/>
+        <Column Name="LOGRO" DataType="System.Decimal"/>
+        <Column Name="UTILIDAD" DataType="System.Decimal"/>
+        <Column Name="NOMBREVENDEDOR" DataType="System.String"/>
+        <Column Name="MESNOMBRE" DataType="System.String"/>
+        <Column Name="PORCENTAJELOGRO" DataType="System.Decimal"/>
+        <CommandParameter Name="VENDEDORID" DataType="1" Expression="[VENDEDORID]" DefaultValue="0"/>
+        <CommandParameter Name="ANIOINICIAL" DataType="10" Expression="[ANIOINICIAL]" DefaultValue="2014"/>
+        <CommandParameter Name="ANIOFINAL" DataType="10" Expression="[ANIOFINAL]" DefaultValue="2014"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="VENDEDORID" DataType="System.Decimal"/>
+    <Parameter Name="ANIOINICIAL" DataType="System.Decimal"/>
+    <Parameter Name="ANIOFINAL" DataType="System.Decimal"/>
+    <Parameter Name="NOMBREVENDEDOR" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="236.25">
+      <TextObject Name="Text27" Left="9.45" Top="9.45" Width="349.65" Height="18.9" Text="Reporte de quotas/logros/utilidades" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text38" Left="9.45" Top="37.8" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="103.95" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="103.95" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="567" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text43" Left="567" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="9.45" Top="56.7" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text49" Left="9.45" Top="75.6" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="481.95" Top="56.7" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="481.95" Top="75.6" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="103.95" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text44" Left="567" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text50" Left="9.45" Top="94.5" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text36" Left="481.95" Top="94.5" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text45" Left="103.95" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text46" Left="567" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="9.45" Top="113.4" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="481.95" Top="113.4" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text47" Left="103.95" Top="132.3" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="9.45" Top="132.3" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text14" Left="103.95" Top="189" Width="302.4" Height="18.9" Text="[NOMBREVENDEDOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text51" Left="9.45" Top="189" Width="75.6" Height="18.9" Text="Vendedor:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text52" Left="9.45" Top="207.9" Width="94.5" Height="18.9" Text="Año inicial:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text53" Left="207.9" Top="207.9" Width="75.6" Height="18.9" Text="Año final:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text15" Left="113.4" Top="207.9" Width="85.05" Height="18.9" Text="[ANIOINICIAL]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="" Format.NegativePattern="1" Font="Arial, 8pt"/>
+      <TextObject Name="Text16" Left="292.95" Top="207.9" Width="94.5" Height="18.9" Text="[ANIOFINAL]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator=" " Format.NegativePattern="1" Font="Arial, 8pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="240.25" Width="718.2" Height="9.45"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="253.7" Width="718.2" Height="47.25" Condition="[Table.VENDEDORID]" SortOrder="None">
+      <TextObject Name="Text3" Left="37.8" Top="28.35" Width="94.5" Height="18.9" Text="ANIO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text5" Left="141.75" Top="28.35" Width="103.95" Height="18.9" Text="MES" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text7" Left="255.15" Top="28.35" Width="103.95" Height="18.9" Text="QUOTA" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text9" Left="368.55" Top="28.35" Width="103.95" Height="18.9" Text="LOGRO" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text11" Left="595.35" Top="28.35" Width="103.95" Height="18.9" Text="UTILIDAD" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text13" Left="481.95" Top="28.35" Width="103.95" Height="18.9" Text="% DE QUOTA" HorzAlign="Center" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text1" Left="37.8" Width="585.9" Height="18.9" Text="[Table.NOMBREVENDEDOR]" Font="Arial, 10pt, style=Bold"/>
+      <DataBand Name="Data1" Top="304.95" Width="718.2" Height="18.9" DataSource="Table">
+        <TextObject Name="Text2" Left="37.8" Width="94.5" Height="18.9" Text="[Table.ANIO]" Font="Arial, 9pt"/>
+        <TextObject Name="Text4" Left="141.75" Width="103.95" Height="18.9" Text="[Table.MESNOMBRE]" Font="Arial, 9pt"/>
+        <TextObject Name="Text6" Left="255.15" Width="103.95" Height="18.9" Text="[Table.QUOTA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text8" Left="368.55" Width="103.95" Height="18.9" Text="[Table.LOGRO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text10" Left="595.35" Width="103.95" Height="18.9" Text="[Table.UTILIDAD]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text12" Left="481.95" Width="103.95" Height="18.9" Text="[Table.PORCENTAJELOGRO]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="327.85" Width="718.2" Height="37.8"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="369.65" Width="718.2" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

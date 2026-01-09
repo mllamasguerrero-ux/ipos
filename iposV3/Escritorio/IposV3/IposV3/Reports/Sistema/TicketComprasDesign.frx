@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/24/2021 19:28:07" ReportInfo.Modified="07/19/2024 16:45:39" ReportInfo.CreatorVersion="2014.2.10.0">
+  <Dictionary>
+    <PostgresDataConnection Name="Connection" ConnectionString="rijcmlqx1T0cxaam7moPnKfk8dkZ//UtlLHjTy0OMpmCRUR0U+/r8szWvQEqyp/uoDrmMfYKebvvxhxeYG8KXKkUbzy70TI0yu6DPln0qkGwcoM0tn4SHk+PEfPXP1HFKTANJOCTcUc4sQqSo/5RybEnyKQLOvQOyUwLbqjGXk84boKRgtSefWLQib/eP3JVPMJrJsHFV0rXZoanEABO7l+4AjRPOZtFdgtXItE9FhG8puUvOuhgP+4/H1UXouWQz6/DnmwUK95RdX20BHXQL3B0MUZhQ==">
+      <TableDataSource Name="Banco" DataType="System.Int32" Enabled="true" TableName="Banco">
+        <Column Name="EmpresaId" DataType="System.Int64"/>
+        <Column Name="SucursalId" DataType="System.Int64"/>
+        <Column Name="Id" DataType="System.Int64"/>
+        <Column Name="Clave" DataType="System.String"/>
+        <Column Name="Nombre" DataType="System.String"/>
+        <Column Name="Activo" DataType="System.String"/>
+        <Column Name="Creado" DataType="System.DateTime"/>
+        <Column Name="Modificado" DataType="System.DateTime"/>
+        <Column Name="CreadoPorId" DataType="System.Int64"/>
+        <Column Name="ModificadoPorId" DataType="System.Int64"/>
+        <Column Name="Rfc" DataType="System.String"/>
+      </TableDataSource>
+    </PostgresDataConnection>
+    <Parameter Name="p_empresaid" DataType="System.Decimal"/>
+    <Parameter Name="p_sucursalid" DataType="System.Decimal"/>
+    <Parameter Name="p_doctoid" DataType="System.Decimal"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="56.7"/>
+    <DataBand Name="Data1" Top="60.7" Width="718.2" Height="18.9" DataSource="Banco">
+      <TextObject Name="Text1" Left="28.35" Width="94.5" Height="18.9" Text="[Banco.Clave]"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="83.6" Width="718.2" Height="56.7"/>
+  </ReportPage>
+</Report>

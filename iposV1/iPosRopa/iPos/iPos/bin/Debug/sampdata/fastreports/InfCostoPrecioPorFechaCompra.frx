@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/20/2016 13:00:01" ReportInfo.Modified="06/02/2016 13:23:48" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls7RUhWBsEC0lPOEAnzp3ekbT1XZZBZBt2PJ7QPizYKvlFTcBOJp0ROKliZRWLPkj+9vi7YPUvcNE47vDmCmKmlKVSi15Wjq6EN/337PGfXRa">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select  movto.productoid, producto.clave, producto.descripcion1, producto.costoultimo, producto.precio5&#13;&#10; from docto&#13;&#10;left join movto on movto.doctoid = docto.id&#13;&#10;left join producto on producto.id = movto.productoid&#13;&#10;where docto.fecha &gt;= @fechainicial and docto.fecha &lt;= @fechafinal&#13;&#10;and docto.tipodoctoid in (11,17)&#13;&#10;and docto.estatusdoctoid = 1&#13;&#10;group by movto.productoid  ,producto.clave, producto.descripcion1, producto.costoultimo, producto.precio5">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="COSTOULTIMO" DataType="System.Decimal"/>
+        <Column Name="PRECIO5" DataType="System.Decimal"/>
+        <CommandParameter Name="fechainicial" DataType="5" Expression="[fechainicial]" DefaultValue="01/01/2016"/>
+        <CommandParameter Name="fechafinal" DataType="5" Expression="[fechafinal]" DefaultValue="01/01/2017"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="fechainicial" DataType="System.DateTime"/>
+    <Parameter Name="fechafinal" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="94.5">
+      <TextObject Name="Text9" Left="75.6" Top="18.9" Width="567" Height="18.9" Text="REPORTE DE COSTO/PRECIO POR FECHA DE COMPRA" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text10" Left="141.75" Top="56.7" Width="94.5" Height="18.9" Text="[fechainicial]"/>
+      <TextObject Name="Text11" Left="481.95" Top="56.7" Width="94.5" Height="18.9" Text="[fechafinal]"/>
+      <TextObject Name="Text12" Left="378" Top="56.7" Width="94.5" Height="18.9" Text="Fecha final"/>
+      <TextObject Name="Text13" Left="37.8" Top="56.7" Width="94.5" Height="18.9" Text="Fecha inicial"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="98.5" Width="718.2" Height="28.35">
+      <TextObject Name="Text2" Left="9.45" Width="94.5" Height="18.9" Text="CLAVE" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="103.95" Width="340.2" Height="18.9" Text="DESCRIPCION1" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text6" Left="453.6" Width="113.4" Height="18.9" Text="COSTO ULTIMO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="576.45" Width="113.4" Height="18.9" Text="PRECIO 5" Font="Arial, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="130.85" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Left="9.45" Width="94.5" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="103.95" Width="340.2" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="453.6" Width="113.4" Height="18.9" Text="[Table.COSTOULTIMO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="576.45" Width="113.4" Height="18.9" Text="[Table.PRECIO5]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="153.75" Width="718.2" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="338" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="166" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="249" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="44" Top="100" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fechainicial" FilterOperation="GreaterThanOrEqual" Value="05/20/2016 13:33:31"/>
+    <LabelControl Name="Label1" Left="40" Top="84" Width="64" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Fecha inicial"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="44" Top="168" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechafinal" FilterOperation="LessThanOrEqual" Value="05/20/2016 13:33:33"/>
+    <LabelControl Name="Label2" Left="44" Top="152" Width="59" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha final"/>
+    <LabelControl Name="Label3" Left="20" Top="24" Width="299" Height="13" Font="Tahoma, 8.25pt, style=Bold" TabIndex="6" Text="REPORTE DE COSTO/PRECIO POR FECHA COMPRADOS"/>
+  </DialogPage>
+</Report>

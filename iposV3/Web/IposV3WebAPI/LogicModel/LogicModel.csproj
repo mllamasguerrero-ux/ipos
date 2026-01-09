@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>AnyCPU;x86</Platforms>
+    <DefineConstants>PROYECTO_WEB</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\BindingModel\DataAccessBindingModel\**" />
+    <Compile Remove="Controllers\Model_Aux\**" />
+    <Compile Remove="Extensions\**" />
+    <EmbeddedResource Remove="Controllers\BindingModel\DataAccessBindingModel\**" />
+    <EmbeddedResource Remove="Controllers\Model_Aux\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Controllers\BindingModel\DataAccessBindingModel\**" />
+    <None Remove="Controllers\Model_Aux\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="107.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\BindingModel\FacturaElectronica\Consolidacion\" />
+    <Folder Include="Controllers\BindingModel\Traslados\PedidoEntrada\" />
+    <Folder Include="Controllers\BindingModel\Traslados\SolicitudMercancia\" />
+  </ItemGroup>
+
+</Project>

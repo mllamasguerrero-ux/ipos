@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/25/2017 15:36:06" ReportInfo.Modified="03/16/2021 16:02:51" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RGa4fuV4MzKWm/7hfiVWbDFvOZVx8SOHX0gb5rmLrybnY7iiclF/2nv5td1+ndGPC06HQTgDvuVUG6HniOtLf5uFTHeaaLLl6lH2IxXeuHQqtNGn8jwTJLzh3g3OKRxVm8=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;&#13;&#10;       r_pagomovil.id,&#13;&#10;       r_pagomovil.personaclave,&#13;&#10;       persona.nombre  nombrecliente,&#13;&#10;       r_doctopagomovil.ventacobranza,&#13;&#10;       r_doctopagomovil.saldoanterior,&#13;&#10;       r_doctopagomovil.importe,&#13;&#10;       r_doctopagomovil.saldonuevo,&#13;&#10;       case when r_pagomovil.formapagoid = 1 then r_doctopagomovil.importe else 0 end efectivo, &#13;&#10;       case when r_pagomovil.formapagoid = 2 then r_doctopagomovil.importe else 0 end cheque, &#13;&#10;       case when r_pagomovil.formapagoid = 3 then r_doctopagomovil.importe else 0 end deposito, &#13;&#10;       case when r_pagomovil.formapagoid = 7 then r_doctopagomovil.importe else 0 end transferencia,&#13;&#10;bancos.nombre banconombre,&#13;&#10;r_pagomovil.referenciabancaria,&#13;&#10;r_pagomovil.fechaelaboracion,&#13;&#10;r_pagomovil.fecharecepcion,&#13;&#10;r_pagomovil.refinterno&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;       from  r_pagomovil&#13;&#10;          left join r_doctopagomovil on r_doctopagomovil.pagomovilid = r_pagomovil.id&#13;&#10;        left join persona on persona.tipopersonaid = 50 and&#13;&#10;            persona.clave = r_pagomovil.personaclave&#13;&#10;    left join bancos on bancos.id = r_pagomovil.banco&#13;&#10;        where (r_pagomovil.procesado is null or  r_pagomovil.procesado &lt;&gt; 'S')&#13;&#10;           and r_pagomovil.vendedor = @vendedor and r_pagomovil.fecha = @fecha">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="NOMBRECLIENTE" DataType="System.String"/>
+        <Column Name="VENTACOBRANZA" DataType="System.String"/>
+        <Column Name="SALDOANTERIOR" DataType="System.Decimal"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="SALDONUEVO" DataType="System.Decimal"/>
+        <Column Name="EFECTIVO" DataType="System.Decimal"/>
+        <Column Name="CHEQUE" DataType="System.Decimal"/>
+        <Column Name="TRANSFERENCIA" DataType="System.Decimal"/>
+        <Column Name="DEPOSITO" DataType="System.Decimal"/>
+        <Column Name="BANCONOMBRE" DataType="System.String"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="FECHAELABORACION" DataType="System.DateTime"/>
+        <Column Name="FECHARECEPCION" DataType="System.DateTime"/>
+        <Column Name="REFINTERNO" DataType="System.String"/>
+        <CommandParameter Name="vendedor" DataType="16" Expression="[vendedor]"/>
+        <CommandParameter Name="fecha" DataType="5" Expression="[fecha]" DefaultValue="2001-01-01"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="vendedor" DataType="System.String"/>
+    <Parameter Name="fecha" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="103.95">
+      <TextObject Name="Text17" Left="122.85" Top="18.9" Width="151.2" Height="28.35" Text="PAGOS POR VENDEDOR MOVIL" Font="Arial, 18pt, style=Bold"/>
+      <TextObject Name="Text18" Left="122.85" Top="66.15" Width="151.2" Height="18.9" Text="[vendedor]"/>
+      <TextObject Name="Text19" Left="9.45" Top="66.15" Width="113.4" Height="18.9" Text="Vendedor:" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="107.95" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Left="9.45" Width="113.4" Height="28.35" Text="CLAVE&#13;&#10;CLIENTE" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="122.85" Width="151.2" Height="28.35" Text="NOMBRE&#13;&#10;CLIENTE" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text6" Left="274.05" Width="103.95" Height="18.9" Text="VENTA" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="378" Width="103.95" Height="28.35" Text="SALDO&#13;&#10;ANTERIOR" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text10" Left="481.95" Width="103.95" Height="18.9" Text="ABONO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text12" Left="585.9" Width="94.5" Height="28.35" Text="SALDO&#13;&#10;NUEVO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text14" Left="680.4" Width="94.5" Height="18.9" Text="EFECTIVO" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text16" Left="774.9" Width="94.5" Height="18.9" Text="CHEQUE" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text21" Left="869.4" Width="85.05" Height="18.9" Text="TRANSF." Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text23" Left="954.45" Width="85.05" Height="18.9" Text="DEPOSITO" Font="Arial, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="140.3" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Left="9.45" Width="113.4" Height="18.9" Text="[Table.PERSONACLAVE]"/>
+      <TextObject Name="Text3" Left="122.85" Width="151.2" Height="18.9" Text="[Table.NOMBRECLIENTE]"/>
+      <TextObject Name="Text5" Left="274.05" Width="103.95" Height="18.9" Text="[Table.VENTACOBRANZA]"/>
+      <TextObject Name="Text7" Left="378" Width="103.95" Height="18.9" Text="[Table.SALDOANTERIOR]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="481.95" Width="103.95" Height="18.9" Text="[Table.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="585.9" Width="94.5" Height="18.9" Text="[Table.SALDONUEVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="680.4" Width="94.5" Height="18.9" Text="[Table.EFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="774.9" Width="94.5" Height="18.9" Text="[Table.CHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="869.4" Width="85.05" Height="18.9" Text="[Table.TRANSFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text22" Left="954.45" Width="85.05" Height="18.9" Text="[Table.DEPOSITO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="163.2" Width="1047.06" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

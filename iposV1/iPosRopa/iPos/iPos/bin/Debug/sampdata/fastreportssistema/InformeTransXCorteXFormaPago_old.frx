@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/04/2014 09:12:59" ReportInfo.Modified="03/04/2021 12:59:07" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    /*private void Text22_BeforePrint(object sender, EventArgs e)
+    {
+      Text22.Text =  ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION&quot;)) ;
+      string productoDescripcion1 = ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION1&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION1&quot;));
+      string productoDescripcion2 = ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION2&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.PRODUCTODESCRIPCION2&quot;));
+      string texto1 =  ((String)Report.GetColumnValue(&quot;Table.TEXTO1&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.TEXTO1&quot;));    
+      string texto2 =  ((String)Report.GetColumnValue(&quot;Table.TEXTO2&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.TEXTO2&quot;));
+      string texto3 =  ((String)Report.GetColumnValue(&quot;Table.TEXTO3&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.TEXTO3&quot;));
+      string texto4 =  ((String)Report.GetColumnValue(&quot;Table.TEXTO4&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.TEXTO4&quot;));
+      string texto5 =  ((String)Report.GetColumnValue(&quot;Table.TEXTO5&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.TEXTO5&quot;));
+      string texto6 =  ((String)Report.GetColumnValue(&quot;Table.TEXTO6&quot;)) == null ? &quot;&quot; : &quot; &quot; + ((String)Report.GetColumnValue(&quot;Table.TEXTO6&quot;));
+      
+                      
+      Text22.Text += productoDescripcion1 + productoDescripcion2 + texto1 + texto2 + texto3 + texto4 + texto5 + texto6;
+      
+      
+    }   */
+
+    private void Text1_BeforePrint(object sender, EventArgs e)
+    {
+      
+      if(  ((Decimal)Report.GetParameterValue(&quot;lineaid&quot;)) == 0)
+      {
+        Text1.Text = &quot;Todos&quot;;
+      }
+      else
+      {
+        Text1.Text = ((String)Report.GetColumnValue(&quot;Linea.CLAVE&quot;)) + &quot; &quot; +  ((String)Report.GetColumnValue(&quot;Linea.NOMBRE&quot;));
+      }  
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls7IrftX6n5/ducOEX1LLYdug4H+pdWAQcrrFCpM6sAfEyJMQIH6GMhqbcx2of/6yN1ZUEczLJMVuxU86XRSoWs0=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;max(cd.corteid) corteid,&#13;&#10;min(cd.doctoid) doctoid,&#13;&#10;case when cd.tipodoctoid = 23 then 21 else cd.tipodoctoid end tipodoctoid,&#13;&#10;max(cd.subtipodoctoid) subtipodoctoid,&#13;&#10;max(cd.formapagoid) formapagoid,&#13;&#10;sum(cd.monto) monto ,&#13;&#10;case when count(*) &gt; 1 then 0 else max(docto.total) end total,&#13;&#10;case when count(*) &gt; 1 then 0 else max(docto.saldo) end saldo,&#13;&#10;docto.folio,&#13;&#10;case when count(*) &gt; 1 then 'CANCELADA' else max(estatusdocto.nombre) end estatusdoctonombre ,&#13;&#10;max(persona.nombre) clientenombre,&#13;&#10;max(v.nombre) vendedornombre,&#13;&#10;case when count(*) &gt; 1 then&#13;&#10;        case when min(cd.tipodoctoid) = 21 then  'VENTA - CANCELACION' else '' end&#13;&#10;        else max(tipodocto.nombre) end tipodoctonombre ,&#13;&#10;max(subtipodocto.nombre) subtipodoctonombre,&#13;&#10;case when docto.subtipodoctoid in (7,8) then formapago.nombre || ' Traslados ' else formapago.nombre end  formapagonombre,&#13;&#10;max(persona.clave) clienteclave,&#13;&#10;dp.referenciabancaria,&#13;&#10;dp.refinterno&#13;&#10;&#13;&#10;from&#13;&#10; CORTE_BASE_POR_PAGOYFORMAPAGO cd left join&#13;&#10; docto on docto.id = cd.doctoid left join&#13;&#10; formapago on formapago.id = cd.formapagoid left join&#13;&#10; tipodocto on tipodocto.id = cd.tipodoctoid  left join&#13;&#10; subtipodocto on subtipodocto.id = docto.subtipodoctoid left join&#13;&#10; estatusdocto on estatusdocto.id = docto.estatusdoctoid left join&#13;&#10; persona on persona.id = docto.personaid left join&#13;&#10;corte on corte.id = cd.corteid left join&#13;&#10; persona v on v.id = corte.cajeroid left join&#13;&#10;doctopago dp on dp.id = cd.doctopagoid&#13;&#10; where  cd.corteid = @corteid  and &#13;&#10;(cd.formapagoid in (2,3,4,5,15,20,21) or (cd.formapagoid = 1 and docto.tipodoctoid in (21,23) and docto.subtipodoctoid in (7,8)))&#13;&#10;&#13;&#10; group by docto.folio,  case when cd.tipodoctoid = 23 then 21 else cd.tipodoctoid end ,&#13;&#10;case when docto.subtipodoctoid in (7,8) then formapago.nombre || ' Traslados ' else formapago.nombre end , &#13;&#10;formapago.id,&#13;&#10;dp.referenciabancaria,&#13;&#10;dp.refinterno">
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="CORTEID" DataType="System.Int64"/>
+        <Column Name="DOCTOID" DataType="System.Int64"/>
+        <Column Name="TIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="SUBTIPODOCTOID" DataType="System.Int64"/>
+        <Column Name="FORMAPAGOID" DataType="System.Int64"/>
+        <Column Name="MONTO" DataType="System.Decimal"/>
+        <Column Name="SALDO" DataType="System.Decimal"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="ESTATUSDOCTONOMBRE" DataType="System.String"/>
+        <Column Name="CLIENTENOMBRE" DataType="System.String"/>
+        <Column Name="VENDEDORNOMBRE" DataType="System.String"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <Column Name="SUBTIPODOCTONOMBRE" DataType="System.String"/>
+        <Column Name="FORMAPAGONOMBRE" DataType="System.String"/>
+        <Column Name="CLIENTECLAVE" DataType="System.String"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="REFINTERNO" DataType="System.String"/>
+        <CommandParameter Name="corteid" DataType="1" Expression="[corteid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="corteid" DataType="System.Decimal"/>
+    <Total Name="TotalPorFormaPago" Expression="[Table.MONTO]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="Total" Expression="[Table.MONTO]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="179.55">
+      <TextObject Name="Text38" Left="9.45" Top="37.8" Width="170.1" Height="18.9" Text="Datos de la empresa:" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text39" Left="103.95" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.NOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text48" Left="9.45" Top="56.7" Width="75.6" Height="18.9" Text="Nombre:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="481.95" Top="56.7" Width="75.6" Height="18.9" Text="RFC:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text43" Left="567" Top="56.7" Width="302.4" Height="18.9" Text="[Empresa.RFC]" Font="Arial, 8pt"/>
+      <TextObject Name="Text40" Left="103.95" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.CALLE] [Empresa.NUMEROEXTERIOR] [Empresa.NUMEROINTERIOR]" Font="Arial, 8pt"/>
+      <TextObject Name="Text41" Left="567" Top="75.6" Width="302.4" Height="18.9" Text="[Empresa.COLONIA]" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="9.45" Top="75.6" Width="75.6" Height="18.9" Text="Domicilio:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text35" Left="481.95" Top="75.6" Width="75.6" Height="18.9" Text="Colonia:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text42" Left="103.95" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.LOCALIDAD]" Font="Arial, 8pt"/>
+      <TextObject Name="Text31" Left="9.45" Top="94.5" Width="75.6" Height="18.9" Text="Localidad:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text36" Left="481.95" Top="94.5" Width="75.6" Height="18.9" Text="Estado:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text44" Left="567" Top="94.5" Width="302.4" Height="18.9" Text="[Empresa.ESTADO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text45" Left="103.95" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.CP]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="9.45" Top="113.4" Width="75.6" Height="18.9" Text="Codigo postal:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text37" Left="481.95" Top="113.4" Width="75.6" Height="18.9" Text="Teléfono:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text46" Left="567" Top="113.4" Width="302.4" Height="18.9" Text="[Empresa.TELEFONO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text47" Left="103.95" Top="132.3" Width="302.4" Height="18.9" Text="[Empresa.CORREOE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text33" Left="9.45" Top="132.3" Width="75.6" Height="18.9" Text="Correo:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text27" Left="9.45" Top="9.45" Width="670.95" Height="18.9" Text="Transacciones por corte y forma de pago" Font="Arial, 13pt, style=Bold"/>
+      <TextObject Name="Text24" Left="718.2" Top="9.45" Width="94.5" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="183.55" Width="1047.06" Height="9.45"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="197" Width="1047.06" Height="47.25" Condition="[Table.FORMAPAGOID]">
+      <TextObject Name="Text1" Width="387.45" Height="18.9" Text="[Table.FORMAPAGONOMBRE]" Font="Arial, 11pt, style=Bold"/>
+      <TextObject Name="Text3" Left="122.85" Top="28.35" Width="103.95" Height="18.9" Text="FOLIO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text5" Left="226.8" Top="28.35" Width="94.5" Height="18.9" Text="CLIENTE CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text7" Left="321.3" Top="28.35" Width="141.75" Height="18.9" Text="CLIENTE NOMBRE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text9" Left="463.05" Top="28.35" Width="94.5" Height="18.9" Text="ESTATUS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text11" Left="652.05" Top="28.35" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text13" Left="746.55" Top="28.35" Width="94.5" Height="18.9" Text="SALDO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text15" Left="841.05" Top="28.35" Width="132.3" Height="18.9" Text="VENDEDOR" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text17" Left="557.55" Top="28.35" Width="94.5" Height="18.9" Text="MONTO" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text19" Top="28.35" Width="122.85" Height="18.9" Text="TIPO" Font="Arial, 8pt, style=Bold"/>
+      <DataBand Name="Data1" Top="248.25" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+        <TextObject Name="Text2" Left="122.85" Width="103.95" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 8pt"/>
+        <TextObject Name="Text4" Left="226.8" Width="94.5" Height="18.9" Text="[Table.CLIENTECLAVE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text6" Left="321.3" Width="141.75" Height="18.9" Text="[Table.CLIENTENOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text8" Left="463.05" Width="94.5" Height="18.9" Text="[Table.ESTATUSDOCTONOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text10" Left="652.05" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text12" Left="746.55" Width="94.5" Height="18.9" Text="[Table.SALDO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text14" Left="841.05" Width="132.3" Height="18.9" Text="[Table.VENDEDORNOMBRE]" Font="Arial, 8pt"/>
+        <TextObject Name="Text16" Left="557.55" Width="94.5" Height="18.9" Text="[Table.MONTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text18" Width="122.85" Height="18.9" Text="[Table.TIPODOCTONOMBRE]" Font="Arial, 8pt"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="271.15" Width="1047.06" Height="18.9">
+        <TextObject Name="Text20" Left="831.6" Width="141.75" Height="18.9" Text="[TotalPorFormaPago]" Font="Arial, 9pt"/>
+        <TextObject Name="Text21" Left="652.05" Width="170.1" Height="18.9" Text="Total por forma de pago" Font="Arial, 9pt, style=Bold"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="294.05" Width="1047.06" Height="28.35">
+      <TextObject Name="Text49" Left="652.05" Top="9.45" Width="170.1" Height="18.9" Text="Total general" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text22" Left="831.6" Top="9.45" Width="141.75" Height="18.9" Text="[Total]" Font="Arial, 10pt, style=Bold"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="326.4" Width="1047.06" Height="18.9">
+      <TextObject Name="Text23" Left="793.8" Width="94.5" Height="18.9" Text="[Page]" Font="Arial, 9pt"/>
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="230" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <NumericUpDownControl Name="NumericUpDown1" Left="104" Top="92" Font="Tahoma, 8pt" TabIndex="2" Text="1965" ReportParameter="corteid" Maximum="100000" Value="1965"/>
+    <LabelControl Name="Label1" Left="104" Top="76" Width="40" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="corteid"/>
+  </DialogPage>
+</Report>

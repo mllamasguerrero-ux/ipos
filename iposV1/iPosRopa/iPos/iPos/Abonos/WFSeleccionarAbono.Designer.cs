@@ -1,0 +1,107 @@
+﻿namespace iPos
+{
+    partial class WFSeleccionarAbono
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.numeroAbonoTextBox = new System.Windows.Forms.NumericTextBox();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.label1.Location = new System.Drawing.Point(12, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(107, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Numero de abono";
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.button1.Location = new System.Drawing.Point(139, 72);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Enviar";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // numeroAbonoTextBox
+            // 
+            this.numeroAbonoTextBox.AllowNegative = true;
+            this.numeroAbonoTextBox.Format_Expression = null;
+            this.numeroAbonoTextBox.Location = new System.Drawing.Point(125, 35);
+            this.numeroAbonoTextBox.Name = "numeroAbonoTextBox";
+            this.numeroAbonoTextBox.NumericPrecision = 18;
+            this.numeroAbonoTextBox.NumericScaleOnFocus = 0;
+            this.numeroAbonoTextBox.NumericScaleOnLostFocus = 0;
+            this.numeroAbonoTextBox.NumericValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.numeroAbonoTextBox.Size = new System.Drawing.Size(100, 20);
+            this.numeroAbonoTextBox.TabIndex = 1;
+            this.numeroAbonoTextBox.Tag = 34;
+            this.numeroAbonoTextBox.Text = "0";
+            this.numeroAbonoTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numeroAbonoTextBox.ValidationExpression = null;
+            this.numeroAbonoTextBox.ZeroIsValid = false;
+            // 
+            // WFSeleccionarAbono
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::iPos.Properties.Resources.FONDO_IPOS_CON_LOGO_copy;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(289, 159);
+            this.Controls.Add(this.numeroAbonoTextBox);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.label1);
+            this.DoubleBuffered = true;
+            this.Name = "WFSeleccionarAbono";
+            this.Text = "WFSeleccionarAbono";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericTextBox numeroAbonoTextBox;
+    }
+}

@@ -1,0 +1,19 @@
+CREATE GENERATOR SEQ_SAT_PRODUCTOSERVICIO;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

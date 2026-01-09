@@ -1,0 +1,21 @@
+
+ALTER TABLE SAT_TASACUOTA ADD CONSTRAINT PK_SAT_TASACUOTA PRIMARY KEY (ID);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

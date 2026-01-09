@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/28/2014 11:02:39" ReportInfo.Modified="06/08/2016 10:16:33" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2U511RYRaBTE9gj2KVmrGWA=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT PRODUCTO.ID PRODUCTOID, PRODUCTO.CLAVE PRODUCTOCLAVE, PRODUCTO.descripcion1,  PRODUCTO.descripcion2, MOVTO.TOTAL,&#13;&#10;       CASE WHEN DOCTO.TOTAL &lt;&gt; 0 THEN DOCTO.ABONO/ DOCTO.TOTAL ELSE 0 END * 100 PORCENTAJEPAGADO,&#13;&#10;       CASE WHEN DOCTO.TOTAL &lt;&gt; 0 THEN MOVTO.TOTAL * (DOCTO.ABONO/ DOCTO.TOTAL) ELSE 0 END PAGADO_PROP ,&#13;&#10;       CASE WHEN DOCTO.TOTAL &lt;&gt; 0 THEN MOVTO.TOTAL - (MOVTO.TOTAL * (DOCTO.ABONO/ DOCTO.TOTAL)) ELSE 0 END PORPAGAR ,&#13;&#10;       PERSONA.NOMBRE PERSONANOMBRE, PERSONA.clave PERSONACLAVE , TIPODOCTO.nombre TIPODOCTONOMBRE, MOVTO.CANTIDAD, MOVTO.PRECIO, PRODUCTO.EXISTENCIA,&#13;&#10;DOCTO.FOLIO, DOCTO.FECHA&#13;&#10; FROM&#13;&#10;DOCTO INNER JOIN MOVTO ON MOVTO.doctoid = DOCTO.ID&#13;&#10;INNER JOIN PRODUCTO ON PRODUCTO.ID = MOVTO.productoid&#13;&#10;LEFT JOIN TIPODOCTO ON DOCTO.TIPODOCTOID = TIPODOCTO.ID&#13;&#10;LEFT JOIN PERSONA ON PERSONA.ID = DOCTO.PERSONAID&#13;&#10;WHERE&#13;&#10;(DOCTO.TIPODOCTOID IN (21) or (DOCTO.TIPODOCTOID IN (31,81)  AND DOCTO.SUBTIPODOCTOID NOT IN (7,8))) AND&#13;&#10;(PRODUCTO.clave LIKE 'OFER%' or producto.clave = 'ODER23' )  AND&#13;&#10;DOCTO.ESTATUSDOCTOID = 1&#13;&#10;&#13;&#10;ORDER BY PRODUCTO.ID , DOCTO.PERSONAID, DOCTO.FECHA, DOCTO.TIPODOCTOID">
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION2" DataType="System.String"/>
+        <Column Name="PORCENTAJEPAGADO" DataType="System.Decimal"/>
+        <Column Name="PAGADO_PROP" DataType="System.Decimal"/>
+        <Column Name="PORPAGAR" DataType="System.Decimal"/>
+        <Column Name="PERSONANOMBRE" DataType="System.String"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="TIPODOCTONOMBRE" DataType="System.String"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOCLAVE" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="PRECIO" DataType="System.Decimal"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <Column Name="FOLIO" DataType="System.Int32"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Total Name="Total" Expression="[Table.TOTAL]" Evaluator="Data1"/>
+    <Total Name="Pagado" Expression="[Table.PAGADO_PROP]" Evaluator="Data1"/>
+    <Total Name="PorPagar" Expression="[Table.PORPAGAR]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="450" PaperHeight="210.1" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1625.4" Height="66.15">
+      <TextObject Name="Text35" Left="226.8" Top="9.45" Width="463.05" Height="28.35" Text="Reporte de productos ofertados" Font="Arial, 14pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="70.15" Width="1625.4" Height="37.8">
+      <TextObject Name="Text2" Width="94.5" Height="28.35" Text="PRODUCTO CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="302.4" Width="189" Height="28.35" Text="DESCRIPCION2" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="1266.3" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="1077.3" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text14" Left="1171.8" Width="94.5" Height="18.9" Text="PRECIO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text16" Left="1360.8" Width="66.15" Height="28.35" Text="% PAGADO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text18" Left="1426.95" Width="94.5" Height="37.8" Text="PAGADO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text20" Left="1521.45" Width="94.5" Height="28.35" Text="POR PAGAR " Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="94.5" Width="207.9" Height="28.35" Text="DESCRIPCION1" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text22" Left="548.1" Width="94.5" Height="28.35" Text="PERSONA CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text4" Left="916.65" Width="160.65" Height="28.35" Text="PERSONA NOMBRE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text36" Left="491.4" Width="56.7" Height="28.35" Text="EXIST." Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text29" Left="642.6" Width="94.5" Height="18.9" Text="FOLIO" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text31" Left="737.1" Width="103.95" Height="18.9" Text="TIPO DOCTO" AllowExpressions="false" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text37" Left="841.05" Width="75.6" Height="18.9" Text="FECHA" AllowExpressions="false" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="111.95" Width="1625.4" Height="28.35" DataSource="Table">
+      <TextObject Name="Text9" Left="1266.3" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="1077.3" Width="94.5" Height="18.9" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="1171.8" Width="94.5" Height="18.9" Text="[Table.PRECIO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="1360.8" Width="66.15" Height="28.35" Text="[Table.PORCENTAJEPAGADO]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="1426.95" Width="94.5" Height="28.35" Text="[Table.PAGADO_PROP]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="1521.45" Width="94.5" Height="18.9" Text="[Table.PORPAGAR]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text3" Left="916.65" Width="160.65" Height="18.9" Text="[Table.PERSONANOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text21" Left="548.1" Width="94.5" Height="18.9" Text="[Table.PERSONACLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.PRODUCTOCLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text5" Left="94.5" Width="207.9" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 8pt"/>
+      <TextObject Name="Text7" Left="302.4" Width="189" Height="18.9" Text="[Table.DESCRIPCION2]" Font="Arial, 8pt"/>
+      <TextObject Name="Text26" Left="491.4" Width="56.7" Height="18.9" Text="[Table.EXISTENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text28" Left="642.6" Width="94.5" Height="18.9" Text="[Table.FOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text30" Left="737.1" Width="103.95" Height="18.9" Text="[Table.TIPODOCTONOMBRE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text32" Left="841.05" Width="75.6" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="144.3" Width="1625.4" Height="28.35">
+      <TextObject Name="Text24" Left="1426.95" Width="94.5" Height="18.9" Text="[Pagado]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text25" Left="1521.45" Width="85.05" Height="18.9" Text="[PorPagar]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text23" Left="1266.3" Width="94.5" Height="18.9" Text="[Total]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text27" Left="1124.55" Width="94.5" Height="18.9" Text="TOTALES" Font="Arial, 8pt"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="176.65" Width="1625.4" Height="18.9"/>
+  </ReportPage>
+</Report>

@@ -1,0 +1,157 @@
+create or alter procedure REPL_IMPO_COMPRASMATRIZ (
+    DOCTOACTUALID D_FK,
+    REFERENCIA D_REFERENCIA,
+    USERID D_FK,
+    PRODUCTO D_CLAVE,
+    CANTIDAD D_CANTIDAD,
+    REFERENCIAS varchar(255),
+    SUCURSALFUENTE D_CLAVE_NULL,
+    TIPODOCTOID D_FK,
+    FECHA D_FECHA,
+    DESCRIPCION D_DESCRIPCION,
+    OBSERVACION D_OBSERVACION,
+    PRECIO D_PRECIO,
+    PRODUCTODESCRIPCION D_STDTEXT_MEDIUM,
+    LOTE D_LOTE,
+    FECHAVENCE D_FECHAVENCE,
+    PERSONACLAVE D_CLAVE_NULL,
+    SUBTIPODOCTOID D_FK,
+    NOTAPAGO D_STDTEXT_MEDIUM,
+    FOLIO D_DOCTOFOLIO,
+    FECHAFACTURA D_FECHA,
+    ORIGENFISCALID D_FK)
+returns (
+    DOCTOID D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable PRODUCTOID D_FK;
+declare variable PROVEEDORID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable SUCURSALTID D_FK;
+declare variable MOVTOID D_FK;
+declare variable PRECIORECEPCIONTRASLADO D_FK;
+declare variable TIPOPRECIORECEPCIONTRASLADO D_FK;
+declare variable SUPERLISTAPRECIOID D_FK;
+declare variable MANEJASUPERLISTAPRECIO D_BOOLCN;
+declare variable PERSONASUCURSALID D_FK;
+declare variable CLAVECLIENTESUCURSAL D_CLAVE_NULL;
+declare variable CORTEID D_FK;
+BEGIN
+
+
+   SELECT PARAMETRO.SUCURSALID FROM PARAMETRO INTO :SUCURSALID;
+
+   SELECT SUCURSAL.ID FROM SUCURSAL WHERE CLAVE = :SUCURSALFUENTE INTO :SUCURSALTID;
+
+   SELECT PERSONA.ID FROM PERSONA WHERE CLAVE = :PERSONACLAVE INTO :PROVEEDORID;
+
+
+   SELECT ID
+   FROM PRODUCTO
+   WHERE CLAVE = :PRODUCTO
+   INTO :PRODUCTOID;
+
+
+
+
+   if( :PRODUCTOID is null )  then
+   begin
+      insert into producto (
+         clave,
+         nombre,
+         ean ,
+         descripcion1 ,
+         manejalote,
+         eskit,
+         negativos
+      ) values (
+         :PRODUCTO,
+         :DESCRIPCION,
+         '',
+         :DESCRIPCION,
+         'N',
+         'N',
+         'S'
+      ) RETURNING ID INTO :PRODUCTOID;
+   end
+
+   
+   SELECT ID FROM CORTE WHERE CAJEROID = :USERID AND FECHACORTE = :FECHA INTO :CORTEID;
+
+   IF(COALESCE(:CORTEID , 0) = 0) THEN
+   BEGIN
+       SELECT ERRORCODE,  CORTEID FROM
+        CORTE_ABRIR (
+                :FECHA,
+                :SUCURSALID ,
+                :USERID ,
+                0,
+            1) INTO :ERRORCODE, :CORTEID;
+
+            
+        IF (:ERRORCODE > 0) THEN
+        BEGIN
+            SUSPEND;
+            EXIT;
+        END
+   END
+
+
+
+   IF ((:DOCTOACTUALID IS NULL) or (:DOCTOACTUALID = 0)) THEN
+   BEGIN
+      SELECT DOCTOID, ERRORCODE
+      FROM DOCTO_INSERT (
+         :USERID,
+         1,
+         :SUCURSALID,
+         :TIPODOCTOID,
+         0,
+         0,
+         :PROVEEDORID,
+         :USERID,
+         1,
+         :REFERENCIA,
+         :REFERENCIAS,
+         :SUCURSALTID,
+         NULL,
+         :FECHA,
+         NULL,
+         NULL ,
+         'S' ,
+         :ORIGENFISCALID
+      ) INTO :DOCTOID, :ERRORCODE;
+
+      UPDATE DOCTO SET SUBTIPODOCTOID = :SUBTIPODOCTOID, FOLIO = :FOLIO, FECHAFACTURA = :FECHAFACTURA WHERE ID = :DOCTOID;
+
+   END
+   ELSE
+   BEGIN
+      DOCTOID = :DOCTOACTUALID;
+   END
+
+   -- provisional mientras cambio docto_insert y movto_insert.
+   UPDATE DOCTO
+   SET REFERENCIAS = :REFERENCIAS, DESCRIPCION = :DESCRIPCION  , OBSERVACION = :OBSERVACION ,
+   NOTAPAGO = :NOTAPAGO
+   WHERE ID = :DOCTOID;
+
+
+
+
+
+   -- Guarda el movimiento en movto
+   SELECT DOCTOID , MOVTOID
+   FROM MOVTO_INSERT (
+      :DOCTOID, 0, 1, 1, :TIPODOCTOID, 0, 0, 0, :USERID, 0,
+      0, :PRODUCTOID, NULL, NULL, :CANTIDAD, 0, :CANTIDAD, 0, 0,:PRECIO, 0,
+      :REFERENCIA, :REFERENCIAS, :PRECIO, :SUCURSALTID, NULL, 'N', 0, :FECHA, NULL, 0.00, NULL,NULL,NULL,NULL,NULL , NULL, NULL, NULL , NULL , NULL, 'N','N'
+   ) INTO :DOCTOID, :MOVTOID;
+
+
+
+   SUSPEND;
+   EXIT;
+
+
+END

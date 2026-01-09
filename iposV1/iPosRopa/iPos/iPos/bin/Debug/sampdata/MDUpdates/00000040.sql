@@ -1,0 +1,1 @@
+delete from imp_files where if_tipo = 4;

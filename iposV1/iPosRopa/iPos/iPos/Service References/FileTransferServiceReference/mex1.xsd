@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?xsd=xsd2" namespace="http://schemas.microsoft.com/Message" />
+  <xs:import schemaLocation="http://199.89.53.90/wcfFileTransfer/TransferService1.svc/mex?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="DownloadRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Path" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoteFileInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.microsoft.com/Message" name="FileByteStream" type="q1:StreamBody" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FileName" nillable="true" type="xs:string" />
+  <xs:element name="Length" type="xs:long" />
+  <xs:element name="Message" nillable="true" type="xs:string" />
+  <xs:element name="Path" nillable="true" type="xs:string" />
+  <xs:element name="Result" type="xs:boolean" />
+  <xs:element name="GenericResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MinDate" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="RemotePath" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListFileInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="FileLastWriteList" nillable="true" type="q2:ArrayOfdateTime" />
+        <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="FileNameList" nillable="true" type="q3:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

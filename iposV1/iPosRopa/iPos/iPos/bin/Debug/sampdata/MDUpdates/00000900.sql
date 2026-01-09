@@ -1,0 +1,2 @@
+INSERT INTO MENUITEMS (MN_ID, MN_IDPARENT, MN_ETIQUETA, MN_DESC, MN_DERECHO, MN_LEVEL, MN_ORDEN)
+  VALUES (130, 109, 'Recepción de traslados sucursales', 'Recepción de traslados sucursales', 130, 3, 7);

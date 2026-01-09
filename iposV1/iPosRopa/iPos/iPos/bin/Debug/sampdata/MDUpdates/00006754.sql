@@ -1,0 +1,12 @@
+EXECUTE BLOCK
+AS
+BEGIN
+      insert into derechos(DR_DERECHO, DR_DESCRIPCION) values (10178, 'Ver utilidad ventas');
+      
+    
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (11, 10178);
+    INSERT INTO PERFIL_DER (PD_PERFIL, PD_DERECHO) VALUES (12, 10178);
+
+      
+    
+END

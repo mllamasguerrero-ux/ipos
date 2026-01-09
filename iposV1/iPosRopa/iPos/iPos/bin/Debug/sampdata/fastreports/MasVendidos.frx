@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/28/2015 17:19:23" ReportInfo.Modified="06/28/2015 20:30:16" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlsyPW2+DbPITHBpH45gkkG5amqE7oqnAVKuO1uoGUplmR/FgrhTsHiCJ+YQYIUkU/4Kuo25hbyIMqkMNpg10aO44Rc6BcrqWvctFnIS6PC0pI">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select first @NUMREG subquery.*, producto.clave, producto.descripcion from&#13;&#10;(&#13;&#10;select movto.productoid,&#13;&#10;sum(movto.cantidad) cantidad, count(docto.id) cantTickets , sum(movto.importe) importe, sum(movto.total) total&#13;&#10; from docto&#13;&#10;left join movto  on docto.id = movto.doctoid&#13;&#10;where docto.estatusdoctoid = 1 and docto.tipodoctoid = 21&#13;&#10;and docto.fecha &gt;= @FECHAINICIO and docto.fecha &lt;= @FECHAFIN&#13;&#10;group by movto.productoid&#13;&#10;order by case when @TIPO = 'POR CANTIDAD' then sum(movto.cantidad)  else count(movto.id)  end  desc&#13;&#10;) subquery&#13;&#10;left join producto  on producto.id = subquery.productoid">
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="CANTIDAD" DataType="System.Decimal"/>
+        <Column Name="CANTTICKETS" DataType="System.Int32"/>
+        <Column Name="IMPORTE" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <CommandParameter Name="NUMREG" DataType="10" Expression="[cantidad]" DefaultValue="100"/>
+        <CommandParameter Name="FECHAINICIO" DataType="5" Expression="[fechainicio]" DefaultValue="01/01/2000"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2020"/>
+        <CommandParameter Name="TIPO" DataType="16" Expression="[tipo]" DefaultValue="'POR CANTIDAD'"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="tipo" DataType="System.String"/>
+    <Parameter Name="fechainicio" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Parameter Name="cantidad" DataType="System.Decimal"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="113.4">
+      <TextObject Name="Text13" Left="122.85" Top="9.45" Width="453.6" Height="37.8" Text="REPORTE DE PRODUCTOS MAS VENDIDOS" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text14" Left="113.4" Top="47.25" Width="122.85" Height="18.9" Text="Rango de fecha de:" Font="Arial, 9pt"/>
+      <TextObject Name="Text15" Left="368.55" Top="47.25" Width="18.9" Height="18.9" Text="a" Font="Arial, 9pt"/>
+      <TextObject Name="Text16" Left="113.4" Top="75.6" Width="122.85" Height="18.9" Text="Tipo:" Font="Arial, 9pt"/>
+      <TextObject Name="Text17" Left="368.55" Top="75.6" Width="141.75" Height="18.9" Text="Cantidad a mostrar:" Font="Arial, 9pt"/>
+      <TextObject Name="Text18" Left="255.15" Top="75.6" Width="103.95" Height="18.9" Text="[tipo]" Font="Arial, 9pt"/>
+      <TextObject Name="Text19" Left="255.15" Top="47.25" Width="103.95" Height="18.9" Text="[fechainicio]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text20" Left="406.35" Top="47.25" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+      <TextObject Name="Text21" Left="519.75" Top="75.6" Width="94.5" Height="18.9" Text="[cantidad]" Font="Arial, 9pt"/>
+      <TextObject Name="Text22" Left="595.35" Top="18.9" Width="113.4" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="117.4" Width="718.2" Height="28.35">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="CLAVE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Width="132.3" Height="18.9" Text="DESCRIPCION" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="236.25" Width="94.5" Height="18.9" Text="CANTIDAD" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text8" Left="349.65" Width="103.95" Height="18.9" Text="CANT. TICKETS" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text10" Left="463.05" Width="94.5" Height="18.9" Text="IMPORTE" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text12" Left="576.45" Width="94.5" Height="18.9" Text="TOTAL" Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="149.75" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text3" Left="94.5" Width="132.3" Height="18.9" Text="[Table.DESCRIPCION]" Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="236.25" Width="94.5" Height="18.9" Text="[Table.CANTIDAD]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="349.65" Width="94.5" Height="18.9" Text="[Table.CANTTICKETS]" Font="Arial, 9pt"/>
+      <TextObject Name="Text9" Left="463.05" Width="94.5" Height="18.9" Text="[Table.IMPORTE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="576.45" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="172.65" Width="718.2" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="310" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="251" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="251" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="48" Top="40" Font="Tahoma, 8pt" TabIndex="2" Text="domingo, 28 de junio de 2015" ReportParameter="fechainicio" FilterOperation="GreaterThanOrEqual" Value="06/28/2015 19:24:12"/>
+    <LabelControl Name="Label1" Left="48" Top="24" Width="62" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Fecha inicio"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="52" Top="96" Font="Tahoma, 8pt" TabIndex="4" Text="domingo, 28 de junio de 2015" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="06/28/2015 19:24:15"/>
+    <LabelControl Name="Label2" Left="52" Top="80" Width="51" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha fin"/>
+    <LabelControl Name="Label3" Left="52" Top="128" Width="27" Height="13" Font="Tahoma, 8pt" TabIndex="7" Text="Tipo"/>
+    <NumericUpDownControl Name="NumericUpDown1" Left="56" Top="196" Font="Tahoma, 8pt" TabIndex="8" Text="100" ReportParameter="cantidad" Maximum="100000" Value="100"/>
+    <LabelControl Name="Label4" Left="56" Top="180" Width="48" Height="13" Font="Tahoma, 8pt" TabIndex="9" Text="cantidad"/>
+    <ComboBoxControl Name="ComboBox1" Left="52" Top="148" Font="Tahoma, 8pt" TabIndex="10" Text="POR CANTIDAD" ReportParameter="tipo" ItemHeight="13" ItemsText="POR CANTIDAD&#13;&#10;POR NUMERO DE TICKETS"/>
+  </DialogPage>
+</Report>

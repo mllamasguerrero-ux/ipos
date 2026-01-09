@@ -1,0 +1,354 @@
+<UserControl x:Class="IposV3.Views.V_inventario_fisicoView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cal="http://www.caliburnproject.org"
+        xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:cbind="clr-namespace:CalcBinding;assembly=CalcBinding"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:IposV3"
+            xmlns:localCommon="clr-namespace:UICommon;assembly=UICommon"
+        xmlns:localCont="clr-namespace:Controls;assembly=UICommon"
+        xmlns:localConv="clr-namespace:Converters;assembly=UICommon"
+        xmlns:ac="clr-namespace:AdornedControl;assembly=AdornedControl"
+        mc:Ignorable="d"
+        Padding="0,30,0,0"
+        VerticalAlignment="Stretch"
+        Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={localConv:WindowSizeConverter}, ConverterParameter='0.98'}"
+        >
+
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="IconBrush" Color="DodgerBlue"/>
+        <localConv:PackIconImageSourceConverter x:Key="PackIconImageSourceConverter" />
+        <localConv:DateTimeOffsetToDateTimeConverter x:Key="DateTimeOffsetToDateTimeConverter"/>
+
+        <Style x:Key="customCellStyle" TargetType="Syncfusion:VirtualizingCellsControl">
+            <Setter Property="cal:Message.Attach" Value="[Event MouseDoubleClick] = [Action SelectItemByCell($dataContext)]"/>
+        </Style>
+
+        <Style x:Key="filterControlStyle" TargetType="Syncfusion:GridFilterControl">
+            <Setter Property="FilterMode" Value="AdvancedFilter" />
+        </Style>
+
+
+    </UserControl.Resources>
+
+
+    <ScrollViewer x:Name="MainScrollViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="20,20,20,20">
+        <WrapPanel Name="MainPanel"  HorizontalAlignment="Stretch"  VerticalAlignment="Top"  >
+            <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"  Height="5"  >
+                <localCont:MessageBoxV2 MessageToUser="{Binding MessageToUser}"  Width="10"  HorizontalAlignment="Right"/>
+            </StackPanel>
+
+            <ac:AdornedControl  IsAdornerVisible="{Binding IsBusy}">
+                <ac:AdornedControl.AdornerContent>
+                    <localCont:LoadingWait></localCont:LoadingWait>
+                </ac:AdornedControl.AdornerContent>
+                <WrapPanel  HorizontalAlignment="Stretch"  VerticalAlignment="Top"  IsEnabled="{cbind:Binding Path=!IsBusy}">
+
+
+                    <WrapPanel Margin="0,-10,0,0" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=5*x/12.5}">
+
+                        <Button  x:Name="Back" Style="{StaticResource MaterialDesignIconButton}" Height="20">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ArrowLeft"/>
+                            </StackPanel>
+                        </Button>
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}">Primer paso</TextBlock>
+
+
+
+                    </WrapPanel>
+
+                    <WrapPanel Margin="0,0,0,0" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=7*x/12.5}">
+
+                        <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1*x/12.5}"    >
+
+                            <Label> Consecutivo:</Label>
+                            <Label Content="{Binding CurrentDocto.Id}"/>
+
+                        </StackPanel>
+
+                        <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2*x/12.5}"    >
+                            <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Almacen" />
+                            <ComboBox  x:Name="P_almacenid" 
+			                                        ItemsSource="{Binding Catalogs[Almacen]}"
+                                                    SelectedValuePath="Id"
+                                                    SelectedValue="{Binding Inventario_movto_insert_param.Almacenid}"
+                                                    DisplayMemberPath="Nombre" />
+                        </StackPanel>
+                        <StackPanel MinWidth="50" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=1.4*x/12.5}"  Height="65"  >
+                            <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Kits desensamblados" HorizontalAlignment="Center" />
+                            <CheckBox x:Name="Docto_kit_Kitdesglosado"  IsChecked="{Binding CurrentDocto.Docto_kit_Kitdesglosado, Converter={localConv:BooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"/>
+                            <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Docto_kit_Kitdesglosado}"  Margin="0,0,0,0"/>
+                        </StackPanel>
+
+                        <StackPanel Name="ConfigDockPanel" MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2*x/12.5}"   >
+
+
+                            <Menu x:Name="MenuConfig">
+
+                                <MenuItem >
+                                    <MenuItem.Icon>
+                                        <Image Source="{Binding Source={x:Static iconPacks:PackIconFontAwesomeKind.CogsSolid}, Converter={StaticResource PackIconImageSourceConverter}, ConverterParameter={StaticResource IconBrush}}">
+
+                                        </Image>
+                                    </MenuItem.Icon>
+                                    <MenuItem IsCheckable="true" Header="Cajas/Piezas activo" IsChecked="{Binding Path=CajasBotellasActive}"/>
+                                    <MenuItem IsCheckable="true" Header="Naveg. con enter"/>
+
+                                </MenuItem>
+                            </Menu>
+
+
+
+                        </StackPanel>
+
+                    </WrapPanel>
+
+
+                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}">
+                        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,20">
+                            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Medium"  HorizontalAlignment="Stretch"  VerticalAlignment="Top"></TextBlock>
+                            <Border BorderThickness="0,2,0,0"  BorderBrush="LightBlue"  >
+                                <WrapPanel Margin="0,10,0,0">
+
+
+                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="65"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Producto" />
+                                       
+
+                                            <localConv:SfTextBoxExt2 x:Name="Productoclave"
+                                             Text="{Binding Inventario_movto_insert_param.Productoclave}" 
+                                                 HorizontalAlignment="Stretch" 
+                                                 VerticalAlignment="Center"
+                                                 Margin="0,0,6,0"
+                                                 IsHitTestVisible="True"
+                                                 ForceCursor="True"
+                                                 BorderThickness="0,0,0,2"
+                                            BorderBrush="DarkGray"
+                                                                     Width="120"
+                                                 localCommon:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="localConv:SfTextBoxExt2.Text"
+                                                 cal:Message.Attach="[Event PreviewKeyDown] = [Action ProductoKeyDown($eventArgs)]"
+                                            
+                                                            Height="30"
+                                                            SearchItemPath="Text"
+                                                            SuggestionMode="Contains"
+                                                            AutoCompleteMode="Suggest"
+                                                            AutoCompleteSource="{Binding GlobalSession.ListadoAutoCompleteProd}" />
+
+
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Productoclave}"  Margin="0,0,0,0"/>
+                                    </StackPanel>
+
+
+                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2*x/12.5}"  Height="65" Visibility="{cbind:Binding Path=CajasBotellasActive}" >
+                                        <Label  Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Cajas" />
+                                        <Syncfusion:DoubleTextBox x:Name="Cajas" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="0" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Cajas}" VerticalAlignment="Top"  IsScrollingOnCircle="False"  />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cajas}"  Margin="0,0,0,0"/>
+                                    </StackPanel>
+
+                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=2*x/12.5}"  Height="65"  >
+                                        <Label Style="{DynamicResource LabelFieldFormTemplate}" Margin="10,0,10,0"  Content="Cantidad" />
+                                        <Syncfusion:DoubleTextBox x:Name="Cantidad" HorizontalAlignment="Stretch"  Margin="10,0,10,0" NumberGroupSeparator="," NumberDecimalDigits="2" NumberDecimalSeparator="." TextWrapping="Wrap" Text="DoubleTextBox" Value="{Binding Inventario_movto_insert_param.Cantidad}" VerticalAlignment="Top"  IsScrollingOnCircle="False" />
+                                        <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Cantidad}"  Margin="0,0,0,0"/>
+                                    </StackPanel>
+
+
+                                    <WrapPanel 
+                                        Margin="0,0,0,0"
+                                        Visibility="{Binding Path=ManejaLote, Converter={localConv:BoolToVisibilityConverter}}"
+                                        MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}"    >
+
+                                        <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=5*x/12.5}"  >
+
+
+                                            <RadioButton GroupName="LoteNuevo" Margin="0" IsChecked="{Binding Path=LoteNuevo, Converter={localConv:RadioBoolToIntConverter}, ConverterParameter=0}" Content="Lote ya ingresado" />
+
+                                            <ComboBox  x:Name="LoteFechavenceConcatenado" Margin="0,10,0,0"
+			                                        ItemsSource="{Binding Catalogs[LoteInventario]}"
+                                                    SelectedValuePath="Clave"
+                                                    SelectedValue="{Binding Inventario_movto_insert_param.LoteFechavenceConcatenado}"
+                                                    DisplayMemberPath="Clave" />
+                                            <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=LoteFechavenceConcatenado}"  Margin="0,0,0,0"/>
+                                        </StackPanel>
+
+                                        <WrapPanel MinWidth="110"  Margin="15,0,0,0" 
+                                                   Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=5*x/12.5}" >
+
+                                            <RadioButton GroupName="LoteNuevo" Margin="0" IsChecked="{Binding Path=LoteNuevo, Converter={localConv:RadioBoolToIntConverter}, ConverterParameter=1}" Content="Lote nuevo (Lote/F.Vence)" />
+
+
+                                            <WrapPanel MinWidth="110" Margin="0,0,0,0"  Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=5*x/12.5}"    >
+                                                <TextBox MinWidth="150" x:Name="Lote" Text="{Binding Inventario_movto_insert_param.Lote}" Margin="0,0,0,0"    />
+
+                                                <DatePicker x:Name="Fechavence" HorizontalAlignment="Left" Margin="78,10,0,0"  VerticalAlignment="Top" SelectedDate="{Binding Converter={StaticResource DateTimeOffsetToDateTimeConverter}, Path=Inventario_movto_insert_param.Fechavence}"  />
+                                                <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Lote}"  Margin="0,0,0,0"/>
+                                                <TextBlock Style="{DynamicResource TextErrorStyleTemplate}"  Text="{Binding (Validation.Errors), Converter={localConv:ValidationErrorConverter}, ConverterParameter=0, ElementName=Fechavence}"  Margin="0,0,0,0"/>
+                                            </WrapPanel>
+
+                                        </WrapPanel>
+
+                                    </WrapPanel>
+
+
+
+
+
+
+
+
+                                    <StackPanel Margin="10,0,0,0" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}"    >
+                                        <TextBox x:Name="ProductoNombre" Text="{Binding Inventario_movto_insert_param.DescripcionProductoMovto}" Margin="10,0,10,0" IsReadOnly="True"  Background="#F9F9F9F9"    />
+                                    </StackPanel>
+
+                                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}"   >
+                                        <TextBox x:Name="ProductoCantidades" Text="{Binding Inventario_movto_insert_param.DescripcionCantidades}" Margin="10,0,10,0" IsReadOnly="True"  Background="#F9F9F9F9"    />
+                                    </StackPanel>
+
+
+
+                                </WrapPanel>
+                            </Border>
+                        </StackPanel>
+                    </WrapPanel>
+
+
+                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="6" MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}">
+                        <Rectangle  Width="80"/>
+                        <Button MinWidth="120" Margin="6" Padding="6"
+                    x:Name="Accept" Content="Ok" IsEnabled="{cbind:Binding !Inventario_movto_insert_param.HasErrors}" Foreground="WhiteSmoke"/>
+                        <Rectangle  Width="80"/>
+                        <Button MinWidth="120" Margin="6" Padding="6"
+                            x:Name="Cancel"
+                            Content="Cancelar" Background="LightGray"/>
+
+                        <Rectangle  Width="80"/>
+                        <Button MinWidth="120" Margin="6" Padding="6"
+                            x:Name="SiguientePaso"
+                            Content="Siguiente paso" Background="LightBlue" />
+
+                        <Rectangle  Width="80"/>
+                        <Button MinWidth="120" Margin="6" Padding="6"
+                            x:Name="EliminarInventario"
+                            Content="Eliminar Inventario"  Background="RosyBrown" />
+
+
+
+                    </WrapPanel>
+
+
+
+                    <WrapPanel Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=12*x/12.5}">
+
+                        <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="25"  >
+                            <CheckBox x:Name="P_solodiferencias"  IsChecked="{Binding ParamList.Solodiferencias, Converter={localConv:IntToBooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  Content="Solo diferencias" />
+                        </StackPanel>
+
+                        <StackPanel MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"  Height="25"  >
+                            <CheckBox x:Name="P_todoslosproductos"  IsChecked="{Binding ParamList.Todoslosproductos, Converter={localConv:IntToBooleanConverter}}" HorizontalAlignment="Center" Margin="10,0,10,0"  VerticalAlignment="Top"  Content="Todos los productos" />
+                        </StackPanel>
+
+                        <WrapPanel  MinWidth="150" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=3*x/12.5}"   >
+                            <Button x:Name="TSBBuscar" VerticalAlignment="Top" Width="43"  Height="30" Margin="10,30,10,0" Style="{StaticResource MaterialDesignIconButton}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="FileDocumentBoxSearchOutline"/>
+                                </StackPanel>
+                            </Button>
+                        </WrapPanel>
+
+
+
+                    </WrapPanel>
+
+
+
+                    <StackPanel MinWidth="110" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}" >
+
+                        <ac:AdornedControl IsAdornerVisible="{Binding IsBusyMovtoList}"
+		        >
+                            <ac:AdornedControl.AdornerContent>
+                                <localCont:LoadingWait></localCont:LoadingWait>
+                            </ac:AdornedControl.AdornerContent>
+
+                            <Syncfusion:SfDataGrid x:Name="SfTableDataGridView" 
+                                ItemsSource="{Binding MovtoItems}" 
+                                RowStyle="{StaticResource customCellStyle}"
+                                AllowFiltering="True"
+                                FilterPopupStyle="{StaticResource filterControlStyle}"
+                                Margin="2,2,2,2"  AutoGenerateColumns="False" Background="#FFFFFFFF" IsReadOnly="True"  RowHeight="35" HorizontalAlignment="Left"   
+                                   MinWidth="100" Width="{Binding ElementName=MainPanel, Path=ActualWidth, Converter={localConv:MathConverter}, ConverterParameter=x}"
+                                Height="{Binding ElementName=MainPanel, Path=ActualHeight, Converter={localConv:MathConverter}, ConverterParameter=20*x/60}" MinHeight="150"  >
+                                <Syncfusion:SfDataGrid.Columns>
+                                    
+                                    
+                                    
+                                    
+
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productoclave" HeaderText="Prod. clave" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productonombre" HeaderText="Prod. nombre" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productodescripcion" HeaderText="Prod. desc." ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="CantidadTeorica" HeaderText="Cant. teorica" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="CantidadSurtida" HeaderText="Cant. fisica" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="CantidadDiferencia" HeaderText="Dif." ColumnSizer="SizeToHeader"/>
+
+
+                                    <Syncfusion:GridTextColumn  MappingName="Lote" HeaderText="Producto lote" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridDateTimeColumn  MappingName="Fechavence" HeaderText="Fecha vence" ColumnSizer="SizeToHeader" Pattern="CustomPattern" CustomPattern="dd/MM/yy"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Pzacaja" HeaderText="Pza caja" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Cajas" HeaderText="Cajas" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Piezas" HeaderText="Piezas" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productotexto1" HeaderText="Texto1" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productotexto2" HeaderText="Texto2" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productotexto3" HeaderText="Texto3" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productotexto4" HeaderText="Texto4" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productotexto5" HeaderText="Texto5" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productotexto6" HeaderText="Texto6" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productonumero1" HeaderText="Numero1" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productonumero2" HeaderText="Numero2" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productonumero3" HeaderText="Numero3" ColumnSizer="SizeToHeader"/>
+
+                                    <Syncfusion:GridTextColumn  MappingName="Productonumero4" HeaderText="Numero4" ColumnSizer="SizeToHeader"/>
+
+
+
+                                </Syncfusion:SfDataGrid.Columns>
+                            </Syncfusion:SfDataGrid>
+                        </ac:AdornedControl>
+
+
+                    </StackPanel>
+
+
+
+
+                </WrapPanel>
+            </ac:AdornedControl>
+
+        </WrapPanel>
+    </ScrollViewer>
+</UserControl>
+

@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="02/05/2014 22:04:59" ReportInfo.Modified="09/10/2019 20:29:28" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {                  
+    private float reportHeight = 0;
+    
+    
+    private void ReportTitle1_AfterLayout(object sender, EventArgs e)
+    {
+      if((sender as BandBase).Visible)
+      {
+        reportHeight += (sender as BandBase).Height;    
+      }
+    }
+
+    private void Page1_StartPage(object sender, EventArgs e)
+    {
+      
+      if (Engine.FinalPass)
+      {                                     
+        Page1.PaperHeight = (reportHeight) / Units.Millimeters 
+          + Page1.TopMargin + Page1.BottomMargin 
+          ;                                        
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2e6Cpk+r6ADtFNzrjWhHlkA=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT ANAQUELRES CLAVE, LOCALIDAD, PRODUCTOCLAVE PRODUCTO,&#13;&#10;       PRODUCTONOMBRE NOMBRE, PRODUCTODESCRIPCION DESCRIPCION,&#13;&#10;       PRODUCTODESCRIPCION1 DESCRIPCION1,&#13;&#10;       CANTIDADTEORICA EXISTENCIA&#13;&#10;&#13;&#10;&#13;&#10; FROM GET_INVLOCALIDAD_LISTADETAIL(&#13;&#10;    @todos,&#13;&#10;   @anaquelinicio,&#13;&#10;   @anaquelfin,&#13;&#10;    @kitdesglosado) q&#13;&#10;&#13;&#10;            ORDER BY clave, localidad, producto">
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="PRODUCTO" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="DESCRIPCION" DataType="System.String"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="EXISTENCIA" DataType="System.Decimal"/>
+        <CommandParameter Name="anaquelinicio" DataType="16" Size="31" Expression="[p_anaquelinicio]"/>
+        <CommandParameter Name="anaquelfin" DataType="16" Size="31" Expression="[p_anaquelfin]"/>
+        <CommandParameter Name="todos" DataType="10" Expression="[p_todos]" DefaultValue="1"/>
+        <CommandParameter Name="kitdesglosado" DataType="16" Size="1" Expression="[p_kitdesglosado]" DefaultValue="S"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="p_anaquelinicio" DataType="System.String"/>
+    <Parameter Name="p_anaquelfin" DataType="System.String"/>
+    <Parameter Name="p_todos" DataType="System.Int32"/>
+    <Parameter Name="p_kitdesglosado" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="70" PaperHeight="279.4" FirstPageSource="15" OtherPagesSource="15" StartPageEvent="Page1_StartPage">
+    <ReportTitleBand Name="ReportTitle1" Width="189" Height="170.1" AfterLayoutEvent="ReportTitle1_AfterLayout">
+      <TextObject Name="Text15" Left="9.45" Top="9.45" Width="179.55" Height="28.35" Text="LOCALIDAD DE PRODUCTOS" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text16" Top="47.25" Width="94.5" Height="18.9" Text="Del anaquel:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text17" Top="66.15" Width="94.5" Height="18.9" Text="Al anaquel:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="94.5" Top="47.25" Width="94.5" Height="18.9" Text="[p_anaquelinicio]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text21" Left="94.5" Top="66.15" Width="94.5" Height="18.9" Text="[p_anaquelfin]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text2" Top="113.4" Width="94.5" Height="18.9" Text="CLAVE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Top="113.4" Width="47.25" Height="18.9" Text="Loc." Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="9.45" Top="132.3" Width="179.55" Height="18.9" Text="DESCRIPCION1" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="18.9" Top="151.2" Width="56.7" Height="18.9" Text="EXISTENCIA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="75.6" Top="151.2" Width="56.7" Height="18.9" Text="CAJAS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text19" Left="132.3" Top="151.2" Width="56.7" Height="18.9" Text="PIEZAS" Font="Arial, 8pt, style=Bold"/>
+    </ReportTitleBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="174.1" Width="189" Height="18.9" StartNewPage="true" AfterLayoutEvent="ReportTitle1_AfterLayout" RepeatOnEveryPage="true" Condition="[Table.CLAVE]">
+      <TextObject Name="Text7" Left="66.15" Width="122.85" Height="18.9" Text="[[Table.CLAVE]]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Width="66.15" Height="18.9" Text="Anaquel:" Font="Arial, 10pt, style=Bold"/>
+      <DataBand Name="Data1" Top="197" Width="189" Height="56.7" AfterLayoutEvent="ReportTitle1_AfterLayout" DataSource="Table">
+        <TextObject Name="Text3" Left="94.5" Width="47.25" Height="18.9" Text="[Table.LOCALIDAD]" Font="Arial, 8pt"/>
+        <TextObject Name="Text11" Left="9.45" Top="18.9" Width="179.55" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 8pt"/>
+        <TextObject Name="Text13" Left="18.9" Top="37.8" Width="66.15" Height="18.9" Text="[Table.EXISTENCIA]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text6" Left="85.05" Top="37.8" Width="47.25" Height="18.9" Text="__________"/>
+        <TextObject Name="Text22" Left="132.3" Top="37.8" Width="56.7" Height="18.9" Text="__________"/>
+        <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.PRODUCTO]" Font="Arial, 8pt"/>
+        <Sort>
+          <Sort Expression="[Table.LOCALIDAD]"/>
+          <Sort Expression="[Table.PRODUCTO]"/>
+        </Sort>
+      </DataBand>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="257.7" Width="189" Height="56.7" AfterLayoutEvent="ReportTitle1_AfterLayout">
+      <TextObject Name="Text10" Width="56.7" Height="28.35" Text="Fecha Reporte: " Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text9" Left="56.7" Width="47.25" Height="18.9" Text="[Date]" Format="Date" Format.Format="dd/MM/yyyy" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Top="37.8" Width="94.5" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="94.5" Top="37.8" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </ReportSummaryBand>
+  </ReportPage>
+</Report>

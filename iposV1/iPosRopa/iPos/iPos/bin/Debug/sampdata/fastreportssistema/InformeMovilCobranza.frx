@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/24/2015 10:46:06" ReportInfo.Modified="02/25/2015 16:37:03" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlswnOjJ7QXfJ631YFsF1WQzNdQK0ZlP1jccTahKgc1QF4manYhqHhi5onDx4abm6k4mc3v9yQXiK2TLvYGAA3nignu7VjljhVbJhuF092KXRq">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;COBRANZAMOVIL.VENTA, COBRANZAMOVIL.FACTURA, COBRANZAMOVIL.CLIENTE, COBRANZAMOVIL.NOMBRE, COALESCE(DOCTOPAGOMOVIL.SALDOANTERIOR, COBRANZAMOVIL.SALDOMOVIL ) SALDOANTERIOR, COBRANZAMOVIL.INTERESES, COBRANZAMOVIL.IMPOR_NETO ,  COBRANZAMOVIL.ABONOSMOVIL , COALESCE(DOCTOPAGOMOVIL.SALDONUEVO, COBRANZAMOVIL.SALDOMOVIL) SALDONUEVO&#13;&#10; , CASE WHEN PAGOMOVIL.formapagoid = 1 THEN  COALESCE(DOCTOPAGOMOVIL.importe,0) ELSE 0 END EFECTIVO&#13;&#10;  , CASE WHEN PAGOMOVIL.formapagoid = 2 THEN  COALESCE(DOCTOPAGOMOVIL.importe,0) ELSE 0 END CHEQUE &#13;&#10;  , CASE WHEN PAGOMOVIL.formapagoid = 4 THEN  COALESCE(DOCTOPAGOMOVIL.importe,0) ELSE 0 END DIFERENCIA&#13;&#10;  , CASE WHEN PAGOMOVIL.formapagoid = 3 THEN  COALESCE(DOCTOPAGOMOVIL.importe,0) ELSE 0 END DEPOSITOS&#13;&#10;  , CASE WHEN PAGOMOVIL.formapagoid not in (1,2,3,4) THEN  COALESCE(DOCTOPAGOMOVIL.importe,0) ELSE 0 END OTROS&#13;&#10;  ,  COALESCE(PAGOMOVIL.banco,'') BANCO&#13;&#10; ,  PAGOMOVIL.ID    NUMERO&#13;&#10;  , COALESCE(PAGOMOVIL.referenciabancaria,'') REFERENCIABANCARIA  &#13;&#10;  ,  PAGOMOVIL.fecharecepcion  FECHARECEPCION,&#13;&#10;&#13;&#10;TIPOPAGO.NOMBRE NOMBRETIPOPAGO&#13;&#10;&#13;&#10; FROM COBRANZAMOVIL&#13;&#10; LEFT JOIN DOCTOPAGOMOVIL ON DOCTOPAGOMOVIL.cobranzaid = COBRANZAMOVIL.id AND DOCTOPAGOMOVIL.estatus = 1 AND DOCTOPAGOMOVIL.TIPOPAGOID = 5&#13;&#10; LEFT JOIN PAGOMOVIL ON PAGOMOVIL.ID = DOCTOPAGOMOVIL.pagomovilid&#13;&#10;LEFT JOIN TIPOPAGO ON TIPOPAGO.ID = PAGOMOVIL.TIPOPAGOID&#13;&#10;">
+        <Column Name="VENTA" DataType="System.String"/>
+        <Column Name="FACTURA" DataType="System.String"/>
+        <Column Name="CLIENTE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="INTERESES" DataType="System.Decimal"/>
+        <Column Name="IMPOR_NETO" DataType="System.Decimal"/>
+        <Column Name="ABONOSMOVIL" DataType="System.Decimal"/>
+        <Column Name="EFECTIVO" DataType="System.Decimal"/>
+        <Column Name="CHEQUE" DataType="System.Decimal"/>
+        <Column Name="DIFERENCIA" DataType="System.Decimal"/>
+        <Column Name="OTROS" DataType="System.Decimal"/>
+        <Column Name="BANCO" DataType="System.String"/>
+        <Column Name="REFERENCIABANCARIA" DataType="System.String"/>
+        <Column Name="FECHARECEPCION" DataType="System.DateTime"/>
+        <Column Name="NUMERO" DataType="System.Int64"/>
+        <Column Name="SALDOANTERIOR" DataType="System.Decimal"/>
+        <Column Name="SALDONUEVO" DataType="System.Decimal"/>
+        <Column Name="NOMBRETIPOPAGO" DataType="System.String"/>
+        <Column Name="DEPOSITOS" DataType="System.Decimal"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Total Name="DepositosTotal" Expression="[Table.DEPOSITOS]" Evaluator="Data1"/>
+    <Total Name="EfectivoTotal" Expression="[Table.EFECTIVO]" Evaluator="Data1"/>
+    <Total Name="ChequeTotal" Expression="[Table.CHEQUE]" Evaluator="Data1"/>
+    <Total Name="DiferenciaTotal" Expression="[Table.DIFERENCIA]" Evaluator="Data1"/>
+    <Total Name="OtrosTotal" Expression="[Table.OTROS]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="350" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1247.4" Height="75.6">
+      <TextObject Name="Text33" Left="189" Top="9.45" Width="434.7" Height="28.35" Text="Reporte de cobranza movil" Font="Arial, 16pt"/>
+      <TextObject Name="Text34" Left="302.4" Top="47.25" Width="311.85" Height="18.9" Text="Fecha: [Date]" HorzAlign="Right"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="79.6" Width="1247.4" Height="28.35">
+      <TextObject Name="Text2" Width="60.48" Height="18.9" Text="VENTA" Font="Arial, 7pt"/>
+      <TextObject Name="Text4" Left="66.15" Width="60.48" Height="18.9" Text="FACTURA" Font="Arial, 7pt"/>
+      <TextObject Name="Text6" Left="132.3" Width="60.48" Height="18.9" Text="CLIENTE" Font="Arial, 7pt"/>
+      <TextObject Name="Text8" Left="198.45" Width="60.48" Height="18.9" Text="NOMBRE" Font="Arial, 7pt"/>
+      <TextObject Name="Text10" Left="264.6" Width="60.48" Height="28.35" Text="SALDO ANTERIOR" Font="Arial, 7pt"/>
+      <TextObject Name="Text12" Left="330.75" Width="60.48" Height="18.9" Text="INTERESES" Font="Arial, 7pt"/>
+      <TextObject Name="Text14" Left="396.9" Width="60.48" Height="28.35" Text="IMPORTE NETO" Font="Arial, 7pt"/>
+      <TextObject Name="Text16" Left="463.05" Width="60.48" Height="28.35" Text="ABONOS MOVIL" Font="Arial, 7pt"/>
+      <TextObject Name="Text18" Left="529.2" Width="60.48" Height="28.35" Text="SALDO NUEVO" Font="Arial, 7pt"/>
+      <TextObject Name="Text21" Left="661.5" Width="60.48" Height="18.9" Text="CHEQUE" Font="Arial, 7pt"/>
+      <TextObject Name="Text22" Left="595.35" Width="60.48" Height="18.9" Text="EFECTIVO" Font="Arial, 7pt"/>
+      <TextObject Name="Text24" Left="803.25" Width="60.48" Height="18.9" Text="DIFERENCIA" Font="Arial, 7pt"/>
+      <TextObject Name="Text26" Left="869.4" Width="60.48" Height="18.9" Text="OTROS" Font="Arial, 7pt"/>
+      <TextObject Name="Text28" Left="935.55" Width="60.48" Height="18.9" Text="BANCO" Font="Arial, 7pt"/>
+      <TextObject Name="Text30" Left="1001.7" Width="60.48" Height="28.35" Text="NUMERO PAGO" Font="Arial, 7pt"/>
+      <TextObject Name="Text32" Left="1067.85" Width="60.48" Height="28.35" Text="FECHA RECEP." Font="Arial, 7pt"/>
+      <TextObject Name="Text36" Left="1134" Width="94.5" Height="28.35" Text="REFERENCIA BANCARIA" Font="Arial, 7pt"/>
+      <TextObject Name="Text38" Left="727.65" Width="69.93" Height="18.9" Text="DEPOSITOS" Font="Arial, 7pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="111.95" Width="1247.4" Height="28.35" DataSource="Table">
+      <TextObject Name="Text1" Width="60.48" Height="18.9" Text="[Table.VENTA]" Font="Arial, 7pt"/>
+      <TextObject Name="Text3" Left="66.15" Width="60.48" Height="18.9" Text="[Table.FACTURA]" Font="Arial, 7pt"/>
+      <TextObject Name="Text5" Left="132.3" Width="60.48" Height="18.9" Text="[Table.CLIENTE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text7" Left="198.45" Width="60.48" Height="18.9" Text="[Table.NOMBRE]" Font="Arial, 7pt"/>
+      <TextObject Name="Text9" Left="264.6" Width="60.48" Height="18.9" Text="[Table.SALDOANTERIOR]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="330.75" Width="60.48" Height="18.9" Text="[Table.INTERESES]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="396.9" Width="60.48" Height="18.9" Text="[Table.IMPOR_NETO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="463.05" Width="60.48" Height="18.9" Text="[Table.ABONOSMOVIL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="529.2" Width="60.48" Height="18.9" Text="[Table.SALDONUEVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="661.5" Width="60.48" Height="18.9" Text="[Table.CHEQUE]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="595.35" Width="60.48" Height="18.9" Text="[Table.EFECTIVO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="803.25" Width="60.48" Height="18.9" Text="[Table.DIFERENCIA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text25" Left="869.4" Width="60.48" Height="18.9" Text="[Table.OTROS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="935.55" Width="60.48" Height="18.9" Text="[Table.BANCO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text29" Left="1001.7" Width="60.48" Height="18.9" Text="[Table.NUMERO]" Font="Arial, 7pt"/>
+      <TextObject Name="Text31" Left="1067.85" Width="60.48" Height="18.9" Text="[Table.FECHARECEPCION]" Format="Date" Format.Format="d" Font="Arial, 7pt"/>
+      <TextObject Name="Text35" Left="1134" Width="94.5" Height="18.9" Text="[Table.REFERENCIABANCARIA]" Font="Arial, 7pt"/>
+      <TextObject Name="Text37" Left="727.65" Width="66.15" Height="18.9" Text="[Table.DEPOSITOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 7pt" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <ColumnFooterBand Name="ColumnFooter1" Top="144.3" Width="1247.4" Height="18.9">
+      <TextObject Name="Text39" Left="595.35" Width="60.48" Height="18.9" Text="[EfectivoTotal]" Font="Arial, 7pt"/>
+      <TextObject Name="Text41" Left="727.65" Width="66.15" Height="18.9" Text="[DepositosTotal]" Font="Arial, 7pt"/>
+      <TextObject Name="Text42" Left="803.25" Width="60.48" Height="18.9" Text="[DiferenciaTotal]" Font="Arial, 7pt"/>
+      <TextObject Name="Text43" Left="869.4" Width="60.48" Height="18.9" Text="[OtrosTotal]" Font="Arial, 7pt"/>
+      <TextObject Name="Text40" Left="661.5" Width="60.48" Height="18.9" Text="[ChequeTotal]" Font="Arial, 7pt"/>
+    </ColumnFooterBand>
+    <PageFooterBand Name="PageFooter1" Top="167.2" Width="1247.4" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

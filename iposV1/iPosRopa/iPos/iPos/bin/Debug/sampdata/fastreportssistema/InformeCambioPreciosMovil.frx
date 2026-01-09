@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/01/2015 12:26:37" ReportInfo.Modified="05/16/2015 16:21:01" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlswnOjJ7QXfJ631YFsF1WQzNdQK0ZlP1jccTahKgc1QF4manYhqHhi5onDx4abm6k4mc3v9yQXiK2TLvYGAA3nignu7VjljhVbJhuF092KXRq">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10; productopreciolog.id, &#13;&#10;productopreciolog.productoid,&#13;&#10;productopreciolog.fecha,&#13;&#10;producto.clave,&#13;&#10;producto.nombre,&#13;&#10;producto.descripcion1,&#13;&#10;productopreciolog.precio1,   &#13;&#10;productopreciolog.precio2,&#13;&#10;productopreciolog.precio3,&#13;&#10;productopreciolog.precio4,   &#13;&#10;productopreciolog.precio5,&#13;&#10;&#13;&#10;case when COALESCE(parametro.LISTA_PRECIO_DEF, 1) = 1  and productopreciolog.precio1 &gt; 0 then&#13;&#10;            100 - ((productopreciolog.precio4/productopreciolog.precio1) * 100)&#13;&#10;     when COALESCE(parametro.LISTA_PRECIO_DEF, 1) = 2  and productopreciolog.precio2 &gt; 0 then&#13;&#10;            100 - ((productopreciolog.precio4/productopreciolog.precio2) * 100)&#13;&#10;     when COALESCE(parametro.LISTA_PRECIO_DEF, 1) = 3  and productopreciolog.precio3 &gt; 0 then&#13;&#10;            100 - ((productopreciolog.precio4/productopreciolog.precio3) * 100)&#13;&#10;     when COALESCE(parametro.LISTA_PRECIO_DEF, 1) = 4  and productopreciolog.precio4 &gt; 0 then&#13;&#10;            100 - ((productopreciolog.precio4/productopreciolog.precio4) * 100)&#13;&#10;      when COALESCE(parametro.LISTA_PRECIO_DEF, 1) = 5  and productopreciolog.precio5 &gt; 0 then&#13;&#10;            100 - ((productopreciolog.precio4/productopreciolog.precio5) * 100)&#13;&#10;      else&#13;&#10;            0&#13;&#10;end as   descuentoprecio4,&#13;&#10;productopreciolog.precio4 * producto.pzacaja preciocajaprecio4 ,&#13;&#10;producto.pzacaja&#13;&#10;&#13;&#10;from productopreciolog left join producto on producto.id = productopreciolog.productoid&#13;&#10;left join parametro on 1 = 1&#13;&#10;inner join&#13;&#10;(select productopreciolog.productoid from productopreciolog&#13;&#10;group by productopreciolog.productoid&#13;&#10;having count(*) &gt; 1)  g on g.productoid = productopreciolog.productoid&#13;&#10;order by producto.clave asc , productopreciolog.fecha desc, productopreciolog.id desc&#13;&#10;">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="PRODUCTOID" DataType="System.Int64"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="PRECIO1" DataType="System.Decimal"/>
+        <Column Name="PRECIO2" DataType="System.Decimal"/>
+        <Column Name="PRECIO3" DataType="System.Decimal"/>
+        <Column Name="PRECIO4" DataType="System.Decimal"/>
+        <Column Name="PRECIO5" DataType="System.Decimal"/>
+        <Column Name="DESCRIPCION1" DataType="System.String"/>
+        <Column Name="DESCUENTOPRECIO4" DataType="System.Decimal"/>
+        <Column Name="PRECIOCAJAPRECIO4" DataType="System.Decimal"/>
+        <Column Name="PZACAJA" DataType="System.Decimal"/>
+      </TableDataSource>
+    </FirebirdDataConnection>    <Parameter Name="US_ID" DataType="System.Decimal"/>    <Parameter Name="US_NAME" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="47.25">
+      <TextObject Name="Text16" Left="160.65" Top="9.45" Width="378" Height="28.35" Text="CAMBIOS DE PRECIOS MOVIL" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text17" Left="576.45" Top="9.45" Width="113.4" Height="18.9" Text="[Date]"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="51.25" Width="718.2" Height="18.9" />
+    <GroupHeaderBand Name="GroupHeader1" Top="74.15" Width="718.2" Height="47.25" Condition="[Table.PRODUCTOID]">
+      <TextObject Name="Text2" Width="141.75" Height="18.9" Text="[Table.CLAVE]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text3" Left="151.2" Width="160.65" Height="18.9" Text="[Table.NOMBRE]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="56.7" Top="28.35" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 9pt"/>
+      <TextObject Name="Text12" Left="170.1" Top="28.35" Width="122.85" Height="18.9" Text="PRECIO4" HorzAlign="Right" Font="Arial, 9pt"/>
+      <TextObject Name="Text15" Left="321.3" Width="302.4" Height="18.9" Text="[Table.DESCRIPCION1]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text6" Left="311.85" Top="28.35" Width="103.95" Height="18.9" Text="DESCUENTO" Font="Arial, 9pt"/>
+      <TextObject Name="Text8" Left="434.7" Top="28.35" Width="113.4" Height="18.9" Text="PRECIO4 CAJA " Font="Arial, 9pt"/>
+      <GroupHeaderBand Name="GroupHeader2" Top="125.4" Width="718.2" Condition="[Table.FECHA]" SortOrder="Descending">
+        <GroupHeaderBand Name="GroupHeader3" Top="129.4" Width="718.2" Condition="[Table.ID]" SortOrder="Descending">
+          <DataBand Name="Data1" Top="133.4" Width="718.2" Height="18.9" DataSource="Table">
+            <TextObject Name="Text1" Left="56.7" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 9pt"/>
+            <TextObject Name="Text11" Left="170.1" Width="122.85" Height="18.9" Text="[Table.PRECIO4]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text5" Left="311.85" Width="103.95" Height="18.9" Text="[Table.DESCUENTOPRECIO4]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+            <TextObject Name="Text7" Left="434.7" Width="113.4" Height="18.9" Text="[Table.PRECIOCAJAPRECIO4]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 9pt" Trimming="EllipsisCharacter"/>
+          </DataBand>
+          <GroupFooterBand Name="GroupFooter3" Top="156.3" Width="718.2"/>
+        </GroupHeaderBand>
+        <GroupFooterBand Name="GroupFooter2" Top="160.3" Width="718.2"/>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="164.3" Width="718.2" Height="9.45"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="177.75" Width="718.2" Height="18.9"> <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/> <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/> </PageFooterBand>
+  </ReportPage>
+</Report>

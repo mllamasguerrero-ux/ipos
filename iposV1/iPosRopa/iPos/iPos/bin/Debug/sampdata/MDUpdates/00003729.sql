@@ -1,0 +1,173 @@
+create or alter procedure VENTAFUTUROAPLICAR_COPYMOVTO (
+    MOVTOREFID D_FK,
+    LOTE D_LOTE,
+    FECHAVENCE D_FECHAVENCE,
+    CANTIDADSURTIDA D_CANTIDAD,
+    DOCTOID D_FK,
+    VENDEDORID D_FK,
+    DOCTOREFID D_FK,
+    PRODUCTOID D_FK)
+returns (
+    PROBLEMACONEXIS D_BOOLCN,
+    NEWDOCTOID D_FK,
+    ERRORCODE D_ERRORCODE)
+as
+declare variable ESTATUSDOCTOID D_FK;
+declare variable ALMACENID D_FK;
+declare variable SUCURSALID D_FK;
+declare variable PERSONAID D_FK;
+declare variable TIPODOCTOCANCELARID D_FK;
+declare variable TIPODOCTOID D_FK;
+declare variable CANTIDAD D_CANTIDAD;
+declare variable PRECIO D_PRECIO;
+declare variable COSTO D_COSTO;
+declare variable REFERENCIA D_REFERENCIA;
+declare variable REFERENCIAS varchar(255);
+declare variable SERIE varchar(31);
+declare variable FOLIO integer;
+declare variable ALMACENTID D_FK;
+declare variable SUCURSALTID D_FK;
+declare variable TIPODIFERENCIAINVENTARIOID D_FK;
+declare variable CANTIDADDEFACTURA D_CANTIDAD;
+declare variable CANTIDADDEREMISION D_CANTIDAD;
+declare variable CANTIDADDEINDEFINIDO D_CANTIDAD;
+declare variable NEWMOVTOID D_FK;
+declare variable VENTAFUTUID D_FK;
+declare variable DESCRIPCION1 D_STDTEXT_64;
+declare variable DESCRIPCION2 D_STDTEXT_64;
+declare variable DESCRIPCION3 D_STDTEXT_64;
+declare variable PORCENTAJEDESCUENTO D_PORCENTAJE;
+declare variable ORIGENFISCALID D_FK;
+declare variable EXISTENCIASINSUFICIENTES integer;
+BEGIN
+
+          
+        IF(COALESCE(:MOVTOREFID,0) <> 0) THEN
+        BEGIN
+            
+            SELECT DOCTOID FROM MOVTO WHERE ID = :MOVTOREFID INTO  :VENTAFUTUID;
+
+        END
+        ELSE IF(COALESCE(:DOCTOREFID,0) <> 0 ) THEN
+        BEGIN
+            VENTAFUTUID = :DOCTOREFID;
+        END
+
+
+
+      IF(COALESCE(:DOCTOID, 0) = 0) then
+      BEGIN
+        
+        IF (COALESCE(:VENTAFUTUID,0) = 0) THEN
+        BEGIN
+                ERRORCODE = 10101;
+                SUSPEND;
+                EXIT;
+        END
+
+
+         SELECT ALMACENID, SUCURSALID, PERSONAID, REFERENCIA, REFERENCIAS, ORIGENFISCALID
+        FROM DOCTO
+        WHERE ID = :VENTAFUTUID
+        INTO :ALMACENID, :SUCURSALID, :PERSONAID, :REFERENCIA, :REFERENCIAS, :ORIGENFISCALID ;
+
+          
+        SELECT DOCTOID, ERRORCODE
+        FROM DOCTO_INSERT (
+         0,--:CREADOPOR_USERID,
+         :ALMACENID,
+         :SUCURSALID,
+         21,--:TIPODOCTOID,
+         0,--:ESTATUSDOCTOID,
+         0,--:ESTATUSDOCTOPAGOID,
+         :PERSONAID,
+         :VENDEDORID,
+         1,--:CAJAID,
+         :REFERENCIA,
+         :REFERENCIAS,
+         NULL,--:SUCURSALTID,
+         NULL,--:ALMACENTID,
+         CURRENT_DATE,--:FECHA,
+         CURRENT_DATE,--:VENCE,
+         NULL,--:DOCTOREFID  ,
+         'S',--:MERCANCIAENTREGADA ,
+         :ORIGENFISCALID
+        ) INTO :DOCTOID, :ERRORCODE;
+      
+      
+        IF (:ERRORCODE <> 0) THEN
+        BEGIN
+           SUSPEND;
+            EXIT;
+        END
+        UPDATE DOCTO SET SUBTIPODOCTOID = 25, VENTAFUTUID = :VENTAFUTUID WHERE ID = :DOCTOID AND (COALESCE(SUBTIPODOCTOID,0) <> 25 or (COALESCE(VENTAFUTUID,0) <> :VENTAFUTUID) );
+        NEWDOCTOID = :DOCTOID;
+      END
+
+
+
+
+
+   SELECT
+       /*M.PRODUCTOID,*/ M.PRECIO, M.COSTO,
+      M.TIPODIFERENCIAINVENTARIOID  , M.CANTIDADDEFACTURA, M.CANTIDADDEREMISION, M.CANTIDADDEINDEFINIDO, M.DESCRIPCION1, M.DESCRIPCION2, M.DESCRIPCION3
+      ,21, /*M.DOCTOID ,*/ D.almacenid, D.sucursalid, D.PERSONAID, M.descuentoporcentaje
+   FROM  MOVTO M
+   INNER JOIN DOCTO d  on m.doctoid = d.id
+   WHERE M.ID = :MOVTOREFID
+
+   UNION
+
+   SELECT
+       /*:PRODUCTOID,*/ NULL, NULL,
+      0  , NULL, NULL, NULL, P.DESCRIPCION1, P.DESCRIPCION2, P.DESCRIPCION3
+      ,21, /*M.DOCTOID ,*/ D.almacenid, D.sucursalid, D.PERSONAID, NULL
+   FROM  DOCTO d
+   INNER JOIN PRODUCTO P on P.ID = :PRODUCTOID
+   WHERE D.ID = :VENTAFUTUID AND COALESCE(:MOVTOREFID,0) = 0
+
+
+   INTO
+      /*:PRODUCTOID,*/ :PRECIO, :COSTO,
+      :TIPODIFERENCIAINVENTARIOID , :CANTIDADDEFACTURA, :CANTIDADDEREMISION, :CANTIDADDEINDEFINIDO , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3
+      ,:TIPODOCTOID, /*:VENTAFUTUID  ,*/ :almacenid, :sucursalid, :PERSONAID, :PORCENTAJEDESCUENTO;
+
+
+
+      SELECT ERRORCODE,MOVTOID , DOCTOID
+      FROM MOVTO_INSERT (
+         :DOCTOID, 0, :ALMACENID, :SUCURSALID, :TIPODOCTOID, 0, 0, :PERSONAID, :VENDEDORID, 1,
+         0, :PRODUCTOID, :LOTE, :FECHAVENCE, :CANTIDADSURTIDA, 0, 0, 0, 0, :PRECIO, 0,
+         :REFERENCIA, :REFERENCIAS, :COSTO, :SUCURSALID, :ALMACENID, 'N',
+         :TIPODIFERENCIAINVENTARIOID, CURRENT_DATE, CURRENT_DATE, :PORCENTAJEDESCUENTO ,NULL,NULL,NULL,NULL,NULL , :DESCRIPCION1, :DESCRIPCION2, :DESCRIPCION3
+      ) INTO :ERRORCODE,:NEWMOVTOID, :NEWDOCTOID;
+
+      IF (:ERRORCODE <> 0) THEN
+      BEGIN
+         SUSPEND;
+         EXIT;
+      END
+
+      IF(COALESCE(:MOVTOREFID,0) <> 0) THEN
+      BEGIN           
+        UPDATE MOVTO SET MOVTOREFID = :MOVTOREFID WHERE ID = :NEWMOVTOID;
+      END
+
+
+
+        
+        select count(*) from movto left join producto on movto.productoid = producto.id
+        where movto.ID = :NEWMOVTOID and (coalesce(producto.existencia,0) < movto.cantidad)
+        and producto.inventariable = 'S'
+        and (coalesce(producto.negativos,'N') = 'N' or coalesce(producto.manejalote,'N') = 'S' )
+        into :EXISTENCIASINSUFICIENTES  ;
+
+   
+        IF (coalesce(:EXISTENCIASINSUFICIENTES,0) <> 0) THEN
+        BEGIN
+            PROBLEMACONEXIS = 'S';
+        END
+
+
+
+END

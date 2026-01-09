@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/06/2014 21:00:03" ReportInfo.Modified="06/02/2018 18:58:18" ReportInfo.CreatorVersion="2013.3.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  
+  public class TextPositions
+  {
+       public TextObject textField;
+       public float initialX;
+       public string strField;
+    public TextPositions(ref TextObject p_textField)
+    {
+      textField = p_textField;
+      initialX = p_textField.Left;
+    }
+    
+    public TextPositions(ref TextObject p_textField, string p_strField)
+    {
+      textField = p_textField;
+      initialX = p_textField.Left;
+      strField = p_strField;
+    }
+    
+    
+    
+  }
+  
+  public class ReportScript
+  {
+    
+              
+        
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls9oWGazhs6+hYmcukLCWxJOK8nmgT+Vx6f6WG2uA3Uc1DG1VDux2drdRTP6jNt8TDdD5R+1maMYcQbjCXp4ZFsw=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10; 0 AS NUMERO,&#13;&#10;      D.FECHA,&#13;&#10;      COALESCE(D.SUBTOTAL,0) SUBTOTAL,&#13;&#10;      COALESCE(D.IVA,0) IVA,&#13;&#10;      COALESCE(D.TOTAL,0) TOTAL,&#13;&#10;      D.esfacturaelectronica ESFACTURAELECTRONICA,&#13;&#10;&#13;&#10;      COALESCE(D.IEPS,0)  IEPS,&#13;&#10;      COALESCE(D.IMPUESTO,0) IMPUESTO,&#13;&#10;&#13;&#10;&#13;&#10;      CASE WHEN COALESCE(D.ESFACTURAELECTRONICA,'N') &lt;&gt; 'S' THEN 'REMISION' ELSE 'FACTURA' END ESTATUS ,&#13;&#10;&#13;&#10;                 D.FOLIO DOCTOFOLIO,&#13;&#10;      coalesce(D.seriesat,'') || coalesce(D.foliosat,'') SERIEFOLIOSAT ,&#13;&#10;&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_01_porc then coalesce(m.ieps ,0) else 0 end) IEPS_01_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_02_porc then coalesce(m.ieps ,0) else 0 end) IEPS_02_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_03_porc then coalesce(m.ieps ,0) else 0 end) IEPS_03_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_04_porc then coalesce(m.ieps ,0) else 0 end) IEPS_04_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_05_porc then coalesce(m.ieps ,0) else 0 end) IEPS_05_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_06_porc then coalesce(m.ieps ,0) else 0 end) IEPS_06_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_07_porc then coalesce(m.ieps ,0) else 0 end) IEPS_07_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_08_porc then coalesce(m.ieps ,0) else 0 end) IEPS_08_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_09_porc then coalesce(m.ieps ,0) else 0 end) IEPS_09_IMPORTE,&#13;&#10;      SUM(case when coalesce(m.tasaieps,0) = T.ieps_10_porc then coalesce(m.ieps ,0) else 0 end) IEPS_10_IMPORTE,&#13;&#10;&#13;&#10;         T.ieps_01_porc IEPS_01_PORC,&#13;&#10;         T.ieps_02_porc IEPS_02_PORC,&#13;&#10;         T.ieps_03_porc IEPS_03_PORC,&#13;&#10;         T.ieps_04_porc IEPS_04_PORC,&#13;&#10;         T.ieps_05_porc IEPS_05_PORC,&#13;&#10;         T.ieps_06_porc IEPS_06_PORC,&#13;&#10;         T.ieps_07_porc IEPS_07_PORC,&#13;&#10;         T.ieps_08_porc IEPS_08_PORC,&#13;&#10;         T.ieps_09_porc IEPS_09_PORC,&#13;&#10;         T.ieps_10_porc IEPS_10_PORC,&#13;&#10;&#13;&#10;         S.NOMBRE as PERSONA ,&#13;&#10;         S.clave AS PERSONACLAVE,&#13;&#10;      S.nombres PERSONANOMBRES,&#13;&#10;      S.apellidos PERSONAAPELLIDOS,&#13;&#10;ed.nombre as ESTATUSDOCTO,&#13;&#10;a.clave as ALMACEN,&#13;&#10;dr.folio as DOCTOREFFOLIO,&#13;&#10;edr.nombre as ESTATUSDOCTOREF&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;   FROM DOCTO D&#13;&#10;       Inner join MOVTO M&#13;&#10;         ON M.doctoid = D.ID&#13;&#10;         INNER JOIN PRODUCTO R ON R.ID = M.PRODUCTOID&#13;&#10;        INNER JOIN MARCA P&#13;&#10;        ON P.id = R.marcaid&#13;&#10;        INNER JOIN REP_VENTA_CONIEPS_TASAS T ON 1 = 1&#13;&#10;      &#13;&#10;        left join TIPODOCTO  TD&#13;&#10;         on  TD.id = d.tipodoctoid&#13;&#10;         left join PERSONA S&#13;&#10;          on S.id = D.personaid&#13;&#10;         left join ESTATUSDOCTO ed on ed.id = d.estatusdoctoid&#13;&#10;       left join ALMACEN a on a.id = d.almacenid&#13;&#10;     left join DOCTO dr on dr.id = d.doctorefid&#13;&#10;     left join ESTATUSDOCTO edr on edr.id = dr.estatusdoctoid&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;   WHERE d.TIPODOCTOID = 12&#13;&#10;&#13;&#10; AND D.FECHA BETWEEN@FECHAINI AND@FECHAFIN AND &#13;&#10;(D.ALMACENID = @ALMACENID  OR @ALMACENID = 0)&#13;&#10;&#13;&#10;     GROUP BY&#13;&#10;      D.FECHA,&#13;&#10;      D.SUBTOTAL,&#13;&#10;      D.IVA,&#13;&#10;      D.TOTAL,&#13;&#10;      D.esfacturaelectronica,&#13;&#10;&#13;&#10;      D.IEPS,&#13;&#10;      D.IMPUESTO,&#13;&#10;&#13;&#10;&#13;&#10;      D.ESFACTURAELECTRONICA ,&#13;&#10;&#13;&#10;                 D.FOLIO ,&#13;&#10;     D.seriesat,&#13;&#10;     D.foliosat,&#13;&#10;&#13;&#10;         T.ieps_01_porc ,&#13;&#10;         T.ieps_02_porc ,&#13;&#10;         T.ieps_03_porc ,&#13;&#10;         T.ieps_04_porc ,&#13;&#10;         T.ieps_05_porc ,&#13;&#10;         T.ieps_06_porc ,&#13;&#10;         T.ieps_07_porc ,&#13;&#10;         T.ieps_08_porc ,&#13;&#10;         T.ieps_09_porc ,&#13;&#10;         T.ieps_10_porc ,&#13;&#10;&#13;&#10;         S.NOMBRE ,&#13;&#10;         S.clave ,&#13;&#10;      S.nombres ,&#13;&#10;      S.apellidos,&#13;&#10;     ed.nombre ,&#13;&#10;    a.clave,&#13;&#10;   dr.folio , &#13;&#10;   edr.nombre &#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;     ORDER BY d.fecha">
+        <Column Name="NUMERO" DataType="System.Int32"/>
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="DOCTOFOLIO" DataType="System.Int32"/>
+        <Column Name="SUBTOTAL" DataType="System.Decimal"/>
+        <Column Name="IVA" DataType="System.Decimal"/>
+        <Column Name="TOTAL" DataType="System.Decimal"/>
+        <Column Name="ESFACTURAELECTRONICA" DataType="System.String"/>
+        <Column Name="SERIEFOLIOSAT" DataType="System.String"/>
+        <Column Name="PERSONA" DataType="System.String"/>
+        <Column Name="IEPS" DataType="System.Decimal"/>
+        <Column Name="IMPUESTO" DataType="System.Decimal"/>
+        <Column Name="PERSONACLAVE" DataType="System.String"/>
+        <Column Name="PERSONANOMBRES" DataType="System.String"/>
+        <Column Name="PERSONAAPELLIDOS" DataType="System.String"/>
+        <Column Name="IEPS_01_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_01_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_02_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_02_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_03_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_03_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_04_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_04_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_05_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_05_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_06_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_06_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_07_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_07_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_08_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_08_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_09_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_09_PORC" DataType="System.Decimal"/>
+        <Column Name="IEPS_10_IMPORTE" DataType="System.Decimal"/>
+        <Column Name="IEPS_10_PORC" DataType="System.Decimal"/>
+        <Column Name="ESTATUS" DataType="System.String"/>
+        <Column Name="ESTATUSDOCTO" DataType="System.String"/>
+        <Column Name="ALMACEN" DataType="System.String"/>
+        <Column Name="DOCTOREFFOLIO" DataType="System.Int32"/>
+        <Column Name="ESTATUSDOCTOREF" DataType="System.String"/>
+        <CommandParameter Name="FECHAINI" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="FECHAFIN" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="ALMACENID" DataType="1" Expression="[almacenid]" DefaultValue="0"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Empresa" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;nombre,&#13;&#10;calle,&#13;&#10;numeroexterior,&#13;&#10;numerointerior,&#13;&#10;colonia,&#13;&#10;localidad,&#13;&#10;estado,&#13;&#10;cp,&#13;&#10;telefono,&#13;&#10;rfc,&#13;&#10;correoe&#13;&#10;&#13;&#10;from parametro;">
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <Column Name="CALLE" DataType="System.String"/>
+        <Column Name="NUMEROEXTERIOR" DataType="System.String"/>
+        <Column Name="NUMEROINTERIOR" DataType="System.String"/>
+        <Column Name="COLONIA" DataType="System.String"/>
+        <Column Name="LOCALIDAD" DataType="System.String"/>
+        <Column Name="ESTADO" DataType="System.String"/>
+        <Column Name="CP" DataType="System.String"/>
+        <Column Name="TELEFONO" DataType="System.String"/>
+        <Column Name="RFC" DataType="System.String"/>
+        <Column Name="CORREOE" DataType="System.String"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="US_ID" DataType="System.Decimal"/>
+    <Parameter Name="US_NAME" DataType="System.String"/>
+    <Parameter Name="almacenid" DataType="System.Decimal"/>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+    <Total Name="Total" Expression="[Table.TOTAL]" Evaluator="Data1" PrintOn="ColumnFooter1" IncludeInvisibleRows="true"/>
+    <Total Name="SUBTOTAL" Expression="[Table.SUBTOTAL]" Evaluator="Data1" PrintOn="ColumnFooter1" IncludeInvisibleRows="true"/>
+    <Total Name="IVA" Expression="[Table.IMPUESTO]" Evaluator="Data1" PrintOn="ColumnFooter1" IncludeInvisibleRows="true"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" FirstPageSource="15" OtherPagesSource="15">
+    <PageHeaderBand Name="PageHeader1" Width="1047.06" Height="94.5">
+      <TextObject Name="Text14" Left="718.2" Top="75.6" Width="75.6" Height="18.9" Text="SUBTOTAL" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text16" Left="793.8" Top="75.6" Width="66.15" Height="18.9" Text="IMPUESTO" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="9.45" Top="75.6" Width="85.05" Height="18.9" Text="DEVOLUCION" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text36" Left="274.05" Top="75.6" Width="113.4" Height="18.9" Text="PROVEEDOR" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="94.5" Top="75.6" Width="37.8" Height="18.9" Text="LOC" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="198.45" Top="75.6" Width="75.6" Height="18.9" Text="COMPRA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text40" Left="387.45" Top="75.6" Width="330.75" Height="18.9" Text="NOMBRE" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text18" Left="859.95" Top="75.6" Width="94.5" Height="18.9" Text="TOTAL" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="132.3" Top="75.6" Width="66.15" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text81" Top="37.8" Width="1039.5" Height="18.9" Text="Fecha inicio del :[fechaini] a [fechafin]" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text71" Top="18.9" Width="1039.5" Height="18.9" Text="Notas de cargo - sumarizado" HorzAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text84" Width="1039.5" Height="18.9" Text="[Empresa.NOMBRE]" HorzAlign="Center" Font="Arial, 12pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="98.5" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text13" Left="718.2" Width="75.6" Height="18.9" Text="[Table.SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="793.8" Width="66.15" Height="18.9" Text="[Table.IMPUESTO]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="9.45" Width="85.05" Height="18.9" Text="[Table.DOCTOFOLIO]" Font="Arial, 8pt"/>
+      <TextObject Name="Text35" Left="274.05" Width="113.4" Height="18.9" Text="[Table.PERSONACLAVE]" Font="Arial, 8pt"/>
+      <TextObject Name="Text39" Left="387.45" Width="330.75" Height="18.9" Text="[Table.PERSONANOMBRES] [Table.PERSONAAPELLIDOS]" Font="Arial, 8pt"/>
+      <TextObject Name="Text9" Left="94.5" Width="37.8" Height="18.9" Text="[Table.ALMACEN]" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="198.45" Width="75.6" Height="18.9" Text="[Table.DOCTOREFFOLIO]" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text17" Left="859.95" Width="94.5" Height="18.9" Text="[Table.TOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text3" Left="132.3" Width="66.15" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+    </DataBand>
+    <ColumnFooterBand Name="ColumnFooter1" Top="121.4" Width="1047.06" Height="18.9">
+      <TextObject Name="Text1" Left="718.2" Width="75.6" Height="18.9" Text="[SUBTOTAL]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text2" Left="793.8" Width="66.15" Height="18.9" Text="[IVA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text6" Left="859.95" Width="94.5" Height="18.9" Text="[Total]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 9pt, style=Bold"/>
+    </ColumnFooterBand>
+    <PageFooterBand Name="PageFooter1" Top="144.3" Width="1047.06" Height="18.9">
+      <TextObject Name="TextFooterGeneral2" Left="151.2" Width="66.15" Height="18.9" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" Text="[Date]" Format="Date" Format.Format="d" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral3" Left="217.35" Width="151.2" Height="18.9" CanShrink="true" PrintOn="LastPage, OddPages, EvenPages, RepeatedBand, SinglePage" CanBreak="false" Text="[Date]" Format="Time" Format.Format="T" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral1" Left="9.45" Width="141.75" Height="18.9" CanShrink="true" CanBreak="false" Text="Power by I-POS" HorzAlign="Center" WordWrap="false" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="TextFooterGeneral4" Left="368.55" Width="94.5" Height="18.9" Text="[US_NAME]" Font="Arial, 8pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

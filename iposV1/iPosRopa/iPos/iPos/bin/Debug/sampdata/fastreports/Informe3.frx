@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/12/2013 14:49:28" ReportInfo.Modified="10/12/2013 15:04:42" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zls2mCAWDWIhtE3dZ3WRoD3RF5WWE8c9YSssMMMxA9lT1NbFjTBIq3X1lsnSD68eYgYsPODkxh2g8OtYG4uEW5ifX81CCrtxtqt3duCOYroNmsWw3ZEWjlmsQ/5tbLYbNA2S6d1SpsaLzeUn2gwhomYuE=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *  FROM BANCOS WHERE CLAVE = @CLAVE">
+        <Column Name="ID" DataType="System.Int64"/>
+        <Column Name="ACTIVO" DataType="System.String"/>
+        <Column Name="CREADO" DataType="System.DateTime"/>
+        <Column Name="CREADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="MODIFICADO" DataType="System.DateTime"/>
+        <Column Name="MODIFICADOPOR_USERID" DataType="System.Int64"/>
+        <Column Name="CLAVE" DataType="System.String"/>
+        <Column Name="NOMBRE" DataType="System.String"/>
+        <CommandParameter Name="CLAVE" DataType="16" Size="31" Expression="TextBox1.Text"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="718.2" Height="28.35">
+      <TextObject Name="Text2" Left="85.05" Width="94.5" Height="18.9" Text="ID"/>
+      <TextObject Name="Text4" Left="198.45" Width="94.5" Height="18.9" Text="ACTIVO"/>
+      <TextObject Name="Text6" Left="321.3" Width="94.5" Height="18.9" Text="CLAVE"/>
+      <TextObject Name="Text8" Left="434.7" Width="94.5" Height="18.9" Text="NOMBRE"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="74.15" Width="718.2" Height="75.6" DataSource="Table">
+      <TextObject Name="Text1" Left="85.05" Top="9.45" Width="94.5" Height="18.9" Text="[Table.ID]"/>
+      <TextObject Name="Text3" Left="198.45" Top="9.45" Width="94.5" Height="18.9" Text="[Table.ACTIVO]"/>
+      <TextObject Name="Text5" Left="321.3" Top="9.45" Width="94.5" Height="18.9" Text="[Table.CLAVE]"/>
+      <TextObject Name="Text7" Left="434.7" Top="9.45" Width="94.5" Height="18.9" Text="[Table.NOMBRE]"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="153.75" Width="718.2" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <LabelControl Name="Label1" Left="48" Top="12" Width="32" Height="13" Font="Tahoma, 8pt" TabIndex="2" Text="Label"/>
+    <TextBoxControl Name="TextBox1" Left="104" Top="8" Font="Tahoma, 8pt" TabIndex="3" Text="TextBox"/>
+  </DialogPage>
+</Report>

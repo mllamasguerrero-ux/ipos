@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/07/2014 12:34:42" ReportInfo.Modified="04/07/2014 12:55:33" ReportInfo.CreatorVersion="2013.3.2.0">
+  <Dictionary>
+    <FirebirdDataConnection Name="Connection" ConnectionString="rijcmlqDEsChHWgW5OFiwSyA3zlswnOjJ7QXfJ631YFsF1WQzO28g7x4lj2syMDpWibHI/iz5nd0GyzGgM5bgAQXWEhkhWAnRk4bcG0K1cOEXxWJ8z/LnQASvWfeQXlTw7h7VGakXIeTRVOFMYhr5E/HnGQHvCvCoQQ7eAHiXzojwGQqLg=">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select&#13;&#10;doctopago.fecha,&#13;&#10; sum(case when de.tipodoctoid in (21,25,31) then case when doctopago.espagoinicial = 'S'  and doctopago.tipopagoid = 1 then  doctopago.importe else 0 end else 0 end) venta,&#13;&#10; sum(case when de.tipodoctoid in (21,25,31) then case when doctopago.espagoinicial &lt;&gt; 'S'  and doctopago.tipopagoid = 1 then  doctopago.importe else 0 end else 0 end) abonos_venta,&#13;&#10; sum(case when de.tipodoctoid in (21,25,31) then case when doctopago.formapagoid = 2  and doctopago.tipopagoid = 1  then doctopago.importe else 0 end else 0 end) tarjeta_venta ,&#13;&#10; &#13;&#10; sum(case when ds.tipodoctoid in (23) then case when doctopago.tipopagoid = 2 then  doctopago.importe else 0 end else 0 end) cancelaciones,&#13;&#10; sum(case when ds.tipodoctoid in (22) then case when doctopago.tipopagoid = 2 then  doctopago.importe else 0 end else 0 end) devoluciones,&#13;&#10; &#13;&#10; sum(case when ds.tipodoctoid in (24) then case when doctopago.tipopagoid = 1 then  doctopago.importe else 0 end else 0 end) revendidos&#13;&#10;&#13;&#10; from doctopago&#13;&#10; left join docto de on doctopago.doctoid = de.id&#13;&#10; left join docto ds on doctopago.doctosalidaid = ds.id&#13;&#10; where doctopago.formapagoid in (1,2,3,5,15) and (de.tipodoctoid is null or de.tipodoctoid in (21,22,23,24,25,31)) and (ds.tipodoctoid is null or  ds.tipodoctoid in (21,22,23,24,25,31))&#13;&#10;and doctopago.fecha &gt;= @fechaini and doctopago.fecha &lt;= @fechafin&#13;&#10; group by doctopago.fecha&#13;&#10;order by doctopago.fecha">
+        <Column Name="FECHA" DataType="System.DateTime"/>
+        <Column Name="VENTA" DataType="System.Decimal"/>
+        <Column Name="ABONOS_VENTA" DataType="System.Decimal"/>
+        <Column Name="TARJETA_VENTA" DataType="System.Decimal"/>
+        <Column Name="CANCELACIONES" DataType="System.Decimal"/>
+        <Column Name="DEVOLUCIONES" DataType="System.Decimal"/>
+        <Column Name="REVENDIDOS" DataType="System.Decimal"/>
+        <CommandParameter Name="fechaini" DataType="5" Expression="[fechaini]" DefaultValue="01/01/2001"/>
+        <CommandParameter Name="fechafin" DataType="5" Expression="[fechafin]" DefaultValue="01/01/2001"/>
+      </TableDataSource>
+    </FirebirdDataConnection>
+    <Parameter Name="fechaini" DataType="System.DateTime"/>
+    <Parameter Name="fechafin" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="75.6">
+      <TextObject Name="Text15" Left="151.2" Top="9.45" Width="481.95" Height="18.9" Text="REPORTE DE INGRESOS POR DIA" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text16" Left="198.45" Top="37.8" Width="94.5" Height="18.9" Text="[fechaini]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text17" Left="415.8" Top="37.8" Width="94.5" Height="18.9" Text="[fechafin]" Format="Date" Format.Format="d"/>
+      <TextObject Name="Text18" Left="151.2" Top="37.8" Width="37.8" Height="18.9" Text="De:" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text19" Left="368.55" Top="37.8" Width="37.8" Height="18.9" Text="a:" Font="Arial, 10pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="79.6" Width="1047.06" Height="28.35">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Text="FECHA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Text="VENTA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text6" Left="189" Width="103.95" Height="18.9" Text="ABONOS_VENTA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text8" Left="292.95" Width="103.95" Height="18.9" Text="TARJETA_VENTA" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text10" Left="396.9" Width="103.95" Height="18.9" Text="CANCELACIONES" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text12" Left="500.85" Width="103.95" Height="18.9" Text="DEVOLUCIONES" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text14" Left="604.8" Width="94.5" Height="18.9" Text="REVENDIDOS" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text21" Left="699.3" Width="113.4" Height="18.9" Text="TOTAL" HorzAlign="Right" Font="Arial, 8pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="111.95" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="[Table.FECHA]" Format="Date" Format.Format="d" Font="Arial, 8pt"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Text="[Table.VENTA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text5" Left="189" Width="103.95" Height="18.9" Text="[Table.ABONOS_VENTA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="292.95" Width="103.95" Height="18.9" Text="[Table.TARJETA_VENTA]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="396.9" Width="103.95" Height="18.9" Text="[Table.CANCELACIONES]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="500.85" Width="103.95" Height="18.9" Text="[Table.DEVOLUCIONES]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="604.8" Width="94.5" Height="18.9" Text="[Table.REVENDIDOS]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="699.3" Width="113.4" Height="18.9" Text="[[Table.VENTA] + [Table.ABONOS_VENTA] - [Table.CANCELACIONES] - [Table.DEVOLUCIONES] + [Table.REVENDIDOS]]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" Font="Arial, 8pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="134.85" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+  <DialogPage Name="Form1" Width="290" Height="290" AcceptButton="btnOk" CancelButton="btnCancel">
+    <ButtonControl Name="btnOk" Left="118" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="0" Text="Aceptar" DialogResult="OK"/>
+    <ButtonControl Name="btnCancel" Left="201" Top="231" Anchor="Bottom, Right" Font="Tahoma, 8pt" TabIndex="1" Text="Cancelar" DialogResult="Cancel"/>
+    <DateTimePickerControl Name="DateTimePicker1" Left="44" Top="40" Font="Tahoma, 8pt" TabIndex="2" ReportParameter="fechaini" FilterOperation="GreaterThanOrEqual" Value="04/07/2014 12:42:30"/>
+    <LabelControl Name="Label1" Left="44" Top="24" Width="64" Height="13" Font="Tahoma, 8pt" TabIndex="3" Text="Fecha inicial"/>
+    <DateTimePickerControl Name="DateTimePicker2" Left="40" Top="96" Font="Tahoma, 8pt" TabIndex="4" ReportParameter="fechafin" FilterOperation="LessThanOrEqual" Value="04/07/2014 12:42:32"/>
+    <LabelControl Name="Label2" Left="40" Top="80" Width="59" Height="13" Font="Tahoma, 8pt" TabIndex="5" Text="Fecha final"/>
+  </DialogPage>
+</Report>
