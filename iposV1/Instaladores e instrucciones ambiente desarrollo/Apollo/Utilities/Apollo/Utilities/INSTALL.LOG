@@ -1,0 +1,129 @@
+***  Installation Started 08/18/2017 16:28  ***
+Title: Apolo Utilities 6.1
+Source: C:\Users\sopor\OneDrive\Ipos\TempIpos\ApolloUtilities61.exe | 01-01-1985 | 06:02:46 | 5052669
+Made Dir: Apollo
+Made Dir: Apollo\Utilities
+File Copy: Apollo\Utilities\UNWISE.EXE | 07-26-2002 | 17:02:06 | | 153088 | 5be5019b
+RegDB Key: Software\Microsoft\Windows\CurrentVersion\Uninstall\Apollo Utilities 6.1
+RegDB Val: Apollo Utilities 6.1
+RegDB Name: DisplayName
+RegDB Root: 2
+RegDB Key: Software\Microsoft\Windows\CurrentVersion\Uninstall\Apollo Utilities 6.1
+RegDB Val: Apollo\UTILIT~1\UNWISE.EXE Apollo\UTILIT~1\INSTALL.LOG
+RegDB Name: UninstallString
+RegDB Root: 2
+File Copy: Apollo\Utilities\ReadMe.txt | 10-06-2003 | 17:53:22 | | 1506 | b12b6dc6
+Made Dir: Apollo\Utilities\DBFDesktopLite
+File Copy: Apollo\Utilities\DBFDesktopLite\\DBFDesktop.INI | 08-27-2003 | 07:52:02 | | 51 | 3593b876
+File Copy: Apollo\Utilities\DBFDesktopLite\\DBFDLite.exe | 08-27-2003 | 09:13:58 | 1.0.1.15 | 4020491 | 36689778
+File Copy: Apollo\Utilities\DBFDesktopLite\\DBFDLite.INI | 10-06-2003 | 11:39:58 | | 109 | ccfaecf2
+File Copy: Apollo\Utilities\DBFDesktopLite\\Settings.ini | 07-22-2003 | 15:24:46 | | 555 | 3b9505b4
+Made Dir: Apollo\Utilities\DBFDesktopLite\\Docs
+File Copy: Apollo\Utilities\DBFDesktopLite\\Docs\DBF Desktop Order Form.doc | 06-26-2003 | 16:23:16 | | 62464 | f83d52da
+File Copy: Apollo\Utilities\DBFDesktopLite\\Docs\DBFDesktop.htm | 06-26-2003 | 16:39:18 | | 3279 | 2084acce
+File Copy: Apollo\Utilities\DBFDesktopLite\\Docs\DBFDesktop.xml | 06-26-2003 | 16:40:46 | | 15245 | 72430d3
+File Copy: Apollo\Utilities\DBFDesktopLite\\Docs\Distribute.txt | 06-26-2003 | 16:35:42 | | 6287 | e9c97584
+File Copy: Apollo\Utilities\DBFDesktopLite\\Docs\Features.txt | 05-10-2002 | 01:02:44 | | 1634 | 873e5265
+File Copy: Apollo\Utilities\DBFDesktopLite\\Docs\License.txt | 07-18-2001 | 11:51:28 | | 2113 | 7cfa41d
+File Copy: Apollo\Utilities\DBFDesktopLite\\Docs\Readme.txt | 06-26-2003 | 16:24:14 | | 533 | f1c14bea
+Made Dir: Apollo\Utilities\DBFDesktopLite\\Help
+File Copy: Apollo\Utilities\DBFDesktopLite\\Help\dbf-desktop.chm | 02-26-2003 | 12:01:38 | | 1850897 | ee167272
+Made Dir: Apollo\Utilities\dbfUtilsLite
+File Copy: Apollo\Utilities\dbfUtilsLite\\dbfutils.ini | 10-06-2003 | 13:19:14 | | 338 | 4073ead0
+File Copy: Apollo\Utilities\dbfUtilsLite\\dbfUtilsLite.exe | 07-21-2003 | 17:14:12 | 1.0.0.0 | 510976 | 3a90a91f
+File Copy: Apollo\Utilities\dbfUtilsLite\\README.TXT | 07-22-2003 | 15:43:22 | | 2670 | bf7a122d
+Made Dir: Apollo\SDE61
+File Copy: Apollo\SDE61\Readme.txt | 10-06-2003 | 17:42:54 | | 15900 | 8e52b2fb
+NON-SYSTEM FILE:
+File Copy: Apollo\SDE61\SDE61.DLL | 10-06-2003 | 03:00:00 | 6.1.0.17 | 229376 | 70fa11d8
+File Copy: C:\Windows\System32\SDE61.DLL
+NON-SYSTEM FILE:
+File Copy: Apollo\SDE61\SDECDX61.DLL | 10-06-2003 | 03:00:00 | 6.1.0.17 | 323584 | 900d564a
+File Copy: C:\Windows\System32\SDECDX61.DLL
+NON-SYSTEM FILE:
+File Copy: Apollo\SDE61\SDENTX61.DLL | 10-06-2003 | 03:00:00 | 6.1.0.17 | 290816 | 1e9b6b4b
+File Copy: C:\Windows\System32\SDENTX61.DLL
+NON-SYSTEM FILE:
+File Copy: Apollo\SDE61\SDENSX61.DLL | 10-06-2003 | 03:00:00 | 6.1.0.17 | 327680 | 678cc01a
+File Copy: C:\Windows\System32\SDENSX61.DLL
+NON-SYSTEM FILE:
+File Copy: Apollo\SDE61\FTS32.DLL | 07-25-2003 | 06:15:00 | 2.0.8.0 | 43520 | 65426aa
+File Copy: C:\Windows\System32\FTS32.DLL
+RegDB Key: 
+RegDB Val: 
+RegDB Key: Software\Vista Software\Apollo\SDE61
+RegDB Val: 6.1.0.17
+RegDB Name: Version
+RegDB Root: 2
+Shell Link: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Apollo\DBF-Desktop LITE (Data Utility).lnk
+Link Info: C:\Apollo\Utilities\DBFDesktopLite\DBFDLite.exe | Apollo\Utilities |  | 0 | 1 | 0 | 
+Shell Link: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Apollo\dbfUtils LITE (Data Utility).lnk
+Link Info: C:\Apollo\Utilities\dbfUtilsLite\dbfUtilsLite.exe | Apollo\Utilities |  | 0 | 1 | 0 | 
+Shell Link: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Apollo\Uninstall Apollo Utilities 6.1.lnk
+Link Info: C:\Apollo\Utilities\UNWISE.EXE | Apollo\Utilities |  | 0 | 1 | 0 | 
+Could not execute the external program Apollo\UTILIT~1\ReadMe.txt.
+User Rights: Admin
+***  Installation Started 09/28/2017 10:40  ***
+Title: Apolo Utilities 6.1
+Source: C:\Users\Desarrollo IPOS\OneDrive\Ipos\TempIpos\ApolloUtilities61.exe | 01-01-1985 | 06:02:46 | 5052669
+Made Dir: Apollo\Utilities\BACKUP
+File Overwrite: Apollo\Utilities\UNWISE.EXE | 07-26-2002 | 17:02:06 | | 153088 | 5be5019b
+RegDB Key: Software\Microsoft\Windows\CurrentVersion\Uninstall\Apollo Utilities 6.1
+RegDB Val: Apollo Utilities 6.1
+RegDB Name: DisplayName
+RegDB Root: 2
+RegDB Key: Software\Microsoft\Windows\CurrentVersion\Uninstall\Apollo Utilities 6.1
+RegDB Val: Apollo\UTILIT~1\UNWISE.EXE Apollo\UTILIT~1\INSTALL.LOG
+RegDB Name: UninstallString
+RegDB Root: 2
+File Overwrite: Apollo\Utilities\ReadMe.txt | 10-06-2003 | 17:53:22 | | 1506 | b12b6dc6
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\DBFDesktop.INI | 08-27-2003 | 07:52:02 | | 51 | 3593b876
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\DBFDLite.exe | 08-27-2003 | 09:13:58 | 1.0.1.15 | 4020491 | 36689778
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\DBFDLite.INI | 10-06-2003 | 11:39:58 | | 109 | ccfaecf2
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\Settings.ini | 07-22-2003 | 15:24:46 | | 555 | 3b9505b4
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\Docs\DBF Desktop Order Form.doc | 06-26-2003 | 16:23:16 | | 62464 | f83d52da
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\Docs\DBFDesktop.htm | 06-26-2003 | 16:39:18 | | 3279 | 2084acce
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\Docs\DBFDesktop.xml | 06-26-2003 | 16:40:46 | | 15245 | 72430d3
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\Docs\Distribute.txt | 06-26-2003 | 16:35:42 | | 6287 | e9c97584
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\Docs\Features.txt | 05-10-2002 | 01:02:44 | | 1634 | 873e5265
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\Docs\License.txt | 07-18-2001 | 11:51:28 | | 2113 | 7cfa41d
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\Docs\Readme.txt | 06-26-2003 | 16:24:14 | | 533 | f1c14bea
+File Overwrite: Apollo\Utilities\DBFDesktopLite\\Help\dbf-desktop.chm | 02-26-2003 | 12:01:38 | | 1850897 | ee167272
+File Overwrite: Apollo\Utilities\dbfUtilsLite\\dbfutils.ini | 10-06-2003 | 13:19:14 | | 338 | 4073ead0
+File Overwrite: Apollo\Utilities\dbfUtilsLite\\dbfUtilsLite.exe | 07-21-2003 | 17:14:12 | 1.0.0.0 | 510976 | 3a90a91f
+File Overwrite: Apollo\Utilities\dbfUtilsLite\\README.TXT | 07-22-2003 | 15:43:22 | | 2670 | bf7a122d
+Made Dir: Apollo\SDE61\BACKUP
+File Copy: Apollo\SDE61\BACKUP\SDE61.DLL
+File Copy: Apollo\SDE61\BACKUP\SDECDX61.DLL
+File Copy: Apollo\SDE61\BACKUP\SDENSX61.DLL
+File Copy: Apollo\SDE61\BACKUP\SDENTX61.DLL
+File Overwrite: Apollo\SDE61\Readme.txt | 10-06-2003 | 17:42:54 | | 15900 | 8e52b2fb
+NON-SYSTEM FILE:
+File Overwrite: Apollo\SDE61\SDE61.DLL | 10-06-2003 | 03:00:00 | 6.1.0.17 | 229376 | 70fa11d8
+File Copy: C:\Windows\System32\SDE61.DLL
+NON-SYSTEM FILE:
+File Overwrite: Apollo\SDE61\SDECDX61.DLL | 10-06-2003 | 03:00:00 | 6.1.0.17 | 323584 | 900d564a
+File Copy: C:\Windows\System32\SDECDX61.DLL
+NON-SYSTEM FILE:
+File Overwrite: Apollo\SDE61\SDENTX61.DLL | 10-06-2003 | 03:00:00 | 6.1.0.17 | 290816 | 1e9b6b4b
+File Copy: C:\Windows\System32\SDENTX61.DLL
+NON-SYSTEM FILE:
+File Overwrite: Apollo\SDE61\SDENSX61.DLL | 10-06-2003 | 03:00:00 | 6.1.0.17 | 327680 | 678cc01a
+File Copy: C:\Windows\System32\SDENSX61.DLL
+NON-SYSTEM FILE:
+File Overwrite: Apollo\SDE61\FTS32.DLL | 07-25-2003 | 06:15:00 | 2.0.8.0 | 43520 | 65426aa
+File Copy: C:\Windows\System32\FTS32.DLL
+RegDB Key: 
+RegDB Val: 
+RegDB Key: Software\Vista Software\Apollo\SDE61
+RegDB Val: 6.1.0.17
+RegDB Name: Version
+RegDB Root: 2
+Shell Link: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Apollo\DBF-Desktop LITE (Data Utility).lnk
+Link Info: C:\Apollo\Utilities\DBFDesktopLite\DBFDLite.exe | Apollo\Utilities |  | 0 | 1 | 0 | 
+Shell Link: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Apollo\dbfUtils LITE (Data Utility).lnk
+Link Info: C:\Apollo\Utilities\dbfUtilsLite\dbfUtilsLite.exe | Apollo\Utilities |  | 0 | 1 | 0 | 
+Shell Link: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Apollo\Uninstall Apollo Utilities 6.1.lnk
+Link Info: C:\Apollo\Utilities\UNWISE.EXE | Apollo\Utilities |  | 0 | 1 | 0 | 
+Could not execute the external program Apollo\UTILIT~1\ReadMe.txt.
+User Rights: Admin

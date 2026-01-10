@@ -1,0 +1,47 @@
+License Agreement
+-----------------
+You should carefully read the following terms and conditions
+before  using  the software.  By  using  this  software  you
+indicate that you accept the present license agreement.
+
+DISCLAIMER
+----------
+This software is provided on an  "as is"  basis without war-
+ranty of any kind,  expressed or implied,  including but not
+limited  to  the implied warranties  of merchantability  and
+fitness for a particular purpose. The person using the soft-
+ware bears all risk as to the quality and performance of the
+software.  The author  will not be liable  for  any special,
+incidental,  consequential,  indirect or similar damages due
+to loss of data  or  any other reason, even if the author or
+an agent of the author  has been advised  of the possibility
+of such damages.  In no event shall  the author's  liability
+for any damages  ever exceed the price  paid for the license
+to use the software, regardless of the form of the claim.
+
+Restrictions
+------------
+You may not use, copy, modify, translate, or transfer the
+programs, documentation, or any copy except as expressly
+defined in this agreement. You may not attempt to unlock
+or bypass any "copy-protection" or authentication algorithm
+utilized by the program.
+
+You may not remove or modify any copyright notice or the
+method by which it may be invoked.
+
+Operating license
+-----------------
+You have the non-exclusive right to use any enclosed
+program only by a single person, on a single computer at
+a time. You may physically transfer the program from one
+computer to another, provided that the program is used
+only by a single person, on a single computer at a time.
+In group projects where multiple persons will use the
+program, you must purchase an individual license for
+each member of the group. Use over a "local area network"
+(within the same locale) is permitted provided that the
+program is used only by a single person, on a single
+computer at a time. Use over a "wide area network"
+(outside the same locale) is strictly prohibited under any
+and all circumstances.

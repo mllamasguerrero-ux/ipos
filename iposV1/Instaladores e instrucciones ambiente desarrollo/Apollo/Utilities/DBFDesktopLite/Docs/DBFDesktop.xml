@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="Windows-1252" ?>
+<XML_DIZ_INFO>
+<MASTER_PAD_VERSION_INFO>
+    <MASTER_PAD_VERSION>1.15</MASTER_PAD_VERSION>
+    <MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authors to disseminate information to anyone interested in their software products. To find out more go to http://www.asp-shareware.org/pad</MASTER_PAD_INFO>
+</MASTER_PAD_VERSION_INFO>
+<Company_Info>
+        <Company_Name>Sendero Software</Company_Name>
+        <Address_1>9337-B Katy Freeway</Address_1>
+        <Address_2>Suite 378</Address_2>
+        <City_Town>Houston</City_Town>
+        <State_Province>Tx</State_Province>
+        <Zip_Postal_Code>77024</Zip_Postal_Code>
+        <Country>USA</Country>
+        <Company_WebSite_URL>http://www.senderosoftware.com</Company_WebSite_URL>
+<Contact_Info>
+        <Author_First_Name>Scott</Author_First_Name>
+        <Author_Last_Name>Martin</Author_Last_Name>
+        <Author_Email>smartin@senderosoftware.com</Author_Email>
+        <Contact_First_Name>Bill</Contact_First_Name>
+        <Contact_Last_Name>Gunn</Contact_Last_Name>
+        <Contact_Email>bgunn@senderosoftware.com</Contact_Email>
+    </Contact_Info>
+<Support_Info>
+        <Sales_Email>sales@senderosoftware.com</Sales_Email>
+        <Support_Email>support@senderosoftware.com</Support_Email>
+        <General_Email>info@senderosoftware.com</General_Email>
+        <Sales_Phone>281-971-4013</Sales_Phone>
+        <Support_Phone>281-971-4013</Support_Phone>
+        <General_Phone>281-971-4013</General_Phone>
+        <Fax_Phone>281-971-4013</Fax_Phone>
+    </Support_Info>
+</Company_Info>
+<Program_Info>
+        <Program_Name>DBF-Desktop</Program_Name>
+        <Program_Version>1.01</Program_Version>
+        <Program_Release_Month>09</Program_Release_Month>
+        <Program_Release_Day>10</Program_Release_Day>
+        <Program_Release_Year>2002</Program_Release_Year>
+        <Program_Cost_Dollars>39.00</Program_Cost_Dollars>
+        <Program_Cost_Other_Code />
+        <Program_Cost_Other />
+        <Program_Type>Shareware</Program_Type>
+        <Program_Release_Status>Major Update</Program_Release_Status>
+        <Program_Install_Support>Install and Uninstall</Program_Install_Support>
+        <Program_OS_Support>Win95,Win98,WinME,WinNT 4.x,WinXP,Windows2000</Program_OS_Support>
+        <Program_Language>English,Spanish,French,German,Italian</Program_Language>
+<File_Info>
+        <Filename_Versioned>DBFDk101.exe</Filename_Versioned>
+        <Filename_Previous />
+        <Filename_Generic>DBFDk.exe</Filename_Generic>
+        <Filename_Long>DBFD-Trial-Setup.exe</Filename_Long>
+        <File_Size_Bytes>6162373</File_Size_Bytes>
+        <File_Size_K>6018</File_Size_K>
+        <File_Size_MB>6.02</File_Size_MB>
+    </File_Info>
+<Expire_Info>
+        <Has_Expire_Info>Y</Has_Expire_Info>
+        <Expire_Count>30</Expire_Count>
+        <Expire_Based_On>Days</Expire_Based_On>
+        <Expire_Other_Info>30 Day Trial</Expire_Other_Info>
+        <Expire_Month />
+        <Expire_Day />
+        <Expire_Year />
+    </Expire_Info>
+        <Program_Change_Info>International Support, Dot Prompt, Blob Images, Scripter Enhanced (CodeSite Support,Templates,Code Complete) Layout Manager, License Server</Program_Change_Info>
+        <Program_Specific_Category>Development Tools</Program_Specific_Category>
+        <Program_Categories>Database Management</Program_Categories>
+        <Program_System_Requirements>32MB, 15MB HD</Program_System_Requirements>
+        <Includes_JAVA_VM>N</Includes_JAVA_VM>
+        <Includes_VB_Runtime>N</Includes_VB_Runtime>
+        <Includes_DirectX>N</Includes_DirectX>
+</Program_Info>
+<Program_Descriptions>
+<English>
+        <Keywords>DBF,Desktop,Database,Manager,Apollo,SQL,ADS,Server,Sendero,xBase,DBase,Clipper,Hiper,CDX,FPT,NTX,NSX,Script</Keywords>
+        <Char_Desc_45>DBF Database Manager</Char_Desc_45>
+        <Char_Desc_80>DBF Database Manager for managing DBF files such as Fox,Clipper and Hiper-Six</Char_Desc_80>
+        <Char_Desc_250>DBF Database Manager for managing DBF files such as Fox,Clipper and Hiper-Six</Char_Desc_250>
+        <Char_Desc_450>DBF-Desktop Professional is the premier Database Manager for managing DBF files, providing the ability to create, modify and manage every aspect of your DBF file. Since DBF-Desktop was created using Apollo, we also support all features that are provided with Apollo, such as Clipper, FoxPro, and HiPer-6 tables along with advanced support for Apollo Database Server.</Char_Desc_450>
+        <Char_Desc_2000>DBF-Desktop Professional is the premier Database Manager for managing DBF files, providing the ability to create, modify and manage every aspect of your DBF file. Since DBF-Desktop was created using Apollo, we also support all features that are provided with Apollo, such as Clipper, FoxPro, and HiPer-6 tables along with advanced support for Apollo Database Server.
+
+International Support
+Project Manager
+Interactive Pascal Scripter (supports call to CodeSite from Raize.com)
+Local SQL Builder
+Dot Prompt support (50+ Commands)
+Open Multiple Tables
+Support for viewing blob images (BMP,JPG,ICO,GIF,RTF)
+Script Editor supports Code Completion, Templates, Custom scripts included
+File Editor (includes auto extension support)
+Layout Manager for creating custom views
+Custom Report Designer
+Compare Structures/Directories
+Connect to ADS from Apollo
+Print grid directly to printer
+Import/Export
+License Server added to support concurrent license usage
+plus many more ...</Char_Desc_2000>
+</English>
+</Program_Descriptions>
+<Web_Info>
+<Application_URLs>
+        <Application_Info_URL>http://www.senderosoftware.com</Application_Info_URL>
+        <Application_Order_URL>http://www.senderosoftware.com/index.asp?a=products&amp;pid=1&amp;tfi=Pricing</Application_Order_URL>
+        <Application_Screenshot_URL>http://www.senderosoftware.com/_Images/Products/DBFd-Screenshots/FieldGroup.jpg</Application_Screenshot_URL>
+        <Application_Icon_URL>http://www.senderosoftware.com/dbfdesktop/dbfdesktop.gif</Application_Icon_URL>
+        <Application_XML_File_URL>http://www.senderosoftware.com/dbfdesktop/dbfdesktop.xml</Application_XML_File_URL>
+    </Application_URLs>
+<Download_URLs>
+        <Primary_Download_URL>http://www.senderosoftware.com/dbfdesktop/trial/dbfd-trial-setup.exe</Primary_Download_URL>
+        <Secondary_Download_URL />
+        <Additional_Download_URL_1 />
+        <Additional_Download_URL_2 />
+    </Download_URLs>
+</Web_Info>
+<Permissions>
+        <Distribution_Permissions>==============
+
+NOTICE
+
+The installation executable of DBF-Desktop (&quot;SOFTWARE&quot;) 
+is provided to YOU by Sendero Software, LLC (&quot;LICENSOR&quot;) for 
+distribution only under the following terms.  LICENSOR reserves all rights 
+not expressly granted to YOU.  LICENSOR retains ownership of all copies of 
+the SOFTWARE itself.  YOU assume sole responsibility for YOUR distribution 
+of the SOFTWARE.
+
+PLEASE READ THIS DOCUMENT CAREFULLY.  THE INDIVIDUAL OR ENTITY INTENDING TO 
+DISTRIBUTE THIS SOFTWARE (&quot;YOU&quot;) AGREES TO BE BOUND BY THE TERMS OF THIS 
+DISTRIBUTION LICENSE.  IF YOU DO NOT AGREE TO THE TERMS OF THIS 
+DISTRIBUTION LICENSE, YOU ARE PROHIBITED FROM DISTRIBUTING THIS SOFTWARE.
+
+1. OWNERSHIP
+
+This SOFTWARE and the related copyrights and intellectual property rights, 
+are the exclusive property of Sendero Software, LLC and/or its 
+suppliers.  YOU acquire no title, right or interest in the SOFTWARE other 
+than the DISTRIBUTION LICENSE rights granted herein.
+
+2. DISTRIBUTION LICENSE
+
+YOU are granted a limited, non-exclusive, revokable DISTRIBUTION LICENSE to 
+do only the following:
+
+Make complete and unmodified copies of only the installation executable of 
+the TRIAL version of this SOFTWARE as released on the website(s) of 
+Sendero Software, LLC, in machine-readable form for distribution to a 
+third party solely for the purpose of evaluation for purchase by the third 
+party, provided the entire contents of the TRIAL version are copied in 
+their entirety with payment, copyright, and trademark information in place.  
+Although the SOFTWARE may not be sold, a distribution fee may be charged 
+for the service of providing this SOFTWARE to others on physical, CD-ROM or 
+magnetic media (i.e. charging for the media and duplication services only).  
+This SOFTWARE is protected under United States copyright laws and 
+international treaty provisions.  This SOFTWARE and documentation is 
+Copyright (c) 2003 by Sendero Software, LLC. All Rights Reserved 
+Worldwide.
+
+YOU AGREE THAT YOU SHALL NOT DISTRIBUTE A REGISTERED VERSION OF THIS 
+SOFTWARE NOR SHALL YOU DISTRIBUTE ANY REGISTRATION CODE FOR THIS SOFTWARE.
+
+You agree that you shall only distribute the SOFTWARE in a manner that 
+complies with all applicable laws in the jurisdiction(s) in which you 
+distribute the SOFTWARE, including, but not limited to, applicable 
+restrictions concerning copyright and other intellectual property rights.
+
+3. RESTRICTIONS
+
+YOU shall not remove from the SOFTWARE any trademark, tradename, copyright 
+notice or other notice, and shall be responsible for their preservation on 
+the copies received hereunder and for their reproduction on any backup copy 
+of the SOFTWARE or on any portion of the SOFTWARE merged into other 
+programs or SITES.
+
+YOU may NOT sublicense, or assign copies of the SOFTWARE to others.  The 
+SOFTWARE contains trade secrets.  YOU may NOT decompile, reverse engineer, 
+disassemble, or otherwise reduce the SOFTWARE to a human readable form.  
+YOU MAY NOT MODIFY, ADAPT, TRANSLATE, RENT, LEASE, LOAN, RESELL FOR PROFIT, 
+OR OTHERWISE ASSIGN OR TRANSFER THE SOFTWARE, OR CREATE DERIVATIVE WORKS 
+BASED UPON THE SOFTWARE OR ANY PART THEREOF without the prior written 
+consent of Sendero Software, LLC.
+
+4. PROTECTION AND SECURITY.
+
+YOU agree to use YOUR best efforts and to take all reasonable steps to 
+safeguard the SOFTWARE to ensure that no unauthorized person shall have 
+access thereto and that no unauthorized copy, publication, disclosure or 
+distribution in whole or in part, in any form, shall be made.  YOU 
+acknowledge that the SOFTWARE contains valuable confidential information 
+and trade secrets and that unauthorized use and/or copying are harmful to 
+LICENSOR.
+
+5. TERMINATION.
+
+a)  This DISTRIBUTION LICENSE is effective until terminated.  This 
+DISTRIBUTION LICENSE will terminate immediately without notice from 
+LICENSOR if YOU fail to comply with any of its provisions.  LICENSOR may 
+immediately revoke and terminate the license granted hereunder by providing 
+written notice to YOU if any of the following events occur:  breach by YOU 
+of any provisions of this DISTRIBUTION LICENSE.
+
+b)  Upon termination of the DISTRIBUTION LICENSE granted hereunder, 
+LICENSOR reserves the right to take any legal action necessary to recover 
+any damages incurred by LICENSOR.
+
+6. PRINT MEDIA PUBLISHERS
+
+Print media publishers wishing to distribute this SOFTWARE on CD-ROM or 
+magnetic media in combination of a book must agree to all terms of this 
+DISTRIBUTION LICENSE and, additionally, must provide a copy of the book/CD-
+ROM combination to Sendero Software, LLC, 9337-B Katy Freeway #378, 
+Houston, Tx 77024 USA
+
+7. GENERAL.
+
+This DISTRIBUTION LICENSE will be governed by and construed in accordance 
+with the laws of the State of Texas, USA, and shall inure to the 
+benefit of LICENSOR and YOU and their successors, assigns and legal 
+representatives.  If any provision of this DISTRIBUTION LICENSE is held by 
+a court of competent jurisdiction to be invalid or unenforceable to any 
+extent under applicable law, that provision will be enforced to the maximum 
+extent permissible, and the remaining provisions of this License will 
+remain in full force and effect.  Any notices or other communications to be 
+sent to LICENSOR must be mailed first class, postage prepaid, to the 
+following address: Sendero Software, LLC, 9337-B Katy Freeway #378, 
+Houston, Tx 77024 USA. 
+
+This Agreement constitutes the entire agreement between the parties with 
+respect to the subject matter hereof, and all prior proposals, agreements, 
+representations, statements and undertakings are hereby expressly cancelled 
+and superseded.  This Agreement may not be changed or amended except by a 
+written instrument executed by a duly authorized officer of LICENSOR.
+
+8. ACKNOWLEDGEMENT.
+
+BY DISTRIBUTING THIS SOFTWARE, YOU ACKNOWLEDGE THAT YOU HAVE READ THIS 
+DISTRIBUTION LICENSE, UNDERSTAND IT, AND AGREE TO BE BOUND BY ITS TERMS AND 
+CONDITIONS.  Should YOU have any questions concerning this DISTRIBUTION 
+LICENSE, contact LICENSOR at the address set forth above.
+
+Copyright (c) 2003 by Sendero Software, LLC.
+All Rights Reserved Worldwide.</Distribution_Permissions>
+        <EULA>License Agreement
+-----------------
+You should carefully read the following terms and conditions
+before  using  the software.  By  using  this  software  you
+indicate that you accept the present license agreement.
+
+DISCLAIMER
+----------
+This software is provided on an  &quot;as is&quot;  basis without war-
+ranty of any kind,  expressed or implied,  including but not
+limited  to  the implied warranties  of merchantability  and
+fitness for a particular purpose. The person using the soft-
+ware bears all risk as to the quality and performance of the
+software.  The author  will not be liable  for  any special,
+incidental,  consequential,  indirect or similar damages due
+to loss of data  or  any other reason, even if the author or
+an agent of the author  has been advised  of the possibility
+of such damages.  In no event shall  the author's  liability
+for any damages  ever exceed the price  paid for the license
+to use the software, regardless of the form of the claim.
+
+Restrictions
+------------
+You may not use, copy, modify, translate, or transfer the
+programs, documentation, or any copy except as expressly
+defined in this agreement. You may not attempt to unlock
+or bypass any &quot;copy-protection&quot; or authentication algorithm
+utilized by the program.
+
+You may not remove or modify any copyright notice or the
+method by which it may be invoked.
+
+Operating license
+-----------------
+You have the non-exclusive right to use any enclosed
+program only by a single person, on a single computer at
+a time. You may physically transfer the program from one
+computer to another, provided that the program is used
+only by a single person, on a single computer at a time.
+In group projects where multiple persons will use the
+program, you must purchase an individual license for
+each member of the group. Use over a &quot;local area network&quot;
+(within the same locale) is permitted provided that the
+program is used only by a single person, on a single
+computer at a time. Use over a &quot;wide area network&quot;
+(outside the same locale) is strictly prohibited under any
+and all circumstances.</EULA>
+</Permissions>
+</XML_DIZ_INFO>

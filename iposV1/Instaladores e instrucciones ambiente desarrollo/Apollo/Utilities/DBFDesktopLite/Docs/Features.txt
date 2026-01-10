@@ -1,0 +1,67 @@
+DBF-DESKTOP LITE v1.01 
+
+Program Features
+
+- Open Multiple Tables
+  - MRU list
+  - Display Structure of Table
+  - Support for Clipper/FoxPro/HiPer-Six
+  - Table
+    - Open Table
+    - Copy File As
+    - Append From 
+    - Import File (Comma,SDF,Tab,Quote)
+    - Export File (Comma,SDF,Tab,Quote)
+    - Convert Table (NTX,CDX/NSX)
+  - Edit
+    - Add/Edit/Delete records
+    - Instant Edit (field type dialogs
+    - Duplicate Records (including memos)
+    - Delete all / recall all
+  - Structure
+    - Modify Structure
+      - Import Structure
+      - Import Structure Extended
+      - Field dropDowns
+      - Quick navigation
+      - creates backup
+    - Modify Index Structure
+      - Import Index Structure
+      - Attach NTX Files
+      - Expression Builder
+      - Condition Builder
+    - Copy Structure
+    - Copy Structure Extended
+  - Functions
+    - Rebuild Index
+    - Reindex Table
+    - Pack Table
+    - Refresh Table
+    - Zap Table
+  - Settings
+    - Exclusive
+    - OEM Translate
+  - Encryption
+    - Encrypt Table
+    - Decrypt Table
+    - Set Password
+    - Clear Password
+  - Utilities
+    - File Information
+    - Attach NTX Files
+      - Assign NTX to DBF for reload of index files
+
+-Drag & Drop Support
+ - Drag File(s) from Explorer to main form
+ - Drag file to open table to load new table
+ - Dragging CDX/FPT files will open DBF file
+
+- Structures
+  - Create new structures
+  - Maintain existing structures
+  - Create/Maintain index files
+
+- Environment
+  - Set global environment for tables
+    (Exclusive,Deleted,Exact,SoftSeek,OEM Translate)
+

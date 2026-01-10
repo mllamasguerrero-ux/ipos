@@ -1,0 +1,126 @@
+==============
+
+NOTICE
+
+The installation executable of DBF-Desktop ("SOFTWARE") 
+is provided to YOU by Sendero Software, LLC ("LICENSOR") for 
+distribution only under the following terms.  LICENSOR reserves all rights 
+not expressly granted to YOU.  LICENSOR retains ownership of all copies of 
+the SOFTWARE itself.  YOU assume sole responsibility for YOUR distribution 
+of the SOFTWARE.
+
+PLEASE READ THIS DOCUMENT CAREFULLY.  THE INDIVIDUAL OR ENTITY INTENDING TO 
+DISTRIBUTE THIS SOFTWARE ("YOU") AGREES TO BE BOUND BY THE TERMS OF THIS 
+DISTRIBUTION LICENSE.  IF YOU DO NOT AGREE TO THE TERMS OF THIS 
+DISTRIBUTION LICENSE, YOU ARE PROHIBITED FROM DISTRIBUTING THIS SOFTWARE.
+
+1. OWNERSHIP
+
+This SOFTWARE and the related copyrights and intellectual property rights, 
+are the exclusive property of Sendero Software, LLC and/or its 
+suppliers.  YOU acquire no title, right or interest in the SOFTWARE other 
+than the DISTRIBUTION LICENSE rights granted herein.
+
+2. DISTRIBUTION LICENSE
+
+YOU are granted a limited, non-exclusive, revokable DISTRIBUTION LICENSE to 
+do only the following:
+
+Make complete and unmodified copies of only the installation executable of 
+the TRIAL version of this SOFTWARE as released on the website(s) of 
+Sendero Software, LLC, in machine-readable form for distribution to a 
+third party solely for the purpose of evaluation for purchase by the third 
+party, provided the entire contents of the TRIAL version are copied in 
+their entirety with payment, copyright, and trademark information in place.  
+Although the SOFTWARE may not be sold, a distribution fee may be charged 
+for the service of providing this SOFTWARE to others on physical, CD-ROM or 
+magnetic media (i.e. charging for the media and duplication services only).  
+This SOFTWARE is protected under United States copyright laws and 
+international treaty provisions.  This SOFTWARE and documentation is 
+Copyright (c) 2003 by Sendero Software, LLC. All Rights Reserved 
+Worldwide.
+
+YOU AGREE THAT YOU SHALL NOT DISTRIBUTE A REGISTERED VERSION OF THIS 
+SOFTWARE NOR SHALL YOU DISTRIBUTE ANY REGISTRATION CODE FOR THIS SOFTWARE.
+
+You agree that you shall only distribute the SOFTWARE in a manner that 
+complies with all applicable laws in the jurisdiction(s) in which you 
+distribute the SOFTWARE, including, but not limited to, applicable 
+restrictions concerning copyright and other intellectual property rights.
+
+3. RESTRICTIONS
+
+YOU shall not remove from the SOFTWARE any trademark, tradename, copyright 
+notice or other notice, and shall be responsible for their preservation on 
+the copies received hereunder and for their reproduction on any backup copy 
+of the SOFTWARE or on any portion of the SOFTWARE merged into other 
+programs or SITES.
+
+YOU may NOT sublicense, or assign copies of the SOFTWARE to others.  The 
+SOFTWARE contains trade secrets.  YOU may NOT decompile, reverse engineer, 
+disassemble, or otherwise reduce the SOFTWARE to a human readable form.  
+YOU MAY NOT MODIFY, ADAPT, TRANSLATE, RENT, LEASE, LOAN, RESELL FOR PROFIT, 
+OR OTHERWISE ASSIGN OR TRANSFER THE SOFTWARE, OR CREATE DERIVATIVE WORKS 
+BASED UPON THE SOFTWARE OR ANY PART THEREOF without the prior written 
+consent of Sendero Software, LLC.
+
+4. PROTECTION AND SECURITY.
+
+YOU agree to use YOUR best efforts and to take all reasonable steps to 
+safeguard the SOFTWARE to ensure that no unauthorized person shall have 
+access thereto and that no unauthorized copy, publication, disclosure or 
+distribution in whole or in part, in any form, shall be made.  YOU 
+acknowledge that the SOFTWARE contains valuable confidential information 
+and trade secrets and that unauthorized use and/or copying are harmful to 
+LICENSOR.
+
+5. TERMINATION.
+
+a)  This DISTRIBUTION LICENSE is effective until terminated.  This 
+DISTRIBUTION LICENSE will terminate immediately without notice from 
+LICENSOR if YOU fail to comply with any of its provisions.  LICENSOR may 
+immediately revoke and terminate the license granted hereunder by providing 
+written notice to YOU if any of the following events occur:  breach by YOU 
+of any provisions of this DISTRIBUTION LICENSE.
+
+b)  Upon termination of the DISTRIBUTION LICENSE granted hereunder, 
+LICENSOR reserves the right to take any legal action necessary to recover 
+any damages incurred by LICENSOR.
+
+6. PRINT MEDIA PUBLISHERS
+
+Print media publishers wishing to distribute this SOFTWARE on CD-ROM or 
+magnetic media in combination of a book must agree to all terms of this 
+DISTRIBUTION LICENSE and, additionally, must provide a copy of the book/CD-
+ROM combination to Sendero Software, LLC, 9337-B Katy Freeway #378, 
+Houston, Tx 77024 USA
+
+7. GENERAL.
+
+This DISTRIBUTION LICENSE will be governed by and construed in accordance 
+with the laws of the State of Texas, USA, and shall inure to the 
+benefit of LICENSOR and YOU and their successors, assigns and legal 
+representatives.  If any provision of this DISTRIBUTION LICENSE is held by 
+a court of competent jurisdiction to be invalid or unenforceable to any 
+extent under applicable law, that provision will be enforced to the maximum 
+extent permissible, and the remaining provisions of this License will 
+remain in full force and effect.  Any notices or other communications to be 
+sent to LICENSOR must be mailed first class, postage prepaid, to the 
+following address: Sendero Software, LLC, 9337-B Katy Freeway #378, 
+Houston, Tx 77024 USA. 
+
+This Agreement constitutes the entire agreement between the parties with 
+respect to the subject matter hereof, and all prior proposals, agreements, 
+representations, statements and undertakings are hereby expressly cancelled 
+and superseded.  This Agreement may not be changed or amended except by a 
+written instrument executed by a duly authorized officer of LICENSOR.
+
+8. ACKNOWLEDGEMENT.
+
+BY DISTRIBUTING THIS SOFTWARE, YOU ACKNOWLEDGE THAT YOU HAVE READ THIS 
+DISTRIBUTION LICENSE, UNDERSTAND IT, AND AGREE TO BE BOUND BY ITS TERMS AND 
+CONDITIONS.  Should YOU have any questions concerning this DISTRIBUTION 
+LICENSE, contact LICENSOR at the address set forth above.
+
+Copyright (c) 2003 by Sendero Software, LLC.
+All Rights Reserved Worldwide.
