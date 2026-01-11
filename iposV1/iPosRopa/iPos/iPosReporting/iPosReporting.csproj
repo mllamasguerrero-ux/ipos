@@ -80,15 +80,15 @@
   <ItemGroup>
     <Reference Include="FastReport, Version=2014.2.10.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net2018\FastReport.dll</HintPath>
+      <HintPath>..\FastReport.dll</HintPath>
     </Reference>
     <Reference Include="FastReport.Bars, Version=2014.2.10.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net2018\FastReport.Bars.dll</HintPath>
+      <HintPath>..\FastReport.Bars.dll</HintPath>
     </Reference>
     <Reference Include="FastReport.Editor, Version=2014.2.10.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net2018\FastReport.Editor.dll</HintPath>
+      <HintPath>..\FastReport.Editor.dll</HintPath>
     </Reference>
     <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.1.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
