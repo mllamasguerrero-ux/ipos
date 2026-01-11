@@ -298,7 +298,7 @@ namespace iPos.Tools
 
         public static void UploadTest()
         {
-            string filename = @"C:\IposProject\iPosRopa\iPos\iPos\bin\Debug\sampdata\facturaelectronica\PDF\uploaded\A459_AAA010101AAA.pdf";
+            string filename = @"C:\GitHub\ipos\ipos\iposV1\iPosRopa\iPos\iPos\bin\Debug\sampdata\facturaelectronica\PDF\uploaded\A459_AAA010101AAA.pdf";
 
 
             try

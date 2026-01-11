@@ -377,7 +377,7 @@ order by pago.fechahora</CommandText>
   <xs:element name="DSAbonos" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DSAbonos" msprop:Generator_UserDSName="DSAbonos">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="PAGOLIST" msprop:Generator_TableClassName="PAGOLISTDataTable" msprop:Generator_TableVarName="tablePAGOLIST" msprop:Generator_RowChangedName="PAGOLISTRowChanged" msprop:Generator_TablePropName="PAGOLIST" msprop:Generator_RowDeletingName="PAGOLISTRowDeleting" msprop:Generator_RowChangingName="PAGOLISTRowChanging" msprop:Generator_RowEvHandlerName="PAGOLISTRowChangeEventHandler" msprop:Generator_RowDeletedName="PAGOLISTRowDeleted" msprop:Generator_RowClassName="PAGOLISTRow" msprop:Generator_UserTableName="PAGOLIST" msprop:Generator_RowEvArgName="PAGOLISTRowChangeEvent">
+        <xs:element name="PAGOLIST" msprop:Generator_TableClassName="PAGOLISTDataTable" msprop:Generator_TableVarName="tablePAGOLIST" msprop:Generator_TablePropName="PAGOLIST" msprop:Generator_RowDeletingName="PAGOLISTRowDeleting" msprop:Generator_RowChangingName="PAGOLISTRowChanging" msprop:Generator_RowEvHandlerName="PAGOLISTRowChangeEventHandler" msprop:Generator_RowDeletedName="PAGOLISTRowDeleted" msprop:Generator_UserTableName="PAGOLIST" msprop:Generator_RowChangedName="PAGOLISTRowChanged" msprop:Generator_RowEvArgName="PAGOLISTRowChangeEvent" msprop:Generator_RowClassName="PAGOLISTRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:long" />
@@ -472,7 +472,7 @@ order by pago.fechahora</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="DOCTOSCONSALDO" msprop:Generator_TableClassName="DOCTOSCONSALDODataTable" msprop:Generator_TableVarName="tableDOCTOSCONSALDO" msprop:Generator_RowChangedName="DOCTOSCONSALDORowChanged" msprop:Generator_TablePropName="DOCTOSCONSALDO" msprop:Generator_RowDeletingName="DOCTOSCONSALDORowDeleting" msprop:Generator_RowChangingName="DOCTOSCONSALDORowChanging" msprop:Generator_RowEvHandlerName="DOCTOSCONSALDORowChangeEventHandler" msprop:Generator_RowDeletedName="DOCTOSCONSALDORowDeleted" msprop:Generator_RowClassName="DOCTOSCONSALDORow" msprop:Generator_UserTableName="DOCTOSCONSALDO" msprop:Generator_RowEvArgName="DOCTOSCONSALDORowChangeEvent">
+        <xs:element name="DOCTOSCONSALDO" msprop:Generator_TableClassName="DOCTOSCONSALDODataTable" msprop:Generator_TableVarName="tableDOCTOSCONSALDO" msprop:Generator_TablePropName="DOCTOSCONSALDO" msprop:Generator_RowDeletingName="DOCTOSCONSALDORowDeleting" msprop:Generator_RowChangingName="DOCTOSCONSALDORowChanging" msprop:Generator_RowEvHandlerName="DOCTOSCONSALDORowChangeEventHandler" msprop:Generator_RowDeletedName="DOCTOSCONSALDORowDeleted" msprop:Generator_UserTableName="DOCTOSCONSALDO" msprop:Generator_RowChangedName="DOCTOSCONSALDORowChanged" msprop:Generator_RowEvArgName="DOCTOSCONSALDORowChangeEvent" msprop:Generator_RowClassName="DOCTOSCONSALDORow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="CONSECUTIVO" msprop:Generator_ColumnVarNameInTable="columnCONSECUTIVO" msprop:Generator_ColumnPropNameInRow="CONSECUTIVO" msprop:Generator_ColumnPropNameInTable="CONSECUTIVOColumn" msprop:Generator_UserColumnName="CONSECUTIVO" type="xs:long" />
@@ -615,7 +615,7 @@ order by pago.fechahora</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="PAGOSAPLICADOS" msprop:Generator_TableClassName="PAGOSAPLICADOSDataTable" msprop:Generator_TableVarName="tablePAGOSAPLICADOS" msprop:Generator_RowChangedName="PAGOSAPLICADOSRowChanged" msprop:Generator_TablePropName="PAGOSAPLICADOS" msprop:Generator_RowDeletingName="PAGOSAPLICADOSRowDeleting" msprop:Generator_RowChangingName="PAGOSAPLICADOSRowChanging" msprop:Generator_RowEvHandlerName="PAGOSAPLICADOSRowChangeEventHandler" msprop:Generator_RowDeletedName="PAGOSAPLICADOSRowDeleted" msprop:Generator_RowClassName="PAGOSAPLICADOSRow" msprop:Generator_UserTableName="PAGOSAPLICADOS" msprop:Generator_RowEvArgName="PAGOSAPLICADOSRowChangeEvent">
+        <xs:element name="PAGOSAPLICADOS" msprop:Generator_TableClassName="PAGOSAPLICADOSDataTable" msprop:Generator_TableVarName="tablePAGOSAPLICADOS" msprop:Generator_TablePropName="PAGOSAPLICADOS" msprop:Generator_RowDeletingName="PAGOSAPLICADOSRowDeleting" msprop:Generator_RowChangingName="PAGOSAPLICADOSRowChanging" msprop:Generator_RowEvHandlerName="PAGOSAPLICADOSRowChangeEventHandler" msprop:Generator_RowDeletedName="PAGOSAPLICADOSRowDeleted" msprop:Generator_UserTableName="PAGOSAPLICADOS" msprop:Generator_RowChangedName="PAGOSAPLICADOSRowChanged" msprop:Generator_RowEvArgName="PAGOSAPLICADOSRowChangeEvent" msprop:Generator_RowClassName="PAGOSAPLICADOSRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:long" />
@@ -639,7 +639,7 @@ order by pago.fechahora</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="PAGOLISTCHEQUE" msprop:Generator_TableClassName="PAGOLISTCHEQUEDataTable" msprop:Generator_TableVarName="tablePAGOLISTCHEQUE" msprop:Generator_RowChangedName="PAGOLISTCHEQUERowChanged" msprop:Generator_TablePropName="PAGOLISTCHEQUE" msprop:Generator_RowDeletingName="PAGOLISTCHEQUERowDeleting" msprop:Generator_RowChangingName="PAGOLISTCHEQUERowChanging" msprop:Generator_RowEvHandlerName="PAGOLISTCHEQUERowChangeEventHandler" msprop:Generator_RowDeletedName="PAGOLISTCHEQUERowDeleted" msprop:Generator_RowClassName="PAGOLISTCHEQUERow" msprop:Generator_UserTableName="PAGOLISTCHEQUE" msprop:Generator_RowEvArgName="PAGOLISTCHEQUERowChangeEvent">
+        <xs:element name="PAGOLISTCHEQUE" msprop:Generator_TableClassName="PAGOLISTCHEQUEDataTable" msprop:Generator_TableVarName="tablePAGOLISTCHEQUE" msprop:Generator_TablePropName="PAGOLISTCHEQUE" msprop:Generator_RowDeletingName="PAGOLISTCHEQUERowDeleting" msprop:Generator_RowChangingName="PAGOLISTCHEQUERowChanging" msprop:Generator_RowEvHandlerName="PAGOLISTCHEQUERowChangeEventHandler" msprop:Generator_RowDeletedName="PAGOLISTCHEQUERowDeleted" msprop:Generator_UserTableName="PAGOLISTCHEQUE" msprop:Generator_RowChangedName="PAGOLISTCHEQUERowChanged" msprop:Generator_RowEvArgName="PAGOLISTCHEQUERowChangeEvent" msprop:Generator_RowClassName="PAGOLISTCHEQUERow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:long" />

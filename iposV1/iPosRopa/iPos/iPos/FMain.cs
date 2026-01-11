@@ -2436,8 +2436,6 @@ namespace iPos
                             string cadena = "";
                             string sucFueraReport = "";
                             sucs = suc.seleccionarSUCURSALES();
-                            //initial catalog=C:\IposProject\iPosRopa\iPos\iPos\bin\Debug\sampdata\IPOSDB.fdb;
-                            //server=localhost;user id=sysdba;password=masterkey
                             for (int i = 0; i < sucs.Length; i++)
                             {
                                 if (sucs[i].INOMBRERESPALDOBD != null && sucs[i].INOMBRERESPALDOBD != "")
@@ -2495,8 +2493,6 @@ namespace iPos
                             string cadena = "";
                             string sucFueraReport = "";
                             sucs = suc.seleccionarSUCURSALES();
-                            //initial catalog=C:\IposProject\iPosRopa\iPos\iPos\bin\Debug\sampdata\IPOSDB.fdb;
-                            //server=localhost;user id=sysdba;password=masterkey
                             for (int i = 0; i < sucs.Length; i++)
                             {
                                 if (sucs[i].INOMBRERESPALDOBD != null && sucs[i].INOMBRERESPALDOBD != "")
@@ -2555,8 +2551,6 @@ namespace iPos
                             string cadena = "";
                             string sucFueraReport = "";
                             sucs = suc.seleccionarSUCURSALES();
-                            //initial catalog=C:\IposProject\iPosRopa\iPos\iPos\bin\Debug\sampdata\IPOSDB.fdb;
-                            //server=localhost;user id=sysdba;password=masterkey
                             for (int i = 0; i < sucs.Length; i++)
                             {
                                 if (sucs[i].INOMBRERESPALDOBD != null && sucs[i].INOMBRERESPALDOBD != "")

@@ -523,9 +523,7 @@ namespace iPosData
                 }
                 parts.Add(auxPar);
 
-
-                //strOleDbConn = "Provider=VFPOLEDB.1;Data Source=\"C:\\IposProject\\IposRopa\\Ipos\\iPos\\bin\\Debug\\sampdata\\matriz\\enviossucursales\\0009\";User ID=admin";
-
+                
                 string commandText = @"
 INSERT INTO " + strFileName + @" 
       (

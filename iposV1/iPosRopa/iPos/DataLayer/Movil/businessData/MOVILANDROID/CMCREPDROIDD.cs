@@ -21,7 +21,7 @@ namespace DataLayer.Movil.businessData.MOVILANDROID
         private List<CCREPDROIDBE> cobranzas;
         private const string conexion = @"User = SYSDBA; 
                                 Password = masterkey; 
-                                Database = C:\IposProject\iPosRopa\iPos\iPos\bin\Debug\sampdata\VENMOVDROID.fdb; 
+                                Database = C:\GitHub\ipos\ipos\iposV1\iPosRopa\iPos\iPos\bin\Debug\sampdata\VENMOVDROID.fdb; 
                                 DataSource = localhost;";
 
         public CMCREPDROIDD()

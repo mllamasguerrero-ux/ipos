@@ -39,7 +39,6 @@ namespace iPos.Login_and_Maintenance
 
 
             report1.Load(m_rutaReporte);
-            //@"C:\IposProject\iPosRopa\iPos\iPos\bin\Debug\sampdata\fastreportssistema\InformeInventarioXFecha.frx"
             report1.Preview = this.previewControl1;
             report1.Dictionary.Connections[0].ConnectionString = ConexionesBD.ConexionBD.ConexionBase;
             report1.SetParameterValue("US_ID", CurrentUserID.CurrentUser.IID);

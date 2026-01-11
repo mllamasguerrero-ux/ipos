@@ -80,8 +80,6 @@ namespace iPosReporting
                 string cadena = "";
                 string sucFueraReport = "";
                 sucs = suc.seleccionarSUCURSALES();
-                //initial catalog=C:\IposProject\iPosRopa\iPos\iPos\bin\Debug\sampdata\IPOSDB.fdb;
-                //server=localhost;user id=sysdba;password=masterkey
                 for (int i = 0; i < sucs.Length; i++)
                 {
                     if (sucs[i].INOMBRERESPALDOBD != null && sucs[i].INOMBRERESPALDOBD != "")
@@ -105,9 +103,6 @@ namespace iPosReporting
                 }
 
                 // cadena de pruebas
-                //cadena = @"initial catalog=C:\temporal\bdDF\elsauz.fdb;user id=sysdba;password=masterkeyinitial catalog=C:\temporal\bdDF\eltrece.fdb;user id=sysdba;password=masterkey";
-                //cadena = @"initial catalog=C:\IposProject\iPosRopa\iPos\iPos\bin\Debug\sampdata\IPOSDB.fdb;user id=sysdba;password=masterkey";
-                //cadena = @"initial catalog=C:\iPos\SampData\IPOSDB.fdb;user id=sysdba;password=masterkey";
                 report1.SetParameterValue("TIPODOCTOID", cmbSubtipo.SelectedIndex == 2 ? 41 : (cmbSubtipo.SelectedIndex == 0 ? -11 : 11));
                 report1.SetParameterValue("FECHAINI", DTPFrom.Value);
                 report1.SetParameterValue("FECHAFIN", DTPTo.Value);

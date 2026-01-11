@@ -26,7 +26,7 @@ namespace iPosReporting.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("data source=localhost;initial catalog=\"C:\\IposProject\\IposRopa\\Ipos\\iPos\\bin\\Debu" +
+        [global::System.Configuration.DefaultSettingValueAttribute("data source=localhost;initial catalog=\"C:\\GitHub\\ipos\\ipos\\iposV1\\iPosRopa\\Ipos\\iPos\\bin\\Debu" +
             "g\\sampdata\\iposdb.fdb\";user id=sysdba;password=masterkey")]
         public string iPosString {
             get {
@@ -37,7 +37,7 @@ namespace iPosReporting.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("data source=localhost;initial catalog=\"C:\\IposProject\\IposRopa\\Ipos\\iPos\\bin\\Debu" +
+        [global::System.Configuration.DefaultSettingValueAttribute("data source=localhost;initial catalog=\"C:\\GitHub\\ipos\\ipos\\iposV1\\iPosRopa\\Ipos\\iPos\\bin\\Debu" +
             "g\\sampdata\\iposdb.fdb\";user id=sysdba;password=masterkey")]
         public string iPosString2 {
             get {
